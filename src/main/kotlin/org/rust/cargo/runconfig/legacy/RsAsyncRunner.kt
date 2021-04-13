@@ -81,6 +81,7 @@ abstract class RsAsyncRunner(
                     environmentVariables,
                     executableArguments,
                     emulateTerminal,
+                    withSudo,
                     patchToRemote = false // patching is performed for debugger/profiler/valgrind on CLion side if needed
                 )
             }
