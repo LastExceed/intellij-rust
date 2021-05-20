@@ -7,26 +7,33 @@ package org.rust.ide.intentions
 
 class SplitIfIntentionTest : RsIntentionTestBase(SplitIfIntention::class) {
 
-    fun test1() = doUnavailableTest("""
+    fun test1() = doUnavailableTest(
+        """
         fn main() {
             42/*caret*/;
         }
-    """)
+    """
+    )
 
-    fun test2() = doUnavailableTest("""
+    fun test2() = doUnavailableTest(
+        """
         fn main() {
             if true =/*caret*/= true && false {}
         }
-    """)
+    """
+    )
 
-    fun `test availability range`() = checkAvailableInSelectionOnly("""
+    fun `test availability range`() = checkAvailableInSelectionOnly(
+        """
         fn foo() {
             if true <selection>&&</selection> false {}
             if true <selection>&&</selection> false <selection>&&</selection> true {}
         }
-    """)
+    """
+    )
 
-    fun `test simple &&`() = doAvailableTest("""
+    fun `test simple &&`() = doAvailableTest(
+        """
         fn main() {
             if true &/*caret*/& false {
                 42
@@ -46,9 +53,11 @@ class SplitIfIntentionTest : RsIntentionTestBase(SplitIfIntention::class) {
                 24
             };
         }
-    """)
+    """
+    )
 
-    fun `test simple ||`() = doAvailableTest("""
+    fun `test simple ||`() = doAvailableTest(
+        """
         fn main() {
             if true |/*caret*/| false {
                 42
@@ -66,9 +75,11 @@ class SplitIfIntentionTest : RsIntentionTestBase(SplitIfIntention::class) {
                 24
             };
         }
-    """)
+    """
+    )
 
-    fun `test simple && without else`() = doAvailableTest("""
+    fun `test simple && without else`() = doAvailableTest(
+        """
         fn main() {
             if true &/*caret*/& false {
                 42
@@ -82,9 +93,11 @@ class SplitIfIntentionTest : RsIntentionTestBase(SplitIfIntention::class) {
                 }
             };
         }
-    """)
+    """
+    )
 
-    fun `test simple || without else`() = doAvailableTest("""
+    fun `test simple || without else`() = doAvailableTest(
+        """
         fn main() {
             if true |/*caret*/| false {
                 42
@@ -98,9 +111,11 @@ class SplitIfIntentionTest : RsIntentionTestBase(SplitIfIntention::class) {
                 42
             };
         }
-    """)
+    """
+    )
 
-    fun `test multy && 1`() = doAvailableTest("""
+    fun `test multy && 1`() = doAvailableTest(
+        """
         fn main() {
             if true &/*caret*/& false && 1 == 1{
                 42
@@ -120,9 +135,11 @@ class SplitIfIntentionTest : RsIntentionTestBase(SplitIfIntention::class) {
                 24
             };
         }
-    """)
+    """
+    )
 
-    fun `test multy && 2`() = doAvailableTest("""
+    fun `test multy && 2`() = doAvailableTest(
+        """
         fn main() {
             if true && false &/*caret*/& 1 == 1{
                 42
@@ -142,9 +159,11 @@ class SplitIfIntentionTest : RsIntentionTestBase(SplitIfIntention::class) {
                 24
             };
         }
-    """)
+    """
+    )
 
-    fun `test multy || 1`() = doAvailableTest("""
+    fun `test multy || 1`() = doAvailableTest(
+        """
         fn main() {
             if true |/*caret*/| false || 1 == 1 {
                 42
@@ -162,9 +181,11 @@ class SplitIfIntentionTest : RsIntentionTestBase(SplitIfIntention::class) {
                 24
             };
         }
-    """)
+    """
+    )
 
-    fun `test multy || 2`() = doAvailableTest("""
+    fun `test multy || 2`() = doAvailableTest(
+        """
         fn main() {
             if true || false |/*caret*/| 1 == 1 {
                 42
@@ -182,9 +203,11 @@ class SplitIfIntentionTest : RsIntentionTestBase(SplitIfIntention::class) {
                 24
             };
         }
-    """)
+    """
+    )
 
-    fun `test available mix 1`() = doAvailableTest("""
+    fun `test available mix 1`() = doAvailableTest(
+        """
         fn main() {
             if true |/*caret*/| false && 1 == 1 {
                 42
@@ -202,9 +225,11 @@ class SplitIfIntentionTest : RsIntentionTestBase(SplitIfIntention::class) {
                 24
             };
         }
-    """)
+    """
+    )
 
-    fun `test available mix 2`() = doAvailableTest("""
+    fun `test available mix 2`() = doAvailableTest(
+        """
         fn main() {
             if false && true |/*caret*/| false && 1 == 1 && true {
                 42
@@ -222,9 +247,11 @@ class SplitIfIntentionTest : RsIntentionTestBase(SplitIfIntention::class) {
                 24
             };
         }
-    """)
+    """
+    )
 
-    fun `test unavailable mix 1`() = doUnavailableTest("""
+    fun `test unavailable mix 1`() = doUnavailableTest(
+        """
         fn main() {
             if false && true || false &/*caret*/& 1 == 1 && true {
                 42
@@ -232,9 +259,11 @@ class SplitIfIntentionTest : RsIntentionTestBase(SplitIfIntention::class) {
                 24
             };
         }
-    """)
+    """
+    )
 
-    fun `test unavailable mix 2`() = doUnavailableTest("""
+    fun `test unavailable mix 2`() = doUnavailableTest(
+        """
         fn main() {
             if false && true || false && 1 == 1 &/*caret*/& true {
                 42
@@ -242,9 +271,11 @@ class SplitIfIntentionTest : RsIntentionTestBase(SplitIfIntention::class) {
                 24
             };
         }
-    """)
+    """
+    )
 
-    fun `test unavailable mix 3`() = doUnavailableTest("""
+    fun `test unavailable mix 3`() = doUnavailableTest(
+        """
         fn main() {
             if false &/*caret*/& true || false && 1 == 1 && true {
                 42
@@ -252,9 +283,11 @@ class SplitIfIntentionTest : RsIntentionTestBase(SplitIfIntention::class) {
                 24
             };
         }
-    """)
+    """
+    )
 
-    fun `test unavailable mix 4`() = doUnavailableTest("""
+    fun `test unavailable mix 4`() = doUnavailableTest(
+        """
         fn main() {
             if (false && true |/*caret*/| false) && 1 == 1 && true {
                 42
@@ -262,9 +295,11 @@ class SplitIfIntentionTest : RsIntentionTestBase(SplitIfIntention::class) {
                 24
             };
         }
-    """)
+    """
+    )
 
-    fun `test unavailable mix 5`() = doUnavailableTest("""
+    fun `test unavailable mix 5`() = doUnavailableTest(
+        """
         fn main() {
             if(false &/*caret*/& true && false) && 1 == 1 && true {
                 42
@@ -272,9 +307,11 @@ class SplitIfIntentionTest : RsIntentionTestBase(SplitIfIntention::class) {
                 24
             };
         }
-    """)
+    """
+    )
 
-    fun `test available mix with body`() = doAvailableTest("""
+    fun `test available mix with body`() = doAvailableTest(
+        """
         fn main() {
             if true |/*caret*/| false && 1 == 1 {
                 4;
@@ -307,9 +344,11 @@ class SplitIfIntentionTest : RsIntentionTestBase(SplitIfIntention::class) {
                 24
             };
         }
-    """)
+    """
+    )
 
-    fun `test with parenthesis`() = doAvailableTest("""
+    fun `test with parenthesis`() = doAvailableTest(
+        """
         fn main() {
             if (((true)) &/*caret*/& false) {
                 42;
@@ -323,9 +362,11 @@ class SplitIfIntentionTest : RsIntentionTestBase(SplitIfIntention::class) {
                 }
             }
         }
-    """)
+    """
+    )
 
-    fun `test without spaces`() = doAvailableTest("""
+    fun `test without spaces`() = doAvailableTest(
+        """
         fn main() {
             if true&/*caret*/&false {
                 42;
@@ -339,9 +380,11 @@ class SplitIfIntentionTest : RsIntentionTestBase(SplitIfIntention::class) {
                 }
             }
         }
-    """)
+    """
+    )
 
-    fun `test with unary expr`() = doAvailableTest("""
+    fun `test with unary expr`() = doAvailableTest(
+        """
         fn main() {
             if (!(1 == 1) &/*caret*/& 42 == 24) {
                 42;
@@ -355,5 +398,6 @@ class SplitIfIntentionTest : RsIntentionTestBase(SplitIfIntention::class) {
                 }
             }
         }
-    """)
+    """
+    )
 }

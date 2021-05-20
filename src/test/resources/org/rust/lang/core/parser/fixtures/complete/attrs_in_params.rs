@@ -1,4 +1,5 @@
-fn f1(#[attr1] #[attr2] pat: S) {}
+fn f1(#[attr1]
+      #[attr2] pat: S) {}
 
 fn f2(#[attr] x: S) {}
 
@@ -21,5 +22,5 @@ impl S {
 trait T { fn f10(#[attr] S); }
 
 extern "C" {
-    fn f11(#[attr] x: S, #[attr] ...);
+    fn f11(#[attr] x: S, #[attr]...);
 }

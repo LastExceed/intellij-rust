@@ -13,7 +13,8 @@ import org.rust.cargo.project.workspace.CargoWorkspace.Edition
 
 class RsDoctestInjectionResolveTest : RsResolveTestBase() {
     @ProjectDescriptor(WithDependencyRustProjectDescriptor::class)
-    fun `test resolve outer element`() = checkByCode("""
+    fun `test resolve outer element`() = checkByCode(
+        """
         /// ```
         /// use test_package::foo;
         /// foo();
@@ -21,21 +22,25 @@ class RsDoctestInjectionResolveTest : RsResolveTestBase() {
         /// ```
         pub fn foo() {}
          //X
-    """, "lib.rs")
+    """, "lib.rs"
+    )
 
     // BACKCOMPAT: Rust 1.50. Vec struct was moved into `vec/mod.rs` since Rust 1.51
     @ProjectDescriptor(WithStdlibAndDependencyRustProjectDescriptor::class)
-    fun `test resolve std element`() = stubOnlyResolve("""
+    fun `test resolve std element`() = stubOnlyResolve(
+        """
     //- lib.rs
         /// ```
         /// Vec::new()
         /// //^ ...vec.rs|...vec/mod.rs
         /// ```
         pub fn foo() {}
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithDependencyRustProjectDescriptor::class)
-    fun `test outer crate dependency`() = stubOnlyResolve("""
+    fun `test outer crate dependency`() = stubOnlyResolve(
+        """
     //- lib.rs
         /// ```
         /// extern crate dep_lib_target;
@@ -47,10 +52,12 @@ class RsDoctestInjectionResolveTest : RsResolveTestBase() {
         pub fn foo() {}
     //- dep-lib/lib.rs
         pub fn bar() {}
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithDependencyRustProjectDescriptor::class)
-    fun `test macro`() = stubOnlyResolve("""
+    fun `test macro`() = stubOnlyResolve(
+        """
     //- lib.rs
         /// ```
         /// #[macro_use]
@@ -64,10 +71,12 @@ class RsDoctestInjectionResolveTest : RsResolveTestBase() {
         macro_rules! foo {
             () => {};
         }
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithDependencyRustProjectDescriptor::class)
-    fun `test extra extern crate`() = stubOnlyResolve("""
+    fun `test extra extern crate`() = stubOnlyResolve(
+        """
     //- lib.rs
         /// ```
         /// extern crate test_package;
@@ -78,11 +87,13 @@ class RsDoctestInjectionResolveTest : RsResolveTestBase() {
         /// }
         /// ```
         pub fn foo() {}
-    """)
+    """
+    )
 
     @MockEdition(Edition.EDITION_2018)
     @ProjectDescriptor(WithDependencyRustProjectDescriptor::class)
-    fun `test qualified macro call inside function`() = stubOnlyResolve("""
+    fun `test qualified macro call inside function`() = stubOnlyResolve(
+        """
     //- lib.rs
         /// ```
         /// fn test() {
@@ -94,5 +105,6 @@ class RsDoctestInjectionResolveTest : RsResolveTestBase() {
         #[macro_export]
         macro_rules! bar { () => {}; }
                    //X
-    """)
+    """
+    )
 }

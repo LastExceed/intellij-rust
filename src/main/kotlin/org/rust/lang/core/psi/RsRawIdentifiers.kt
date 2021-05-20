@@ -17,7 +17,8 @@ fun String.unescapeIdentifier(): String = removePrefix(RS_RAW_PREFIX)
 fun String.escapeIdentifierIfNeeded(): String =
     if (isValidRustVariableIdentifier(this) || this in CAN_NOT_BE_ESCAPED) this else "$RS_RAW_PREFIX$this"
 
-val PsiElement.unescapedText: String get() {
-    val text = text ?: return ""
-    return if (elementType == IDENTIFIER) text.unescapeIdentifier() else text
-}
+val PsiElement.unescapedText: String
+    get() {
+        val text = text ?: return ""
+        return if (elementType == IDENTIFIER) text.unescapeIdentifier() else text
+    }

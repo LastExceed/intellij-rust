@@ -12,13 +12,15 @@ import org.rust.WithStdlibRustProjectDescriptor
 abstract class IterPostFixTemplateTestBase(private val key: String) :
     RsPostfixTemplateTest(IterPostfixTemplate(key, RsPostfixTemplateProvider())) {
 
-    fun `test non iterable expr`() = doTestNotApplicable("""
+    fun `test non iterable expr`() = doTestNotApplicable(
+        """
             let b = 5;
             b./*caret*/
         """
     )
 
-    fun `test iterable expr`() = doTest("""
+    fun `test iterable expr`() = doTest(
+        """
         fn main(){
             let v = vec![1, 2, 3];
             v.iter().$key/*caret*/
@@ -30,9 +32,11 @@ abstract class IterPostFixTemplateTestBase(private val key: String) :
                 /*caret*/
             }
         }
-    """)
+    """
+    )
 
-    fun `test intoIterable expr`() = doTest("""
+    fun `test intoIterable expr`() = doTest(
+        """
         fn main(){
             let v = vec![1, 2, 3];
             v.$key/*caret*/
@@ -44,7 +48,8 @@ abstract class IterPostFixTemplateTestBase(private val key: String) :
                 /*caret*/
             }
         }
-    """)
+    """
+    )
 }
 
 class IterPostFixTemplateTest : IterPostFixTemplateTestBase("iter")

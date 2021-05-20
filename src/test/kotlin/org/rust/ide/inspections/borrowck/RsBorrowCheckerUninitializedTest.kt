@@ -11,7 +11,8 @@ import org.rust.ide.inspections.RsBorrowCheckerInspection
 import org.rust.ide.inspections.RsInspectionsTestBase
 
 class RsBorrowCheckerUninitializedTest : RsInspectionsTestBase(RsBorrowCheckerInspection::class) {
-    fun `test E0381 error no init`() = checkFixByText("Initialize with a default value", """
+    fun `test E0381 error no init`() = checkFixByText(
+        "Initialize with a default value", """
         fn main() {
             let x: i32;
             <error descr="Use of possibly uninitialized variable">x<caret></error>;
@@ -21,10 +22,12 @@ class RsBorrowCheckerUninitializedTest : RsInspectionsTestBase(RsBorrowCheckerIn
             let x: i32 = 0;
             x;
         }
-    """, checkWarn = false)
+    """, checkWarn = false
+    )
 
     @ProjectDescriptor(WithStdlibAndDependencyRustProjectDescriptor::class)
-    fun `test E0381 error no init default impl`() = checkFixByText("Initialize with a default value", """
+    fun `test E0381 error no init default impl`() = checkFixByText(
+        "Initialize with a default value", """
         #[derive(Default)]
         struct A {
             a: u64
@@ -44,9 +47,11 @@ class RsBorrowCheckerUninitializedTest : RsInspectionsTestBase(RsBorrowCheckerIn
             let x: A = Default::default();
             x;
         }
-    """, checkWarn = false)
+    """, checkWarn = false
+    )
 
-    fun `test E0381 error no init default initialization`() = checkFixByText("Initialize with a default value", """
+    fun `test E0381 error no init default initialization`() = checkFixByText(
+        "Initialize with a default value", """
         struct A {
             a: u64,
             b: u64
@@ -68,9 +73,11 @@ class RsBorrowCheckerUninitializedTest : RsInspectionsTestBase(RsBorrowCheckerIn
             let x: A = A { a, b: 0 };
             x;
         }
-    """, checkWarn = false)
+    """, checkWarn = false
+    )
 
-    fun `test E0381 error init inside then`() = checkFixByText("Initialize with a default value", """
+    fun `test E0381 error init inside then`() = checkFixByText(
+        "Initialize with a default value", """
         fn main() {
             let x: i32;
             if something { x = 1 } else {};
@@ -82,9 +89,11 @@ class RsBorrowCheckerUninitializedTest : RsInspectionsTestBase(RsBorrowCheckerIn
             if something { x = 1 } else {};
             x;
         }
-    """, checkWarn = false)
+    """, checkWarn = false
+    )
 
-    fun `test E0381 error init inside then mutable`() = checkFixByText("Initialize with a default value", """
+    fun `test E0381 error init inside then mutable`() = checkFixByText(
+        "Initialize with a default value", """
         fn main() {
             let mut x: i32;
             if something { x = 1 } else {};
@@ -96,25 +105,31 @@ class RsBorrowCheckerUninitializedTest : RsInspectionsTestBase(RsBorrowCheckerIn
             if something { x = 1 } else {};
             x;
         }
-    """, checkWarn = false)
+    """, checkWarn = false
+    )
 
-    fun `test E0381 error fix unavailable tuple 1`() = checkFixIsUnavailable("Initialize with a default value", """
+    fun `test E0381 error fix unavailable tuple 1`() = checkFixIsUnavailable(
+        "Initialize with a default value", """
         fn main() {
             let (x,): (i32,);
             if something { x = 1 } else {};
             <error descr="Use of possibly uninitialized variable">x<caret></error>;
         }
-    """, checkWarn = false)
+    """, checkWarn = false
+    )
 
-    fun `test E0381 error fix unavailable tuple 2`() = checkFixIsUnavailable("Initialize with a default value", """
+    fun `test E0381 error fix unavailable tuple 2`() = checkFixIsUnavailable(
+        "Initialize with a default value", """
         fn main() {
             let (x, y): (i32, i32);
             if something { x = 1 } else {};
             <error descr="Use of possibly uninitialized variable">x<caret></error>;
         }
-    """, checkWarn = false)
+    """, checkWarn = false
+    )
 
-    fun `test E0381 error init inside else`() = checkFixByText("Initialize with a default value", """
+    fun `test E0381 error init inside else`() = checkFixByText(
+        "Initialize with a default value", """
         fn main() {
             let x: i32;
             if something {} else { x = 1 };
@@ -126,17 +141,21 @@ class RsBorrowCheckerUninitializedTest : RsInspectionsTestBase(RsBorrowCheckerIn
             if something {} else { x = 1 };
             x;
         }
-    """, checkWarn = false)
+    """, checkWarn = false
+    )
 
-    fun `test no E0381 error init inside then and else`() = checkByText("""
+    fun `test no E0381 error init inside then and else`() = checkByText(
+        """
         fn main() {
             let x: i32;
             if something { x = 1 } else { x = 2 };
             x;
         }
-    """, checkWarn = false)
+    """, checkWarn = false
+    )
 
-    fun `test E0381 error init inside match arm`() = checkFixByText("Initialize with a default value", """
+    fun `test E0381 error init inside match arm`() = checkFixByText(
+        "Initialize with a default value", """
         fn main() {
             let x: i32;
             match 42 {
@@ -154,9 +173,11 @@ class RsBorrowCheckerUninitializedTest : RsInspectionsTestBase(RsBorrowCheckerIn
             };
             x;
         }
-    """, checkWarn = false)
+    """, checkWarn = false
+    )
 
-    fun `test E0381 error no explicit type`() = checkFixByText("Initialize with a default value", """
+    fun `test E0381 error no explicit type`() = checkFixByText(
+        "Initialize with a default value", """
         fn main() {
             let x;
             let y: i32 =  <error descr="Use of possibly uninitialized variable">x<caret></error>;
@@ -166,9 +187,11 @@ class RsBorrowCheckerUninitializedTest : RsInspectionsTestBase(RsBorrowCheckerIn
             let x = 0;
             let y: i32 =  x;
         }
-    """, checkWarn = false)
+    """, checkWarn = false
+    )
 
-    fun `test E0381 error declaration with attribute`() = checkFixByText("Initialize with a default value", """
+    fun `test E0381 error declaration with attribute`() = checkFixByText(
+        "Initialize with a default value", """
         fn main() {
             #[foobar]
             let x;
@@ -180,9 +203,11 @@ class RsBorrowCheckerUninitializedTest : RsInspectionsTestBase(RsBorrowCheckerIn
             let x = 0;
             let y: i32 =  x;
         }
-    """, checkWarn = false)
+    """, checkWarn = false
+    )
 
-    fun `test E0381 error declaration with comments`() = checkFixByText("Initialize with a default value", """
+    fun `test E0381 error declaration with comments`() = checkFixByText(
+        "Initialize with a default value", """
         fn main() {
             // 123
             let x; // 321
@@ -194,9 +219,11 @@ class RsBorrowCheckerUninitializedTest : RsInspectionsTestBase(RsBorrowCheckerIn
             let x = 0; // 321
             let y: i32 =  x;
         }
-    """, checkWarn = false)
+    """, checkWarn = false
+    )
 
-    fun `test no E0381 error init inside all match arms`() = checkByText("""
+    fun `test no E0381 error init inside all match arms`() = checkByText(
+        """
         fn main() {
             let x: i32;
             match 42 {
@@ -205,9 +232,11 @@ class RsBorrowCheckerUninitializedTest : RsInspectionsTestBase(RsBorrowCheckerIn
             };
             x;
         }
-    """, checkWarn = false)
+    """, checkWarn = false
+    )
 
-    fun `test E0381 error init inside while`() = checkByText("""
+    fun `test E0381 error init inside while`() = checkByText(
+        """
         fn main() {
             let x: i32;
             while something {
@@ -215,10 +244,12 @@ class RsBorrowCheckerUninitializedTest : RsInspectionsTestBase(RsBorrowCheckerIn
             };
             <error descr="Use of possibly uninitialized variable">x</error>;
         }
-    """, checkWarn = false)
+    """, checkWarn = false
+    )
 
     /** Issue [#4008](https://github.com/intellij-rust/intellij-rust/issues/4008) */
-    fun `test no E0381 never type`() = checkByText("""
+    fun `test no E0381 never type`() = checkByText(
+        """
         fn foo(flag: bool) -> i32 {
             let value: i32;
             match flag {
@@ -227,9 +258,11 @@ class RsBorrowCheckerUninitializedTest : RsInspectionsTestBase(RsBorrowCheckerIn
             };
             value
         }
-    """, checkWarn = false)
+    """, checkWarn = false
+    )
 
-    fun `test no E0381 init in macro call`() = checkByText("""
+    fun `test no E0381 init in macro call`() = checkByText(
+        """
         macro_rules! my_macro_init {
             ($ i:ident) => ($ i = 42);
         }
@@ -238,5 +271,6 @@ class RsBorrowCheckerUninitializedTest : RsInspectionsTestBase(RsBorrowCheckerIn
             my_macro_init!(value);
             value;
         }
-    """, checkWarn = false)
+    """, checkWarn = false
+    )
 }

@@ -48,8 +48,8 @@ sealed class TomlLiteralKind(val node: ASTNode) {
 fun offsetsForTomlText(node: ASTNode): LiteralOffsets {
     val (quote, needEscape) = when (node.elementType) {
         BASIC_STRING -> "\"" to true
-        MULTILINE_BASIC_STRING -> "\"\"\""  to true
-        LITERAL_STRING -> "'"  to false
+        MULTILINE_BASIC_STRING -> "\"\"\"" to true
+        LITERAL_STRING -> "'" to false
         MULTILINE_LITERAL_STRING -> "'''" to false
         else -> error("Unexpected element type: `${node.elementType}` for `${node.text}`")
     }

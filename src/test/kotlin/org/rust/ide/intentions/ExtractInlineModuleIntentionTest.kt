@@ -11,137 +11,173 @@ import org.rust.fileTree
 class ExtractInlineModuleIntentionTest : RsIntentionTestBase(ExtractInlineModuleIntention::class) {
     override val dataPath = "org/rust/ide/intentions/fixtures/"
 
-    fun `test availability range`() = checkAvailableInSelectionOnly("""
+    fun `test availability range`() = checkAvailableInSelectionOnly(
+        """
         #[attr]
         <selection>pub mod foo</selection> {
             fn bar() {}
         }
-    """)
+    """
+    )
 
     fun `test valid extract inline module`() = doTest(
         fileTree {
-            rust("main.rs", """
+            rust(
+                "main.rs", """
                 mod /*caret*/foo {
                     // function
                     fn a() {}
                 }
 
                 fn main() {}
-            """)
+            """
+            )
         },
         fileTree {
-            rust("main.rs", """
+            rust(
+                "main.rs", """
                 mod foo;
 
                 fn main() {}
-            """)
-            rust("foo.rs", """
+            """
+            )
+            rust(
+                "foo.rs", """
                 // function
                 fn a() {}
-            """)
+            """
+            )
         }
     )
 
     fun `test extract non-root module`() = doTest(
         fileTree {
-            rust("main.rs", """
+            rust(
+                "main.rs", """
                 mod foo;
 
                 fn main() {}
-            """)
-            rust("foo.rs", """
+            """
+            )
+            rust(
+                "foo.rs", """
                 mod /*caret*/bar {
                     fn baz() {}
                 }
-            """)
+            """
+            )
         },
         fileTree {
-            rust("main.rs", """
+            rust(
+                "main.rs", """
                 mod foo;
 
                 fn main() {}
-            """)
-            rust("foo.rs", """
+            """
+            )
+            rust(
+                "foo.rs", """
                 mod bar;
-            """)
+            """
+            )
             dir("foo") {
-                rust("bar.rs", """
+                rust(
+                    "bar.rs", """
                     fn baz() {}
-                """)
+                """
+                )
             }
         }
     )
 
     fun `test keep existing file content`() = doTest(
         fileTree {
-            rust("main.rs", """
+            rust(
+                "main.rs", """
                 mod /*caret*/foo {
                     fn b() {}
                 }
 
                 fn main() {}
-            """)
-            rust("foo.rs", """
+            """
+            )
+            rust(
+                "foo.rs", """
                 fn a() {}
-            """)
+            """
+            )
         },
         fileTree {
-            rust("main.rs", """
+            rust(
+                "main.rs", """
                 mod foo;
 
                 fn main() {}
-            """)
-            rust("foo.rs", """
+            """
+            )
+            rust(
+                "foo.rs", """
                 fn a() {}
 
                 fn b() {}
-            """)
+            """
+            )
         }
     )
 
     fun `test extracting module preserves attributes and visibility`() = ExtractInlineModuleIntention.Testmarks.copyAttrs.checkHit {
         doTest(
             fileTree {
-                rust("main.rs", """
+                rust(
+                    "main.rs", """
                 #[cfg(test)]
                 pub(in super) mod /*caret*/tests {
                     #[test]
                     fn foo() {}
                 }
-            """)
+            """
+                )
             },
             fileTree {
-                rust("main.rs", """
+                rust(
+                    "main.rs", """
                 #[cfg(test)]
                 pub(in super) mod tests;
-            """)
-                rust("tests.rs", """
+            """
+                )
+                rust(
+                    "tests.rs", """
                 #[test]
                 fn foo() {}
-            """)
+            """
+                )
             }
         )
     }
 
     fun `test invalid extract inline module`() {
         doTest(fileTree {
-            rust("main.rs", """
+            rust(
+                "main.rs", """
                 mod foo {
                     // function
                     fn a() {}
                 }
 
                 fn /*caret*/main() {}
-            """)
+            """
+            )
         }, fileTree {
-            rust("main.rs", """
+            rust(
+                "main.rs", """
                 mod foo {
                     // function
                     fn a() {}
                 }
 
                 fn main() {}
-            """)
+            """
+            )
         })
     }
 

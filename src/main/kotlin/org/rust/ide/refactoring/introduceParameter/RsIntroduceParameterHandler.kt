@@ -25,10 +25,11 @@ class RsIntroduceParameterHandler : RefactoringActionHandler {
 
         when (exprs.size) {
             0 -> {
-                val message = RefactoringBundle.message(if (editor.selectionModel.hasSelection())
-                    "selected.block.should.represent.an.expression"
-                else
-                    "refactoring.introduce.selection.error"
+                val message = RefactoringBundle.message(
+                    if (editor.selectionModel.hasSelection())
+                        "selected.block.should.represent.an.expression"
+                    else
+                        "refactoring.introduce.selection.error"
                 )
                 showErrorMessageForExtractParameter(project, editor, message)
             }

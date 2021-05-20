@@ -10,12 +10,14 @@ import org.rust.WithStdlibAndDependencyRustProjectDescriptor
 
 @ProjectDescriptor(WithStdlibAndDependencyRustProjectDescriptor::class)
 class RsStdlibErrorAnnotatorTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
-    fun `test E0428 respects crate aliases`() = checkErrors("""
+    fun `test E0428 respects crate aliases`() = checkErrors(
+        """
         extern crate core as core_alias;
         mod core {}
 
         // FIXME: ideally we want to highlight these
         extern crate alloc;
         mod alloc {}
-    """)
+    """
+    )
 }

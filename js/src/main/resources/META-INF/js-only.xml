@@ -1,5 +1,6 @@
 <idea-plugin>
     <extensions defaultExtensionNs="com.intellij">
-        <codeInsight.lineMarkerProvider language="Rust" implementationClass="org.rust.js.RsWasmBindgenLineMarkerProvider"/>
+        <codeInsight.lineMarkerProvider language="Rust"
+                                        implementationClass="org.rust.js.RsWasmBindgenLineMarkerProvider"/>
     </extensions>
 </idea-plugin>

@@ -8,7 +8,8 @@ package org.rust.toml.completion
 import org.rust.toml.crates.local.CargoRegistryCrate
 
 class LocalCargoTomlDependencyVersionCompletionTest : LocalCargoTomlCompletionTestBase() {
-    fun `test complete version`() = doFirstCompletion("""
+    fun `test complete version`() = doFirstCompletion(
+        """
         [dependencies]
         foo = "<caret>"
     """, """
@@ -17,7 +18,8 @@ class LocalCargoTomlDependencyVersionCompletionTest : LocalCargoTomlCompletionTe
     """, "foo" to CargoRegistryCrate.of("0.1.0")
     )
 
-    fun `test complete highest by semver version`() = doFirstCompletion("""
+    fun `test complete highest by semver version`() = doFirstCompletion(
+        """
         [dependencies]
         foo = "<caret>"
     """, """

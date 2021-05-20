@@ -86,9 +86,10 @@ class MacroExpansionFileSystemTest : BasePlatformTestCase() {
         checkMacroExpansionFileSystemAfterTest()
     }
 
-    private val persistentFSFlagsHolder: Class<*> get() {
-        return PersistentFS::class.java.declaredClasses.first { it.simpleName == "Flags" }
-    }
+    private val persistentFSFlagsHolder: Class<*>
+        get() {
+            return PersistentFS::class.java.declaredClasses.first { it.simpleName == "Flags" }
+        }
 }
 
 private fun VirtualFileSystem.findNonNullFileByPath(path: String): VirtualFile =

@@ -89,13 +89,15 @@ object CargoBuildManager {
             lastBuildCommandLine = state.prepareCommandLine()
         }
 
-        return execute(CargoBuildContext(
-            cargoProject = cargoProject,
-            environment = environment,
-            taskName = "Build",
-            progressTitle = "Building...",
-            isTestBuild = state.commandLine.command == "test"
-        )) {
+        return execute(
+            CargoBuildContext(
+                cargoProject = cargoProject,
+                environment = environment,
+                taskName = "Build",
+                progressTitle = "Building...",
+                isTestBuild = state.commandLine.command == "test"
+            )
+        ) {
             val buildProgressListener = if (isUnitTestMode) {
                 mockBuildProgressListener ?: EmptyBuildProgressListener
             } else {

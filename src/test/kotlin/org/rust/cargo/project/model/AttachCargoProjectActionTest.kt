@@ -28,19 +28,23 @@ class AttachCargoProjectActionTest : RsWithToolchainTestBase() {
     private val tempDirFixture = TempDirTestFixtureImpl()
 
     private val cargoProjectSupplier: FileTreeBuilder.() -> Unit = {
-        toml("Cargo.toml", """
+        toml(
+            "Cargo.toml", """
             [package]
             name = "hello"
             version = "0.1.0"
             authors = []
-        """)
+        """
+        )
 
         dir("src") {
-            rust("main.rs", """
+            rust(
+                "main.rs", """
                 fn main() {
                     println!("Hello, world!");
                 }
-            """)
+            """
+            )
         }
     }
 
@@ -84,10 +88,12 @@ class AttachCargoProjectActionTest : RsWithToolchainTestBase() {
 
     fun `test no action for cargo toml of existing package in cargo project`() {
         val testProject = buildProject {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [workspace]
                 members = [ "foo" ]
-            """)
+            """
+            )
 
             dir("foo", cargoProjectSupplier)
         }

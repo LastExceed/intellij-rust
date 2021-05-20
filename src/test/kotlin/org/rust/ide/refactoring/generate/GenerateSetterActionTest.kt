@@ -8,7 +8,8 @@ package org.rust.ide.refactoring.generate
 class GenerateSetterActionTest : RsGenerateBaseTest() {
     override val generateId: String = "Rust.GenerateSetter"
 
-    fun `test primitive fields`() = doTest("""
+    fun `test primitive fields`() = doTest(
+        """
         struct S {
             a: i32,
             b: bool,
@@ -34,9 +35,11 @@ class GenerateSetterActionTest : RsGenerateBaseTest() {
                 self.b = b;
             }
         }
-    """)
+    """
+    )
 
-    fun `test select field`() = doTest("""
+    fun `test select field`() = doTest(
+        """
         struct S {
             a: i32,
             b: bool,
@@ -59,9 +62,11 @@ class GenerateSetterActionTest : RsGenerateBaseTest() {
                 self.a = a;
             }
         }
-    """)
+    """
+    )
 
-    fun `test reference`() = doTest("""
+    fun `test reference`() = doTest(
+        """
         struct S<'a> {
             a: &'a str
         }
@@ -77,9 +82,11 @@ class GenerateSetterActionTest : RsGenerateBaseTest() {
                 self.a = a;
             }
         }
-    """)
+    """
+    )
 
-    fun `test generic field changed type parameter name`() = doTest("""
+    fun `test generic field changed type parameter name`() = doTest(
+        """
         struct S<T> {
             a: T
         }
@@ -95,9 +102,11 @@ class GenerateSetterActionTest : RsGenerateBaseTest() {
                 self.a = a;
             }
         }
-    """)
+    """
+    )
 
-    fun `test generic field specific type`() = doTest("""
+    fun `test generic field specific type`() = doTest(
+        """
         struct S<T> {
             a: T
         }
@@ -113,9 +122,11 @@ class GenerateSetterActionTest : RsGenerateBaseTest() {
                 self.a = a;
             }
         }
-    """)
+    """
+    )
 
-    fun `test filter fields with a getter`() = doTest("""
+    fun `test filter fields with a getter`() = doTest(
+        """
         struct S {
             a: i32,
             b: i32,
@@ -138,9 +149,11 @@ class GenerateSetterActionTest : RsGenerateBaseTest() {
                 self.b = b;
             }
         }
-    """)
+    """
+    )
 
-    fun `test unavailable when all fields have a setter`() = doUnavailableTest("""
+    fun `test unavailable when all fields have a setter`() = doUnavailableTest(
+        """
         struct S {
             a: i32,
         }
@@ -149,9 +162,11 @@ class GenerateSetterActionTest : RsGenerateBaseTest() {
             fn set_a(&self) {}
             /*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test unrelated method exists`() = doTest("""
+    fun `test unrelated method exists`() = doTest(
+        """
         struct S {
             a: i32,
         }
@@ -176,9 +191,11 @@ class GenerateSetterActionTest : RsGenerateBaseTest() {
                 self.a = a;
             }
         }
-    """)
+    """
+    )
 
-    fun `test skip pub field`() = doTest("""
+    fun `test skip pub field`() = doTest(
+        """
         struct S {
             a: i32,
             pub b: i32,
@@ -201,9 +218,11 @@ class GenerateSetterActionTest : RsGenerateBaseTest() {
                 self.c = c;
             }
         }
-    """)
+    """
+    )
 
-    fun `test type alias`() = doTest("""
+    fun `test type alias`() = doTest(
+        """
         struct T;
         type Alias = T;
         struct S {
@@ -223,5 +242,6 @@ class GenerateSetterActionTest : RsGenerateBaseTest() {
                 self.a = a;
             }
         }
-    """)
+    """
+    )
 }

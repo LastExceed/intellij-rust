@@ -2,7 +2,7 @@
 /// Really useful
 fn documented_function() {
     /// inner items can have docs too!
-    fn foo() { }
+    fn foo() {}
 }
 
 /// doc
@@ -22,14 +22,14 @@ mod m {
 struct S {
     /// Fields can have docs,
     /// sometimes long ones.
-    field: f32
+    field: f32,
 }
 
 /// documentation
 // simple comments do not interfer with doc comments
-struct T (
-  /// Even for tuple structs!
-  i32
+struct T(
+    /// Even for tuple structs!
+    i32
 );
 
 /// doc

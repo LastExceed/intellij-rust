@@ -32,10 +32,12 @@ class RsPrimitiveTypeImplsTest : RsTestBase() {
     fun `test Hash types`() = doTest(TyInteger.VALUES + TyBool + TyChar + TyStr, "std::hash::Hash")
 
     private fun doTest(primitiveTypes: List<TyPrimitive>, trait: String) {
-        InlineFile("""
+        InlineFile(
+            """
             fn foo<T: $trait>(x: T) {}
                     //^
-        """)
+        """
+        )
         val typeBounds = findElementInEditor<RsTypeParamBounds>()
         val traitItems = typeBounds.polyboundList.map {
             it.bound.traitRef?.path?.reference?.resolve() as? RsTraitItem ?: error("Can't find type bounds")

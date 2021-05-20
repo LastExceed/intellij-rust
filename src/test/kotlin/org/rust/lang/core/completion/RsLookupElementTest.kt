@@ -23,19 +23,24 @@ import org.rust.lang.core.psi.ext.RsReferenceElement
 import org.rust.lang.core.resolve.SimpleScopeEntry
 
 class RsLookupElementTest : RsTestBase() {
-    fun `test fn`() = check("""
+    fun `test fn`() = check(
+        """
         fn foo(x: i32) -> Option<String> {}
           //^
-    """, tailText = "(x: i32)", typeText = "Option<String>")
+    """, tailText = "(x: i32)", typeText = "Option<String>"
+    )
 
-    fun `test trait method`() = check("""
+    fun `test trait method`() = check(
+        """
         trait T {
             fn foo(&self, x: i32) {}
               //^
         }
-    """, tailText = "(&self, x: i32)", typeText = "()")
+    """, tailText = "(&self, x: i32)", typeText = "()"
+    )
 
-    fun `test trait by method`() = check("""
+    fun `test trait by method`() = check(
+        """
         trait T {
             fn foo(&self, x: i32);
         }
@@ -46,52 +51,70 @@ class RsLookupElementTest : RsTestBase() {
                 unimplemented!()
             }
         }
-    """, tailText = "(&self, x: i32) of T", typeText = "()")
+    """, tailText = "(&self, x: i32) of T", typeText = "()"
+    )
 
-    fun `test const item`() = check("""
+    fun `test const item`() = check(
+        """
         const C: S = unimplemented!();
             //^
-    """, typeText = "S")
+    """, typeText = "S"
+    )
 
-    fun `test static item`() = check("""
+    fun `test static item`() = check(
+        """
         static C: S = unimplemented!();
              //^
-    """, typeText = "S")
+    """, typeText = "S"
+    )
 
-    fun `test tuple struct`() = check("""
+    fun `test tuple struct`() = check(
+        """
         struct S(f32, i64);
              //^
-    """, tailText = "(f32, i64)")
+    """, tailText = "(f32, i64)"
+    )
 
-    fun `test multi-line tuple struct`() = check("""
+    fun `test multi-line tuple struct`() = check(
+        """
         struct S(
              //^
             f32,
             i64
         );
-    """, tailText = "(f32, i64)")
+    """, tailText = "(f32, i64)"
+    )
 
-    fun `test struct`() = check("""
+    fun `test struct`() = check(
+        """
         struct S { field: String }
              //^
-    """, tailText = " { ... }")
+    """, tailText = " { ... }"
+    )
 
-    fun `test enum`() = check("""
+    fun `test enum`() = check(
+        """
         enum E { X, Y }
            //^
-    """)
+    """
+    )
 
-    fun `test enum struct variant`() = check("""
+    fun `test enum struct variant`() = check(
+        """
         enum E { X {} }
                //^
-    """, tailText = " { ... }", typeText = "E")
+    """, tailText = " { ... }", typeText = "E"
+    )
 
-    fun `test enum tuple variant`() = check("""
+    fun `test enum tuple variant`() = check(
+        """
         enum E { X(i32, String) }
                //^
-    """, tailText = "(i32, String)", typeText = "E")
+    """, tailText = "(i32, String)", typeText = "E"
+    )
 
-    fun `test multi-line enum tuple variant`() = check("""
+    fun `test multi-line enum tuple variant`() = check(
+        """
         enum E {
             X(
           //^
@@ -99,47 +122,62 @@ class RsLookupElementTest : RsTestBase() {
                 String
             )
         }
-    """, tailText = "(i32, String)", typeText = "E")
+    """, tailText = "(i32, String)", typeText = "E"
+    )
 
-    fun `test named field`() = check("""
+    fun `test named field`() = check(
+        """
         struct S { field: String }
                    //^
-    """, typeText = "String", isBold = true)
+    """, typeText = "String", isBold = true
+    )
 
-    fun `test tuple field`() = checkInner<RsTupleFieldDecl>("""
+    fun `test tuple field`() = checkInner<RsTupleFieldDecl>(
+        """
         struct S(String);
                  //^
-    """, typeText = "String", isBold = true)
+    """, typeText = "String", isBold = true
+    )
 
-    fun `test macro simple`() = check("""
+    fun `test macro simple`() = check(
+        """
         macro_rules! test {
             ($ test:expr) => ($ test)
                 //^
         }
-    """, tailText = null, typeText = "expr")
+    """, tailText = null, typeText = "expr"
+    )
 
-    fun `test macro definition`() = check("""
+    fun `test macro definition`() = check(
+        """
         macro_rules! test { () => () }
                      //^
-    """, tailText = "!", typeText = null)
+    """, tailText = "!", typeText = null
+    )
 
-    fun `test deprecated fn`() = check("""
+    fun `test deprecated fn`() = check(
+        """
         #[deprecated]
         fn foo() {}
           //^
-    """, tailText = "()", typeText = "()", isStrikeout = true)
+    """, tailText = "()", typeText = "()", isStrikeout = true
+    )
 
-    fun `test deprecated const item`() = check("""
+    fun `test deprecated const item`() = check(
+        """
         #[deprecated]
         const C: S = unimplemented!();
             //^
-    """, typeText = "S", isStrikeout = true)
+    """, typeText = "S", isStrikeout = true
+    )
 
-    fun `test deprecated enum`() = check("""
+    fun `test deprecated enum`() = check(
+        """
         #[deprecated]
         enum E { X, Y }
            //^
-    """, isStrikeout = true)
+    """, isStrikeout = true
+    )
 
     fun `test mod`() {
         myFixture.configureByText("foo.rs", "")
@@ -154,7 +192,8 @@ class RsLookupElementTest : RsTestBase() {
         assertEquals("foo", presentation.itemText)
     }
 
-    fun `test generic field`() = checkProvider("""
+    fun `test generic field`() = checkProvider(
+        """
         struct S<A> { foo: A }
 
         fn main() {
@@ -162,9 +201,11 @@ class RsLookupElementTest : RsTestBase() {
             s.foo;
              //^
         }
-    """, typeText = "i32", isBold = true)
+    """, typeText = "i32", isBold = true
+    )
 
-    fun `test generic method (impl)`() = checkProvider("""
+    fun `test generic method (impl)`() = checkProvider(
+        """
         struct S<A>(A);
 
         impl <B> S<B> {
@@ -176,9 +217,11 @@ class RsLookupElementTest : RsTestBase() {
             s.foo;
              //^
         }
-    """, tailText = "(&self, x: i32)", typeText = "i32")
+    """, tailText = "(&self, x: i32)", typeText = "i32"
+    )
 
-    fun `test generic method (trait)`() = checkProvider("""
+    fun `test generic method (trait)`() = checkProvider(
+        """
         struct S<A>(A);
 
         trait T<B> {
@@ -193,9 +236,11 @@ class RsLookupElementTest : RsTestBase() {
             s.foo;
              //^
         }
-    """, tailText = "(&self, x: i32)", typeText = "i32")
+    """, tailText = "(&self, x: i32)", typeText = "i32"
+    )
 
-    fun `test generic method (impl trait)`() = checkProvider("""
+    fun `test generic method (impl trait)`() = checkProvider(
+        """
         struct S<A>(A);
 
         trait T<B> {
@@ -211,9 +256,11 @@ class RsLookupElementTest : RsTestBase() {
             s.foo;
              //^
         }
-    """, tailText = "(&self, x: i32) of T<i32>", typeText = "i32")
+    """, tailText = "(&self, x: i32) of T<i32>", typeText = "i32"
+    )
 
-    fun `test generic method (impl trait for reference)`() = checkProvider("""
+    fun `test generic method (impl trait for reference)`() = checkProvider(
+        """
         struct S<A>(A);
 
         trait T<B> {
@@ -230,9 +277,11 @@ class RsLookupElementTest : RsTestBase() {
              //^
         }
 
-    """, tailText = "(&self, x: i32) of T<i32>", typeText = "i32")
+    """, tailText = "(&self, x: i32) of T<i32>", typeText = "i32"
+    )
 
-    fun `test generic function (impl)`() = checkProvider("""
+    fun `test generic function (impl)`() = checkProvider(
+        """
         struct S<A>(A);
 
         impl <B> S<B> {
@@ -243,9 +292,11 @@ class RsLookupElementTest : RsTestBase() {
             S::<i32>::foo;
                      //^
         }
-    """, tailText = "(x: i32)", typeText = "i32")
+    """, tailText = "(x: i32)", typeText = "i32"
+    )
 
-    fun `test generic function (trait)`() = checkProvider("""
+    fun `test generic function (trait)`() = checkProvider(
+        """
         struct S<A>(A);
 
         trait T<B> {
@@ -259,9 +310,11 @@ class RsLookupElementTest : RsTestBase() {
             S::<i32>::foo;
                      //^
         }
-    """, tailText = "(x: i32)", typeText = "i32")
+    """, tailText = "(x: i32)", typeText = "i32"
+    )
 
-    fun `test generic function (impl trait)`() = checkProvider("""
+    fun `test generic function (impl trait)`() = checkProvider(
+        """
         struct S<A>(A);
 
         trait T<B> {
@@ -276,9 +329,11 @@ class RsLookupElementTest : RsTestBase() {
             S::<i32>::foo;
                      //^
         }
-    """, tailText = "(x: i32) of T<i32>", typeText = "i32")
+    """, tailText = "(x: i32) of T<i32>", typeText = "i32"
+    )
 
-    fun `test const generic function`() = checkProvider("""
+    fun `test const generic function`() = checkProvider(
+        """
         struct S<const N: usize>(i32);
 
         trait T<const M: usize> {
@@ -293,7 +348,8 @@ class RsLookupElementTest : RsTestBase() {
             S::<1>::foo;
                    //^
         }
-    """, tailText = "() of T<1>", typeText = "()")
+    """, tailText = "() of T<1>", typeText = "()"
+    )
 
     private fun check(
         @Language("Rust") code: String,

@@ -15,7 +15,8 @@ import org.rust.lang.core.psi.RsFile
 class RsNameSuggestionsKtTest : RsTestBase() {
     override val dataPath = "org/rust/lang/refactoring/fixtures/introduce_variable/"
 
-    fun `test argument names`() = doTest("""
+    fun `test argument names`() = doTest(
+        """
         fn foo(a: i32, veryCoolVariableName: i32) {
             a + b
         }
@@ -27,7 +28,8 @@ class RsNameSuggestionsKtTest : RsTestBase() {
         listOf("i", "name", "variable_name", "cool_variable_name", "very_cool_variable_name")
     )
 
-    fun `test non direct argument names`() = doTest("""
+    fun `test non direct argument names`() = doTest(
+        """
         fn foo(a: i32, veryCoolVariableName: i32) {
             a + b
         }
@@ -40,7 +42,8 @@ class RsNameSuggestionsKtTest : RsTestBase() {
     )
 
 
-    fun `test function names`() = doTest("""
+    fun `test function names`() = doTest(
+        """
         fn get_foo(a: i32, veryCoolVariableName: i32) -> i32 {
             a + b
         }
@@ -52,7 +55,8 @@ class RsNameSuggestionsKtTest : RsTestBase() {
         listOf("i", "foo")
     )
 
-    fun `test string new`() = doTest("""
+    fun `test string new`() = doTest(
+        """
         fn read_file() -> Result<String, Error> {
             let file = File::open("res/input.txt")?;
 
@@ -61,7 +65,8 @@ class RsNameSuggestionsKtTest : RsTestBase() {
         listOf("string")
     )
 
-    fun `test local names`() = doTest("""
+    fun `test local names`() = doTest(
+        """
         fn foo() {
             let string = "hi";
             let b = String:/*caret*/:new();
@@ -70,7 +75,8 @@ class RsNameSuggestionsKtTest : RsTestBase() {
         emptyList()
     )
 
-    fun `test function call as argument`() = doTest("""
+    fun `test function call as argument`() = doTest(
+        """
         fn foo(board_size: i32) {}
 
         fn bar() {
@@ -80,7 +86,8 @@ class RsNameSuggestionsKtTest : RsTestBase() {
         listOf("size", "board_size")
     )
 
-    fun `test struct literal`() = doTest("""
+    fun `test struct literal`() = doTest(
+        """
         struct Foo {
             bar: i32,
             baz: i32,
@@ -95,7 +102,8 @@ class RsNameSuggestionsKtTest : RsTestBase() {
         listOf("i", "baz")
     )
 
-    fun `test generic path`() = doTest("""
+    fun `test generic path`() = doTest(
+        """
         struct Foo<T> {
             t: T,
         }
@@ -113,7 +121,8 @@ class RsNameSuggestionsKtTest : RsTestBase() {
         listOf("foo")
     )
 
-    fun `test don't blow up on non-nominal type`() = doTest("""
+    fun `test don't blow up on non-nominal type`() = doTest(
+        """
         fn main() {
             (1, 2, 3)/*caret*/
         }
@@ -121,7 +130,8 @@ class RsNameSuggestionsKtTest : RsTestBase() {
         emptyList()
     )
 
-    fun `test don't blow up on non-trivial parameter name`() = doTest("""
+    fun `test don't blow up on non-trivial parameter name`() = doTest(
+        """
         fn foo((x, y): (i32, i32)) {}
         fn main() {
             foo((0, /*caret*/ 1))

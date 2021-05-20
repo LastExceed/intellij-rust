@@ -12,7 +12,8 @@ import org.rust.lang.doc.docElements
 
 class RsRenderedDocumentationTest : RsDocumentationProviderTest() {
 
-    fun `test outer comment`() = doTest("""
+    fun `test outer comment`() = doTest(
+        """
         /// Adds one to the number given.
         ///
         /// # Examples
@@ -25,9 +26,11 @@ class RsRenderedDocumentationTest : RsDocumentationProviderTest() {
         }
     """, """
         <p>Adds one to the number given.</p><h2>Examples</h2><p>Some text</p>
-    """)
+    """
+    )
 
-    fun `test inner comment`() = doTest("""
+    fun `test inner comment`() = doTest(
+        """
         fn add_one(x: i32) -> i32 {
             //^
             //! Inner comment
@@ -35,9 +38,11 @@ class RsRenderedDocumentationTest : RsDocumentationProviderTest() {
         }
     """, """
         <p>Inner comment</p>
-    """)
+    """
+    )
 
-    fun `test several comments`() = doTest("""
+    fun `test several comments`() = doTest(
+        """
         /// Outer comment
         fn add_one(x: i32) -> i32 {
             //^
@@ -47,9 +52,11 @@ class RsRenderedDocumentationTest : RsDocumentationProviderTest() {
     """, """
         <p>Outer comment</p>
         <p>Inner comment</p>
-    """)
+    """
+    )
 
-    fun `test code highlighting`() = doTest("""
+    fun `test code highlighting`() = doTest(
+        """
         /// A cheap, reference-to-reference conversion.
         ///
         /// `AsRef` is very similar to, but different than, `Borrow`. See
@@ -103,7 +110,8 @@ class RsRenderedDocumentationTest : RsDocumentationProviderTest() {
         </pre>
         <h2>Generic Impls</h2><ul><li><code>AsRef</code> auto-dereference if the inner type is a reference or a mutable
         reference (eg: <code>foo.as_ref()</code> will work the same if <code>foo</code> has type <code>&amp;mut Foo</code> or <code>&amp;&amp;mut Foo</code>)</li></ul>
-    """)
+    """
+    )
 
     private fun doTest(@Language("Rust") code: String, @Language("Html") expected: String?) {
         doTest(code, expected) { originalItem, _ ->

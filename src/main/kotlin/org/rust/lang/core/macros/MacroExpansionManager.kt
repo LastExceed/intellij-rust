@@ -70,6 +70,7 @@ interface MacroExpansionManager {
     val indexableDirectory: VirtualFile?
     fun getExpansionFor(call: RsPossibleMacroCall): CachedValueProvider.Result<MacroExpansion?>
     fun getExpandedFrom(element: RsExpandedElement): RsPossibleMacroCall?
+
     /** Optimized equivalent for `getExpandedFrom(element)?.context` */
     fun getContextOfMacroCallExpandedFrom(stubParent: RsFile): PsiElement?
     fun isExpansionFileOfCurrentProject(file: VirtualFile): Boolean
@@ -139,10 +140,12 @@ fun getBaseMacroDir(): Path =
 private fun getCorruptionMarkerFile(): Path =
     getBaseMacroDir().resolve(CORRUPTION_MARKER_NAME)
 
-@State(name = "MacroExpansionManager", storages = [
+@State(
+    name = "MacroExpansionManager", storages = [
     Storage(StoragePathMacros.WORKSPACE_FILE, roamingType = RoamingType.DISABLED),
     Storage("misc.xml", roamingType = RoamingType.DISABLED, deprecated = true)
-])
+]
+)
 class MacroExpansionManagerImpl(
     val project: Project
 ) : MacroExpansionManager,

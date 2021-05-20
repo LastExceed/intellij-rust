@@ -34,7 +34,8 @@ class RsReferencesSearchExtensionImpl : QueryExecutorBase<RsReference, Reference
                     element.getOwnedDirectory()!!.name,
                     queryParameters.effectiveSearchScope,
                     true,
-                    element)
+                    element
+                )
         }
     }
 

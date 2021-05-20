@@ -10,22 +10,28 @@ import org.rust.cargo.CargoConstants.MANIFEST_FILE
 import org.rust.ide.inspections.RsInspectionsTestBase
 
 class CargoTomlCyclicFeatureInspectionTest : RsInspectionsTestBase(CargoTomlCyclicFeatureInspection::class) {
-    fun `test feature depending on itself`() = doTest("""
+    fun `test feature depending on itself`() = doTest(
+        """
         [features]
         foo = [<error descr="Cyclic feature dependency: feature `foo` depends on itself">"foo"</error>]
-    """)
+    """
+    )
 
-    fun `test features depending on themselves`() = doTest("""
+    fun `test features depending on themselves`() = doTest(
+        """
         [features]
         foo = ["bar"]
         bar = ["foo"]
-    """)
+    """
+    )
 
-    fun `test features depending acyclically`() = doTest("""
+    fun `test features depending acyclically`() = doTest(
+        """
         [features]
         foo = []
         bar = ["foo"]
-    """)
+    """
+    )
 
     private fun doTest(@Language("TOML") code: String) {
         myFixture.configureByText(MANIFEST_FILE, code)

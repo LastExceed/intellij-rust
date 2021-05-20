@@ -27,7 +27,8 @@ class TomlEscapeTextTest(
 
     companion object {
         @Parameterized.Parameters(name = "{index}: (\"{0}\", \"{1}\") → \"{2}\"")
-        @JvmStatic fun data(): Collection<Array<Any>> = listOf(
+        @JvmStatic
+        fun data(): Collection<Array<Any>> = listOf(
             arrayOf(BASIC_STRING, "aaa", "aaa"),
             arrayOf(BASIC_STRING, "a\\na", "a\na"),
             arrayOf(BASIC_STRING, "a\\ra", "a\ra"),

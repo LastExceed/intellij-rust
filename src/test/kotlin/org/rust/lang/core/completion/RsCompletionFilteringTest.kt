@@ -11,8 +11,9 @@ import org.rust.UseNewResolve
 import org.rust.WithStdlibRustProjectDescriptor
 import org.rust.cargo.project.workspace.CargoWorkspace.Edition
 
-class RsCompletionFilteringTest: RsCompletionTestBase() {
-    fun `test unsatisfied bound filtered 1`() = doSingleCompletion("""
+class RsCompletionFilteringTest : RsCompletionTestBase() {
+    fun `test unsatisfied bound filtered 1`() = doSingleCompletion(
+        """
         trait Bound {}
         trait Trait1 { fn foo(&self) {} }
         trait Trait2 { fn bar(&self) {} }
@@ -28,9 +29,11 @@ class RsCompletionFilteringTest: RsCompletionTestBase() {
         impl<T> Trait2 for T {}
         struct S;
         fn main() { S.bar()/*caret*/ }
-    """)
+    """
+    )
 
-    fun `test unsatisfied bound filtered 2`() = doSingleCompletion("""
+    fun `test unsatisfied bound filtered 2`() = doSingleCompletion(
+        """
         trait Bound1 {}
         trait Bound2 {}
         trait Trait1 { fn foo(&self) {} }
@@ -50,9 +53,11 @@ class RsCompletionFilteringTest: RsCompletionTestBase() {
         struct S;
         impl Bound1 for S {}
         fn main() { S.foo()/*caret*/ }
-    """)
+    """
+    )
 
-    fun `test unsatisfied bound not filtered for unknown type`() = doSingleCompletion("""
+    fun `test unsatisfied bound not filtered for unknown type`() = doSingleCompletion(
+        """
         trait Bound {}
         trait Trait { fn foo(&self) {} }
         impl<T: Bound> Trait for S1<T> {}
@@ -64,9 +69,11 @@ class RsCompletionFilteringTest: RsCompletionTestBase() {
         impl<T: Bound> Trait for S1<T> {}
         struct S1<T>(T);
         fn main() { S1(SomeUnknownType).foo()/*caret*/ }
-    """)
+    """
+    )
 
-    fun `test unsatisfied bound not filtered for unconstrained type var`() = doSingleCompletion("""
+    fun `test unsatisfied bound not filtered for unconstrained type var`() = doSingleCompletion(
+        """
         trait Bound {}
         trait Trait { fn foo(&self) {} }
         impl<T: Bound> Trait for S1<T> {}
@@ -80,9 +87,11 @@ class RsCompletionFilteringTest: RsCompletionTestBase() {
         struct S1<T>(T);
         fn ty_var<T>() -> T { unimplemented!() }
         fn main() { S1(ty_var()).foo()/*caret*/ }
-    """)
+    """
+    )
 
-    fun `test unsatisfied bound path filtering`() = doSingleCompletion("""
+    fun `test unsatisfied bound path filtering`() = doSingleCompletion(
+        """
         trait Bound {}
         trait Trait1 { fn foo(){} }
         trait Trait2 { fn bar() {} }
@@ -98,10 +107,12 @@ class RsCompletionFilteringTest: RsCompletionTestBase() {
         impl<T> Trait2 for T {}
         struct S;
         fn main() { S::bar()/*caret*/ }
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test method is not filtered by Sync+Send bounds`() = doSingleCompletion("""
+    fun `test method is not filtered by Sync+Send bounds`() = doSingleCompletion(
+        """
         struct S;
         trait Trait { fn foo(&self) {} }
         impl<T: Sync + Send> Trait for T {}
@@ -111,30 +122,38 @@ class RsCompletionFilteringTest: RsCompletionTestBase() {
         trait Trait { fn foo(&self) {} }
         impl<T: Sync + Send> Trait for T {}
         fn main() { S.foo()/*caret*/ }
-    """)
+    """
+    )
 
-    fun `test private function`() = checkNoCompletion("""
+    fun `test private function`() = checkNoCompletion(
+        """
         mod foo { fn bar() {} }
         fn main() {
             foo::ba/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test private mod`() = checkNoCompletion("""
+    fun `test private mod`() = checkNoCompletion(
+        """
         mod foo { mod bar {} }
         fn main() {
             foo::ba/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test private enum`() = checkNoCompletion("""
+    fun `test private enum`() = checkNoCompletion(
+        """
         mod foo { enum MyEnum {} }
         fn main() {
             foo::MyEn/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test private method 1`() = checkNoCompletion("""
+    fun `test private method 1`() = checkNoCompletion(
+        """
         mod foo {
             pub struct S;
             impl S { fn bar(&self) {} }
@@ -142,9 +161,11 @@ class RsCompletionFilteringTest: RsCompletionTestBase() {
         fn main() {
             foo::S.b/*caret*/()
         }
-    """)
+    """
+    )
 
-    fun `test private method 2`() = checkNoCompletion("""
+    fun `test private method 2`() = checkNoCompletion(
+        """
         mod foo {
             pub struct S;
             impl S { fn bar(&self) {} }
@@ -152,9 +173,11 @@ class RsCompletionFilteringTest: RsCompletionTestBase() {
         fn main() {
             foo::S.b/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test private field`() = checkNoCompletion("""
+    fun `test private field`() = checkNoCompletion(
+        """
         mod foo {
             pub struct S {
                 field: i32
@@ -163,11 +186,13 @@ class RsCompletionFilteringTest: RsCompletionTestBase() {
         fn bar(s: S) {
             s.f/*caret*/
         }
-    """)
+    """
+    )
 
     @UseNewResolve
     @MockEdition(Edition.EDITION_2018)
-    fun `test public item reexported with restricted visibility 1`() = checkNoCompletion("""
+    fun `test public item reexported with restricted visibility 1`() = checkNoCompletion(
+        """
         pub mod inner1 {
             pub mod inner2 {
                 pub fn foo() {}
@@ -177,11 +202,13 @@ class RsCompletionFilteringTest: RsCompletionTestBase() {
         fn main() {
             crate::inner1::inner2::ba/*caret*/
         }
-    """)
+    """
+    )
 
     @UseNewResolve
     @MockEdition(Edition.EDITION_2018)
-    fun `test public item reexported with restricted visibility 2`() = checkContainsCompletion("bar2", """
+    fun `test public item reexported with restricted visibility 2`() = checkContainsCompletion(
+        "bar2", """
         pub mod inner1 {
             pub mod inner2 {
                 pub fn bar1() {}
@@ -191,10 +218,12 @@ class RsCompletionFilteringTest: RsCompletionTestBase() {
                 crate::inner1::inner2::ba/*caret*/
             }
         }
-    """)
+    """
+    )
 
     @MockEdition(Edition.EDITION_2018)
-    fun `test private reexport of public function`() = checkNoCompletion("""
+    fun `test private reexport of public function`() = checkNoCompletion(
+        """
         mod mod1 {
             pub fn foo() {}
         }
@@ -205,25 +234,31 @@ class RsCompletionFilteringTest: RsCompletionTestBase() {
         fn main() {
             mod2::b/*caret*/
         }
-    """)
+    """
+    )
 
     // there was error in new resolve when legacy textual macros are always completed
     @MockEdition(Edition.EDITION_2018)
-    fun `test no completion on empty mod 1`() = checkNoCompletion("""
+    fun `test no completion on empty mod 1`() = checkNoCompletion(
+        """
         macro_rules! empty { () => {}; }
         mod foo {}
         pub use foo::empt/*caret*/
-    """)
+    """
+    )
 
     @MockEdition(Edition.EDITION_2018)
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test no completion on empty mod 2`() = checkNoCompletion("""
+    fun `test no completion on empty mod 2`() = checkNoCompletion(
+        """
         mod foo {}
         pub use foo::asser/*caret*/
-    """)
+    """
+    )
 
     // Issue https://github.com/intellij-rust/intellij-rust/issues/3694
-    fun `test issue 3694`() = doSingleCompletion("""
+    fun `test issue 3694`() = doSingleCompletion(
+        """
         mod foo {
             pub struct S { field: i32 }
             fn bar(s: S) {
@@ -237,9 +272,11 @@ class RsCompletionFilteringTest: RsCompletionTestBase() {
                 s.field/*caret*/
             }
         }
-    """)
+    """
+    )
 
-    fun `test doc(hidden) item`() = checkNoCompletion("""
+    fun `test doc(hidden) item`() = checkNoCompletion(
+        """
         mod foo {
             #[doc(hidden)]
             pub struct MyStruct;
@@ -247,9 +284,11 @@ class RsCompletionFilteringTest: RsCompletionTestBase() {
         fn main() {
             foo::My/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test doc(hidden) item from the same module isn't filtered`() = doSingleCompletion("""
+    fun `test doc(hidden) item from the same module isn't filtered`() = doSingleCompletion(
+        """
         #[doc(hidden)]
         struct MyStruct;
         fn main() {
@@ -261,9 +300,11 @@ class RsCompletionFilteringTest: RsCompletionTestBase() {
         fn main() {
             MyStruct/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test derived method is not completed if the derived trait is not implemented to type argument`() = checkNoCompletion("""
+    fun `test derived method is not completed if the derived trait is not implemented to type argument`() = checkNoCompletion(
+        """
         #[lang = "clone"]  pub trait Clone { fn clone(&self) -> Self; }
         struct X; // Not `Clone`
         #[derive(Clone)]
@@ -271,9 +312,11 @@ class RsCompletionFilteringTest: RsCompletionTestBase() {
         fn main() {
             S(X).cl/*caret*/;
         }
-    """)
+    """
+    )
 
-    fun `test derived method is not completed UFCS if the derived trait is not implemented to type argument`() = checkNoCompletion("""
+    fun `test derived method is not completed UFCS if the derived trait is not implemented to type argument`() = checkNoCompletion(
+        """
         #[lang = "clone"]  pub trait Clone { fn clone(&self) -> Self; }
         struct X; // Not `Clone`
         #[derive(Clone)]
@@ -281,5 +324,6 @@ class RsCompletionFilteringTest: RsCompletionTestBase() {
         fn main() {
             <S<X>>::cl/*caret*/;
         }
-    """)
+    """
+    )
 }

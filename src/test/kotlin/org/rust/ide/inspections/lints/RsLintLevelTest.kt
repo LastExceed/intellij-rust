@@ -12,57 +12,74 @@ import org.rust.ide.inspections.RsInspectionsTestBase
  */
 class RsLintLevelStructTest : RsInspectionsTestBase(RsStructNamingInspection::class) {
 
-    fun `test direct allow`() = checkByText("""
+    fun `test direct allow`() = checkByText(
+        """
         #[allow(non_camel_case_types)]
         struct foo;
-    """)
+    """
+    )
 
-    fun `test direct allow bad style`() = checkByText("""
+    fun `test direct allow bad style`() = checkByText(
+        """
         #[allow(bad_style)]
         struct foo;
-    """)
+    """
+    )
 
-    fun `test direct warn`() = checkByText("""
+    fun `test direct warn`() = checkByText(
+        """
         #[warn(non_camel_case_types)]
         struct <warning>foo</warning>;
-    """)
+    """
+    )
 
-    fun `test direct deny`() = checkByText("""
+    fun `test direct deny`() = checkByText(
+        """
         #[deny(non_camel_case_types)]
         struct <error>foo</error>;
-    """)
+    """
+    )
 
-    fun `test module outer allow`() = checkByText("""
+    fun `test module outer allow`() = checkByText(
+        """
         #[allow(non_camel_case_types)]
         mod space {
             struct planet;
         }
-    """)
+    """
+    )
 
-    fun `test module inner allow`() = checkByText("""
+    fun `test module inner allow`() = checkByText(
+        """
         #![allow(non_camel_case_types)]
         struct planet;
-    """)
+    """
+    )
 
-    fun `test grand parent allow`() = checkByText("""
+    fun `test grand parent allow`() = checkByText(
+        """
         #[allow(non_camel_case_types)]
         mod space {
             mod planet {
                 struct inhabitant;
             }
         }
-    """)
+    """
+    )
 
-    fun `test grand parent allow bad style`() = checkByText("""
+    fun `test grand parent allow bad style`() = checkByText(
+        """
         #[allow(bad_style)]
         mod space {
             mod planet {
                 struct inhabitant;
             }
         }
-    """)
+    """
+    )
 
-    fun `test last takes precedence`() = checkByText("""
+    fun `test last takes precedence`() = checkByText(
+        """
         #[warn(non_camel_case_types)]
         #[allow(non_camel_case_types)]
         mod space {
@@ -73,9 +90,11 @@ class RsLintLevelStructTest : RsInspectionsTestBase(RsStructNamingInspection::cl
         mod science {
             struct <warning>section</warning>;
         }
-    """)
+    """
+    )
 
-    fun `test inner takes precedence`() = checkByText("""
+    fun `test inner takes precedence`() = checkByText(
+        """
         #[warn(non_camel_case_types)]
         mod space {
             #![allow(non_camel_case_types)]
@@ -86,9 +105,11 @@ class RsLintLevelStructTest : RsInspectionsTestBase(RsStructNamingInspection::cl
             #![warn(non_camel_case_types)]
             struct <warning>section</warning>;
         }
-    """)
+    """
+    )
 
-    fun `test inner takes precedence 2`() = checkByText("""
+    fun `test inner takes precedence 2`() = checkByText(
+        """
         #[warn(non_camel_case_types)]
         fn space() {
             #![allow(non_camel_case_types)]
@@ -99,19 +120,25 @@ class RsLintLevelStructTest : RsInspectionsTestBase(RsStructNamingInspection::cl
             #![warn(non_camel_case_types)]
             struct <warning>section</warning>;
         }
-    """)
+    """
+    )
 
-    fun `test ignores other items`() = checkByText("""
+    fun `test ignores other items`() = checkByText(
+        """
         #[allow(non_snake_case)]
         struct <warning>foo</warning>;
-    """)
+    """
+    )
 
-    fun `test multiple meta items`() = checkByText("""
+    fun `test multiple meta items`() = checkByText(
+        """
         #[allow(non_snake_case, non_camel_case_types, non_upper_case_globals)]
         struct foo;
-    """)
+    """
+    )
 
-    fun `test mixed attributes`() = checkByText("""
+    fun `test mixed attributes`() = checkByText(
+        """
         #[allow(non_camel_case_types, non_upper_case_globals)]
         mod space {
             #[allow(non_snake_case)]
@@ -120,55 +147,70 @@ class RsLintLevelStructTest : RsInspectionsTestBase(RsStructNamingInspection::cl
                 struct inhabitant;
             }
         }
-    """)
+    """
+    )
 
-    fun `test works with non level attributes`() = checkByText("""
+    fun `test works with non level attributes`() = checkByText(
+        """
         #[allow(non_camel_case_types)]
         #[derive(Debug)]
         struct inhabitant;
-    """)
+    """
+    )
 
-    fun `test direct forbid`() = checkByText("""
+    fun `test direct forbid`() = checkByText(
+        """
         #[forbid(non_camel_case_types)]
         struct <error>inhabitant</error>;
-    """)
+    """
+    )
 
-    fun `test parent indirectly forbid`() = checkByText("""
+    fun `test parent indirectly forbid`() = checkByText(
+        """
         #[forbid(non_camel_case_types)]
         pub mod m1 {
             struct <error>inhabitant</error>;
         }
-    """)
+    """
+    )
 }
 
 class RsLintLevelFieldTest : RsInspectionsTestBase(RsFieldNamingInspection::class) {
 
-    fun `test parent allow`() = checkByText("""
+    fun `test parent allow`() = checkByText(
+        """
         #[allow(non_snake_case)]
         struct Foo {
             Bar: u32
         }
-    """)
+    """
+    )
 
-    fun `test parent warn`() = checkByText("""
+    fun `test parent warn`() = checkByText(
+        """
         #[warn(non_snake_case)]
         struct Foo {
             <warning>Bar</warning>: u32
         }
-    """)
+    """
+    )
 
-    fun `test parent deny`() = checkByText("""
+    fun `test parent deny`() = checkByText(
+        """
         #[deny(non_snake_case)]
         struct Foo {
             <error>Bar</error>: u32
         }
-    """)
+    """
+    )
 
-    fun `test parent forbid`() = checkByText("""
+    fun `test parent forbid`() = checkByText(
+        """
         #[forbid(non_snake_case)]
         struct Foo {
             <error>Bar</error>: u32
         }
-    """)
+    """
+    )
 
 }

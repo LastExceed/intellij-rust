@@ -22,7 +22,8 @@ import org.rust.lang.core.psi.ext.expansion
 @ExpandMacros
 class RsMacroCallUnderCfgTest : RsTestBase() {
     @MockCargoFeatures("feature_foo")
-    fun `test simple`() = checkResolvedOnlyWhenFeatureIsEnabled("feature_foo", """
+    fun `test simple`() = checkResolvedOnlyWhenFeatureIsEnabled(
+        "feature_foo", """
         macro_rules! foo {
             () => {
                 fn foobar() {}
@@ -36,10 +37,12 @@ class RsMacroCallUnderCfgTest : RsTestBase() {
             foobar();
             //^
         }
-    """)
+    """
+    )
 
     @MockCargoFeatures("feature_foo")
-    fun `test nested macro call`() = checkResolvedOnlyWhenFeatureIsEnabled("feature_foo", """
+    fun `test nested macro call`() = checkResolvedOnlyWhenFeatureIsEnabled(
+        "feature_foo", """
         macro_rules! foo {
             () => {
                 fn foobar() {}
@@ -59,10 +62,12 @@ class RsMacroCallUnderCfgTest : RsTestBase() {
             foobar();
             //^
         }
-    """)
+    """
+    )
 
     @MockCargoFeatures("feature_foo")
-    fun `test nested inline mod`() = checkResolvedOnlyWhenFeatureIsEnabled("feature_foo", """
+    fun `test nested inline mod`() = checkResolvedOnlyWhenFeatureIsEnabled(
+        "feature_foo", """
         macro_rules! foo {
             () => {
                 pub fn foobar() {}
@@ -84,11 +89,13 @@ class RsMacroCallUnderCfgTest : RsTestBase() {
             foo::foobar();
                //^
         }
-    """)
+    """
+    )
 
     @UseNewResolve
     @MockCargoFeatures("feature_foo")
-    fun `test macro call in cfg disabled nested mod`() = checkResolvedOnlyWhenFeatureIsEnabledByTree("feature_foo", """
+    fun `test macro call in cfg disabled nested mod`() = checkResolvedOnlyWhenFeatureIsEnabledByTree(
+        "feature_foo", """
     //- foo.rs
         foo! {}
     //- main.rs
@@ -111,10 +118,12 @@ class RsMacroCallUnderCfgTest : RsTestBase() {
             foo::foobar();
                //^
         }
-    """)
+    """
+    )
 
     @MockCargoFeatures("feature_foo")
-    fun `test nested macro call in cfg disabled mod`() = checkResolvedOnlyWhenFeatureIsEnabledByTree("feature_foo", """
+    fun `test nested macro call in cfg disabled mod`() = checkResolvedOnlyWhenFeatureIsEnabledByTree(
+        "feature_foo", """
     //- foo.rs
         bar! {}
     //- main.rs
@@ -137,7 +146,8 @@ class RsMacroCallUnderCfgTest : RsTestBase() {
             foo::foobar();
                //^
         }
-    """)
+    """
+    )
 
     private fun checkResolvedOnlyWhenFeatureIsEnabled(feature: String, @Language("Rust") code: String) {
         checkResolvedOnlyWhenFeatureIsEnabledInner(feature) {

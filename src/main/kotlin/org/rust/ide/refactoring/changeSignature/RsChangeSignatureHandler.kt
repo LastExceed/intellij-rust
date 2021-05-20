@@ -65,7 +65,8 @@ class RsChangeSignatureHandler : ChangeSignatureHandler {
     }
 
     private fun showCannotRefactorErrorHint(project: Project, editor: Editor, message: String) {
-        CommonRefactoringUtil.showErrorHint(project, editor,
+        CommonRefactoringUtil.showErrorHint(
+            project, editor,
             RefactoringBundle.getCannotRefactorMessage(message),
             RefactoringBundle.message("changeSignature.refactoring.name"),
             "refactoring.changeSignature"
@@ -85,15 +86,18 @@ private fun getSuperMethod(function: RsFunction): RsFunction? {
     val functionName = function.name ?: return null
     val traitName = (superMethod.owner as? RsAbstractableOwner.Trait)?.trait?.name ?: return null
 
-    val message = RsBundle.message("refactoring.change.signature.refactor.super.function",
+    val message = RsBundle.message(
+        "refactoring.change.signature.refactor.super.function",
         functionName,
         traitName
     )
     val choice: Int = if (isUnitTestMode) {
         Messages.YES
     } else {
-        Messages.showYesNoCancelDialog(function.project, message, RsBundle.message("refactoring.change.signature.name"),
-            Messages.getQuestionIcon())
+        Messages.showYesNoCancelDialog(
+            function.project, message, RsBundle.message("refactoring.change.signature.name"),
+            Messages.getQuestionIcon()
+        )
     }
     return when (choice) {
         Messages.YES -> superMethod

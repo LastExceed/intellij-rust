@@ -16,20 +16,25 @@ class CustomTargetCfgResolveTest : RsWithToolchainTestBase() {
     @MinRustcVersion("1.52.0")
     fun `test custom build-in compiler target`() {
         buildProject {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "foo"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
             dir(".cargo") {
-                toml("config", """
+                toml(
+                    "config", """
                     [build]
                     target = "wasm32-unknown-unknown"
-                """)
+                """
+                )
             }
             dir("src") {
-                rust("main.rs", """
+                rust(
+                    "main.rs", """
                     #[cfg(not(target_arch = "wasm32"))]
                     mod disabled;
                     #[cfg(target_arch = "wasm32")]
@@ -44,13 +49,18 @@ class CustomTargetCfgResolveTest : RsWithToolchainTestBase() {
                         function_under_cfg();
                             //^
                     }
-                """)
-                rust("disabled.rs", """
+                """
+                )
+                rust(
+                    "disabled.rs", """
                     pub fn function_under_cfg() {}
-                """)
-                rust("enabled.rs", """
+                """
+                )
+                rust(
+                    "enabled.rs", """
                     pub fn function_under_cfg() {}
-                """)
+                """
+                )
             }
         }.checkReferenceIsResolved<RsPath>("src/main.rs", toFile = ".../src/enabled.rs")
     }
@@ -58,19 +68,24 @@ class CustomTargetCfgResolveTest : RsWithToolchainTestBase() {
     @MinRustcVersion("1.52.0")
     fun `test custom json target`() {
         buildProject {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "foo"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
             dir(".cargo") {
-                toml("config", """
+                toml(
+                    "config", """
                     [build]
                     target = "custom-target.json"
-                """)
+                """
+                )
             }
-            file("custom-target.json", """
+            file(
+                "custom-target.json", """
                 {
                     "llvm-target": "aarch64-unknown-none",
                     "data-layout": "e-m:e-i64:64-f80:128-n8:16:32:64-S128",
@@ -86,9 +101,11 @@ class CustomTargetCfgResolveTest : RsWithToolchainTestBase() {
                     "disable-redzone": true,
                     "features": "-mmx,-sse,+soft-float"
                 }
-            """)
+            """
+            )
             dir("src") {
-                rust("main.rs", """
+                rust(
+                    "main.rs", """
                     #[cfg(not(target_arch = "aarch64"))]
                     mod disabled;
                     #[cfg(target_arch = "aarch64")]
@@ -103,13 +120,18 @@ class CustomTargetCfgResolveTest : RsWithToolchainTestBase() {
                         function_under_cfg();
                             //^
                     }
-                """)
-                rust("disabled.rs", """
+                """
+                )
+                rust(
+                    "disabled.rs", """
                     pub fn function_under_cfg() {}
-                """)
-                rust("enabled.rs", """
+                """
+                )
+                rust(
+                    "enabled.rs", """
                     pub fn function_under_cfg() {}
-                """)
+                """
+                )
             }
         }.checkReferenceIsResolved<RsPath>("src/main.rs", toFile = ".../src/enabled.rs")
     }
@@ -120,20 +142,25 @@ class CustomTargetCfgResolveTest : RsWithToolchainTestBase() {
         val rustcVersion = rustupFixture.toolchain!!.rustc().queryVersion() ?: return
         if (rustcVersion.semver > SemVer.parseFromText("1.51.0")) return
         buildProject {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "foo"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
             dir(".cargo") {
-                toml("config", """
+                toml(
+                    "config", """
                     [build]
                     target = "wasm32-unknown-unknown"
-                """)
+                """
+                )
             }
             dir("src") {
-                rust("main.rs", """
+                rust(
+                    "main.rs", """
                     #[cfg(not(target_arch = "wasm32"))]
                     mod disabled;
                     #[cfg(target_arch = "wasm32")]
@@ -148,13 +175,18 @@ class CustomTargetCfgResolveTest : RsWithToolchainTestBase() {
                         function_under_cfg();
                             //^
                     }
-                """)
-                rust("disabled.rs", """
+                """
+                )
+                rust(
+                    "disabled.rs", """
                     pub fn function_under_cfg() {}
-                """)
-                rust("enabled.rs", """
+                """
+                )
+                rust(
+                    "enabled.rs", """
                     pub fn function_under_cfg() {}
-                """)
+                """
+                )
             }
         }.checkReferenceIsResolved<RsPath>("src/main.rs", toFile = ".../src/disabled.rs")
     }

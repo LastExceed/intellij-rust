@@ -23,14 +23,17 @@ import org.rust.lang.core.types.regions.span
  */
 class RsScopeTest : RsTestBase() {
 
-    fun `test scope of binding is block remainder`() = doTest("""
+    fun `test scope of binding is block remainder`() = doTest(
+        """
         fn foo() -> i32 {
             let a = 42;/*start*/
               //^
         }/*end*/
-    """)
+    """
+    )
 
-    fun `test scope of binding is (nested) block remainder`() = doTest("""
+    fun `test scope of binding is (nested) block remainder`() = doTest(
+        """
         fn foo() -> i32 {
             {
                 let a = 42;/*start*/
@@ -38,9 +41,11 @@ class RsScopeTest : RsTestBase() {
                 a
             }/*end*/
         }
-    """)
+    """
+    )
 
-    fun `test scope of binding is subscope to prev binding`() = doTest("""
+    fun `test scope of binding is subscope to prev binding`() = doTest(
+        """
         fn foo() -> i32 {
             let a = 42;/*start*/
               //^
@@ -48,9 +53,11 @@ class RsScopeTest : RsTestBase() {
               //^
             a + b
         }/*end*/
-    """)
+    """
+    )
 
-    fun `test scope of nested block is sibling scope to next binding`() = doTest("""
+    fun `test scope of nested block is sibling scope to next binding`() = doTest(
+        """
         fn foo() -> i32 /*start*/{
             {
                 let a = 42;
@@ -60,34 +67,42 @@ class RsScopeTest : RsTestBase() {
               //^
             b
         }/*end*/
-    """)
+    """
+    )
 
-    fun `test parameter scope is fn body scope`() = doTest("""
+    fun `test parameter scope is fn body scope`() = doTest(
+        """
         fn foo(p: i32) -> i32 /*start*/{
              //^
             let a = 42;
             a
         }/*end*/
-    """)
+    """
+    )
 
-    fun `test parameters scope is a supscope to stmt scope`() = doTest("""
+    fun `test parameters scope is a supscope to stmt scope`() = doTest(
+        """
         fn foo(x: i32) -> i32 /*start*/{
              //^
             let a = 42;
               //^
             a
         }/*end*/
-    """)
+    """
+    )
 
-    fun `test tuple let binding`() = doTest("""
+    fun `test tuple let binding`() = doTest(
+        """
         fn foo() -> i32 {
             let (a, b) = (42, 42);/*start*/
                   //^
             a + b
         }/*end*/
-    """)
+    """
+    )
 
-    fun `test struct let binding`() = doTest("""
+    fun `test struct let binding`() = doTest(
+        """
         struct A { x: i32 }
         fn foo() -> i32 {
             let a = A { x: 42 };
@@ -95,9 +110,11 @@ class RsScopeTest : RsTestBase() {
                   //^
             x
         }/*end*/
-    """)
+    """
+    )
 
-    fun `test match arm scope is match expr scope`() = doTest("""
+    fun `test match arm scope is match expr scope`() = doTest(
+        """
         fn foo() -> i32 {
             let x = 42;
     /*start*/match x {
@@ -105,9 +122,11 @@ class RsScopeTest : RsTestBase() {
               //^
             }/*end*/
         }
-    """)
+    """
+    )
 
-    fun `test binding in struct field initializer`() = doTest("""
+    fun `test binding in struct field initializer`() = doTest(
+        """
         struct S { f: i32 }
         fn foo() -> i32 {
             let a = S {
@@ -119,17 +138,21 @@ class RsScopeTest : RsTestBase() {
             };
             a.f
         }
-    """)
+    """
+    )
 
-    fun `test binding in const initializer`() = doTest("""
+    fun `test binding in const initializer`() = doTest(
+        """
         const X: i32 = {
             let x = 42;/*start*/
               //^
             x
         }/*end*/;
-    """)
+    """
+    )
 
-    fun `test binding in array type`() = doTest("""
+    fun `test binding in array type`() = doTest(
+        """
         struct S {
             f: [u8; { 1 } + {
                 let a = 42;/*start*/
@@ -137,9 +160,11 @@ class RsScopeTest : RsTestBase() {
                 a
             }/*end*/ + { 1 }]
         }
-    """)
+    """
+    )
 
-    fun `test binding in enum variant`() = doTest("""
+    fun `test binding in enum variant`() = doTest(
+        """
         enum Foo {
             BAR = {
                 let a = 42;/*start*/
@@ -147,7 +172,8 @@ class RsScopeTest : RsTestBase() {
                 a
             }/*end*/
         }
-    """)
+    """
+    )
 
     private fun doTest(@Language("Rust") code: String) {
         val scopeStartOffset = findMarker(code, START_MARKER)

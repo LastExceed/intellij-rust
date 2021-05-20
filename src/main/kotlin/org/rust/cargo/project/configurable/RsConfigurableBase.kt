@@ -29,5 +29,6 @@ abstract class RsConfigurableBase(protected val project: Project, @Nls displayNa
     }
 
     @Throws(ConfigurationException::class)
-    protected open fun doApply() {}
+    protected open fun doApply() {
+    }
 }

@@ -313,10 +313,12 @@ private fun methodAndFieldCompletionProcessor(
     context: RsCompletionContext
 ): RsResolveProcessor = createProcessor { e ->
     when (e) {
-        is FieldResolveVariant -> result.addElement(createLookupElement(
-            scopeEntry = e,
-            context = context
-        ))
+        is FieldResolveVariant -> result.addElement(
+            createLookupElement(
+                scopeEntry = e,
+                context = context
+            )
+        )
         is MethodResolveVariant -> {
             if (e.element.isTest) return@createProcessor false
 

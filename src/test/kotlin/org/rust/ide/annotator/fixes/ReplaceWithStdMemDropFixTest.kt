@@ -10,7 +10,8 @@ import org.rust.ide.annotator.RsErrorAnnotator
 
 class ReplaceWithStdMemDropFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
 
-    fun `test correct self type call expr`() = checkFixByText("Replace with `std::mem::drop`", """
+    fun `test correct self type call expr`() = checkFixByText(
+        "Replace with `std::mem::drop`", """
         struct X;
         #[lang = "drop"]
         pub trait Drop {
@@ -38,9 +39,11 @@ class ReplaceWithStdMemDropFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class
             let mut x = X {};
             std::mem::drop(x);
         }
-    """)
+    """
+    )
 
-    fun `test incorrect self type call expr`() = checkFixByText("Replace with `std::mem::drop`", """
+    fun `test incorrect self type call expr`() = checkFixByText(
+        "Replace with `std::mem::drop`", """
         struct X;
         #[lang = "drop"]
         pub trait Drop {
@@ -68,9 +71,11 @@ class ReplaceWithStdMemDropFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class
             let mut x = X {};
             std::mem::drop(&mut x, 123, "foo");
         }
-    """)
+    """
+    )
 
-    fun `test correct Drop type call expr`() = checkFixByText("Replace with `std::mem::drop`", """
+    fun `test correct Drop type call expr`() = checkFixByText(
+        "Replace with `std::mem::drop`", """
         struct X;
         #[lang = "drop"]
         pub trait Drop {
@@ -98,9 +103,11 @@ class ReplaceWithStdMemDropFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class
             let mut x = X {};
             std::mem::drop(x);
         }
-    """)
+    """
+    )
 
-    fun `test incorrect Drop type call expr`() = checkFixByText("Replace with `std::mem::drop`", """
+    fun `test incorrect Drop type call expr`() = checkFixByText(
+        "Replace with `std::mem::drop`", """
         struct X;
         #[lang = "drop"]
         pub trait Drop {
@@ -128,9 +135,11 @@ class ReplaceWithStdMemDropFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class
             let mut x = X {};
             std::mem::drop(&mut x, 123, "foo");
         }
-    """)
+    """
+    )
 
-    fun `test correct method call`() = checkFixByText("Replace with `std::mem::drop`", """
+    fun `test correct method call`() = checkFixByText(
+        "Replace with `std::mem::drop`", """
         struct X;
         #[lang = "drop"]
         pub trait Drop {
@@ -158,10 +167,12 @@ class ReplaceWithStdMemDropFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class
             let mut x = X {};
             std::mem::drop(x);
         }
-    """)
+    """
+    )
 
 
-    fun `test incorrect method call`() = checkFixByText("Replace with `std::mem::drop`", """
+    fun `test incorrect method call`() = checkFixByText(
+        "Replace with `std::mem::drop`", """
         struct X;
         #[lang = "drop"]
         pub trait Drop {
@@ -189,9 +200,11 @@ class ReplaceWithStdMemDropFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class
             let mut x = X {};
             std::mem::drop(x, 123, "foo");
         }
-    """)
+    """
+    )
 
-    fun `test correct chain method call`() = checkFixByText("Replace with `std::mem::drop`", """
+    fun `test correct chain method call`() = checkFixByText(
+        "Replace with `std::mem::drop`", """
         struct X;
         #[lang = "drop"]
         pub trait Drop {
@@ -229,9 +242,11 @@ class ReplaceWithStdMemDropFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class
         fn main() {
             std::mem::drop(XFactory {}.create_x(123));
         }
-    """)
+    """
+    )
 
-    fun `test incorrect chain method call`() = checkFixByText("Replace with `std::mem::drop`", """
+    fun `test incorrect chain method call`() = checkFixByText(
+        "Replace with `std::mem::drop`", """
         struct X;
         #[lang = "drop"]
         pub trait Drop {
@@ -269,5 +284,6 @@ class ReplaceWithStdMemDropFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class
         fn main() {
             std::mem::drop(XFactory {}.create_x(123), 123, "foo");
         }
-    """)
+    """
+    )
 }

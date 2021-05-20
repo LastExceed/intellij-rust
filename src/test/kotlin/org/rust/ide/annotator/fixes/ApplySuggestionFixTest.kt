@@ -19,7 +19,8 @@ class ApplySuggestionFixTest : RsWithToolchainTestBase() {
         project.rustSettings.modifyTemporary(testRootDisposable) { it.runExternalLinterOnTheFly = true }
     }
 
-    fun `test rustc suggestion (machine applicable)`() = checkFixByText("""
+    fun `test rustc suggestion (machine applicable)`() = checkFixByText(
+        """
         pub fn main() {
             let <weak_warning>x</weak_warning> = 0;
         }
@@ -27,9 +28,11 @@ class ApplySuggestionFixTest : RsWithToolchainTestBase() {
         pub fn main() {
             let _x = 0;
         }
-    """)
+    """
+    )
 
-    fun `test rustc suggestion (maybe incorrect)`() = checkFixByText("""
+    fun `test rustc suggestion (maybe incorrect)`() = checkFixByText(
+        """
         struct Foo(i32);
 
         impl Foo {
@@ -45,9 +48,11 @@ class ApplySuggestionFixTest : RsWithToolchainTestBase() {
                 self.0
             }
         }
-    """)
+    """
+    )
 
-    fun `test rustc suggestion (has placeholders)`() = checkFixByText("""
+    fun `test rustc suggestion (has placeholders)`() = checkFixByText(
+        """
         struct S { x: i32, y: i32 }
         impl S {
             fn new() -> Self { <error>Self</error> }
@@ -57,9 +62,11 @@ class ApplySuggestionFixTest : RsWithToolchainTestBase() {
         impl S {
             fn new() -> Self { Self { /* fields */ } }
         }
-    """)
+    """
+    )
 
-    fun `test rustc suggestion (unspecified)`() = checkFixByText("""
+    fun `test rustc suggestion (unspecified)`() = checkFixByText(
+        """
         fn foo<'a>(x: &i32, y: &'a i32) -> &'a i32 {
             if x > y { <error>x</error> } else { y }
         }
@@ -67,9 +74,11 @@ class ApplySuggestionFixTest : RsWithToolchainTestBase() {
         fn foo<'a>(x: &'a i32, y: &'a i32) -> &'a i32 {
             if x > y { x } else { y }
         }
-    """)
+    """
+    )
 
-    fun `test clippy suggestion`() = checkFixByText("""
+    fun `test clippy suggestion`() = checkFixByText(
+        """
         pub fn main() {
             <weak_warning>if true { true } else { false }</weak_warning>;
         }
@@ -77,7 +86,8 @@ class ApplySuggestionFixTest : RsWithToolchainTestBase() {
         pub fn main() {
             true;
         }
-    """, externalLinter = ExternalLinter.CLIPPY)
+    """, externalLinter = ExternalLinter.CLIPPY
+    )
 
     private fun checkFixByText(
         @Language("Rust") before: String,
@@ -86,12 +96,14 @@ class ApplySuggestionFixTest : RsWithToolchainTestBase() {
     ) {
         project.rustSettings.modifyTemporary(testRootDisposable) { it.externalLinter = externalLinter }
         fileTree {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "hello"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
 
             dir("src") {
                 file("lib.rs", before)

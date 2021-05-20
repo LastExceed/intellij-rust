@@ -32,41 +32,51 @@ class RsBuildActionTest : CargoBuildTest() {
 
     fun `test build first action`() {
         val testProject = fileTree {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [workspace]
                 members = [
                     "first",
                     "second",
                 ]
-            """)
+            """
+            )
 
             dir("first") {
-                toml("Cargo.toml", """
+                toml(
+                    "Cargo.toml", """
                     [package]
                     name = "first"
                     version = "0.1.0"
                     authors = []
-                """)
+                """
+                )
 
                 dir("src") {
-                    rust("main.rs", """
+                    rust(
+                        "main.rs", """
                     fn main() {/*caret*/}
-                """)
+                """
+                    )
                 }
             }
 
             dir("second") {
-                toml("Cargo.toml", """
+                toml(
+                    "Cargo.toml", """
                     [package]
                     name = "second"
                     version = "0.1.0"
                     authors = []
-                """)
+                """
+                )
 
                 dir("src") {
-                    rust("main.rs", """
+                    rust(
+                        "main.rs", """
                     fn main() {}
-                """)
+                """
+                    )
                 }
             }
         }.create()
@@ -109,41 +119,51 @@ class RsBuildActionTest : CargoBuildTest() {
 
     fun `test build second action`() {
         val testProject = fileTree {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [workspace]
                 members = [
                     "first",
                     "second",
                 ]
-            """)
+            """
+            )
 
             dir("first") {
-                toml("Cargo.toml", """
+                toml(
+                    "Cargo.toml", """
                     [package]
                     name = "first"
                     version = "0.1.0"
                     authors = []
-                """)
+                """
+                )
 
                 dir("src") {
-                    rust("main.rs", """
+                    rust(
+                        "main.rs", """
                     fn main() {}
-                """)
+                """
+                    )
                 }
             }
 
             dir("second") {
-                toml("Cargo.toml", """
+                toml(
+                    "Cargo.toml", """
                     [package]
                     name = "second"
                     version = "0.1.0"
                     authors = []
-                """)
+                """
+                )
 
                 dir("src") {
-                    rust("main.rs", """
+                    rust(
+                        "main.rs", """
                     fn main() {/*caret*/}
-                """)
+                """
+                    )
                 }
             }
         }.create()
@@ -186,31 +206,38 @@ class RsBuildActionTest : CargoBuildTest() {
 
     fun `test build all action`() {
         fileTree {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [workspace]
                 members = [
                     "first",
                     "second",
                 ]
-            """)
+            """
+            )
 
             dir("first") {
-                toml("Cargo.toml", """
+                toml(
+                    "Cargo.toml", """
                     [package]
                     name = "first"
                     version = "0.1.0"
                     authors = []
-                """)
+                """
+                )
 
                 dir("src") {
-                    rust("main.rs", """
+                    rust(
+                        "main.rs", """
                     fn main() {}
-                """)
+                """
+                    )
                 }
             }
 
             dir("second") {
-                toml("Cargo.toml", """
+                toml(
+                    "Cargo.toml", """
                     [package]
                     name = "second"
                     version = "0.1.0"
@@ -218,12 +245,15 @@ class RsBuildActionTest : CargoBuildTest() {
 
                     [dependencies]
                     first = { path = "../first" }
-                """)
+                """
+                )
 
                 dir("src") {
-                    rust("main.rs", """
+                    rust(
+                        "main.rs", """
                     fn main() {}
-                """)
+                """
+                    )
                 }
             }
         }.create()

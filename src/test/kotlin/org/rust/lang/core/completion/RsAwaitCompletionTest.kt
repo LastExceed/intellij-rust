@@ -11,7 +11,8 @@ import org.rust.cargo.project.workspace.CargoWorkspace
 class RsAwaitCompletionTest : RsCompletionTestBase() {
 
     @MockEdition(CargoWorkspace.Edition.EDITION_2015)
-    fun `test postfix await 2015 (anon)`() = checkCompletion("await", """
+    fun `test postfix await 2015 (anon)`() = checkCompletion(
+        "await", """
         #[lang = "core::future::future::Future"]
         trait Future { type Output; }
         fn foo() -> impl Future<Output=i32> { unimplemented!() }
@@ -25,10 +26,12 @@ class RsAwaitCompletionTest : RsCompletionTestBase() {
         fn main() {
             foo()./*caret*/;
         }
-    """)
+    """
+    )
 
     @MockEdition(CargoWorkspace.Edition.EDITION_2015)
-    fun `test postfix await 2015 (adt)`() = checkCompletion("await", """
+    fun `test postfix await 2015 (adt)`() = checkCompletion(
+        "await", """
         #[lang = "core::future::future::Future"]
         trait Future { type Output; }
         struct S;
@@ -46,10 +49,12 @@ class RsAwaitCompletionTest : RsCompletionTestBase() {
         fn main() {
             foo()./*caret*/;
         }
-    """)
+    """
+    )
 
     @MockEdition(CargoWorkspace.Edition.EDITION_2018)
-    fun `test postfix await 2018 (anon)`() = checkCompletion("await", """
+    fun `test postfix await 2018 (anon)`() = checkCompletion(
+        "await", """
         #[lang = "core::future::future::Future"]
         trait Future { type Output; }
         fn foo() -> impl Future<Output=i32> { unimplemented!() }
@@ -63,10 +68,12 @@ class RsAwaitCompletionTest : RsCompletionTestBase() {
         fn main() {
             foo().await/*caret*/;
         }
-    """)
+    """
+    )
 
     @MockEdition(CargoWorkspace.Edition.EDITION_2018)
-    fun `test postfix await 2018 (adt)`() = checkCompletion("await", """
+    fun `test postfix await 2018 (adt)`() = checkCompletion(
+        "await", """
         #[lang = "core::future::future::Future"]
         trait Future { type Output; }
         struct S;
@@ -84,5 +91,6 @@ class RsAwaitCompletionTest : RsCompletionTestBase() {
         fn main() {
             foo().await/*caret*/;
         }
-    """)
+    """
+    )
 }

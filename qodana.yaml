@@ -2,7 +2,7 @@ version: 1.0
 profile:
     name: qodana.recommended
 exclude:
-    - name: DEPRECATION
-    - name: UnstableApiUsage
-    - name: UnstableTypeUsedInSignature
-    - name: IncompleteDestructuring
+    -   name: DEPRECATION
+    -   name: UnstableApiUsage
+    -   name: UnstableTypeUsedInSignature
+    -   name: IncompleteDestructuring

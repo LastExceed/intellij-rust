@@ -32,7 +32,6 @@ class RsTreeStructureProvider : TreeStructureProvider, DumbAware {
     }
 }
 
-private class RsPsiFileNode(original: PsiFileNode, viewSettings: ViewSettings?)
-    : PsiFileNode(original.project, original.value, viewSettings) {
+private class RsPsiFileNode(original: PsiFileNode, viewSettings: ViewSettings?) : PsiFileNode(original.project, original.value, viewSettings) {
     override fun getSortKey(): Int = if (value.name == RsConstants.MOD_RS_FILE) -1 else 0
 }

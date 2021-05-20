@@ -197,7 +197,7 @@ private fun RsFunction.getSignatureText(
     }.toMap()
     val typeArguments = impl.traitRef?.path?.typeArguments.orEmpty()
     val valueArguments = valueParameters.map {
-        val fnPointerType= when (val typeReference = it.typeReference) {
+        val fnPointerType = when (val typeReference = it.typeReference) {
             is RsFnPointerType -> typeReference
             is RsBaseType -> {
                 val (index, typeParameter) = typeParameters[typeReference.type.shortPresentableText] ?: (-1 to null)

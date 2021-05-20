@@ -49,7 +49,8 @@ class RsCreateCrateAction : RunCargoCommandActionBase() {
         binary: Boolean
     ) {
         val cargo = toolchain.cargoOrWrapper(
-            project.cargoProjects.findProjectForFile(root)?.workspaceRootDir?.pathAsPath)
+            project.cargoProjects.findProjectForFile(root)?.workspaceRootDir?.pathAsPath
+        )
 
         val targetDir = runWriteAction {
             root.createChildDirectory(this, name)

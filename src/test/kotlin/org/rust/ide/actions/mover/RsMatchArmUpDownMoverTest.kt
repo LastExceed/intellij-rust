@@ -6,7 +6,8 @@
 package org.rust.ide.actions.mover
 
 class RsMatchArmUpDownMoverTest : RsStatementUpDownMoverTestBase() {
-    fun `test step over match arm single line expr`() = moveDownAndBackUp("""
+    fun `test step over match arm single line expr`() = moveDownAndBackUp(
+        """
         fn main() {
             match test {
                 Some(/*caret*/_) => (),
@@ -20,9 +21,11 @@ class RsMatchArmUpDownMoverTest : RsStatementUpDownMoverTestBase() {
                 Some(/*caret*/_) => (),
             }
         }
-    """)
+    """
+    )
 
-    fun `test step over match arm multi line expr`() = moveDownAndBackUp("""
+    fun `test step over match arm multi line expr`() = moveDownAndBackUp(
+        """
         fn main() {
             match test {
                 Some(/*caret*/_) => {
@@ -44,9 +47,11 @@ class RsMatchArmUpDownMoverTest : RsStatementUpDownMoverTestBase() {
                 }
             }
         }
-    """)
+    """
+    )
 
-    fun `test prevent step out match body`() = moveDownAndBackUp("""
+    fun `test prevent step out match body`() = moveDownAndBackUp(
+        """
         fn main() {
             match test {
                 Some(/*caret*/_) => {
@@ -54,53 +59,59 @@ class RsMatchArmUpDownMoverTest : RsStatementUpDownMoverTestBase() {
                 }
             }
         }
-    """, testmark = UpDownMoverTestMarks.moveOutOfMatch)
+    """, testmark = UpDownMoverTestMarks.moveOutOfMatch
+    )
 
-    fun `test can move several arms`() = moveDownAndBackUp("""
+    fun `test can move several arms`() = moveDownAndBackUp(
+        """
         fn main() {
             match x {
-                <selection>1 => {},
+                <selection>1 => {}
                 2 => loop {}</selection>
 
-                3 => {},
+                3 => {}
             }
         }
     """, """
         fn main() {
             match x {
-                3 => {},
+                3 => {}
 
-                <selection>1 => {},
+                <selection>1 => {}
                 2 => loop {}</selection>
             }
         }
-    """)
+    """
+    )
 
-    fun `test can not move across different match expressions`() = moveDownAndBackUp("""
+    fun `test can not move across different match expressions`() = moveDownAndBackUp(
+        """
         fn main() {
             match x {
-                1 => {},
-                <selection>2 => {},
+                1 => {}
+                <selection>2 => {}
             };
             match x {
-                2 => {},</selection>
-                3 => {},
+                2 => {}</selection>
+                3 => {}
             };
         }
     """, """
         fn main() {
             match x {
-                1 => {},
-                <selection>2 => {},
+                1 => {}
+                <selection>2 => {}
             };
             match x {
-                2 => {},</selection>
-                3 => {},
+                2 => {}</selection>
+                3 => {}
             };
         }
-    """)
+    """
+    )
 
-    fun `test inside closure`() = moveUp("""
+    fun `test inside closure`() = moveUp(
+        """
         fn main() {
             let xs: Vec<_> = vec![1,2,3].iter().map(|x| {
                 match x {
@@ -120,9 +131,11 @@ class RsMatchArmUpDownMoverTest : RsStatementUpDownMoverTestBase() {
                 }
             }).collect();
         }
-    """)
+    """
+    )
 
-    fun `test move to last`() = moveDown("""
+    fun `test move to last`() = moveDown(
+        """
         fn main() {
             match x {
                 1 => 10,
@@ -138,9 +151,11 @@ class RsMatchArmUpDownMoverTest : RsStatementUpDownMoverTestBase() {
                 2 => 20,/*caret*/
             };
         }
-    """)
+    """
+    )
 
-    fun `test move to last 2`() = moveDown("""
+    fun `test move to last 2`() = moveDown(
+        """
         fn main() {
             match x {
                 1 => 10,
@@ -156,9 +171,11 @@ class RsMatchArmUpDownMoverTest : RsStatementUpDownMoverTestBase() {
                 2 => 20,/*caret*/
             };
         }
-    """)
+    """
+    )
 
-    fun `test move to last 3`() = moveDown("""
+    fun `test move to last 3`() = moveDown(
+        """
         fn main() {
             match x {
                 1 => 10,
@@ -178,9 +195,11 @@ class RsMatchArmUpDownMoverTest : RsStatementUpDownMoverTestBase() {
                 2 => 20,/*caret*/
             };
         }
-    """)
+    """
+    )
 
-    fun `test move from last`() = moveUp("""
+    fun `test move from last`() = moveUp(
+        """
         fn main() {
             match x {
                 1 => 10,
@@ -196,9 +215,11 @@ class RsMatchArmUpDownMoverTest : RsStatementUpDownMoverTestBase() {
                 2 => 20,
             };
         }
-    """)
+    """
+    )
 
-    fun `test move from last 2`() = moveUp("""
+    fun `test move from last 2`() = moveUp(
+        """
         fn main() {
             match x {
                 1 => 10,
@@ -214,9 +235,11 @@ class RsMatchArmUpDownMoverTest : RsStatementUpDownMoverTestBase() {
                 2 => 20,
             };
         }
-    """)
+    """
+    )
 
-    fun `test move from last 3`() = moveUp("""
+    fun `test move from last 3`() = moveUp(
+        """
         fn main() {
             match x {
                 1 => 10,
@@ -236,9 +259,11 @@ class RsMatchArmUpDownMoverTest : RsStatementUpDownMoverTestBase() {
                 2 => 20,
             };
         }
-    """)
+    """
+    )
 
-    fun `test move from last 4`() = moveUp("""
+    fun `test move from last 4`() = moveUp(
+        """
         fn foo() {
             match x {
                 1 => 10,
@@ -260,9 +285,11 @@ class RsMatchArmUpDownMoverTest : RsStatementUpDownMoverTestBase() {
                 }
             };
         }
-    """)
+    """
+    )
 
-    fun `test move first down`() = moveDown("""
+    fun `test move first down`() = moveDown(
+        """
         fn foo() {
             match x {
                 1 => 10,/*caret*/

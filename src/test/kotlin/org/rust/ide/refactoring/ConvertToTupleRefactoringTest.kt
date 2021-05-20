@@ -10,22 +10,27 @@ import org.rust.RsTestBase
 import org.rust.launchAction
 
 class ConvertToTupleRefactoringTest : RsTestBase() {
-    fun `test simple`() = doAvailableTest("""
+    fun `test simple`() = doAvailableTest(
+        """
         struct Test{/*caret*/
             pub a:usize,
             b:i32
         }
     """, """
         struct Test(pub usize, i32);
-    """)
+    """
+    )
 
-    fun `test empty`() = doAvailableTest("""
+    fun `test empty`() = doAvailableTest(
+        """
         struct Test{/*caret*/}
     """, """
         struct Test();
-    """)
+    """
+    )
 
-    fun `test simple enum`() = doAvailableTest("""
+    fun `test simple enum`() = doAvailableTest(
+        """
         enum Test{
             A{ /*caret*/a:usize,
                 b:i32 },
@@ -42,9 +47,11 @@ class ConvertToTupleRefactoringTest : RsTestBase() {
         fn main(){
             let Test::A(a, b) = Test::A(0, 0);
         }
-    """)
+    """
+    )
 
-    fun `test convert struct literal`() = doAvailableTest("""
+    fun `test convert struct literal`() = doAvailableTest(
+        """
         struct Test{/*caret*/
             pub a:usize,
             b:i32
@@ -68,9 +75,11 @@ class ConvertToTupleRefactoringTest : RsTestBase() {
             let a = 0;
             let x = Test { 0: a, ..x };
         }
-    """)
+    """
+    )
 
-    fun `test convert field access`() = doAvailableTest("""
+    fun `test convert field access`() = doAvailableTest(
+        """
         struct Test{/*caret*/
             pub a:usize,
             b:i32
@@ -88,9 +97,11 @@ class ConvertToTupleRefactoringTest : RsTestBase() {
             let x = var.0;
             let x = var.1;
         }
-    """)
+    """
+    )
 
-    fun `test convert destructuring`() = doAvailableTest("""
+    fun `test convert destructuring`() = doAvailableTest(
+        """
         struct Test{/*caret*/
             pub a:usize,
             b:i32
@@ -112,9 +123,11 @@ class ConvertToTupleRefactoringTest : RsTestBase() {
             let Test(a, _) = Test(0, 0);
             let Test(_, var) = Test(0, 0);
         }
-    """)
+    """
+    )
 
-    fun `test convert function call`() = doAvailableTest("""
+    fun `test convert function call`() = doAvailableTest(
+        """
         struct S {
             /*caret*/a: u32
         }
@@ -139,9 +152,11 @@ class ConvertToTupleRefactoringTest : RsTestBase() {
         fn main() {
             let s = S::new(0);
         }
-    """)
+    """
+    )
 
-    fun `test where clause`() = doAvailableTest("""
+    fun `test where clause`() = doAvailableTest(
+        """
         trait Trait {}
         struct Test<T> where T: Trait {/*caret*/
             a: T,
@@ -149,9 +164,11 @@ class ConvertToTupleRefactoringTest : RsTestBase() {
     """, """
         trait Trait {}
         struct Test<T>(T) where T: Trait;
-    """)
+    """
+    )
 
-    fun `test where clause (multiline)`() = doAvailableTest("""
+    fun `test where clause (multiline)`() = doAvailableTest(
+        """
         trait Trait {}
         struct Test<T1, T2>
             where
@@ -167,7 +184,8 @@ class ConvertToTupleRefactoringTest : RsTestBase() {
             where
                 T1: Trait,
                 T2: Trait;
-    """)
+    """
+    )
 
     private fun doAvailableTest(@Language("Rust") before: String, @Language("Rust") after: String) {
         InlineFile(before.trimIndent()).withCaret()

@@ -39,7 +39,8 @@ class RsMissingElseInspection : RsLocalInspectionTool() {
                     expr.parent,
                     TextRange(rangeStart, rangeStart + rangeLen),
                     "Suspicious if. Did you mean `else if`?",
-                    SubstituteTextFix.insert("Change to `else if`", nextIf.containingFile, nextIf.startOffset, "else "))
+                    SubstituteTextFix.insert("Change to `else if`", nextIf.containingFile, nextIf.startOffset, "else ")
+                )
             }
         }
 

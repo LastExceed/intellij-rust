@@ -21,7 +21,8 @@ class CargoTomlWatcherIntegrationTest : RsWithToolchainTestBase() {
         project.messageBus.connect(testRootDisposable).subscribe(VirtualFileManager.VFS_CHANGES, watcher)
 
         val p = fileTree {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "hello"
                 version = "0.1.0"
@@ -29,31 +30,38 @@ class CargoTomlWatcherIntegrationTest : RsWithToolchainTestBase() {
 
                 [dependencies]
                 #foo = { path = "./foo" }
-            """)
+            """
+            )
 
             dir("src") {
-                rust("main.rs", """
+                rust(
+                    "main.rs", """
                     extern crate foo;
 
                     fn main() {
                         foo::hello();
                     }       //^
-                """)
+                """
+                )
             }
 
 
             dir("foo") {
-                toml("Cargo.toml", """
+                toml(
+                    "Cargo.toml", """
                     [package]
                     name = "foo"
                     version = "0.1.0"
                     authors = []
-                """)
+                """
+                )
 
                 dir("src") {
-                    rust("lib.rs", """
+                    rust(
+                        "lib.rs", """
                         pub fn hello() {}
-                    """)
+                    """
+                    )
                 }
             }
         }.create()

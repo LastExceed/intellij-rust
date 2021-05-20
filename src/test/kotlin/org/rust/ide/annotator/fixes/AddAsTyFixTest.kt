@@ -9,7 +9,8 @@ import org.rust.ide.inspections.RsInspectionsTestBase
 import org.rust.ide.inspections.RsTypeCheckInspection
 
 class AddAsTyFixTest : RsInspectionsTestBase(RsTypeCheckInspection::class) {
-    fun `test numeric value cast`() = checkFixByText("Add safe cast to u8", """
+    fun `test numeric value cast`() = checkFixByText(
+        "Add safe cast to u8", """
         fn main () {
             let _: u8 = <error>42u16/*caret*/</error>;
         }
@@ -17,9 +18,11 @@ class AddAsTyFixTest : RsInspectionsTestBase(RsTypeCheckInspection::class) {
         fn main () {
             let _: u8 = 42u16 as u8;
         }
-    """)
+    """
+    )
 
-    fun `test numeric inferred value cast`() = checkFixByText("Add safe cast to f32", """
+    fun `test numeric inferred value cast`() = checkFixByText(
+        "Add safe cast to f32", """
         fn main () {
             let _: f32 = <error>42/*caret*/</error>;
         }
@@ -27,9 +30,11 @@ class AddAsTyFixTest : RsInspectionsTestBase(RsTypeCheckInspection::class) {
         fn main () {
             let _: f32 = 42 as f32;
         }
-    """)
+    """
+    )
 
-    fun `test numeric variable cast`() = checkFixByText("Add safe cast to i64", """
+    fun `test numeric variable cast`() = checkFixByText(
+        "Add safe cast to i64", """
         fn main () {
             let x: i32 = 42;
             let y: i64 = <error>x/*caret*/</error>;
@@ -39,9 +44,11 @@ class AddAsTyFixTest : RsInspectionsTestBase(RsTypeCheckInspection::class) {
             let x: i32 = 42;
             let y: i64 = x as i64;
         }
-    """)
+    """
+    )
 
-    fun `test numeric function call result cast`() = checkFixByText("Add safe cast to f32", """
+    fun `test numeric function call result cast`() = checkFixByText(
+        "Add safe cast to f32", """
         fn answer() -> i32 {42}
         fn main () {
             let _: f32 = <error>answer()/*caret*/</error>;
@@ -51,5 +58,6 @@ class AddAsTyFixTest : RsInspectionsTestBase(RsTypeCheckInspection::class) {
         fn main () {
             let _: f32 = answer() as f32;
         }
-    """)
+    """
+    )
 }

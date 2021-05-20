@@ -42,10 +42,10 @@ class RsSignatureChangeInfo(val config: RsChangeFunctionSignatureConfig) : Chang
  * This type is needed to distinguish between empty, invalid and valid type references or expressions entered
  * in the dialog.
  */
-sealed class ParameterProperty<T: RsElement> {
-    class Empty<T: RsElement> : ParameterProperty<T>()
-    class Invalid<T: RsElement>(override val text: String) : ParameterProperty<T>()
-    class Valid<T: RsElement>(override val item: T) : ParameterProperty<T>() {
+sealed class ParameterProperty<T : RsElement> {
+    class Empty<T : RsElement> : ParameterProperty<T>()
+    class Invalid<T : RsElement>(override val text: String) : ParameterProperty<T>()
+    class Valid<T : RsElement>(override val item: T) : ParameterProperty<T>() {
         override val text: String = item.text
     }
 
@@ -53,11 +53,12 @@ sealed class ParameterProperty<T: RsElement> {
     open val item: T? = null
 
     companion object {
-        fun <T: RsElement> fromItem(item: T?): ParameterProperty<T> = when (item) {
+        fun <T : RsElement> fromItem(item: T?): ParameterProperty<T> = when (item) {
             null -> Empty()
             else -> Valid(item)
         }
-        fun <T: RsElement> fromText(item: T?, text: String): ParameterProperty<T> = when {
+
+        fun <T : RsElement> fromText(item: T?, text: String): ParameterProperty<T> = when {
             text.isBlank() -> Empty()
             item == null -> Invalid(text)
             else -> Valid(item)

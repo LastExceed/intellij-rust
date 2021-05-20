@@ -17,7 +17,7 @@ import org.rust.lang.core.resolve.knownItems
 import org.rust.lang.core.types.ty.TyAdt
 import org.rust.lang.core.types.type
 
-class UnwrapToMatchIntention: RsElementBaseIntentionAction<UnwrapToMatchIntention.Context>() {
+class UnwrapToMatchIntention : RsElementBaseIntentionAction<UnwrapToMatchIntention.Context>() {
     override fun getText() = "Replace .unwrap() with match"
     override fun getFamilyName() = text
 
@@ -49,14 +49,14 @@ class UnwrapToMatchIntention: RsElementBaseIntentionAction<UnwrapToMatchIntentio
 
     private fun getReceiverType(item: RsEnumItem): ReceiverType? {
         val knownItems = item.knownItems
-        return when(item) {
+        return when (item) {
             knownItems.Option -> OPTION
             knownItems.Result -> RESULT
             else -> null
         }
     }
 
-    data class Context (
+    data class Context(
         val methodCall: RsMethodCall,
         val receiverType: ReceiverType
     )

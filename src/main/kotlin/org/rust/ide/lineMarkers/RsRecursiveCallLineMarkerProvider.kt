@@ -54,8 +54,9 @@ class RsRecursiveCallLineMarkerProvider : LineMarkerProvider {
         }
     }
 
-    private val RsReference.isRecursive: Boolean get() {
-        val def = resolve()
-        return def != null && element.ancestorStrict<RsFunction>() == def
-    }
+    private val RsReference.isRecursive: Boolean
+        get() {
+            val def = resolve()
+            return def != null && element.ancestorStrict<RsFunction>() == def
+        }
 }

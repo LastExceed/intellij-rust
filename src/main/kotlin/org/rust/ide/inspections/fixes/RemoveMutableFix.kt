@@ -17,7 +17,7 @@ class RemoveMutableFix : LocalQuickFix {
         updateMutable(project, patBinding, false)
     }
 
-    override fun getName(): String  = "Remove mutable"
-    override fun getFamilyName(): String  = name
+    override fun getName(): String = "Remove mutable"
+    override fun getFamilyName(): String = name
 
 }

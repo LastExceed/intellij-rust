@@ -71,6 +71,7 @@ abstract class AnnotationTestFixtureBase(
         checkInfo = false,
         ignoreExtraHighlighting = ignoreExtraHighlighting
     )
+
     fun checkInfo(text: String) = checkByText(text, checkWarn = false, checkWeakWarn = false, checkInfo = true)
     fun checkWarnings(text: String) = checkByText(text, checkWarn = true, checkWeakWarn = true, checkInfo = false)
     fun checkErrors(text: String) = checkByText(text, checkWarn = false, checkWeakWarn = false, checkInfo = false)
@@ -86,13 +87,15 @@ abstract class AnnotationTestFixtureBase(
         checkWeakWarn: Boolean = false,
         ignoreExtraHighlighting: Boolean = false,
         testmark: Testmark? = null
-    ) = check(text,
+    ) = check(
+        text,
         checkWarn = checkWarn,
         checkInfo = checkInfo,
         checkWeakWarn = checkWeakWarn,
         ignoreExtraHighlighting = ignoreExtraHighlighting,
         configure = this::configureByText,
-        testmark = testmark)
+        testmark = testmark
+    )
 
     fun checkFixByText(
         fixName: String,
@@ -102,11 +105,13 @@ abstract class AnnotationTestFixtureBase(
         checkInfo: Boolean = false,
         checkWeakWarn: Boolean = false,
         testmark: Testmark? = null
-    ) = checkFix(fixName, before, after,
+    ) = checkFix(
+        fixName, before, after,
         configure = this::configureByText,
         checkBefore = { codeInsightFixture.checkHighlighting(checkWarn, checkInfo, checkWeakWarn) },
         checkAfter = this::checkByText,
-        testmark = testmark)
+        testmark = testmark
+    )
 
     fun checkFixIsUnavailable(
         fixName: String,
@@ -116,13 +121,15 @@ abstract class AnnotationTestFixtureBase(
         checkWeakWarn: Boolean = false,
         ignoreExtraHighlighting: Boolean = false,
         testmark: Testmark? = null
-    ) = checkFixIsUnavailable(fixName, text,
+    ) = checkFixIsUnavailable(
+        fixName, text,
         checkWarn = checkWarn,
         checkInfo = checkInfo,
         checkWeakWarn = checkWeakWarn,
         ignoreExtraHighlighting = ignoreExtraHighlighting,
         configure = this::configureByText,
-        testmark = testmark)
+        testmark = testmark
+    )
 
     protected fun checkFixIsUnavailable(
         fixName: String,
@@ -145,11 +152,13 @@ abstract class AnnotationTestFixtureBase(
         before: String,
         after: String,
         testmark: Testmark? = null
-    ) = checkFix(fixName, before, after,
+    ) = checkFix(
+        fixName, before, after,
         configure = this::configureByText,
         checkBefore = {},
         checkAfter = this::checkByText,
-        testmark = testmark)
+        testmark = testmark
+    )
 
     protected open fun <T> check(
         content: T,

@@ -14,20 +14,26 @@ class RustupOverrideTest : RsWithToolchainTestBase() {
 
     fun test() {
         buildProject {
-            toml("rust-toolchain", """
+            toml(
+                "rust-toolchain", """
                 [toolchain]
                 channel = "nightly"
-            """)
-            toml("Cargo.toml", """
+            """
+            )
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "hello"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
             dir("src") {
-                rust("main.rs", """
+                rust(
+                    "main.rs", """
                     fn main() {}
-                """)
+                """
+                )
             }
         }
         assertEquals(RustChannel.NIGHTLY, project.cargoProjects.singleProject().rustcInfo?.version?.channel)

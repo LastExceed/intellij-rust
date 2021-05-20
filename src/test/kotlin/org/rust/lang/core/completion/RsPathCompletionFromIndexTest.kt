@@ -18,7 +18,8 @@ import org.rust.lang.core.completion.RsCommonCompletionProvider.Testmarks
 
 class RsPathCompletionFromIndexTest : RsCompletionTestBase() {
 
-    fun `test suggest an non-imported symbol from index and add proper import`() = doTestByText("""
+    fun `test suggest an non-imported symbol from index and add proper import`() = doTestByText(
+        """
         mod collections {
             pub struct BTreeMap;
         }
@@ -36,9 +37,11 @@ class RsPathCompletionFromIndexTest : RsCompletionTestBase() {
         fn main() {
             let _ = BTreeMap/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test doesn't suggest a symbol that already in scope`() = doTestByText("""
+    fun `test doesn't suggest a symbol that already in scope`() = doTestByText(
+        """
         use collections::BTreeMap;
 
         mod collections {
@@ -58,9 +61,11 @@ class RsPathCompletionFromIndexTest : RsCompletionTestBase() {
         fn main() {
             let _ = BTreeMap/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test doesn't suggest a symbol that leads to name collision`() = doTestByText("""
+    fun `test doesn't suggest a symbol that leads to name collision`() = doTestByText(
+        """
         struct BTreeMap;
 
         mod collections {
@@ -80,9 +85,11 @@ class RsPathCompletionFromIndexTest : RsCompletionTestBase() {
         fn main() {
             let _ = BTreeMap/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test doesn't suggest an non-imported symbol from index when setting disabled`() = doTestByText("""
+    fun `test doesn't suggest an non-imported symbol from index when setting disabled`() = doTestByText(
+        """
         struct BTreeMap;
 
         mod collections {
@@ -104,16 +111,20 @@ class RsPathCompletionFromIndexTest : RsCompletionTestBase() {
         fn main() {
             let _ = BTreeMap/*caret*/
         }
-    """, suggestOutOfScopeItems = false)
+    """, suggestOutOfScopeItems = false
+    )
 
-    fun `test doesn't suggest symbols from index for empty path`() = doTest("""
+    fun `test doesn't suggest symbols from index for empty path`() = doTest(
+        """
         pub mod foo {}
         fn main() {
             let _ = /*caret*/;
         }
-    """, Testmarks.pathCompletionFromIndex)
+    """, Testmarks.pathCompletionFromIndex
+    )
 
-    fun `test doesn't suggest symbols from index for empty path in macro bodies`() = doTest("""
+    fun `test doesn't suggest symbols from index for empty path in macro bodies`() = doTest(
+        """
         pub mod foo {}
         macro_rules! foo {
             ($($ i:item)*) => { $($ i)* };
@@ -123,9 +134,11 @@ class RsPathCompletionFromIndexTest : RsCompletionTestBase() {
                 let _ = /*caret*/
             }
         }
-    """, Testmarks.pathCompletionFromIndex)
+    """, Testmarks.pathCompletionFromIndex
+    )
 
-    fun `test enum completion`() = doTestByText("""
+    fun `test enum completion`() = doTestByText(
+        """
         mod a {
             pub enum Enum {
                 V1, V2
@@ -147,9 +160,11 @@ class RsPathCompletionFromIndexTest : RsCompletionTestBase() {
         fn main() {
             let a = Enum/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test enum variant completion`() = doTestByText("""
+    fun `test enum variant completion`() = doTestByText(
+        """
         enum Enum { V1 }
 
         fn main() {
@@ -163,9 +178,11 @@ class RsPathCompletionFromIndexTest : RsCompletionTestBase() {
         fn main() {
             let a = V1/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test completion inside inline module`() = doTestByText("""
+    fun `test completion inside inline module`() = doTestByText(
+        """
         mod foo {
             pub struct Bar;
         }
@@ -181,9 +198,11 @@ class RsPathCompletionFromIndexTest : RsCompletionTestBase() {
 
             fn x(x: Bar/*caret*/) {}
         }
-    """)
+    """
+    )
 
-    fun `test completion inside pub inline module`() = doTestByText("""
+    fun `test completion inside pub inline module`() = doTestByText(
+        """
         mod foo {
             pub struct Bar;
         }
@@ -199,9 +218,11 @@ class RsPathCompletionFromIndexTest : RsCompletionTestBase() {
 
             fn x(x: Bar/*caret*/) {}
         }
-    """)
+    """
+    )
 
-    fun `test insert handler`() = doTestByText("""
+    fun `test insert handler`() = doTestByText(
+        """
         mod foo {
             pub fn bar(x: i32) {}
         }
@@ -219,9 +240,11 @@ class RsPathCompletionFromIndexTest : RsCompletionTestBase() {
         fn main() {
             bar(/*caret*/)
         }
-    """)
+    """
+    )
 
-    fun `test insert handler for multiple carets`() = doTestByText("""
+    fun `test insert handler for multiple carets`() = doTestByText(
+        """
         mod foo {
             pub fn bar(x: i32) {}
         }
@@ -243,9 +266,11 @@ class RsPathCompletionFromIndexTest : RsCompletionTestBase() {
             bar(/*caret*/)
             bar(/*caret*/)
         }
-    """)
+    """
+    )
 
-    fun `test do not import out of scope items when setting disabled`() = doTestByText("""
+    fun `test do not import out of scope items when setting disabled`() = doTestByText(
+        """
         mod collections {
             pub struct BTreeMap;
         }
@@ -261,9 +286,11 @@ class RsPathCompletionFromIndexTest : RsCompletionTestBase() {
         fn main() {
             let _ = BTreeMap/*caret*/
         }
-    """, importOutOfScopeItems = false)
+    """, importOutOfScopeItems = false
+    )
 
-    fun `test macro body`() = doTestByText("""
+    fun `test macro body`() = doTestByText(
+        """
         mod foo { pub struct Foo; }
         macro_rules! foo {
             ($($ i:item)*) => { $($ i)* };
@@ -285,9 +312,11 @@ class RsPathCompletionFromIndexTest : RsCompletionTestBase() {
                 Foo/*caret*/
             }
         }
-    """)
+    """
+    )
 
-    fun `test no completion in macro body if expands to a module`() = checkNoCompletion("""
+    fun `test no completion in macro body if expands to a module`() = checkNoCompletion(
+        """
         mod foo { pub struct Foo; }
         macro_rules! foo {
             ($($ i:item)*) => { $($ i)* };
@@ -299,10 +328,12 @@ class RsPathCompletionFromIndexTest : RsCompletionTestBase() {
                 }
             }
         }
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithDependencyRustProjectDescriptor::class)
-    fun `test pub extern crate`() = doTestByFileTree("""
+    fun `test pub extern crate`() = doTestByFileTree(
+        """
         //- trans-lib/lib.rs
         pub struct FooBar;
         //- dep-lib/lib.rs
@@ -317,16 +348,18 @@ class RsPathCompletionFromIndexTest : RsCompletionTestBase() {
         use dep_lib_target::trans_lib::FooBar;
 
         fn foo(x: FooBar/*caret*/) {}
-    """)
+    """
+    )
 
     @MockEdition(CargoWorkspace.Edition.EDITION_2018)
     @ProjectDescriptor(WithDependencyRustProjectDescriptor::class)
     fun `test show all re-exports of single item`() {
         withOutOfScopeSettings {
-            checkContainsCompletionByFileTree(listOf(
-                "Bar (crate::foo::Bar)",
-                "Bar (dep_lib_target::Bar)"
-            ), """
+            checkContainsCompletionByFileTree(
+                listOf(
+                    "Bar (crate::foo::Bar)",
+                    "Bar (dep_lib_target::Bar)"
+                ), """
                 //- dep-lib/lib.rs
                 pub struct Bar;
                 //- lib.rs
@@ -335,7 +368,8 @@ class RsPathCompletionFromIndexTest : RsCompletionTestBase() {
                     pub use dep_lib_target::Bar;
                 }
                 fn foo(x: Ba/*caret*/) {}
-            """) {
+            """
+            ) {
                 val presentation = LookupElementPresentation()
                 renderElement(presentation)
 

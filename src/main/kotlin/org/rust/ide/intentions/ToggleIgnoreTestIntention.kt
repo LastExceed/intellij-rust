@@ -13,7 +13,7 @@ import org.rust.lang.core.psi.RsPsiFactory
 import org.rust.lang.core.psi.ext.findOuterAttr
 import org.rust.lang.core.psi.ext.isTest
 
-class ToggleIgnoreTestIntention: RsElementBaseIntentionAction<ToggleIgnoreTestIntention.Context>() {
+class ToggleIgnoreTestIntention : RsElementBaseIntentionAction<ToggleIgnoreTestIntention.Context>() {
 
     data class Context(
         val element: RsFunction

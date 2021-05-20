@@ -44,10 +44,12 @@ class CargoBuildContext(
 
     @Volatile
     var indicator: ProgressIndicator? = null
+
     @Volatile
     var processHandler: ProcessHandler? = null
 
     val started: Long = System.currentTimeMillis()
+
     @Volatile
     var finished: Long = started
     private val duration: Long get() = finished - started
@@ -117,15 +119,17 @@ class CargoBuildContext(
             }
         }
 
-        result.set(CargoBuildResult(
-            succeeded = isSuccess,
-            canceled = isCanceled,
-            started = started,
-            duration = duration,
-            errors = errors,
-            warnings = warnings,
-            message = finishMessage
-        ))
+        result.set(
+            CargoBuildResult(
+                succeeded = isSuccess,
+                canceled = isCanceled,
+                started = started,
+                duration = duration,
+                errors = errors,
+                warnings = warnings,
+                message = finishMessage
+            )
+        )
 
         showBuildNotification(project, messageType, finishMessage, finishDetails, duration)
     }
@@ -133,15 +137,17 @@ class CargoBuildContext(
     fun canceled() {
         finished = System.currentTimeMillis()
 
-        result.set(CargoBuildResult(
-            succeeded = false,
-            canceled = true,
-            started = started,
-            duration = duration,
-            errors = errors.get(),
-            warnings = warnings.get(),
-            message = "$taskName canceled"
-        ))
+        result.set(
+            CargoBuildResult(
+                succeeded = false,
+                canceled = true,
+                started = started,
+                duration = duration,
+                errors = errors.get(),
+                warnings = warnings.get(),
+                message = "$taskName canceled"
+            )
+        )
 
         environment.notifyProcessNotStarted()
     }

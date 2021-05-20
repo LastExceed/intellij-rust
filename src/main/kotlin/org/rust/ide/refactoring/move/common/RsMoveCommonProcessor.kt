@@ -415,8 +415,10 @@ class RsMoveCommonProcessor(
             if (targetRestored != null) {
                 reference.target = targetRestored
             } else if (reference.target.containingFile is DummyHolder) {
-                LOG.error("Can't restore target ${reference.target}" +
-                    " for reference '${reference.pathOldOriginal.text}' after move")
+                LOG.error(
+                    "Can't restore target ${reference.target}" +
+                        " for reference '${reference.pathOldOriginal.text}' after move"
+                )
             }
         }
     }

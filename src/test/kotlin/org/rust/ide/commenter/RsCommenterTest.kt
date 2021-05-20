@@ -17,7 +17,8 @@ import org.rust.lang.RsLanguage
 import kotlin.reflect.KMutableProperty0
 
 class RsCommenterTest : RsTestBase() {
-    fun `test single line`() = checkOption(settings()::LINE_COMMENT_ADD_SPACE, """
+    fun `test single line`() = checkOption(
+        settings()::LINE_COMMENT_ADD_SPACE, """
         fn <caret>double(x: i32) -> i32 {
             x * 2
         }
@@ -29,9 +30,11 @@ class RsCommenterTest : RsTestBase() {
         //fn double(x: i32) -> i32 {
             x<caret> * 2
         }
-    """, IdeActions.ACTION_COMMENT_LINE)
+    """, IdeActions.ACTION_COMMENT_LINE
+    )
 
-    fun `test multi line`() = checkOption(settings()::LINE_COMMENT_ADD_SPACE, """
+    fun `test multi line`() = checkOption(
+        settings()::LINE_COMMENT_ADD_SPACE, """
         fn doub<selection>le(x: i32) -> i32 {
             x</selection> * 2
         }
@@ -43,9 +46,11 @@ class RsCommenterTest : RsTestBase() {
         //fn doub<selection>le(x: i32) -> i32 {
         //    x</selection> * 2
         }
-    """, IdeActions.ACTION_COMMENT_LINE)
+    """, IdeActions.ACTION_COMMENT_LINE
+    )
 
-    fun `test single line block`() = checkEditorAction("""
+    fun `test single line block`() = checkEditorAction(
+        """
         fn d<caret>ouble(x: i32) -> i32 {
             x * 2
         }
@@ -53,9 +58,11 @@ class RsCommenterTest : RsTestBase() {
         fn d/*<caret>*/ouble(x: i32) -> i32 {
             x * 2
         }
-    """, IdeActions.ACTION_COMMENT_BLOCK)
+    """, IdeActions.ACTION_COMMENT_BLOCK
+    )
 
-    fun `test multi line block`() = checkEditorAction("""
+    fun `test multi line block`() = checkEditorAction(
+        """
         fn doub<selection>le(x: i32) -> i32 {
             x</selection> * 2
         }
@@ -63,9 +70,11 @@ class RsCommenterTest : RsTestBase() {
         fn doub<selection>/*le(x: i32) -> i32 {
             x*/</selection> * 2
         }
-    """, IdeActions.ACTION_COMMENT_BLOCK)
+    """, IdeActions.ACTION_COMMENT_BLOCK
+    )
 
-    fun `test multi line block proper indent`() = checkEditorAction("""
+    fun `test multi line block proper indent`() = checkEditorAction(
+        """
         fn fib(x: i32) -> i32 {
         <selection>    match x {
                 0 => 1,
@@ -81,9 +90,11 @@ class RsCommenterTest : RsTestBase() {
                 _ => fib(x - 2) + fib(x - 1)
             }
         */}
-    """, IdeActions.ACTION_COMMENT_BLOCK)
+    """, IdeActions.ACTION_COMMENT_BLOCK
+    )
 
-    fun `test single line uncomment`() = checkOption(settings()::LINE_COMMENT_ADD_SPACE, """
+    fun `test single line uncomment`() = checkOption(
+        settings()::LINE_COMMENT_ADD_SPACE, """
         //fn d<caret>ouble(x: i32) -> i32 {
         //    x * 2
         }
@@ -95,9 +106,11 @@ class RsCommenterTest : RsTestBase() {
         fn double(x: i32) -> i32 {
         //  <caret>  x * 2
         }
-    """, IdeActions.ACTION_COMMENT_LINE)
+    """, IdeActions.ACTION_COMMENT_LINE
+    )
 
-    fun `test single line uncomment with space after`() = checkOption(settings()::LINE_COMMENT_ADD_SPACE, """
+    fun `test single line uncomment with space after`() = checkOption(
+        settings()::LINE_COMMENT_ADD_SPACE, """
         // fn d<caret>ouble(x: i32) -> i32 {
         //    x * 2
         }
@@ -109,9 +122,11 @@ class RsCommenterTest : RsTestBase() {
          fn double(x: i32) -> i32 {
         //   <caret> x * 2
         }
-    """, IdeActions.ACTION_COMMENT_LINE, trimIndent = false)
+    """, IdeActions.ACTION_COMMENT_LINE, trimIndent = false
+    )
 
-    fun `test multi line uncomment`() = checkOption(settings()::LINE_COMMENT_ADD_SPACE, """
+    fun `test multi line uncomment`() = checkOption(
+        settings()::LINE_COMMENT_ADD_SPACE, """
         //fn doub<selection>le(x: i32) -> i32 {
         //     x</selection> * 2
         }
@@ -123,9 +138,11 @@ class RsCommenterTest : RsTestBase() {
         fn doub<selection>le(x: i32) -> i32 {
              x</selection> * 2
         }
-    """, IdeActions.ACTION_COMMENT_LINE)
+    """, IdeActions.ACTION_COMMENT_LINE
+    )
 
-    fun `test single line block uncomment`() = checkEditorAction("""
+    fun `test single line block uncomment`() = checkEditorAction(
+        """
         fn d/*<caret>*/ouble(x: i32) -> i32 {
             x * 2
         }
@@ -133,9 +150,11 @@ class RsCommenterTest : RsTestBase() {
         fn d<caret>ouble(x: i32) -> i32 {
             x * 2
         }
-    """, IdeActions.ACTION_COMMENT_BLOCK)
+    """, IdeActions.ACTION_COMMENT_BLOCK
+    )
 
-    fun `test multi line block uncomment`() = checkEditorAction("""
+    fun `test multi line block uncomment`() = checkEditorAction(
+        """
         fn doub<selection>/*le(x: i32) -> i32 {
             x*/</selection> * 2
         }
@@ -143,9 +162,11 @@ class RsCommenterTest : RsTestBase() {
         fn doub<selection>le(x: i32) -> i32 {
             x</selection> * 2
         }
-    """, IdeActions.ACTION_COMMENT_BLOCK)
+    """, IdeActions.ACTION_COMMENT_BLOCK
+    )
 
-    fun `test single line uncomment with space before`() = checkOption(settings()::LINE_COMMENT_ADD_SPACE, """
+    fun `test single line uncomment with space before`() = checkOption(
+        settings()::LINE_COMMENT_ADD_SPACE, """
          //fn d<caret>ouble(x: i32) -> i32 {
         //    x * 2
         }
@@ -157,9 +178,11 @@ class RsCommenterTest : RsTestBase() {
          fn double(x: i32) -> i32 {
         //   <caret> x * 2
         }
-    """, IdeActions.ACTION_COMMENT_LINE, trimIndent = false)
+    """, IdeActions.ACTION_COMMENT_LINE, trimIndent = false
+    )
 
-    fun `test outer doc comment uncomment`() = checkOption(settings()::LINE_COMMENT_ADD_SPACE, """
+    fun `test outer doc comment uncomment`() = checkOption(
+        settings()::LINE_COMMENT_ADD_SPACE, """
         /// doc<caret>
         fn double(x: i32) -> i32 {
             x * 2
@@ -174,9 +197,11 @@ class RsCommenterTest : RsTestBase() {
         fn d<caret>ouble(x: i32) -> i32 {
             x * 2
         }
-    """, IdeActions.ACTION_COMMENT_LINE)
+    """, IdeActions.ACTION_COMMENT_LINE
+    )
 
-    fun `test inner doc comment uncomment`() = checkOption(settings()::LINE_COMMENT_ADD_SPACE, """
+    fun `test inner doc comment uncomment`() = checkOption(
+        settings()::LINE_COMMENT_ADD_SPACE, """
         //! doc<caret>
         fn double(x: i32) -> i32 {
             x * 2
@@ -191,9 +216,11 @@ class RsCommenterTest : RsTestBase() {
         fn d<caret>ouble(x: i32) -> i32 {
             x * 2
         }
-    """, IdeActions.ACTION_COMMENT_LINE)
+    """, IdeActions.ACTION_COMMENT_LINE
+    )
 
-    fun `test nested block comments`() = checkEditorAction("""
+    fun `test nested block comments`() = checkEditorAction(
+        """
         fn double<selection>(x: i32/* foobar */) -> i32</selection> {
             x * 2
         }
@@ -201,9 +228,11 @@ class RsCommenterTest : RsTestBase() {
         fn double<selection>/*(x: i32/* foobar */) -> i32*/</selection> {
             x * 2
         }
-    """, IdeActions.ACTION_COMMENT_BLOCK)
+    """, IdeActions.ACTION_COMMENT_BLOCK
+    )
 
-    fun `test indented single line comment`() = checkOption(settings()::LINE_COMMENT_ADD_SPACE, """
+    fun `test indented single line comment`() = checkOption(
+        settings()::LINE_COMMENT_ADD_SPACE, """
         fn double(x: i32) -> i32 {
             x<caret> * 2
         }
@@ -215,9 +244,11 @@ class RsCommenterTest : RsTestBase() {
         fn double(x: i32) -> i32 {
             //x * 2
         }<caret>
-    """, IdeActions.ACTION_COMMENT_LINE)
+    """, IdeActions.ACTION_COMMENT_LINE
+    )
 
-    fun `test outer doc uncomment inside`() = checkEditorAction("""
+    fun `test outer doc uncomment inside`() = checkEditorAction(
+        """
         ///
         ///<caret>
         ///
@@ -225,9 +256,11 @@ class RsCommenterTest : RsTestBase() {
         ///
 
         <caret>///
-    """, IdeActions.ACTION_COMMENT_LINE)
+    """, IdeActions.ACTION_COMMENT_LINE
+    )
 
-    fun `test inner doc uncomment inside`() = checkEditorAction("""
+    fun `test inner doc uncomment inside`() = checkEditorAction(
+        """
         //!
         //!<caret>
         //!
@@ -235,17 +268,21 @@ class RsCommenterTest : RsTestBase() {
         //!
 
         <caret>//!
-    """, IdeActions.ACTION_COMMENT_LINE)
+    """, IdeActions.ACTION_COMMENT_LINE
+    )
 
-    fun `test complete block comment`() = checkEditorAction("""
+    fun `test complete block comment`() = checkEditorAction(
+        """
         /*<caret>
     """, """
         /*
         <caret>
          */
-    """, IdeActions.ACTION_EDITOR_ENTER)
+    """, IdeActions.ACTION_EDITOR_ENTER
+    )
 
-    fun `test move caret after commenting empty line`() = checkOption(settings()::LINE_COMMENT_ADD_SPACE, """
+    fun `test move caret after commenting empty line`() = checkOption(
+        settings()::LINE_COMMENT_ADD_SPACE, """
         <caret>
         fn foo() {}
     """, """
@@ -254,7 +291,8 @@ class RsCommenterTest : RsTestBase() {
     """, """
         //<caret>
         fn foo() {}
-    """, IdeActions.ACTION_COMMENT_LINE)
+    """, IdeActions.ACTION_COMMENT_LINE
+    )
 
     private fun checkOption(
         optionProperty: KMutableProperty0<Boolean>,

@@ -11,18 +11,23 @@ import org.intellij.lang.annotations.Language
 
 class RsImplsLineMarkerProviderTest : RsLineMarkerProviderTestBase() {
 
-    fun `test no impls`() = doTestByText("""
+    fun `test no impls`() = doTestByText(
+        """
         // ideally don't want a marker here, but that's costly!
         trait Foo {} // - Has implementations
-    """)
+    """
+    )
 
-    fun `test one impl`() = doTestByText("""
+    fun `test one impl`() = doTestByText(
+        """
         trait Foo {}  // - Has implementations
         struct Bar {} // - Has implementations
         impl Foo for Bar {}
-    """)
+    """
+    )
 
-    fun `test multiple impls`() = doTestByText("""
+    fun `test multiple impls`() = doTestByText(
+        """
         trait Foo {}  // - Has implementations
         mod bar {
             use super::Foo;
@@ -34,9 +39,11 @@ class RsImplsLineMarkerProviderTest : RsLineMarkerProviderTestBase() {
             struct Baz {}  // - Has implementations
             impl Foo for Baz {}
         }
-    """)
+    """
+    )
 
-    fun `test icon position`() = doTestByText("""
+    fun `test icon position`() = doTestByText(
+        """
         ///
         /// Documentation
         ///
@@ -48,9 +55,11 @@ class RsImplsLineMarkerProviderTest : RsLineMarkerProviderTestBase() {
         Bar // - Has implementations
         {}
         impl Foo for Bar {}
-    """)
+    """
+    )
 
-    fun `test impls sorting`() = doPopupTest("""
+    fun `test impls sorting`() = doPopupTest(
+        """
         trait Bar {}
         trait Foo {}
         struct FooBar/*caret*/;

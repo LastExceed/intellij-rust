@@ -1,4 +1,4 @@
-<fold text='/* crates */'>#[macro_use]
+<fold text='/ * crates * / '>#[macro_use]
 extern crate lazy_static;
 extern crate bitflags;
 extern crate dbus_macros;
@@ -8,4 +8,4 @@ extern crate getopts;
 extern crate log;
 extern crate env_logger;
 extern crate rustc_serialize;
-extern crate json_macro;</fold>
+extern crate json_macro;< / fold>

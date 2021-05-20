@@ -55,8 +55,10 @@ class LineMarkerTestHelper(private val fixture: CodeInsightTestFixture) {
     private fun markersFrom(editor: Editor, project: Project): List<Pair<Int, String>> =
         DaemonCodeAnalyzerImpl.getLineMarkers(editor.document, project)
             .map {
-                Pair(editor.document.getLineNumber(it.element?.textRange?.startOffset as Int),
-                    it.lineMarkerTooltip ?: "null")
+                Pair(
+                    editor.document.getLineNumber(it.element?.textRange?.startOffset as Int),
+                    it.lineMarkerTooltip ?: "null"
+                )
             }
             .sortedWith(compareBy({ it.first }, { it.second }))
 

@@ -151,13 +151,14 @@ class ShareInPlaygroundAction : DumbAwareAction() {
 
 private var MOCK: String? = null
 
-private val playgroundHost: String get() {
-    return if (isUnitTestMode) {
-        MOCK ?: error("Use `withMockPlaygroundHost`")
-    } else {
-        "https://play.rust-lang.org"
+private val playgroundHost: String
+    get() {
+        return if (isUnitTestMode) {
+            MOCK ?: error("Use `withMockPlaygroundHost`")
+        } else {
+            "https://play.rust-lang.org"
+        }
     }
-}
 
 @TestOnly
 fun withMockPlaygroundHost(host: String, action: () -> Unit) {

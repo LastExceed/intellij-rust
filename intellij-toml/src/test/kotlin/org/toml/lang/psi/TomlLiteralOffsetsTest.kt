@@ -41,7 +41,8 @@ class TomlLiteralOffsetsTest(type: IElementType, text: String) :
             arrayOf(MULTILINE_BASIC_STRING, "|\"\"\"|bar\"\"||"),
 
             arrayOf(MULTILINE_LITERAL_STRING, """|'''|foo|'''|"""),
-            arrayOf(MULTILINE_LITERAL_STRING, """|'''|\n
+            arrayOf(
+                MULTILINE_LITERAL_STRING, """|'''|\n
                 fo\u0020o|'''|""".trimIndent()
             ),
             arrayOf(MULTILINE_LITERAL_STRING, """|'''|don't|'''|"""),

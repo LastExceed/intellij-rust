@@ -50,7 +50,8 @@ class RsDetachedFileInspection : RsLocalInspectionTool() {
             )
 
             return arrayOf(
-                manager.createProblemDescriptor(file,
+                manager.createProblemDescriptor(
+                    file,
                     "File is not included in module tree, analysis is not available",
                     isOnTheFly,
                     fixes.toTypedArray(),

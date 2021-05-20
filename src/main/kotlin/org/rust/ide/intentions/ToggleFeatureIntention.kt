@@ -49,6 +49,7 @@ class ToggleFeatureIntention : RsElementBaseIntentionAction<ToggleFeatureIntenti
         project.cargoProjects.modifyFeatures(cargoProject, setOf(feature), !state)
     }
 }
+
 private fun isFeatureEnabled(element: RsElement, name: String): Boolean? {
     val pkg = element.containingCargoPackage ?: return null
     if (pkg.origin != PackageOrigin.WORKSPACE) return null

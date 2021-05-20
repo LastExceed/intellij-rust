@@ -6,46 +6,59 @@
 package org.rust.ide.intentions
 
 class JoinParameterListIntentionTest : RsIntentionTestBase(JoinParameterListIntention::class) {
-    fun `test one parameter`() = doAvailableTest("""
+    fun `test one parameter`() = doAvailableTest(
+        """
         fn foo(
             /*caret*/p1: i32
         ) {}
-    """, """fn foo(p1: i32) {}""")
+    """, """fn foo(p1: i32) {}"""
+    )
 
-    fun `test two parameter`() = doAvailableTest("""
+    fun `test two parameter`() = doAvailableTest(
+        """
         fn foo(
             /*caret*/p1: i32,
             p2: i32
         ) {}
     """, """
         fn foo(p1: i32, p2: i32) {}
-    """)
+    """
+    )
 
-    fun `test no line breaks`() = doUnavailableTest("""
+    fun `test no line breaks`() = doUnavailableTest(
+        """
         fn foo(/*caret*/p1: i32, p2: i32, p3: i32) {}
-    """)
+    """
+    )
 
-    fun `test has some line breaks`() = doAvailableTest("""
+    fun `test has some line breaks`() = doAvailableTest(
+        """
         fn foo(p1: i32, /*caret*/p2: i32,
                p3: i32
         ) {}
     """, """
         fn foo(p1: i32, p2: i32, p3: i32) {}
-    """)
+    """
+    )
 
-    fun `test has some line breaks 2`() = doAvailableTest("""
+    fun `test has some line breaks 2`() = doAvailableTest(
+        """
         fn foo(
             p1: i32, p2: i32, p3: i32/*caret*/
         ) {}
     """, """
         fn foo(p1: i32, p2: i32, p3: i32) {}
-    """)
+    """
+    )
 
-    fun `test has comment`() = doUnavailableTest("""
+    fun `test has comment`() = doUnavailableTest(
+        """
         fn foo(/*caret*/p1: i32, /* comment */ p2: i32, p3: i32) {}
-    """)
+    """
+    )
 
-    fun `test has comment 2`() = doAvailableTest("""
+    fun `test has comment 2`() = doAvailableTest(
+        """
         fn foo(/*caret*/p1: i32, /*
                comment
                */ p2: i32,
@@ -54,20 +67,25 @@ class JoinParameterListIntentionTest : RsIntentionTestBase(JoinParameterListInte
         fn foo(p1: i32, /*
                comment
                */ p2: i32, p3: i32) {}
-    """)
+    """
+    )
 
-    fun `test has end-of-line comments`() = doUnavailableTest("""
+    fun `test has end-of-line comments`() = doUnavailableTest(
+        """
         fn foo(
             /*caret*/p1: i32, // comment
             p2: i32
         ) {}
-    """)
+    """
+    )
 
-    fun `test no space between parameters`() = doAvailableTest("""
+    fun `test no space between parameters`() = doAvailableTest(
+        """
         fn foo(/*caret*/parameter1: u64,parameter2: u64,
                parameter3: u64
         ) {}
     """, """
         fn foo(parameter1: u64,parameter2: u64, parameter3: u64) {}
-    """)
+    """
+    )
 }

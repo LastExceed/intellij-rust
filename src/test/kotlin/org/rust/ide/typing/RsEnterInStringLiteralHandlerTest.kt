@@ -10,7 +10,8 @@ import org.intellij.lang.annotations.Language
 class RsEnterInStringLiteralHandlerTest : RsTypingTestBase() {
     override val dataPath = "org/rust/ide/typing/string/fixtures"
 
-    fun `test simple`() = doTest("""
+    fun `test simple`() = doTest(
+        """
         fn main() {
             let lit = "Hello, /*caret*/World";
             println!("{}", lit);
@@ -21,9 +22,11 @@ class RsEnterInStringLiteralHandlerTest : RsTypingTestBase() {
             /*caret*/World";
             println!("{}", lit);
         }
-    """)
+    """
+    )
 
-    fun `test multiline text`() = doTest("""
+    fun `test multiline text`() = doTest(
+        """
         fn main() {
             let lit = "\
 Multiline text
@@ -38,9 +41,11 @@ Multiline text
 last
  /*caret*/line";
         }
-    """)
+    """
+    )
 
-    fun `test before opening`() = doTest("""
+    fun `test before opening`() = doTest(
+        """
         fn main() {
             let lit =/*caret*/"Hello, World";
         }
@@ -49,9 +54,11 @@ last
             let lit =
                 /*caret*/"Hello, World";
         }
-    """)
+    """
+    )
 
-    fun `test after opening`() = doTest("""
+    fun `test after opening`() = doTest(
+        """
         fn main() {
             "/*caret*/Hello, World";
         }
@@ -60,9 +67,11 @@ last
             "\
             /*caret*/Hello, World";
         }
-    """)
+    """
+    )
 
-    fun `test inside opening`() = doTest("""
+    fun `test inside opening`() = doTest(
+        """
         fn main() {
             b/*caret*/"Hello, World";
         }
@@ -71,9 +80,11 @@ last
             b
             /*caret*/"Hello, World";
         }
-    """)
+    """
+    )
 
-    fun `test before closing`() = doTest("""
+    fun `test before closing`() = doTest(
+        """
         fn main() {
             "Hello, World/*caret*/";
         }
@@ -82,9 +93,11 @@ last
             "Hello, World\
             /*caret*/";
         }
-    """)
+    """
+    )
 
-    fun `test after closing`() = doTest("""
+    fun `test after closing`() = doTest(
+        """
         fn main() {
             "Hello, World"/*caret*/;
         }
@@ -93,9 +106,11 @@ last
             "Hello, World"
             /*caret*/;
         }
-    """)
+    """
+    )
 
-    fun `test raw literal`() = doTest("""
+    fun `test raw literal`() = doTest(
+        """
         fn main() {
             r"Hello,/*caret*/ World";
         }
@@ -104,9 +119,11 @@ last
             r"Hello,
             /*caret*/ World";
         }
-    """)
+    """
+    )
 
-    fun `test before escape`() = doTest("""
+    fun `test before escape`() = doTest(
+        """
         fn main() {
             "foo/*caret*/\n"
         }
@@ -115,9 +132,11 @@ last
             "foo\
             /*caret*/\n"
         }
-    """)
+    """
+    )
 
-    fun `test after escape`() = doTest("""
+    fun `test after escape`() = doTest(
+        """
         fn main() {
             "foo\n/*caret*/bar"
         }
@@ -126,9 +145,11 @@ last
             "foo\n\
             /*caret*/bar"
         }
-    """)
+    """
+    )
 
-    fun `test inside escape`() = doTest("""
+    fun `test inside escape`() = doTest(
+        """
         fn main() {
             "foo\u{00/*caret*/00}"
         }
@@ -137,9 +158,11 @@ last
             "foo\u{00
             /*caret*/00}"
         }
-    """)
+    """
+    )
 
-    fun `test inside escape after slash`() = doTest("""
+    fun `test inside escape after slash`() = doTest(
+        """
         fn main() {
             "foo\/*caret*/u{0000}"
         }
@@ -148,9 +171,11 @@ last
             "foo\
             /*caret*/u{0000}"
         }
-    """)
+    """
+    )
 
-    fun `test between quote escape`() = doTest("""
+    fun `test between quote escape`() = doTest(
+        """
         fn main() {
             "/*caret*/\n"
         }
@@ -159,9 +184,11 @@ last
             "\
             /*caret*/\n"
         }
-    """)
+    """
+    )
 
-    fun `test between escape quote`() = doTest("""
+    fun `test between escape quote`() = doTest(
+        """
         fn main() {
             "foo\n/*caret*/"
         }
@@ -170,36 +197,44 @@ last
             "foo\n\
             /*caret*/"
         }
-    """)
+    """
+    )
 
-    fun `test incomplete`() = doTest("""
+    fun `test incomplete`() = doTest(
+        """
         fn main() {
             "foo/*caret*/
     """, """
         fn main() {
             "foo
                 /*caret*/
-    """)
+    """
+    )
 
-    fun `test escaped eof`() = doTest("""
+    fun `test escaped eof`() = doTest(
+        """
         fn main() {
             "foo\n/*caret*/
     """, """
         fn main() {
             "foo\n
                 /*caret*/
-    """)
+    """
+    )
 
-    fun `test raw eof`() = doTest("""
+    fun `test raw eof`() = doTest(
+        """
         fn main() {
             r##"foo/*caret*/
     """, """
         fn main() {
             r##"foo
                 /*caret*/
-    """)
+    """
+    )
 
-    fun `test incomplete escaped`() = doTest("""
+    fun `test incomplete escaped`() = doTest(
+        """
         fn main() {
             "foo\n/*caret*/
         }
@@ -208,10 +243,12 @@ last
             "foo\n\
         /*caret*/
         }
-    """)
+    """
+    )
 
     // FIXME: probably should not indent in this case
-    fun `test incomplete raw`() = doTest("""
+    fun `test incomplete raw`() = doTest(
+        """
         fn main() {
             r##"foo/*caret*/
         }
@@ -220,7 +257,8 @@ last
             r##"foo
             /*caret*/
         }
-    """)
+    """
+    )
 
     fun doTest(@Language("Rust") before: String, @Language("Rust") after: String) {
         InlineFile(before.trimIndent()).withCaret()

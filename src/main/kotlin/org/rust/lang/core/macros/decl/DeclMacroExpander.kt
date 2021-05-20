@@ -122,13 +122,14 @@ private class NestingState(
     var atTheEnd: Boolean = false
 )
 
-class DeclMacroExpander(val project: Project): MacroExpander<RsDeclMacroData, DeclMacroExpansionError>() {
-   override fun expandMacroAsTextWithErr(
-       def: RsDeclMacroData,
-       call: RsMacroCallData
+class DeclMacroExpander(val project: Project) : MacroExpander<RsDeclMacroData, DeclMacroExpansionError>() {
+    override fun expandMacroAsTextWithErr(
+        def: RsDeclMacroData,
+        call: RsMacroCallData
     ): RsResult<Pair<CharSequence, RangeMap>, DeclMacroExpansionError> {
         val (case, subst, loweringRanges) = findMatchingPattern(def, call).unwrapOrElse { return Err(it) }
-        val macroExpansion = case.macroExpansion?.macroExpansionContents ?: return Err(DeclMacroExpansionError.DefSyntax)
+        val macroExpansion = case.macroExpansion?.macroExpansionContents
+            ?: return Err(DeclMacroExpansionError.DefSyntax)
 
         val substWithGlobalVars = MacroSubstitution(
             subst.variables + singletonMap("crate", MetaVarValue.Fragment(MACRO_DOLLAR_CRATE_IDENTIFIER, null, null, -1))
@@ -208,10 +209,10 @@ class DeclMacroExpander(val project: Project): MacroExpander<RsDeclMacroData, De
                             if (value.offsetInCallBody != -1 && value.value.isNotEmpty()) {
                                 ranges.mergeAdd(
                                     MappedTextRange(
-                                    value.offsetInCallBody,
-                                    sb.length - value.value.length - if (parensNeeded) 1 else 0,
-                                    value.value.length
-                                )
+                                        value.offsetInCallBody,
+                                        sb.length - value.value.length - if (parensNeeded) 1 else 0,
+                                        value.value.length
+                                    )
                                 )
                             }
                         }

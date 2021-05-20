@@ -40,7 +40,7 @@ foo!();
 
 include!("path/to/rust/file.rs");
 const STR: &str = include_str!("foo.in");
-const BYTES: &[u8] = include_bytes!("data.data",);
+const BYTES: &[u8] = include_bytes!("data.data", );
 
 include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
 
@@ -70,7 +70,7 @@ fn foo() {
     let v2 = vec![1; 10];
     let v: Vec<i32> = vec![];
     let vv: Vec<i32> = std::vec![]; // fully qualified macro call
-    let vvv: Vec<i32> = std::vec /*comment*/ ![]; // fully qualified macro call with comment
+    let vvv: Vec<i32> = std::vec /*comment*/![]; // fully qualified macro call with comment
     vec!(Foo[]); // custom vec macro
     // ----------------
 
@@ -87,7 +87,7 @@ fn foo() {
     unimplemented!("{} {} {}", 1, 2, 3);
     todo!("it's too {epithet} to implement", epithet = "boring");
     std::println!("{}", 92); // fully qualified macro call
-    std::println /*comment*/ !("{}", 92); // fully qualified macro call with comment
+    std::println /*comment*/!("{}", 92); // fully qualified macro call with comment
     ::std::println!("{}", 92); // fully qualified macro call beginning with double colon
     eprintln!(Foo[]); // custom format macro
     // -------------------
@@ -100,18 +100,18 @@ fn foo() {
     }
     dbg!();
     dbg!("Some text");
-    dbg!(123 + 567,);
+    dbg!(123 + 567, );
     std::dbg!(123); // fully qualified macro call
-    std::dbg /*comment*/ !(123); // fully qualified macro call with comment
+    std::dbg /*comment*/!(123); // fully qualified macro call with comment
     dbg!(Foo[]); // custom expr macro
     // ------------------
 
     // --- log macros ---
     error!();
-    debug!("{a} {c} {b}", a="a", b='b', c=3);  // => "a 3 b"
+    debug!("{a} {c} {b}", a = "a", b = 'b', c = 3);  // => "a 3 b"
     trace!(target: "smbc", "open_with {:?}", options);
     log::warn!(target: "smbc", "open_with {:?}", options); // fully qualified macro call
-    log::info /*comment*/ !(target: "smbc", "open_with {:?}", options); // fully qualified macro call with comment
+    log::info /*comment*/!(target: "smbc", "open_with {:?}", options); // fully qualified macro call with comment
     debug!(log, "debug values"; "x" => 1, "y" => -1); // custom log macro
     // ------------------
 
@@ -120,7 +120,7 @@ fn foo() {
     let b = 43u32;
     assert!(a == b);
     assert![a == b];
-    assert!{a == b};
+    assert! {a == b};
 
     assert_eq!(a, b, "Some text");
     assert_ne!(a, b, "Some text");
@@ -134,26 +134,26 @@ fn foo() {
     assert_ne!(a, b);
     debug_assert_ne!(a, b);
     std::assert!(a == b); // fully qualified macro call
-    std::assert /*comment*/ !(a == b); // fully qualified macro call with comment
+    std::assert /*comment*/!(a == b); // fully qualified macro call with comment
     assert_eq!(Foo[]); // custom assert macro
     // ---------------------
 
     // --- concat macros
     concat!("abc");
     concat!("abc", "def");
-    concat!("abc", "def",);
+    concat!("abc", "def", );
     std::concat!("abc", "def"); // fully qualified macro call
-    std::concat /*comment*/ !("abc", "def"); // fully qualified macro call with comment
+    std::concat /*comment*/!("abc", "def"); // fully qualified macro call with comment
     concat!(Foo[]); // custom concat macro
     // ------------------
 
     // - env macros
     env!("FOO");
-    env!("FOO",);
+    env!("FOO", );
     env!("FOO", "error message");
     env!("FOO", "error message", );
     std::env!("FOO"); // fully qualified macro call
-    std::env /*comment*/ !("FOO"); // fully qualified macro call with comment
+    std::env /*comment*/!("FOO"); // fully qualified macro call with comment
     env!(Foo[]); // custom env macro
     // ------------------
 
@@ -166,7 +166,8 @@ fn foo() {
     asm!("nop", a = const A + 1);
     asm!("nop", in(reg) x => y, out("eax") _);
     asm!("nop", a = const 5, b = sym foo::bar, c = in(reg) _, d = out(reg) a => _);
-    std::asm!("nop"); // fully qualified macro call
-    std::asm /*comment*/ !("nop"); // fully qualified macro call with comment
+    std::asm!("nop");
+    // fully qualified macro call
+    std::asm /*comment*/!("nop"); // fully qualified macro call with comment
     // ------------------
 }

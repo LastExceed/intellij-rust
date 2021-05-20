@@ -14,7 +14,8 @@ import org.rust.RsTestBase
  */
 class RsSmartEnterProcessorTest : RsTestBase() {
 
-    fun `test fix simple method call`() = doTest("""
+    fun `test fix simple method call`() = doTest(
+        """
         fn f() -> i32 {
             /*caret*/f(
         }
@@ -22,9 +23,11 @@ class RsSmartEnterProcessorTest : RsTestBase() {
         fn f() -> i32 {
             f();/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test fix nested method call`() = doTest("""
+    fun `test fix nested method call`() = doTest(
+        """
         fn double(x: i32) -> i32 {
         /*caret*/double(double(x
         }
@@ -32,9 +35,11 @@ class RsSmartEnterProcessorTest : RsTestBase() {
         fn double(x: i32) -> i32 {
             double(double(x));/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test fix method call with string literal`() = doTest("""
+    fun `test fix method call with string literal`() = doTest(
+        """
         fn f(s: String) -> String {
             f(f(f("((")/*caret*/
         }
@@ -42,9 +47,11 @@ class RsSmartEnterProcessorTest : RsTestBase() {
         fn f(s: String) -> String {
             f(f(f("((")));/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test fix method call multiple lines`() = doTest("""
+    fun `test fix method call multiple lines`() = doTest(
+        """
         fn f(s: String) -> String {
             f("");
             f(
@@ -56,9 +63,11 @@ class RsSmartEnterProcessorTest : RsTestBase() {
             f(
                 f("(("));/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test fix whitespace and semicolon`() = doTest("""
+    fun `test fix whitespace and semicolon`() = doTest(
+        """
         fn f(x: i32) -> i32 {
             f(f(x))/*caret*/  ;
         }
@@ -66,9 +75,11 @@ class RsSmartEnterProcessorTest : RsTestBase() {
         fn f(x: i32) -> i32 {
             f(f(x));/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test fix semicolon after declaration`() = doTest("""
+    fun `test fix semicolon after declaration`() = doTest(
+        """
         struct Point {
             x: i32,
             y: i32,
@@ -86,9 +97,11 @@ class RsSmartEnterProcessorTest : RsTestBase() {
         fn main() {
             let origin = Point { x: 0, y: 0 };/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test fix declaration with call`() = doTest("""
+    fun `test fix declaration with call`() = doTest(
+        """
         fn f() -> i32 {
             return 42;
         }
@@ -104,9 +117,11 @@ class RsSmartEnterProcessorTest : RsTestBase() {
         fn main() {
             let x = f();/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test fix match in let`() = doTest("""
+    fun `test fix match in let`() = doTest(
+        """
         fn main() {
             let version_req = match version {
                 Some(v) => try!(VersionReq::parse(v)),
@@ -120,9 +135,11 @@ class RsSmartEnterProcessorTest : RsTestBase() {
                 None => VersionReq::any()
             };/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test fix call in stmt`() = doTest("""
+    fun `test fix call in stmt`() = doTest(
+        """
         fn f(s: String) {
             /*caret*/f(
             let x = 5;
@@ -132,9 +149,11 @@ class RsSmartEnterProcessorTest : RsTestBase() {
             f();/*caret*/
             let x = 5;
         }
-    """)
+    """
+    )
 
-    fun `test fix current line call only`() = doTest("""
+    fun `test fix current line call only`() = doTest(
+        """
         fn main() {
             let a = {
                 1
@@ -162,9 +181,11 @@ class RsSmartEnterProcessorTest : RsTestBase() {
                 1
             };
         }
-    """)
+    """
+    )
 
-    fun `test fix on left brace`() = doTest("""
+    fun `test fix on left brace`() = doTest(
+        """
         fn main() {
             let a = {
                 1
@@ -176,9 +197,11 @@ class RsSmartEnterProcessorTest : RsTestBase() {
                 1
             };/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test fix on right brace`() = doTest("""
+    fun `test fix on right brace`() = doTest(
+        """
         fn main() {
             let a = /*caret*/{
                 1
@@ -190,9 +213,11 @@ class RsSmartEnterProcessorTest : RsTestBase() {
                 1
             };/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test empty expression in match`() = doTest("""
+    fun `test empty expression in match`() = doTest(
+        """
         fn main() {
             let a = true;
             match a {
@@ -207,9 +232,11 @@ class RsSmartEnterProcessorTest : RsTestBase() {
                 /*caret*/
             }
         }
-    """)
+    """
+    )
 
-    fun `test call expression in match`() = doTest("""
+    fun `test call expression in match`() = doTest(
+        """
         fn test() {}
 
         fn main() {
@@ -228,9 +255,11 @@ class RsSmartEnterProcessorTest : RsTestBase() {
                 /*caret*/
             }
         }
-    """)
+    """
+    )
 
-    fun `test dot expression in match`() = doTest("""
+    fun `test dot expression in match`() = doTest(
+        """
         fn main() {
             let a = true;
             match a {
@@ -245,9 +274,11 @@ class RsSmartEnterProcessorTest : RsTestBase() {
                 /*caret*/
             }
         }
-    """)
+    """
+    )
 
-    fun `test unit expression in match`() = doTest("""
+    fun `test unit expression in match`() = doTest(
+        """
         fn main() {
             let a = true;
             match a {
@@ -262,9 +293,11 @@ class RsSmartEnterProcessorTest : RsTestBase() {
                 /*caret*/
             }
         }
-    """)
+    """
+    )
 
-    fun `test macro expression in match`() = doTest("""
+    fun `test macro expression in match`() = doTest(
+        """
         fn main() {
             let a = true;
             match a {
@@ -279,9 +312,11 @@ class RsSmartEnterProcessorTest : RsTestBase() {
                 /*caret*/
             }
         }
-    """)
+    """
+    )
 
-    fun `test block expression in match`() = doTest("""
+    fun `test block expression in match`() = doTest(
+        """
         fn main() {
             let a = true;
             match a {
@@ -296,57 +331,71 @@ class RsSmartEnterProcessorTest : RsTestBase() {
                 /*caret*/
             }
         }
-    """)
+    """
+    )
 
-    fun `test fix function`() = doTest("""
+    fun `test fix function`() = doTest(
+        """
         fn foo/*caret*/
     """, """
         fn foo() {
             /*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test fix function with parameters`() = doTest("""
+    fun `test fix function with parameters`() = doTest(
+        """
         fn foo(a: i32, b: i32/*caret*/)
     """, """
         fn foo(a: i32, b: i32) {
             /*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test fix function with return type`() = doTest("""
+    fun `test fix function with return type`() = doTest(
+        """
         fn foo() -> i32/*caret*/
     """, """
         fn foo() -> i32 {
             /*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test fix function with parameters and return type`() = doTest("""
+    fun `test fix function with parameters and return type`() = doTest(
+        """
         fn foo(a: i32) -> i32/*caret*/
     """, """
         fn foo(a: i32) -> i32 {
             /*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test fix struct`() = doTest("""
+    fun `test fix struct`() = doTest(
+        """
         struct s/*caret*/
     """, """
         struct s {
             /*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test fix union`() = doTest("""
+    fun `test fix union`() = doTest(
+        """
         union u/*caret*/
     """, """
         union u {
             /*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test fix nested function definition`() = doTest("""
+    fun `test fix nested function definition`() = doTest(
+        """
         fn foo() {
             fn bar(/*caret*/)
         }
@@ -356,9 +405,11 @@ class RsSmartEnterProcessorTest : RsTestBase() {
                 /*caret*/
             }
         }
-    """)
+    """
+    )
 
-    fun `test empty line`() = doTest("""
+    fun `test empty line`() = doTest(
+        """
         fn main() {
             let a = 123;
             /*caret*/
@@ -366,10 +417,11 @@ class RsSmartEnterProcessorTest : RsTestBase() {
     """, """
         fn main() {
             let a = 123;
-            
+
             /*caret*/
         }
-    """)
+    """
+    )
 
     private fun doTest(@Language("Rust") before: String, @Language("Rust") after: String) =
         checkEditorAction(before, after, IdeActions.ACTION_EDITOR_COMPLETE_STATEMENT)

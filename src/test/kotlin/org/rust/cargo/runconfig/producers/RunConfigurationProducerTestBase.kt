@@ -169,11 +169,13 @@ abstract class RunConfigurationProducerTestBase : RsTestBase() {
         }
 
         fun build() {
-            myFixture.addFileToProject("Cargo.toml", """
+            myFixture.addFileToProject(
+                "Cargo.toml", """
                 [project]
                 name = "test"
                 version = 0.0.1
-            """)
+            """
+            )
             files.forEach { myFixture.addFileToProject(it.path, it.code) }
             toOpen?.let { toOpen ->
                 openFileInEditor(toOpen.path)
@@ -242,7 +244,7 @@ abstract class RunConfigurationProducerTestBase : RsTestBase() {
     private class ProjectDescriptor : LightProjectDescriptor() {
         @Throws(Exception::class)
         override fun setUpProject(project: Project, handler: SetupHandler) {
-            val setupHandler = object : SetupHandler  {
+            val setupHandler = object : SetupHandler {
 
                 private lateinit var module: Module
 

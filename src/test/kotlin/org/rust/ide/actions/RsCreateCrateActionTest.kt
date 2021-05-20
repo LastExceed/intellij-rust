@@ -52,19 +52,23 @@ class RsCreateCrateActionTest : RsWithToolchainTestBase() {
 
     private fun createProjectScaffold() {
         fileTree {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "hello"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
 
             dir("src") {
-                rust("main.rs", """
+                rust(
+                    "main.rs", """
                     fn main() {
                         println!("Hello, world!");
                     }
-                """)
+                """
+                )
             }
         }.create()
     }

@@ -17,8 +17,7 @@ class TomlBraceMatcher : PairedBraceMatcher {
 
     override fun isPairedBracesAllowedBeforeType(lbraceType: IElementType, contextType: IElementType?): Boolean = true
 
-    override fun getCodeConstructStart(file: PsiFile, openingBraceOffset: Int): Int
-        = openingBraceOffset
+    override fun getCodeConstructStart(file: PsiFile, openingBraceOffset: Int): Int = openingBraceOffset
 
     companion object {
         private val PAIRS: Array<BracePair> = arrayOf(

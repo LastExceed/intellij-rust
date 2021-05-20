@@ -14,8 +14,7 @@ import com.intellij.openapi.editor.ex.EditorEx
 import com.intellij.openapi.project.Project
 import com.intellij.psi.search.GlobalSearchScope
 
-class CargoConsoleView(project: Project, searchScope: GlobalSearchScope, viewer: Boolean, usePredefinedMessageFilter: Boolean)
-    : ConsoleViewImpl(project, searchScope, viewer, usePredefinedMessageFilter) {
+class CargoConsoleView(project: Project, searchScope: GlobalSearchScope, viewer: Boolean, usePredefinedMessageFilter: Boolean) : ConsoleViewImpl(project, searchScope, viewer, usePredefinedMessageFilter) {
     private var hasErrors = false
 
     override fun doCreateConsoleEditor(): EditorEx {

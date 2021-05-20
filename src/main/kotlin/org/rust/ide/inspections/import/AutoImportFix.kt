@@ -113,7 +113,8 @@ class AutoImportFix(element: RsElement, private val type: Type) : LocalQuickFixO
         fun findApplicableContext(project: Project, methodCall: RsMethodCall): Context? {
             val results = methodCall.inference?.getResolvedMethod(methodCall) ?: emptyList()
             if (results.isEmpty()) return Context(METHOD, emptyList())
-            val candidates = ImportCandidatesCollector.getImportCandidates(project, methodCall, results)?.toList() ?: return null
+            val candidates = ImportCandidatesCollector.getImportCandidates(project, methodCall, results)?.toList()
+                ?: return null
             return Context(METHOD, candidates)
         }
 
@@ -129,7 +130,8 @@ class AutoImportFix(element: RsElement, private val type: Type) : LocalQuickFixO
                 if (it !is ResolvedPath.AssocItem) return null
                 it.source
             }
-            val candidates = ImportCandidatesCollector.getTraitImportCandidates(project, path, sources)?.toList() ?: return null
+            val candidates = ImportCandidatesCollector.getTraitImportCandidates(project, path, sources)?.toList()
+                ?: return null
             return Context(ASSOC_ITEM_PATH, candidates)
         }
     }

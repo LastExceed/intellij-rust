@@ -8,13 +8,16 @@ package org.rust.ide.actions.mover
 import org.intellij.lang.annotations.Language
 
 class RsItemUpDownMoverTest : RsStatementUpDownMoverTestBase() {
-    fun `test step nowhere`() = doTest("""
+    fun `test step nowhere`() = doTest(
+        """
         /*item*/
     """, """
         /*item*/
-    """)
+    """
+    )
 
-    fun `test step comment`() = doTest("""
+    fun `test step comment`() = doTest(
+        """
         /*item*/
 
         //EOF
@@ -22,9 +25,11 @@ class RsItemUpDownMoverTest : RsStatementUpDownMoverTestBase() {
         //EOF
 
         /*item*/
-    """)
+    """
+    )
 
-    fun `test move struct out of function`() = moveDown("""
+    fun `test move struct out of function`() = moveDown(
+        """
         fn s() {
             struct /*caret*/Foo {
                 pub f: u32,
@@ -36,9 +41,11 @@ class RsItemUpDownMoverTest : RsStatementUpDownMoverTestBase() {
         struct /*caret*/Foo {
             pub f: u32,
         }
-    """)
+    """
+    )
 
-    fun `test move function out of mod`() = moveDown("""
+    fun `test move function out of mod`() = moveDown(
+        """
         mod s {
             fn /*caret*/foo() {}
         }
@@ -46,25 +53,31 @@ class RsItemUpDownMoverTest : RsStatementUpDownMoverTestBase() {
         mod s {
         }
         fn /*caret*/foo() {}
-    """)
+    """
+    )
 
-    fun `test impl prevent step out`() = moveDownAndBackUp("""
+    fun `test impl prevent step out`() = moveDownAndBackUp(
+        """
         struct S;
         impl S {
             fn /*caret*/test() {
                 test!();
             }
         }
-    """, testmark = UpDownMoverTestMarks.moveOutOfImpl)
+    """, testmark = UpDownMoverTestMarks.moveOutOfImpl
+    )
 
-    fun `test trait prevent step out`() = moveDownAndBackUp("""
+    fun `test trait prevent step out`() = moveDownAndBackUp(
+        """
         trait T {
             type /*caret*/Foo;
         }
-    """, testmark = UpDownMoverTestMarks.moveOutOfImpl)
+    """, testmark = UpDownMoverTestMarks.moveOutOfImpl
+    )
 
     fun `test can move items inside impl`() {
-        moveDownAndBackUp("""
+        moveDownAndBackUp(
+            """
             impl s {
                 const /*caret*/FOO: i32 = 92;
 
@@ -82,21 +95,25 @@ class RsItemUpDownMoverTest : RsStatementUpDownMoverTestBase() {
 
                 const /*caret*/FOO: i32 = 92;
             }
-        """)
+        """
+        )
     }
 
     //TODO: all tests bellow are way to similar.
     // Could we reduce test duplication here?
 
-    fun `test step over single line function 2`() = doTest("""
+    fun `test step over single line function 2`() = doTest(
+        """
         /*item*/
         fn foo() { }
     """, """
         fn foo() { }
         /*item*/
-    """)
+    """
+    )
 
-    fun `test step over multi line function`() = doTest("""
+    fun `test step over multi line function`() = doTest(
+        """
         /*item*/
         fn foo() {
 
@@ -106,17 +123,21 @@ class RsItemUpDownMoverTest : RsStatementUpDownMoverTestBase() {
 
         }
         /*item*/
-    """)
+    """
+    )
 
-    fun `test step over single line struct`() = doTest("""
+    fun `test step over single line struct`() = doTest(
+        """
         /*item*/
         struct S;
     """, """
         struct S;
         /*item*/
-    """)
+    """
+    )
 
-    fun `test step over multi line struct`() = doTest("""
+    fun `test step over multi line struct`() = doTest(
+        """
         /*item*/
         struct S {
         test: u32
@@ -126,9 +147,11 @@ class RsItemUpDownMoverTest : RsStatementUpDownMoverTestBase() {
         test: u32
         }
         /*item*/
-    """)
+    """
+    )
 
-    fun `test step over multi line struct with attr`() = doTest("""
+    fun `test step over multi line struct with attr`() = doTest(
+        """
         /*item*/
         #[derive(Debug)]
         struct S {
@@ -140,9 +163,11 @@ class RsItemUpDownMoverTest : RsStatementUpDownMoverTestBase() {
         test: u32
         }
         /*item*/
-    """)
+    """
+    )
 
-    fun `test step over multiline impl`() = doTest("""
+    fun `test step over multiline impl`() = doTest(
+        """
         struct S;
         /*item*/
         impl S {
@@ -154,9 +179,11 @@ class RsItemUpDownMoverTest : RsStatementUpDownMoverTestBase() {
 
         }
         /*item*/
-    """)
+    """
+    )
 
-    fun `test step over multiline trait`() = doTest("""
+    fun `test step over multiline trait`() = doTest(
+        """
         /*item*/
         #[test]
         trait S {
@@ -168,9 +195,11 @@ class RsItemUpDownMoverTest : RsStatementUpDownMoverTestBase() {
 
         }
         /*item*/
-    """)
+    """
+    )
 
-    fun `test step over multiline macro`() = doTest("""
+    fun `test step over multiline macro`() = doTest(
+        """
         /*item*/
         test! {
 
@@ -180,25 +209,31 @@ class RsItemUpDownMoverTest : RsStatementUpDownMoverTestBase() {
 
         }
         /*item*/
-    """)
+    """
+    )
 
-    fun `test step over single line macro`() = doTest("""
+    fun `test step over single line macro`() = doTest(
+        """
         /*item*/
         test!();
     """, """
         test!();
         /*item*/
-    """)
+    """
+    )
 
-    fun `test step over single line macro rules`() = doTest("""
+    fun `test step over single line macro rules`() = doTest(
+        """
         /*item*/
         macro_rules! test {}
     """, """
         macro_rules! test {}
         /*item*/
-    """)
+    """
+    )
 
-    fun `test step over multi line macro rules`() = doTest("""
+    fun `test step over multi line macro rules`() = doTest(
+        """
         /*item*/
         macro_rules! test {
 
@@ -208,17 +243,21 @@ class RsItemUpDownMoverTest : RsStatementUpDownMoverTestBase() {
 
         }
         /*item*/
-    """)
+    """
+    )
 
-    fun `test step over single line mod`() = doTest("""
+    fun `test step over single line mod`() = doTest(
+        """
         /*item*/
         mod test;
     """, """
         mod test;
         /*item*/
-    """)
+    """
+    )
 
-    fun `test step over multi line mod`() = doTest("""
+    fun `test step over multi line mod`() = doTest(
+        """
         /*item*/
         mod test {
 
@@ -228,9 +267,11 @@ class RsItemUpDownMoverTest : RsStatementUpDownMoverTestBase() {
 
         }
         /*item*/
-    """)
+    """
+    )
 
-    fun `test step over use`() = doTest("""
+    fun `test step over use`() = doTest(
+        """
         /*item*/
         use test::
             test;
@@ -238,15 +279,18 @@ class RsItemUpDownMoverTest : RsStatementUpDownMoverTestBase() {
         use test::
             test;
         /*item*/
-    """)
+    """
+    )
 
-    fun `test step over extern crate`() = doTest("""
+    fun `test step over extern crate`() = doTest(
+        """
         /*item*/
         extern crate test;
     """, """
         extern crate test;
         /*item*/
-    """)
+    """
+    )
 
     private val items = listOf(
         """

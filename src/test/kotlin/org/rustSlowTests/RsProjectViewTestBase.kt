@@ -27,26 +27,31 @@ abstract class RsProjectViewTestBase : RsWithToolchainTestBase() {
 
     fun `test external library node`() {
         buildProject {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "intellij-rust-test"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
             dir("src") {
                 rust("main.rs", "")
             }
         }
 
-        checkExternalLibrariesNode("""
+        checkExternalLibrariesNode(
+            """
             -External Libraries
              +stdlib $presentableStdlibVersion
-        """)
+        """
+        )
     }
 
     fun `test external library node with external dependencies`() {
         buildProject {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "intellij-rust-test"
                 version = "0.1.0"
@@ -54,17 +59,20 @@ abstract class RsProjectViewTestBase : RsWithToolchainTestBase() {
 
                 [dependencies]
                 code-generation-example = "^0.1.0"
-            """)
+            """
+            )
             dir("src") {
                 rust("main.rs", "")
             }
         }
 
-        checkExternalLibrariesNode("""
+        checkExternalLibrariesNode(
+            """
             -External Libraries
              +code-generation-example 0.1.0
              +stdlib $presentableStdlibVersion
-        """)
+        """
+        )
     }
 
     private val presentableStdlibVersion: String

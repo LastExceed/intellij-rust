@@ -14,7 +14,8 @@ import org.rust.cargo.project.workspace.CargoWorkspace
 @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
 class RsStdlibResolveTestEdition2015 : RsResolveTestBase() {
 
-    fun `test try! macro`() = checkByCode("""
+    fun `test try! macro`() = checkByCode(
+        """
         struct S { field: u32 }
                     //X
         fn foo() -> Result<S, ()> { unimplemented!() }
@@ -25,12 +26,14 @@ class RsStdlibResolveTestEdition2015 : RsResolveTestBase() {
             s.field;
             //^
         }
-    """)
+    """
+    )
 
     // BACKCOMPAT: Rust 1.46
     //  Since Rust 1.47 layout of stdlib was changed.
     //  In general, `lib%lib_name%` was replaced with `%lib_name%/src`
-    fun `test resolve with no_std attribute 2`() = stubOnlyResolve("""
+    fun `test resolve with no_std attribute 2`() = stubOnlyResolve(
+        """
     //- main.rs
         #![no_std]
 
@@ -40,5 +43,6 @@ class RsStdlibResolveTestEdition2015 : RsResolveTestBase() {
 
         fn foo(v: Vec) {}
                  //^ ...liballoc/vec.rs|...alloc/src/vec.rs|...alloc/src/vec/mod.rs
-    """)
+    """
+    )
 }

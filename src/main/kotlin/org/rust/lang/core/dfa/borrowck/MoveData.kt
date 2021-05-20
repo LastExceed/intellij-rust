@@ -325,10 +325,13 @@ class MovePath(
 enum class MoveKind {
     /** When declared, variables start out "moved" */
     Declared,
+
     /** Expression or binding that moves a variable */
     MovePat,
+
     /** By-move binding */
     Captured,
+
     /** Closure creation that moves a value */
     MoveExpr
 }

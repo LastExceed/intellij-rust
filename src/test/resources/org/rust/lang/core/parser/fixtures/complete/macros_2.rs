@@ -1,15 +1,15 @@
 pub macro foo($e:expr) {
-    println!("Hello!, {}", $e);
+println!("Hello!, {}", $e);
 }
 
 macro m($($t:tt)*) {
-    $($t)*
+$($t)*
     use foo::*;
     f();
 }
 
 macro n($foo:ident, $S:ident, $i:ident, $m:ident) {
-    mod $foo {
+mod $foo {
         #[derive(Default)]
         pub struct $S { $i: u32 }
         pub macro $m($e:expr) { $e.$i }
@@ -17,13 +17,13 @@ macro n($foo:ident, $S:ident, $i:ident, $m:ident) {
 }
 
 pub macro bar {
-    [$e:expr] => {
+[$e:expr] => {
         println!("Hello!, {}", $e);
     }
 }
 
 macro vec {
-    ( $( $x:expr ),* ) => {
+( $( $x:expr ),* ) => {
         {
             let mut temp_vec = Vec::new();
             $(
@@ -35,6 +35,6 @@ macro vec {
 }
 
 pub macro compile_error {
-    ($msg:expr) => ({ /* compiler built-in */ }),
-    ($msg:expr,) => ({ /* compiler built-in */ }),
+($msg:expr) => ({ /* compiler built-in */ }),
+($msg:expr,) => ({ /* compiler built-in */ }),
 }

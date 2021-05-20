@@ -14,13 +14,13 @@ import org.rust.stdext.HashCode
 
 sealed class RsMacroData
 
-class RsDeclMacroData(val macroBody: Lazy<RsMacroBody?>): RsMacroData() {
+class RsDeclMacroData(val macroBody: Lazy<RsMacroBody?>) : RsMacroData() {
     constructor(def: RsMacro) : this(lazy(LazyThreadSafetyMode.PUBLICATION) { def.macroBodyStubbed })
 }
 
-data class RsProcMacroData(val name: String, val artifact: CargoWorkspaceData.ProcMacroArtifact): RsMacroData()
+data class RsProcMacroData(val name: String, val artifact: CargoWorkspaceData.ProcMacroArtifact) : RsMacroData()
 
-class RsBuiltinMacroData(val name: String): RsMacroData() {
+class RsBuiltinMacroData(val name: String) : RsMacroData() {
 
     fun withHash(): RsMacroDataWithHash<RsBuiltinMacroData> =
         RsMacroDataWithHash(this, HashCode.mix(HashCode.compute(name), BUILTIN_DEF_HASH))

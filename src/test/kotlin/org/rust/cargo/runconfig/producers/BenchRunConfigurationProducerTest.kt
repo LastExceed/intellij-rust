@@ -18,22 +18,26 @@ import org.rust.lang.core.psi.ext.RsMod
 class BenchRunConfigurationProducerTest : RunConfigurationProducerTestBase() {
     fun `test bench producer works for annotated functions`() {
         testProject {
-            lib("foo", "src/lib.rs", """
+            lib(
+                "foo", "src/lib.rs", """
                 #[bench]
                 fn bench_foo() { as/*caret*/sert!(true); }
-            """).open()
+            """
+            ).open()
         }
         checkOnTopLevel<RsFunction>()
     }
 
     fun `test bench producer uses complete function path`() {
         testProject {
-            lib("foo", "src/lib.rs", """
+            lib(
+                "foo", "src/lib.rs", """
             mod foo_mod {
                 #[bench]
                 fn bench_foo() { as/*caret*/sert!(true); }
             }
-            """).open()
+            """
+            ).open()
         }
         checkOnTopLevel<RsFunction>()
     }
@@ -47,7 +51,8 @@ class BenchRunConfigurationProducerTest : RunConfigurationProducerTestBase() {
 
     fun `test bench producer remembers context`() {
         testProject {
-            lib("foo", "src/lib.rs", """
+            lib(
+                "foo", "src/lib.rs", """
                 #[bench]
                 fn bench_foo() {
                     assert_eq!(2 + 2, 4);
@@ -56,7 +61,8 @@ class BenchRunConfigurationProducerTest : RunConfigurationProducerTestBase() {
                 fn bench_bar() {
                     assert_eq!(2 * 2, 4);
                 }
-            """).open()
+            """
+            ).open()
         }
 
         val ctx1 = myFixture.findElementByText("+", PsiElement::class.java)
@@ -66,7 +72,8 @@ class BenchRunConfigurationProducerTest : RunConfigurationProducerTestBase() {
 
     fun `test bench producer remembers context in test mod`() {
         testProject {
-            lib("foo", "src/lib.rs", """
+            lib(
+                "foo", "src/lib.rs", """
                 #[cfg(test)]
                 mod tests {
                     fn foo() {
@@ -78,7 +85,8 @@ class BenchRunConfigurationProducerTest : RunConfigurationProducerTestBase() {
                         let x = 2 * 2;
                     }
                 }
-            """).open()
+            """
+            ).open()
         }
 
         val ctx1 = myFixture.findElementByText("+", PsiElement::class.java)
@@ -88,7 +96,8 @@ class BenchRunConfigurationProducerTest : RunConfigurationProducerTestBase() {
 
     fun `test bench producer works for modules`() {
         testProject {
-            lib("foo", "src/lib.rs", """
+            lib(
+                "foo", "src/lib.rs", """
                 mod foo {
                     #[bench] fn bar() {}
 
@@ -96,27 +105,33 @@ class BenchRunConfigurationProducerTest : RunConfigurationProducerTestBase() {
 
                     fn quux() {/*caret*/}
                 }
-            """).open()
+            """
+            ).open()
         }
         checkOnTopLevel<RsMod>()
     }
 
     fun `test bench producer works for module declarations`() {
         testProject {
-            file("src/tests.rs", """
+            file(
+                "src/tests.rs", """
                 #[bench]
                 fn bench() {}
-            """)
-            lib("foo", "src/lib.rs", """
+            """
+            )
+            lib(
+                "foo", "src/lib.rs", """
                 mod tests/*caret*/;
-            """).open()
+            """
+            ).open()
         }
         checkOnTopLevel<RsModDeclItem>()
     }
 
     fun `test bench producer works for nested modules 1`() {
         testProject {
-            lib("foo", "src/lib.rs", """
+            lib(
+                "foo", "src/lib.rs", """
                 mod foo {
                     mod bar {
                         #[bench] fn bar() {}
@@ -126,14 +141,16 @@ class BenchRunConfigurationProducerTest : RunConfigurationProducerTestBase() {
                         fn quux() { /*caret*/ }
                     }
                 }
-            """).open()
+            """
+            ).open()
         }
         checkOnTopLevel<RsMod>()
     }
 
     fun `test bench producer works for nested modules 2`() {
         testProject {
-            lib("foo", "src/lib.rs", """
+            lib(
+                "foo", "src/lib.rs", """
                 mod foo {
                     mod bar {
                         #[bench] fn bar() {}
@@ -142,7 +159,8 @@ class BenchRunConfigurationProducerTest : RunConfigurationProducerTestBase() {
                     }
                     fn quux() { /*caret*/ }
                 }
-            """).open()
+            """
+            ).open()
         }
         checkOnTopLevel<RsMod>()
     }
@@ -156,13 +174,15 @@ class BenchRunConfigurationProducerTest : RunConfigurationProducerTestBase() {
 
     fun `test bench producer works for root module`() {
         testProject {
-            lib("foo", "src/lib.rs", """
+            lib(
+                "foo", "src/lib.rs", """
                 #[bench] fn bar() {}
 
                 #[bench] fn baz() {}
 
                 fn quux() {/*caret*/}
-            """).open()
+            """
+            ).open()
         }
         checkOnLeaf()
     }
@@ -170,33 +190,39 @@ class BenchRunConfigurationProducerTest : RunConfigurationProducerTestBase() {
     fun `test meaningful bench configuration name`() {
         testProject {
             lib("foo", "src/lib.rs", "mod bar;")
-            file("src/bar/mod.rs", """
+            file(
+                "src/bar/mod.rs", """
                 mod tests {
                     fn quux() /*caret*/{}
 
                     #[bench] fn baz() {}
                 }
-            """).open()
+            """
+            ).open()
         }
         checkOnLeaf()
     }
 
     fun `test bench producer adds bin name`() {
         testProject {
-            bin("foo", "src/bin/foo.rs", """
+            bin(
+                "foo", "src/bin/foo.rs", """
                 #[bench]
                 fn bench_foo() { as/*caret*/sert!(true); }
-            """).open()
+            """
+            ).open()
         }
         checkOnLeaf()
     }
 
     fun `test bench configuration uses default environment`() {
         testProject {
-            lib("foo", "src/lib.rs", """
+            lib(
+                "foo", "src/lib.rs", """
                 #[bench]
                 fn bench_foo() { as/*caret*/sert!(true); }
-            """).open()
+            """
+            ).open()
         }
 
         modifyTemplateConfiguration {
@@ -214,17 +240,23 @@ class BenchRunConfigurationProducerTest : RunConfigurationProducerTestBase() {
 
     fun `test bench producer works for multiple files`() {
         testProject {
-            bench("foo", "benches/foo.rs", """
+            bench(
+                "foo", "benches/foo.rs", """
                 #[bench] fn bench_foo() {}
-            """)
+            """
+            )
 
-            bench("bar", "benches/bar.rs", """
+            bench(
+                "bar", "benches/bar.rs", """
                 #[bench] fn bench_bar() {}
-            """)
+            """
+            )
 
-            bench("baz", "benches/baz.rs", """
+            bench(
+                "baz", "benches/baz.rs", """
                 #[bench] fn bench_baz() {}
-            """)
+            """
+            )
         }
 
         openFileInEditor("benches/foo.rs")
@@ -236,17 +268,23 @@ class BenchRunConfigurationProducerTest : RunConfigurationProducerTestBase() {
 
     fun `test bench producer ignores selected files that contain no benches`() {
         testProject {
-            bench("foo", "benches/foo.rs", """
+            bench(
+                "foo", "benches/foo.rs", """
                 #[bench] fn bench_foo() {}
-            """)
+            """
+            )
 
-            bench("bar", "benches/bar.rs", """
+            bench(
+                "bar", "benches/bar.rs", """
                 fn bench_bar() {}
-            """)
+            """
+            )
 
-            bench("baz", "benches/baz.rs", """
+            bench(
+                "baz", "benches/baz.rs", """
                 #[bench] fn bench_baz() {}
-            """)
+            """
+            )
         }
 
         openFileInEditor("benches/foo.rs")
@@ -258,9 +296,11 @@ class BenchRunConfigurationProducerTest : RunConfigurationProducerTestBase() {
 
     fun `test bench producer works for benches source root`() {
         testProject {
-            bench("foo", "benches/foo.rs", """
+            bench(
+                "foo", "benches/foo.rs", """
                 #[bench] fn bench_foo() {}
-            """)
+            """
+            )
         }
 
         openFileInEditor("benches/foo.rs")
@@ -270,17 +310,23 @@ class BenchRunConfigurationProducerTest : RunConfigurationProducerTestBase() {
 
     fun `test bench producer works for directories inside benches source root`() {
         testProject {
-            bench("foo", "benches/dir/foo.rs", """
+            bench(
+                "foo", "benches/dir/foo.rs", """
                 #[bench] fn bench_foo() {}
-            """)
+            """
+            )
 
-            bench("bar", "benches/dir/bar.rs", """
+            bench(
+                "bar", "benches/dir/bar.rs", """
                 fn bench_bar() {}
-            """)
+            """
+            )
 
-            bench("baz", "benches/dir/baz.rs", """
+            bench(
+                "baz", "benches/dir/baz.rs", """
                 #[bench] fn bench_baz() {}
-            """)
+            """
+            )
         }
 
         openFileInEditor("benches/dir/foo.rs")
@@ -290,9 +336,11 @@ class BenchRunConfigurationProducerTest : RunConfigurationProducerTestBase() {
 
     fun `test bench producer doesn't works for directories without benches`() {
         testProject {
-            bench("foo", "benches/foo.rs", """
+            bench(
+                "foo", "benches/foo.rs", """
                 fn foo() {}
-            """)
+            """
+            )
         }
 
         openFileInEditor("benches/foo.rs")

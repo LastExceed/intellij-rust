@@ -27,8 +27,7 @@ internal object RsPostfixTemplatePsiInfo : PostfixTemplatePsiInfo() {
         RsPsiFactory(context.project).createExpression("$prefix${context.text}$suffix")
 }
 
-class RsExprParentsSelector(pred: (RsExpr) -> Boolean = { true })
-    : PostfixTemplateExpressionSelectorBase(Condition { it is RsExpr && pred(it) }) {
+class RsExprParentsSelector(pred: (RsExpr) -> Boolean = { true }) : PostfixTemplateExpressionSelectorBase(Condition { it is RsExpr && pred(it) }) {
 
     override fun getExpressions(context: PsiElement, document: Document, offset: Int): List<PsiElement> {
         val expressions = super.getExpressions(context, document, offset)

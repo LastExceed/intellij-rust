@@ -77,14 +77,14 @@ sealed class RsContextType(
 
     class Struct : RsContextType("RUST_STRUCT", "Structure", Item::class) {
         override fun isInContext(element: PsiElement): Boolean =
-            // Structs can't be nested or contain other expressions,
+        // Structs can't be nested or contain other expressions,
             // so it is ok to look for any Struct ancestor.
             element.ancestorStrict<RsStructItem>() != null
     }
 
     class Mod : RsContextType("RUST_MOD", "Module", Item::class) {
         override fun isInContext(element: PsiElement): Boolean
-            // We are inside RsMod
+        // We are inside RsMod
             = owner(element) is RsMod
     }
 

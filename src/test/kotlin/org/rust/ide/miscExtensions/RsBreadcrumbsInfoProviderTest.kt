@@ -14,7 +14,8 @@ import org.rust.lang.core.psi.ext.descendantsOfType
 
 class RsBreadcrumbsInfoProviderTest : RsTestBase() {
 
-    fun `test multiple line breadcrumbs`() = doWholeFileTextTest("""
+    fun `test multiple line breadcrumbs`() = doWholeFileTextTest(
+        """
         fn foo() {}
         fn generic<T: Copy>() -> i32 {}
         struct Foo<'a> {}
@@ -38,9 +39,11 @@ class RsBreadcrumbsInfoProviderTest : RsTestBase() {
         foo!
         C
         TA
-    """)
+    """
+    )
 
-    fun `test breadcrumbs`() = doTextTest("""
+    fun `test breadcrumbs`() = doTextTest(
+        """
         fn main() {
             {
                 loop {
@@ -66,9 +69,11 @@ class RsBreadcrumbsInfoProviderTest : RsTestBase() {
         if true
         match option
         Some(x) =>
-    """)
+    """
+    )
 
-    fun `test if else breadcrumbs`() = doTextTest("""
+    fun `test if else breadcrumbs`() = doTextTest(
+        """
         fn main() {
             if true {
             } else {
@@ -79,18 +84,22 @@ class RsBreadcrumbsInfoProviderTest : RsTestBase() {
         main()
         if true
         else
-    """)
+    """
+    )
 
-    fun `test if block breadcrumbs`() = doTextTest("""
+    fun `test if block breadcrumbs`() = doTextTest(
+        """
        fn main() {
             if /*caret*/ { }
        }
     """, """
         main()
         if {...}
-    """)
+    """
+    )
 
-    fun `test while block breadcrumbs`() = doTextTest("""
+    fun `test while block breadcrumbs`() = doTextTest(
+        """
         fn main() {
             while /*caret*/ {
 
@@ -99,9 +108,11 @@ class RsBreadcrumbsInfoProviderTest : RsTestBase() {
     """, """
         main()
         while {...}
-    """)
+    """
+    )
 
-    fun `test empty for breadcrumbs`() = doTextTest("""
+    fun `test empty for breadcrumbs`() = doTextTest(
+        """
         fn main() {
             for in /*caret*/{
 
@@ -110,18 +121,22 @@ class RsBreadcrumbsInfoProviderTest : RsTestBase() {
     """, """
         main()
         for {...}
-    """)
+    """
+    )
 
-    fun `test lambda breadcrumbs`() = doTextTest("""
+    fun `test lambda breadcrumbs`() = doTextTest(
+        """
        fn main() {
             |a| {/*caret*/};
        }
     """, """
         main()
         |a| {...}
-    """)
+    """
+    )
 
-    fun `test long if expr truncation`() = doTextTest("""
+    fun `test long if expr truncation`() = doTextTest(
+        """
         fn main() {
             if 1 > 2 && 3 > 4 && 1 > 2 && 3 > 4 {
                 /*caret*/
@@ -130,9 +145,11 @@ class RsBreadcrumbsInfoProviderTest : RsTestBase() {
     """, """
         main()
         if 1 > 2 && 3 > 4 $ellipsis
-    """)
+    """
+    )
 
-    fun `test long match expr truncation`() = doTextTest("""
+    fun `test long match expr truncation`() = doTextTest(
+        """
         fn main() {
             match 1 > 2 && 3 > 4 && 1 > 2 && 3 > 4 {
                 /*caret*/
@@ -141,9 +158,11 @@ class RsBreadcrumbsInfoProviderTest : RsTestBase() {
     """, """
         main()
         match 1 > 2 && 3 > 4 $ellipsis
-    """)
+    """
+    )
 
-    fun `test long for expr truncation`() = doTextTest("""
+    fun `test long for expr truncation`() = doTextTest(
+        """
         fn main() {
             for _ in 0..000000000000000000002 {
                 /*caret*/
@@ -152,9 +171,11 @@ class RsBreadcrumbsInfoProviderTest : RsTestBase() {
     """, """
         main()
         for _ in 0..000000000000$ellipsis
-    """)
+    """
+    )
 
-    fun `test block expr label`() = doTextTest("""
+    fun `test block expr label`() = doTextTest(
+        """
         fn main (){
             let _ = 'block: {
                 for &v in container.iter() {
@@ -167,9 +188,11 @@ class RsBreadcrumbsInfoProviderTest : RsTestBase() {
     """, """
         main()
         'block: {...}
-    """)
+    """
+    )
 
-    fun `test loop label`() = doTextTest("""
+    fun `test loop label`() = doTextTest(
+        """
         fn main() {
             'one: loop {
                 /*caret*/
@@ -179,9 +202,11 @@ class RsBreadcrumbsInfoProviderTest : RsTestBase() {
     """, """
         main()
         'one: loop
-    """)
+    """
+    )
 
-    fun `test for label`() = doTextTest("""
+    fun `test for label`() = doTextTest(
+        """
         fn main() {
             'one: for _ in 1..2 {
                 /*caret*/
@@ -190,9 +215,11 @@ class RsBreadcrumbsInfoProviderTest : RsTestBase() {
     """, """
         main()
         'one: for _ in 1..2
-    """)
+    """
+    )
 
-    fun `test while label`() = doTextTest("""
+    fun `test while label`() = doTextTest(
+        """
         fn main() {
             'one: while false {
                 /*caret*/
@@ -201,7 +228,8 @@ class RsBreadcrumbsInfoProviderTest : RsTestBase() {
     """, """
         main()
         'one: while false
-    """)
+    """
+    )
 
     private fun doWholeFileTextTest(@Language("Rust") content: String, info: String) {
         InlineFile(content)

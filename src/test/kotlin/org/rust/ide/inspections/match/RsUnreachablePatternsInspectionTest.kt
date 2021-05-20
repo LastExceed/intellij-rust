@@ -10,7 +10,8 @@ import org.rust.ide.inspections.checkMatch.RsUnreachablePatternsInspection
 
 class RsUnreachablePatternsInspectionTest : RsInspectionsTestBase(RsUnreachablePatternsInspection::class) {
 
-    fun `test simple boolean useless`() = checkByText("""
+    fun `test simple boolean useless`() = checkByText(
+        """
         fn main() {
             let a = true;
             match a {
@@ -21,9 +22,11 @@ class RsUnreachablePatternsInspectionTest : RsInspectionsTestBase(RsUnreachableP
                 <warning descr="Unreachable pattern">false</warning> => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test binding useless`() = checkFixByText("Remove unreachable match arm", """
+    fun `test binding useless`() = checkFixByText(
+        "Remove unreachable match arm", """
         fn main() {
             let x = 42;
             match x {
@@ -38,9 +41,11 @@ class RsUnreachablePatternsInspectionTest : RsInspectionsTestBase(RsUnreachableP
                 y => {}
             };
         }
-    """)
+    """
+    )
 
-    fun `test integer literals useless`() = checkByText("""
+    fun `test integer literals useless`() = checkByText(
+        """
         fn main() {
             let a = 2;
             match a {
@@ -51,9 +56,11 @@ class RsUnreachablePatternsInspectionTest : RsInspectionsTestBase(RsUnreachableP
                 _ => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test simple double useless`() = checkByText("""
+    fun `test simple double useless`() = checkByText(
+        """
         fn main() {
             let a = 9.9;
             match a {
@@ -64,9 +71,11 @@ class RsUnreachablePatternsInspectionTest : RsInspectionsTestBase(RsUnreachableP
                 _ => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test simple string useless`() = checkByText("""
+    fun `test simple string useless`() = checkByText(
+        """
         fn main() {
             let a = "str";
             match a {
@@ -76,9 +85,11 @@ class RsUnreachablePatternsInspectionTest : RsInspectionsTestBase(RsUnreachableP
                 _ => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test simple char useless`() = checkByText("""
+    fun `test simple char useless`() = checkByText(
+        """
         fn main() {
             let a = 'h';
             match a {
@@ -88,9 +99,11 @@ class RsUnreachablePatternsInspectionTest : RsInspectionsTestBase(RsUnreachableP
                 _ => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test simple range useless`() = checkByText("""
+    fun `test simple range useless`() = checkByText(
+        """
         fn main() {
             let a = 2;
             match a {
@@ -99,9 +112,11 @@ class RsUnreachablePatternsInspectionTest : RsInspectionsTestBase(RsUnreachableP
                 _ => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test simple path enum useless`() = checkByText("""
+    fun `test simple path enum useless`() = checkByText(
+        """
         enum E { A, B }
         fn main() {
             let a = E::A;
@@ -112,9 +127,11 @@ class RsUnreachablePatternsInspectionTest : RsInspectionsTestBase(RsUnreachableP
                 <warning descr="Unreachable pattern">E::B</warning> => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test simple path struct wfUseless`() = checkByText("""
+    fun `test simple path struct wfUseless`() = checkByText(
+        """
         struct S;
         fn main() {
             let a = S;
@@ -123,9 +140,11 @@ class RsUnreachablePatternsInspectionTest : RsInspectionsTestBase(RsUnreachableP
                 <warning descr="Unreachable pattern">S</warning> => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test enum with boolean useless`() = checkByText("""
+    fun `test enum with boolean useless`() = checkByText(
+        """
         enum E { A(bool) }
         fn main() {
             let a = E::A(true);
@@ -135,9 +154,11 @@ class RsUnreachablePatternsInspectionTest : RsInspectionsTestBase(RsUnreachableP
                 <warning descr="Unreachable pattern">E::A(true)</warning> => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test enum with int useless`() = checkByText("""
+    fun `test enum with int useless`() = checkByText(
+        """
         enum E { A(i32) }
         fn main() {
             let a = E::A(2);
@@ -148,9 +169,11 @@ class RsUnreachablePatternsInspectionTest : RsInspectionsTestBase(RsUnreachableP
                 E::A(x) => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test enum with double useless`() = checkByText("""
+    fun `test enum with double useless`() = checkByText(
+        """
         enum E { A(f64) }
         fn main() {
             let a = E::A(2.3);
@@ -161,9 +184,11 @@ class RsUnreachablePatternsInspectionTest : RsInspectionsTestBase(RsUnreachableP
                 E::A(x) => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test enum with string useless`() = checkByText("""
+    fun `test enum with string useless`() = checkByText(
+        """
         enum E { A(str) }
         fn main() {
             let a = E::A("str");
@@ -174,9 +199,11 @@ class RsUnreachablePatternsInspectionTest : RsInspectionsTestBase(RsUnreachableP
                 E::A(x) => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test enum with char useless`() = checkByText("""
+    fun `test enum with char useless`() = checkByText(
+        """
         enum E { A(char) }
         fn main() {
             let a = E::A('c');
@@ -187,9 +214,11 @@ class RsUnreachablePatternsInspectionTest : RsInspectionsTestBase(RsUnreachableP
                 E::A(x) => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test enum with path enum useless`() = checkByText("""
+    fun `test enum with path enum useless`() = checkByText(
+        """
         enum E { A, B }
         enum F { A(E) }
         fn main() {
@@ -200,9 +229,11 @@ class RsUnreachablePatternsInspectionTest : RsInspectionsTestBase(RsUnreachableP
                 <warning descr="Unreachable pattern">F::A(E::A)</warning> => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test enum with path struct wf useless`() = checkByText("""
+    fun `test enum with path struct wf useless`() = checkByText(
+        """
         struct S;
         enum E { A(S) }
         fn main() {
@@ -212,9 +243,11 @@ class RsUnreachablePatternsInspectionTest : RsInspectionsTestBase(RsUnreachableP
                 <warning descr="Unreachable pattern">E::A(S)</warning> => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test enum with enum useless`() = checkByText("""
+    fun `test enum with enum useless`() = checkByText(
+        """
         enum E { A(i32), B }
         enum F { A(str), B(E) }
         enum G { A(F) }
@@ -234,9 +267,11 @@ class RsUnreachablePatternsInspectionTest : RsInspectionsTestBase(RsUnreachableP
                 <warning descr="Unreachable pattern">G::A(F::A("str2"))</warning> => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test enum useless pattern with guard`() = checkFixByText("Remove unreachable pattern", """
+    fun `test enum useless pattern with guard`() = checkFixByText(
+        "Remove unreachable pattern", """
         enum E { A(i32), B(i32) }
         fn foo(e: E) {
             match e {
@@ -254,9 +289,11 @@ class RsUnreachablePatternsInspectionTest : RsInspectionsTestBase(RsUnreachableP
                 E::B(_) => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test struct with boolean useless`() = checkByText("""
+    fun `test struct with boolean useless`() = checkByText(
+        """
         struct S { a: bool }
         fn main() {
             let a = S { a: true };
@@ -268,9 +305,11 @@ class RsUnreachablePatternsInspectionTest : RsInspectionsTestBase(RsUnreachableP
                 <warning descr="Unreachable pattern">S { a }</warning> => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test struct with int useless`() = checkByText("""
+    fun `test struct with int useless`() = checkByText(
+        """
         struct S { a: i32 }
         fn main() {
             let a = S { a: 1 };
@@ -282,9 +321,11 @@ class RsUnreachablePatternsInspectionTest : RsInspectionsTestBase(RsUnreachableP
                 <warning descr="Unreachable pattern">S { a: x }</warning> => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test struct with double useless`() = checkByText("""
+    fun `test struct with double useless`() = checkByText(
+        """
         struct S { a: f64 }
         fn main() {
             let a = S { a: 1.6 };
@@ -296,9 +337,11 @@ class RsUnreachablePatternsInspectionTest : RsInspectionsTestBase(RsUnreachableP
                 <warning descr="Unreachable pattern">S { a: x }</warning> => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test struct with string useless`() = checkByText("""
+    fun `test struct with string useless`() = checkByText(
+        """
         struct S { a: str }
         fn main() {
             let a = S { a: "str" };
@@ -310,9 +353,11 @@ class RsUnreachablePatternsInspectionTest : RsInspectionsTestBase(RsUnreachableP
                 <warning descr="Unreachable pattern">S { a: x }</warning> => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test struct with char useless`() = checkByText("""
+    fun `test struct with char useless`() = checkByText(
+        """
         struct S { a: char }
         fn main() {
             let a = S { a: 'c' };
@@ -324,9 +369,11 @@ class RsUnreachablePatternsInspectionTest : RsInspectionsTestBase(RsUnreachableP
                 <warning descr="Unreachable pattern">S { a: x }</warning> => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test struct with path enum useless`() = checkByText("""
+    fun `test struct with path enum useless`() = checkByText(
+        """
         enum E { A, B }
         struct S { a: E }
         fn main() {
@@ -340,9 +387,11 @@ class RsUnreachablePatternsInspectionTest : RsInspectionsTestBase(RsUnreachableP
 
             }
         }
-    """)
+    """
+    )
 
-    fun `test struct with path struct wfUseless`() = checkByText("""
+    fun `test struct with path struct wfUseless`() = checkByText(
+        """
         struct E;
         struct S { a: E }
         fn main() {
@@ -355,9 +404,11 @@ class RsUnreachablePatternsInspectionTest : RsInspectionsTestBase(RsUnreachableP
 
             }
         }
-    """)
+    """
+    )
 
-    fun `test struct with struct useless`() = checkByText("""
+    fun `test struct with struct useless`() = checkByText(
+        """
         struct E { a: i32, b: char }
         struct S { a: E }
         fn main() {
@@ -371,9 +422,11 @@ class RsUnreachablePatternsInspectionTest : RsInspectionsTestBase(RsUnreachableP
                 <warning descr="Unreachable pattern">_</warning> => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test ref pattern useful`() = checkByText("""
+    fun `test ref pattern useful`() = checkByText(
+        """
         struct S { x: i32 }
         enum E { A, B(S) }
 
@@ -384,9 +437,11 @@ class RsUnreachablePatternsInspectionTest : RsInspectionsTestBase(RsUnreachableP
                 E::B(s) => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test first ref pattern useful`() = checkByText("""
+    fun `test first ref pattern useful`() = checkByText(
+        """
         struct S { x: i32 }
         enum E { A, B(S) }
 
@@ -397,9 +452,11 @@ class RsUnreachablePatternsInspectionTest : RsInspectionsTestBase(RsUnreachableP
                 _ => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test integer literals useful`() = checkByText("""
+    fun `test integer literals useful`() = checkByText(
+        """
         fn foo(n: i32) {
             match n {
                 123 => {}
@@ -409,9 +466,11 @@ class RsUnreachablePatternsInspectionTest : RsInspectionsTestBase(RsUnreachableP
                 _ => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test unresolved`() = checkByText("""
+    fun `test unresolved`() = checkByText(
+        """
         fn foo(s: MyEnum) {
             match s {
                 MyEnum::A => {}
@@ -419,9 +478,11 @@ class RsUnreachablePatternsInspectionTest : RsInspectionsTestBase(RsUnreachableP
                 _ => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test const useful`() = checkByText("""
+    fun `test const useful`() = checkByText(
+        """
         const ONE: i32 = 1;
         const TWO: i32 = 2;
         fn foo(n: i32) {
@@ -431,9 +492,11 @@ class RsUnreachablePatternsInspectionTest : RsInspectionsTestBase(RsUnreachableP
                 _ => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test match ergonomics useful`() = checkByText("""
+    fun `test match ergonomics useful`() = checkByText(
+        """
         enum E { A(i32), B }
         use E::*;
         fn foo(e: &E) {
@@ -446,9 +509,11 @@ class RsUnreachablePatternsInspectionTest : RsInspectionsTestBase(RsUnreachableP
                 A(x) => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test match reference useful`() = checkByText("""
+    fun `test match reference useful`() = checkByText(
+        """
         enum E { A(i32), B }
         use E::*;
         fn foo(e: &E) {
@@ -461,9 +526,11 @@ class RsUnreachablePatternsInspectionTest : RsInspectionsTestBase(RsUnreachableP
                 &A(x) => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test const int expr evaluation`() = checkByFileTree("""
+    fun `test const int expr evaluation`() = checkByFileTree(
+        """
     //- main.rs
         mod foo;
         const MAX: i32 = 10;
@@ -480,9 +547,11 @@ class RsUnreachablePatternsInspectionTest : RsInspectionsTestBase(RsUnreachableP
                 _ => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test const bool expr evaluation`() = checkByFileTree("""
+    fun `test const bool expr evaluation`() = checkByFileTree(
+        """
     //- main.rs
         mod foo;
         const TRUE: bool = true;
@@ -498,9 +567,11 @@ class RsUnreachablePatternsInspectionTest : RsInspectionsTestBase(RsUnreachableP
                 <warning descr="Unreachable pattern">_</warning> => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test const float expr evaluation`() = checkByFileTree("""
+    fun `test const float expr evaluation`() = checkByFileTree(
+        """
     //- main.rs
         mod foo;
         const PI: f32 = 3.14;
@@ -515,9 +586,11 @@ class RsUnreachablePatternsInspectionTest : RsInspectionsTestBase(RsUnreachableP
                 _ => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test const char expr evaluation`() = checkByFileTree("""
+    fun `test const char expr evaluation`() = checkByFileTree(
+        """
     //- main.rs
         mod foo;
         const A: char = 'A';
@@ -535,9 +608,11 @@ class RsUnreachablePatternsInspectionTest : RsInspectionsTestBase(RsUnreachableP
                 _ => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test const str expr evaluation`() = checkByFileTree("""
+    fun `test const str expr evaluation`() = checkByFileTree(
+        """
     //- main.rs
         mod foo;
         const HELLO: &str = "hello!";
@@ -554,9 +629,11 @@ class RsUnreachablePatternsInspectionTest : RsInspectionsTestBase(RsUnreachableP
                 _ => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test unknown value`() = checkByText("""
+    fun `test unknown value`() = checkByText(
+        """
         fn main() {
             match 42 {
                 0..UNRESOLVED => {}
@@ -564,9 +641,11 @@ class RsUnreachablePatternsInspectionTest : RsInspectionsTestBase(RsUnreachableP
                 _ => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test deny unreachable_patterns useless`() = checkByText("""
+    fun `test deny unreachable_patterns useless`() = checkByText(
+        """
         #[deny(unreachable_patterns)]
         fn foo(a: bool) {
             match a {
@@ -575,9 +654,11 @@ class RsUnreachablePatternsInspectionTest : RsInspectionsTestBase(RsUnreachableP
                 <error descr="Unreachable pattern">true</error> => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test allow unreachable_patterns useless`() = checkByText("""
+    fun `test allow unreachable_patterns useless`() = checkByText(
+        """
         #[allow(unreachable_patterns)]
         fn foo(a: bool) {
             match a {
@@ -586,5 +667,6 @@ class RsUnreachablePatternsInspectionTest : RsInspectionsTestBase(RsUnreachableP
                 true => {}
             }
         }
-    """)
+    """
+    )
 }

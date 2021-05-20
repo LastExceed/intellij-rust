@@ -9,7 +9,7 @@ import org.rust.lang.core.psi.RsPathExpr
 import org.rust.lang.core.psi.ext.RsElement
 import org.rust.lang.core.types.infer.RsInferenceContext
 
-class PathExprResolver(resolver: (RsPathExpr) -> RsElement?): (RsPathExpr) -> RsElement? by resolver {
+class PathExprResolver(resolver: (RsPathExpr) -> RsElement?) : (RsPathExpr) -> RsElement? by resolver {
     companion object {
         val default: PathExprResolver = PathExprResolver { it.path.reference?.resolve() }
 

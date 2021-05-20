@@ -100,8 +100,10 @@ class RsOperatorsResolve : RsResolveTestBase() {
         """
     }
 
-    private inline fun testWithAllOps(operators: List<OverloadableBinaryOperator>,
-                                      codeGenerator: (String, String, String, String) -> String) {
+    private inline fun testWithAllOps(
+        operators: List<OverloadableBinaryOperator>,
+        codeGenerator: (String, String, String, String) -> String
+    ) {
         for ((traitName, itemName, fnName, sign) in operators) {
             checkByCode(codeGenerator(traitName, itemName, fnName, sign))
         }

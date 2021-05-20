@@ -10,45 +10,61 @@ import org.intellij.lang.annotations.Language
 import org.rust.RsTestBase
 
 class CargoTomlUrlResolveTest : RsTestBase() {
-    fun `test no reference for package name`() = checkNoUrlReference("""
+    fun `test no reference for package name`() = checkNoUrlReference(
+        """
         [package]
         name = "<caret>https://github.com/foo/bar"
-    """)
+    """
+    )
 
-    fun `test no reference if literal is not absolute URL`() = checkNoUrlReference("""
+    fun `test no reference if literal is not absolute URL`() = checkNoUrlReference(
+        """
         [package]
         documentation = "<caret>github.com/foo/bar"
-    """)
+    """
+    )
 
-    fun `test reference http`() = checkUrlReference("""
+    fun `test reference http`() = checkUrlReference(
+        """
         [package]
         homepage = "<caret>http://github.com/foo/bar"
-    """, "http://github.com/foo/bar")
+    """, "http://github.com/foo/bar"
+    )
 
-    fun `test reference in homepage`() = checkUrlReference("""
+    fun `test reference in homepage`() = checkUrlReference(
+        """
         [package]
         homepage = "<caret>https://github.com/foo/bar"
-    """, "https://github.com/foo/bar")
+    """, "https://github.com/foo/bar"
+    )
 
-    fun `test reference in repository`() = checkUrlReference("""
+    fun `test reference in repository`() = checkUrlReference(
+        """
         [package]
         repository = "<caret>https://github.com/foo/bar"
-    """, "https://github.com/foo/bar")
+    """, "https://github.com/foo/bar"
+    )
 
-    fun `test reference in documentation`() = checkUrlReference("""
+    fun `test reference in documentation`() = checkUrlReference(
+        """
         [package]
         homepage = "<caret>https://github.com/foo/bar"
-    """, "https://github.com/foo/bar")
+    """, "https://github.com/foo/bar"
+    )
 
-    fun `test reference in dependency git URL`() = checkUrlReference("""
+    fun `test reference in dependency git URL`() = checkUrlReference(
+        """
         [dependencies]
         foo = { git = "<caret>https://github.com/foo/bar" }
-    """, "https://github.com/foo/bar")
+    """, "https://github.com/foo/bar"
+    )
 
-    fun `test reference in specific dependency git URL`() = checkUrlReference("""
+    fun `test reference in specific dependency git URL`() = checkUrlReference(
+        """
         [dependencies.foo]
         git = "<caret>https://github.com/foo/bar"
-    """, "https://github.com/foo/bar")
+    """, "https://github.com/foo/bar"
+    )
 
     private fun checkUrlReference(@Language("TOML") code: String, url: String) {
         InlineFile(code, "Cargo.toml")

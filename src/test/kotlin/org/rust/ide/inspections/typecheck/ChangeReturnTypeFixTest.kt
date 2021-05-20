@@ -14,7 +14,8 @@ import org.rust.ide.inspections.RsTypeCheckInspection
 
 class ChangeReturnTypeFixTest : RsInspectionsTestBase(RsTypeCheckInspection::class) {
 
-    fun `test str vs () in function`() = checkFixByText("Change return type of function 'foo' to '&str'", """
+    fun `test str vs () in function`() = checkFixByText(
+        "Change return type of function 'foo' to '&str'", """
         fn foo() {
             <error>"Hello World!"<caret></error>
         }
@@ -22,19 +23,23 @@ class ChangeReturnTypeFixTest : RsInspectionsTestBase(RsTypeCheckInspection::cla
         fn foo() -> &'static str {
             "Hello World!"
         }
-    """)
+    """
+    )
 
-    fun `test return str vs () in function`() = checkFixByText("Change return type of function 'foo' to '&str'", """
+    fun `test return str vs () in function`() = checkFixByText(
+        "Change return type of function 'foo' to '&str'", """
         fn foo() {
-            return <error>"Hello World!"<caret></error>;
+            return; <error>"Hello World!"<caret></error>;
         }
     """, """
         fn foo() -> &'static str {
             return "Hello World!";
         }
-    """)
+    """
+    )
 
-    fun `test str vs i32 in function`() = checkFixByText("Change return type of function 'foo' to '&str'", """
+    fun `test str vs i32 in function`() = checkFixByText(
+        "Change return type of function 'foo' to '&str'", """
         fn foo() -> i32 {
             <error>"Hello World!"<caret></error>
         }
@@ -42,9 +47,11 @@ class ChangeReturnTypeFixTest : RsInspectionsTestBase(RsTypeCheckInspection::cla
         fn foo() -> &'static str {
             "Hello World!"
         }
-    """)
+    """
+    )
 
-    fun `test return str vs i32 in function`() = checkFixByText("Change return type of function 'foo' to '&str'", """
+    fun `test return str vs i32 in function`() = checkFixByText(
+        "Change return type of function 'foo' to '&str'", """
         fn foo() -> i32 {
             return <error>"Hello World!"<caret></error>;
         }
@@ -52,9 +59,11 @@ class ChangeReturnTypeFixTest : RsInspectionsTestBase(RsTypeCheckInspection::cla
         fn foo() -> &'static str {
             return "Hello World!";
         }
-    """)
+    """
+    )
 
-    fun `test str vs i32 in closure`() = checkFixByText("Change return type of closure to '&str'", """
+    fun `test str vs i32 in closure`() = checkFixByText(
+        "Change return type of closure to '&str'", """
         fn foo() {
             let _ = || -> i32 <error>"Hello World!"<caret></error>;
         }
@@ -62,19 +71,23 @@ class ChangeReturnTypeFixTest : RsInspectionsTestBase(RsTypeCheckInspection::cla
         fn foo() {
             let _ = || -> &'static str "Hello World!";
         }
-    """)
+    """
+    )
 
-    fun `test return str vs i32 in closure`() = checkFixByText("Change return type of closure to '&str'", """
+    fun `test return str vs i32 in closure`() = checkFixByText(
+        "Change return type of closure to '&str'", """
         fn foo() {
-            let _ = || -> i32 { return <error>"Hello World!"<caret></error>; };
+            let _ = || -> i32 { return; <error>"Hello World!"<caret></error>; };
         }
     """, """
         fn foo() {
             let _ = || -> &'static str { return "Hello World!"; };
         }
-    """)
+    """
+    )
 
-    fun `test str vs i32 in method`() = checkFixByText("Change return type of method 'foo' to '&str'", """
+    fun `test str vs i32 in method`() = checkFixByText(
+        "Change return type of method 'foo' to '&str'", """
         struct S;
         impl S {
             fn foo(&self) -> i32 {
@@ -88,9 +101,11 @@ class ChangeReturnTypeFixTest : RsInspectionsTestBase(RsTypeCheckInspection::cla
                 "Hello World!"
             }
         }
-    """)
+    """
+    )
 
-    fun `test don't show () return type`() = checkFixByText("Change return type of function 'foo' to '()'", """
+    fun `test don't show () return type`() = checkFixByText(
+        "Change return type of function 'foo' to '()'", """
         fn foo() -> i32 {
             <error>()<caret></error>
         }
@@ -98,9 +113,11 @@ class ChangeReturnTypeFixTest : RsInspectionsTestBase(RsTypeCheckInspection::cla
         fn foo() {
             ()
         }
-    """)
+    """
+    )
 
-    fun `test alias`() = checkFixByText("Change return type of function 'foo' to 'A'", """
+    fun `test alias`() = checkFixByText(
+        "Change return type of function 'foo' to 'A'", """
         struct S;
         type A = S;
         fn foo(a: A) {
@@ -112,9 +129,11 @@ class ChangeReturnTypeFixTest : RsInspectionsTestBase(RsTypeCheckInspection::cla
         fn foo(a: A) -> A {
             a
         }
-    """)
+    """
+    )
 
-    fun `test import unresolved type (add)`() = checkFixByText("Change return type of function 'foo' to '(S, A)'", """
+    fun `test import unresolved type (add)`() = checkFixByText(
+        "Change return type of function 'foo' to '(S, A)'", """
         use a::bar;
 
         mod a {
@@ -138,9 +157,11 @@ class ChangeReturnTypeFixTest : RsInspectionsTestBase(RsTypeCheckInspection::cla
         fn foo() -> (S, A) {
             bar()
         }
-    """)
+    """
+    )
 
-    fun `test import unresolved type (replace)`() = checkFixByText("Change return type of function 'foo' to '(S, A)'", """
+    fun `test import unresolved type (replace)`() = checkFixByText(
+        "Change return type of function 'foo' to '(S, A)'", """
         use a::bar;
 
         mod a {
@@ -164,10 +185,12 @@ class ChangeReturnTypeFixTest : RsInspectionsTestBase(RsTypeCheckInspection::cla
         fn foo() -> (S, A) {
             bar()
         }
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test do not offer fix in closure without an explicit return type passed to a function`() = checkFixIsUnavailable("Change return type of closure", """
+    fun `test do not offer fix in closure without an explicit return type passed to a function`() = checkFixIsUnavailable(
+        "Change return type of closure", """
         fn foo<F>(f: F) -> i32
             where F: Fn(i32) -> i32 {
             f(0)
@@ -175,17 +198,21 @@ class ChangeReturnTypeFixTest : RsInspectionsTestBase(RsTypeCheckInspection::cla
         fn bar() {
             foo(|x| <error>true<caret></error>);
         }
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test do not offer fix in closure without an explicit return type assigned to a variable`() = checkFixIsUnavailable("Change return type of closure", """
+    fun `test do not offer fix in closure without an explicit return type assigned to a variable`() = checkFixIsUnavailable(
+        "Change return type of closure", """
         fn foo() {
             let x: fn() -> i32 = || <error>true<caret></error>;
         }
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test offer fix in closure with an explicit return type`() = checkFixByText("Change return type of closure", """
+    fun `test offer fix in closure with an explicit return type`() = checkFixByText(
+        "Change return type of closure", """
         fn foo() {
             let x: fn() -> i32 = || -> i32 <error>true<caret></error>;
         }
@@ -193,9 +220,11 @@ class ChangeReturnTypeFixTest : RsInspectionsTestBase(RsTypeCheckInspection::cla
         fn foo() {
             let x: fn() -> i32 = || -> bool true;
         }
-    """)
+    """
+    )
 
-    fun `test use qualified name for ambiguous type`() = checkFixByText("Change return type of function 'foo' to 'a::Foo'", """
+    fun `test use qualified name for ambiguous type`() = checkFixByText(
+        "Change return type of function 'foo' to 'a::Foo'", """
         mod a {
             pub struct Foo;
         }
@@ -213,9 +242,11 @@ class ChangeReturnTypeFixTest : RsInspectionsTestBase(RsTypeCheckInspection::cla
         fn foo() -> a::Foo {
             a::Foo
         }
-    """)
+    """
+    )
 
-    fun `test use qualified name for ambiguous nested type`() = checkFixByText("Change return type of function 'foo' to '(a::S, b::S)'", """
+    fun `test use qualified name for ambiguous nested type`() = checkFixByText(
+        "Change return type of function 'foo' to '(a::S, b::S)'", """
         struct S;
         mod a {
             pub struct S;
@@ -239,9 +270,11 @@ class ChangeReturnTypeFixTest : RsInspectionsTestBase(RsTypeCheckInspection::cla
         fn foo() -> (a::S, b::S) {
             (a::S, b::S)
         }
-    """)
+    """
+    )
 
-    fun `test do not qualify type parameter`() = checkFixByText("Change return type of function 'foo' to 'b::S<T>'", """
+    fun `test do not qualify type parameter`() = checkFixByText(
+        "Change return type of function 'foo' to 'b::S<T>'", """
         struct T;
         struct S<T>(T);
         mod b {
@@ -261,10 +294,12 @@ class ChangeReturnTypeFixTest : RsInspectionsTestBase(RsTypeCheckInspection::cla
         fn foo() -> b::S<T> {
             b::S::<T>(T)
         }
-    """)
+    """
+    )
 
     @MockEdition(CargoWorkspace.Edition.EDITION_2018)
-    fun `test qualify ambiguous type with reexported path`() = checkFixByText("Change return type of function 'foo' to 'crate::a::S'", """
+    fun `test qualify ambiguous type with reexported path`() = checkFixByText(
+        "Change return type of function 'foo' to 'crate::a::S'", """
         struct S;
         mod a {
             pub use b::S;
@@ -290,5 +325,6 @@ class ChangeReturnTypeFixTest : RsInspectionsTestBase(RsTypeCheckInspection::cla
         fn foo() -> crate::a::S {
             a::S
         }
-    """)
+    """
+    )
 }

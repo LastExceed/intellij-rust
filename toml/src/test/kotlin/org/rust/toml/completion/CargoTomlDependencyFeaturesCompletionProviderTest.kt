@@ -14,84 +14,108 @@ class CargoTomlDependencyFeaturesCompletionProviderTest : CargoTomlCompletionTes
     @ProjectDescriptor(WithDependencyRustProjectDescriptor::class)
     fun `test inline dependency feature`() {
         val fileTree = fileTree {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [dependencies]
                 dep-lib = { version = "0.1.0", features = ["f<caret>"] }
-            """)
+            """
+            )
             dir("dep-lib") {
-                toml("Cargo.toml", """
+                toml(
+                    "Cargo.toml", """
                     [features]
                     foo = []
-                """)
+                """
+                )
             }
         }
-        doSingleCompletionByFileTree(fileTree, """
+        doSingleCompletionByFileTree(
+            fileTree, """
             [dependencies]
             dep-lib = { version = "0.1.0", features = ["foo<caret>"] }
-        """)
+        """
+        )
     }
 
     @ProjectDescriptor(WithDependencyRustProjectDescriptor::class)
     fun `test inline dependency feature without literal`() {
         val fileTree = fileTree {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [dependencies]
                 dep-lib = { version = "0.1.0", features = [f<caret>] }
-            """)
+            """
+            )
             dir("dep-lib") {
-                toml("Cargo.toml", """
+                toml(
+                    "Cargo.toml", """
                     [features]
                     foo = []
-                """)
+                """
+                )
             }
         }
-        doSingleCompletionByFileTree(fileTree, """
+        doSingleCompletionByFileTree(
+            fileTree, """
             [dependencies]
             dep-lib = { version = "0.1.0", features = ["foo<caret>"] }
-        """)
+        """
+        )
     }
 
     @ProjectDescriptor(WithDependencyRustProjectDescriptor::class)
     fun `test table dependency feature`() {
         val fileTree = fileTree {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [dependencies.dep-lib]
                 version = "0.1.0"
                 features = ["f<caret>"]
-            """)
+            """
+            )
             dir("dep-lib") {
-                toml("Cargo.toml", """
+                toml(
+                    "Cargo.toml", """
                     [features]
                     foo = []
-                """)
+                """
+                )
             }
         }
-        doSingleCompletionByFileTree(fileTree, """
+        doSingleCompletionByFileTree(
+            fileTree, """
             [dependencies.dep-lib]
             version = "0.1.0"
             features = ["foo<caret>"]
-        """)
+        """
+        )
     }
 
     @ProjectDescriptor(WithDependencyRustProjectDescriptor::class)
     fun `test table dependency feature without literal`() {
         val fileTree = fileTree {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [dependencies.dep-lib]
                 version = "0.1.0"
                 features = [f<caret>]
-            """)
+            """
+            )
             dir("dep-lib") {
-                toml("Cargo.toml", """
+                toml(
+                    "Cargo.toml", """
                     [features]
                     foo = []
-                """)
+                """
+                )
             }
         }
-        doSingleCompletionByFileTree(fileTree, """
+        doSingleCompletionByFileTree(
+            fileTree, """
             [dependencies.dep-lib]
             version = "0.1.0"
             features = ["foo<caret>"]
-        """)
+        """
+        )
     }
 }

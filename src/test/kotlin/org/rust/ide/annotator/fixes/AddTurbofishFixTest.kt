@@ -21,48 +21,60 @@ class AddTurbofishFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
     fun `test should not be applied`() = checkNoIntention("""1 < 5 /*carret*/> 3;""")
 
     fun `test should be available also in right side`() = checkStatement(
-            """parse<i32>(/*caret*/"42")""",
-            """parse::<i32>(/*caret*/"42")""")
+        """parse<i32>(/*caret*/"42")""",
+        """parse::<i32>(/*caret*/"42")"""
+    )
 
     fun `test should be available also when call is chained by another function`() =
         checkStatement(
             """parse<i32>(/*caret*/"42").unwrap()""",
-            """parse::<i32>(/*caret*/"42").unwrap()""")
+            """parse::<i32>(/*caret*/"42").unwrap()"""
+        )
 
     fun `test should recognize also generics arguments`() {
         checkStatement(
             """something<Option<String>>(/*caret*/"42")""",
-            """something::<Option<String>>(/*caret*/"42")""")
+            """something::<Option<String>>(/*caret*/"42")"""
+        )
         checkStatement(
             """something<Option<Option<String>>>(/*caret*/"42")""",
-            """something::<Option<Option<String>>>(/*caret*/"42")""")
+            """something::<Option<Option<String>>>(/*caret*/"42")"""
+        )
         checkStatement(
             """something<Option<Option<Option<String>>>>(/*caret*/"42")""",
-            """something::<Option<Option<Option<String>>>>(/*caret*/"42")""")
+            """something::<Option<Option<Option<String>>>>(/*caret*/"42")"""
+        )
         checkStatement(
             """something<Option<Option<Option<Option<String>>>>>(/*caret*/"42")""",
-            """something::<Option<Option<Option<Option<String>>>>>(/*caret*/"42")""")
+            """something::<Option<Option<Option<Option<String>>>>>(/*caret*/"42")"""
+        )
     }
 
     fun `test should guess the correct boundary`() {
         checkStatement(
             """something<Option<i32>>(/*caret*/"42") >> 3""",
-            """something::<Option<i32>>(/*caret*/"42") >> 3""")
+            """something::<Option<i32>>(/*caret*/"42") >> 3"""
+        )
         checkStatement(
             """something<Option<i32>>(/*caret*/"42") > 3 > 5""",
-            """something::<Option<i32>>(/*caret*/"42") > 3 > 5""")
+            """something::<Option<i32>>(/*caret*/"42") > 3 > 5"""
+        )
         checkStatement(
             """something<Option<i32>>(/*caret*/"42") == call_something()""",
-            """something::<Option<i32>>(/*caret*/"42") == call_something()""")
+            """something::<Option<i32>>(/*caret*/"42") == call_something()"""
+        )
         checkStatement(
             """3 < something<Option<i32>>(/*caret*/"42")""",
-            """3 < something::<Option<i32>>(/*caret*/"42")""")
+            """3 < something::<Option<i32>>(/*caret*/"42")"""
+        )
         checkStatement(
             """3 == something<Option<i32>>(/*caret*/"42")""",
-            """3 == something::<Option<i32>>(/*caret*/"42")""")
+            """3 == something::<Option<i32>>(/*caret*/"42")"""
+        )
         checkStatement(
             """bye() == 3 < something<Option<i32>>(/*caret*/"42") > more() >> 2""",
-            """bye() == 3 < something::<Option<i32>>(/*caret*/"42") > more() >> 2""")
+            """bye() == 3 < something::<Option<i32>>(/*caret*/"42") > more() >> 2"""
+        )
     }
 
 

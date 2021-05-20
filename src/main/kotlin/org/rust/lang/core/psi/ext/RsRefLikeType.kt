@@ -9,6 +9,9 @@ import org.rust.lang.core.psi.RsRefLikeType
 import org.rust.lang.core.stubs.RsRefLikeTypeStub
 import org.rust.lang.core.types.ty.Mutability
 
-val RsRefLikeType.mutability: Mutability get() = Mutability.valueOf((greenStub as? RsRefLikeTypeStub)?.isMut ?: (mut != null))
+val RsRefLikeType.mutability: Mutability
+    get() = Mutability.valueOf(
+        (greenStub as? RsRefLikeTypeStub)?.isMut ?: (mut != null)
+    )
 val RsRefLikeType.isRef: Boolean get() = (greenStub as? RsRefLikeTypeStub)?.isRef ?: (and != null)
 val RsRefLikeType.isPointer: Boolean get() = (greenStub as? RsRefLikeTypeStub)?.isPointer ?: (mul != null)

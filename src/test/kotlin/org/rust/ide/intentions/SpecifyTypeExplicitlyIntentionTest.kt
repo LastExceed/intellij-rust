@@ -9,18 +9,22 @@ import org.rust.ProjectDescriptor
 import org.rust.WithStdlibRustProjectDescriptor
 
 class SpecifyTypeExplicitlyIntentionTest : RsIntentionTestBase(SpecifyTypeExplicitlyIntention::class) {
-    fun `test availability range 1`() = checkAvailableInSelectionOnly("""
+    fun `test availability range 1`() = checkAvailableInSelectionOnly(
+        """
         fn foo() {
             <selection>let mut a;</selection>
             a = 1;
         }
-    """)
+    """
+    )
 
-    fun `test availability range 2`() = checkAvailableInSelectionOnly("""
+    fun `test availability range 2`() = checkAvailableInSelectionOnly(
+        """
         fn foo() {
             <selection>let a =</selection> 1;
         }
-    """)
+    """
+    )
 
     fun `test inferred type`() = doAvailableTest(
         """ fn main() { let var/*caret*/ = 42; } """,
@@ -42,7 +46,8 @@ class SpecifyTypeExplicitlyIntentionTest : RsIntentionTestBase(SpecifyTypeExplic
         """ fn main() { let (a, b): (i32, i32) = (1, 2); } """
     )
 
-    fun `test aliased type`() = doAvailableTest("""
+    fun `test aliased type`() = doAvailableTest(
+        """
         struct Foo<T>;
         struct Bar<T>;
         type Baz<T> = Foo<Bar<T>>;
@@ -56,7 +61,8 @@ class SpecifyTypeExplicitlyIntentionTest : RsIntentionTestBase(SpecifyTypeExplic
         fn foo<T>(c: &Baz<T>) {
             let b: &Baz<T> = c;
         }
-    """)
+    """
+    )
 
     fun `test unavailable in expr 1`() = doUnavailableTest(
         """ fn main() { let var = /*caret*/1; } """
@@ -78,15 +84,18 @@ class SpecifyTypeExplicitlyIntentionTest : RsIntentionTestBase(SpecifyTypeExplic
         """struct A<const N: usize>; fn main() { let var/*caret*/ = A; } """
     )
 
-    fun `test anon type`() = doUnavailableTest("""
+    fun `test anon type`() = doUnavailableTest(
+        """
         trait T {}
         fn foo() -> impl T { unimplemented!() }
         fn main() {
             let var/*caret*/ = foo();
         }
-    """)
+    """
+    )
 
-    fun `test import unresolved type`() = doAvailableTest("""
+    fun `test import unresolved type`() = doAvailableTest(
+        """
             use a::foo;
             mod a {
                 pub struct S;
@@ -100,9 +109,11 @@ class SpecifyTypeExplicitlyIntentionTest : RsIntentionTestBase(SpecifyTypeExplic
                 pub fn foo() -> S { S }
             }
             fn main() { let var: S = foo(); }
-    """)
+    """
+    )
 
-    fun `test try import unresolved type`() = doAvailableTest("""
+    fun `test try import unresolved type`() = doAvailableTest(
+        """
             use a::foo;
             mod a {
                 struct S;
@@ -116,9 +127,11 @@ class SpecifyTypeExplicitlyIntentionTest : RsIntentionTestBase(SpecifyTypeExplic
                 pub fn foo() -> S { S }
             }
             fn main() { let var: S = foo(); }
-    """)
+    """
+    )
 
-    fun `test import type parameter`() = doAvailableTest("""
+    fun `test import type parameter`() = doAvailableTest(
+        """
             use a::foo;
             mod a {
                 pub struct S<T>(T);
@@ -134,9 +147,11 @@ class SpecifyTypeExplicitlyIntentionTest : RsIntentionTestBase(SpecifyTypeExplic
                 pub fn foo() -> S<P> { S(P) }
             }
             fn main() { let var: S<P> = foo(); }
-    """)
+    """
+    )
 
-    fun `test import type alias`() = doAvailableTest("""
+    fun `test import type alias`() = doAvailableTest(
+        """
             use a::{foo, A};
             mod a {
                 pub struct S;
@@ -154,11 +169,13 @@ class SpecifyTypeExplicitlyIntentionTest : RsIntentionTestBase(SpecifyTypeExplic
                 pub fn foo() -> B { S }
             }
             fn main() { let var: B = foo(); }
-    """)
+    """
+    )
 
     // TODO: Don't render default values of type parameters
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test import std type`() = doAvailableTest("""
+    fun `test import std type`() = doAvailableTest(
+        """
             use a::foo;
 
             mod a {
@@ -176,7 +193,8 @@ class SpecifyTypeExplicitlyIntentionTest : RsIntentionTestBase(SpecifyTypeExplic
                 pub fn foo() -> HashMap<i32, i32> { HashMap::new() }
             }
             fn main() { let var: HashMap<i32, i32, RandomState> = foo(); }
-    """)
+    """
+    )
 
     fun `test ref pat`() = doAvailableTest(
         """ fn main() { let ref var/*caret*/ = 42; } """,

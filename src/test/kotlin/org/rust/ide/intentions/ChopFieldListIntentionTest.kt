@@ -6,28 +6,35 @@
 package org.rust.ide.intentions
 
 class ChopFieldListIntentionTest : RsIntentionTestBase(ChopFieldListIntention::class) {
-    fun `test one parameter`() = doUnavailableTest("""
+    fun `test one parameter`() = doUnavailableTest(
+        """
         struct S { /*caret*/x: i32 }
-    """)
+    """
+    )
 
-    fun `test two parameter`() = doAvailableTest("""
+    fun `test two parameter`() = doAvailableTest(
+        """
         struct S { /*caret*/x: i32, y: i32 }
     """, """
         struct S {
             x: i32,
             y: i32
         }
-    """)
+    """
+    )
 
-    fun `test has all line breaks`() = doUnavailableTest("""
+    fun `test has all line breaks`() = doUnavailableTest(
+        """
         struct S {
             /*caret*/x: i32,
             y: i32,
             z: i32
         }
-    """)
+    """
+    )
 
-    fun `test has some line breaks`() = doAvailableTest("""
+    fun `test has some line breaks`() = doAvailableTest(
+        """
         struct S { x: i32, /*caret*/y: i32,
                    z: i32
         }
@@ -37,9 +44,11 @@ class ChopFieldListIntentionTest : RsIntentionTestBase(ChopFieldListIntention::c
             y: i32,
             z: i32
         }
-    """)
+    """
+    )
 
-    fun `test has some line breaks 2`() = doAvailableTest("""
+    fun `test has some line breaks 2`() = doAvailableTest(
+        """
         struct S {
             x: i32, y: i32, z: i32/*caret*/
         }
@@ -49,17 +58,21 @@ class ChopFieldListIntentionTest : RsIntentionTestBase(ChopFieldListIntention::c
             y: i32,
             z: i32
         }
-    """)
+    """
+    )
 
-    fun `test has comment`() = doUnavailableTest("""
+    fun `test has comment`() = doUnavailableTest(
+        """
         struct S {
             /*caret*/x: i32, /* comment */
             y: i32,
             z: i32
         }
-    """)
+    """
+    )
 
-    fun `test has comment 2`() = doAvailableTest("""
+    fun `test has comment 2`() = doAvailableTest(
+        """
         struct S {
             /*caret*/x: i32, /*
                 comment
@@ -74,9 +87,11 @@ class ChopFieldListIntentionTest : RsIntentionTestBase(ChopFieldListIntention::c
             y: i32,
             z: i32
         }
-    """)
+    """
+    )
 
-    fun `test has single line comment`() = doAvailableTest("""
+    fun `test has single line comment`() = doAvailableTest(
+        """
         struct S {
             /*caret*/x: i32, // comment x
             y: i32, z: i32 // comment z
@@ -88,9 +103,11 @@ class ChopFieldListIntentionTest : RsIntentionTestBase(ChopFieldListIntention::c
             y: i32,
             z: i32 // comment z
         }
-    """)
+    """
+    )
 
-    fun `test trailing comma`() = doAvailableTest("""
+    fun `test trailing comma`() = doAvailableTest(
+        """
         struct S { /*caret*/x: i32, y: i32, z: i32, }
     """, """
         struct S {
@@ -98,9 +115,11 @@ class ChopFieldListIntentionTest : RsIntentionTestBase(ChopFieldListIntention::c
             y: i32,
             z: i32,
         }
-    """)
+    """
+    )
 
-    fun `test trailing comma with comments`() = doAvailableTest("""
+    fun `test trailing comma with comments`() = doAvailableTest(
+        """
         struct S { /*caret*/x: i32 /* comment 1 */, y: i32, z: i32 /* comment 2 */, }
     """, """
         struct S {
@@ -108,5 +127,6 @@ class ChopFieldListIntentionTest : RsIntentionTestBase(ChopFieldListIntention::c
             y: i32,
             z: i32 /* comment 2 */,
         }
-    """)
+    """
+    )
 }

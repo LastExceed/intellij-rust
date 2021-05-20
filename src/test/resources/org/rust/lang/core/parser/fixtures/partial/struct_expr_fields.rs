@@ -12,9 +12,9 @@ fn main() {
         foo: 92,
         bar
         baz: 62,
-        quux: ,
+        quux:,
         quazar: 42,
     };
 
-    2+2; // Checks that stmts parsed correctly after broken struct literal
+    2 + 2; // Checks that stmts parsed correctly after broken struct literal
 }

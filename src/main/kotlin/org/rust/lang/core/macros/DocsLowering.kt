@@ -27,7 +27,7 @@ fun PsiBuilder.lowerDocCommentsToPsiBuilder(project: Project): Pair<PsiBuilder, 
     return project.createRustPsiBuilder(lowered.first) to lowered.second
 }
 
-private fun PsiBuilder.defaultRangeMap(): RangeMap= if (originalText.isNotEmpty()) {
+private fun PsiBuilder.defaultRangeMap(): RangeMap = if (originalText.isNotEmpty()) {
     RangeMap.from(SmartList(MappedTextRange(0, 0, originalText.length)))
 } else {
     RangeMap.EMPTY

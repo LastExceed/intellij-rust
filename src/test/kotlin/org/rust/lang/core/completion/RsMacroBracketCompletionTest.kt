@@ -7,7 +7,8 @@ package org.rust.lang.core.completion
 
 class RsMacroBracketCompletionTest : RsCompletionTestBase() {
 
-    fun `test default bracket`() = doSingleCompletion("""
+    fun `test default bracket`() = doSingleCompletion(
+        """
         macro_rules! foo {
             () => {};
         }
@@ -21,9 +22,11 @@ class RsMacroBracketCompletionTest : RsCompletionTestBase() {
         fn main() {
             foo!(/*caret*/)
         }
-    """)
+    """
+    )
 
-    fun `test bracket from documentation`() = doSingleCompletion("""
+    fun `test bracket from documentation`() = doSingleCompletion(
+        """
         /// `foo![]`
         ///
         /// ```
@@ -57,9 +60,11 @@ class RsMacroBracketCompletionTest : RsCompletionTestBase() {
         fn main() {
             foo![/*caret*/]
         }
-    """)
+    """
+    )
 
-    fun `test insert space for before braces`() = doSingleCompletion("""
+    fun `test insert space for before braces`() = doSingleCompletion(
+        """
         /// `foo! {}`
         macro_rules! foo {
             () => {};
@@ -75,9 +80,11 @@ class RsMacroBracketCompletionTest : RsCompletionTestBase() {
         fn main() {
             foo! {/*caret*/}
         }
-    """)
+    """
+    )
 
-    fun `test raw macro calls`() = doSingleCompletion("""
+    fun `test raw macro calls`() = doSingleCompletion(
+        """
         /// `r#foo![]`
         ///
         /// ```
@@ -105,9 +112,11 @@ class RsMacroBracketCompletionTest : RsCompletionTestBase() {
         fn main() {
             foo![/*caret*/]
         }
-    """)
+    """
+    )
 
-    fun `test do not mess with other macro calls`() = doSingleCompletion("""
+    fun `test do not mess with other macro calls`() = doSingleCompletion(
+        """
         /// ```
         /// foo![];
         /// assert!(true);
@@ -133,5 +142,6 @@ class RsMacroBracketCompletionTest : RsCompletionTestBase() {
         fn main() {
             foo![/*caret*/]
         }
-    """)
+    """
+    )
 }

@@ -15,7 +15,8 @@ import org.rust.lang.core.psi.ext.*
 
 @ExpandMacros
 class RsMacroExpansionRangeMappingTest : RsTestBase() {
-    fun `test struct name`() = checkOffset("""
+    fun `test struct name`() = checkOffset(
+        """
         macro_rules! foo {
             ($ i:item) => { $ i };
         }
@@ -24,9 +25,11 @@ class RsMacroExpansionRangeMappingTest : RsTestBase() {
         }
         type T = Foo;
                //^
-    """, SELECT_NAME)
+    """, SELECT_NAME
+    )
 
-    fun `test struct name from nested macro 1`() = checkOffset("""
+    fun `test struct name from nested macro 1`() = checkOffset(
+        """
         macro_rules! foo {
             ($ i:item) => { $ i };
         }
@@ -35,9 +38,11 @@ class RsMacroExpansionRangeMappingTest : RsTestBase() {
         }
         type T = Foo;
                //^
-    """, SELECT_NAME)
+    """, SELECT_NAME
+    )
 
-    fun `test struct name from nested macro 2`() = checkOffset("""
+    fun `test struct name from nested macro 2`() = checkOffset(
+        """
         macro_rules! foo {
             ($ i:item) => { $ i };
         }
@@ -48,9 +53,11 @@ class RsMacroExpansionRangeMappingTest : RsTestBase() {
         }
         type T = a::Foo;
                   //^
-    """, SELECT_NAME)
+    """, SELECT_NAME
+    )
 
-    fun `test struct name from nested macro 3`() = checkOffset("""
+    fun `test struct name from nested macro 3`() = checkOffset(
+        """
         macro_rules! foo {
             ($ i:item) => { $ i };
         }
@@ -62,9 +69,11 @@ class RsMacroExpansionRangeMappingTest : RsTestBase() {
         }
         type T = a::Foo;
                   //^
-    """, SELECT_NAME)
+    """, SELECT_NAME
+    )
 
-    fun `test struct name passed via tt`() = checkOffset("""
+    fun `test struct name passed via tt`() = checkOffset(
+        """
         macro_rules! foo {
             ($($ i:tt)*) => { $($ i)* };
         }
@@ -73,9 +82,11 @@ class RsMacroExpansionRangeMappingTest : RsTestBase() {
         }
         type T = Foo;
                //^
-    """, SELECT_NAME)
+    """, SELECT_NAME
+    )
 
-    fun `test struct`() = checkOffset("""
+    fun `test struct`() = checkOffset(
+        """
         macro_rules! foo {
             ($ i:item) => { $ i };
         }
@@ -84,9 +95,11 @@ class RsMacroExpansionRangeMappingTest : RsTestBase() {
         }
         type T = Foo;
                //^
-    """)
+    """
+    )
 
-    fun `test struct passed via tt`() = checkOffset("""
+    fun `test struct passed via tt`() = checkOffset(
+        """
         macro_rules! foo {
             ($($ i:tt)*) => { $($ i)* };
         }
@@ -95,9 +108,11 @@ class RsMacroExpansionRangeMappingTest : RsTestBase() {
         }
         type T = Foo;
                //^
-    """)
+    """
+    )
 
-    fun `test struct field passed via tt`() = checkOffset("""
+    fun `test struct field passed via tt`() = checkOffset(
+        """
         macro_rules! foo {
             ($($ i:tt)*) => { $($ i)* };
         }
@@ -109,9 +124,11 @@ class RsMacroExpansionRangeMappingTest : RsTestBase() {
         fn foo(foo: Foo) {
             foo.bar;
         }     //^
-    """)
+    """
+    )
 
-    fun `test expression`() = checkOffset("""
+    fun `test expression`() = checkOffset(
+        """
         macro_rules! gen_foo {
             ($ e:expr) => { fn foo() { $ e; } };
         }
@@ -120,9 +137,11 @@ class RsMacroExpansionRangeMappingTest : RsTestBase() {
         }
         use self::foo;
                 //^
-    """) { it.descendantOfTypeStrict<RsBinaryExpr>()!! }
+    """
+    ) { it.descendantOfTypeStrict<RsBinaryExpr>()!! }
 
-    fun `test not found when expanded from macro definition`() = checkNotFound("""
+    fun `test not found when expanded from macro definition`() = checkNotFound(
+        """
         macro_rules! foo {
             ($ i:item) => { $ i };
         }
@@ -132,18 +151,22 @@ class RsMacroExpansionRangeMappingTest : RsTestBase() {
         bar!();
         type T = Foo;
                //^
-    """)
+    """
+    )
 
-    fun `test not found when expanded from nested macro definition`() = checkNotFound("""
+    fun `test not found when expanded from nested macro definition`() = checkNotFound(
+        """
         macro_rules! foo {
             () => { struct Foo; };
         }
         foo!();
         type T = Foo;
                //^
-    """)
+    """
+    )
 
-    fun `test struct name with docs in macro call 1`() = checkOffset("""
+    fun `test struct name with docs in macro call 1`() = checkOffset(
+        """
         macro_rules! foo {
             ($ i:item) => { $ i };
         }
@@ -153,9 +176,11 @@ class RsMacroExpansionRangeMappingTest : RsTestBase() {
         }
         type T = Foo;
                //^
-    """, SELECT_NAME)
+    """, SELECT_NAME
+    )
 
-    fun `test struct name with docs in macro call 2`() = checkOffset("""
+    fun `test struct name with docs in macro call 2`() = checkOffset(
+        """
         macro_rules! foo {
             (#[$ m:meta] $ t:tt $ n:ident;) => { #[$ m] $ t $ n; };
         }
@@ -165,9 +190,11 @@ class RsMacroExpansionRangeMappingTest : RsTestBase() {
         }
         type T = Foo;
                //^
-    """, SELECT_NAME)
+    """, SELECT_NAME
+    )
 
-    fun `test struct name with docs in macro call 3`() = checkOffset("""
+    fun `test struct name with docs in macro call 3`() = checkOffset(
+        """
         macro_rules! foo {
             ($($ i:item)*) => { $($ i)* };
         }
@@ -182,7 +209,8 @@ class RsMacroExpansionRangeMappingTest : RsTestBase() {
         }
         type T = foo::Foo;
                     //^
-    """, SELECT_NAME)
+    """, SELECT_NAME
+    )
 
     private fun checkOffset(@Language("Rust") code: String, refiner: (RsElement) -> PsiElement = { it }) {
         InlineFile(code).withCaret()

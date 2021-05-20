@@ -14,7 +14,8 @@ import org.rust.ide.utils.import.Testmarks
 
 class AutoImportFixTest : AutoImportFixTestBase() {
 
-    fun `test import struct`() = checkAutoImportFixByText("""
+    fun `test import struct`() = checkAutoImportFixByText(
+        """
         mod foo {
             pub struct Foo;
         }
@@ -32,9 +33,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let f = Foo/*caret*/;
         }
-    """)
+    """
+    )
 
-    fun `test import enum variant 1`() = checkAutoImportFixByText("""
+    fun `test import enum variant 1`() = checkAutoImportFixByText(
+        """
         mod foo {
             pub enum Foo { A }
         }
@@ -52,9 +55,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             Foo/*caret*/::A;
         }
-    """)
+    """
+    )
 
-    fun `test import enum variant 2`() = checkAutoImportFixByText("""
+    fun `test import enum variant 2`() = checkAutoImportFixByText(
+        """
         mod foo {
             pub enum Foo { A }
         }
@@ -72,9 +77,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let a = A/*caret*/;
         }
-    """)
+    """
+    )
 
-    fun `test import enum variant 3`() = checkAutoImportFixByText("""
+    fun `test import enum variant 3`() = checkAutoImportFixByText(
+        """
         enum Foo { A }
 
         fn main() {
@@ -88,9 +95,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let a = A/*caret*/;
         }
-    """)
+    """
+    )
 
-    fun `test import function`() = checkAutoImportFixByText("""
+    fun `test import function`() = checkAutoImportFixByText(
+        """
         mod foo {
             pub fn bar() -> i32 { 0 }
         }
@@ -108,9 +117,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let f = bar/*caret*/();
         }
-    """)
+    """
+    )
 
-    fun `test import function method`() = checkAutoImportFixByText("""
+    fun `test import function method`() = checkAutoImportFixByText(
+        """
         mod foo {
             pub struct Foo;
             impl Foo {
@@ -134,9 +145,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             Foo/*caret*/::foo();
         }
-    """)
+    """
+    )
 
-    fun `test import generic item`() = checkAutoImportFixByText("""
+    fun `test import generic item`() = checkAutoImportFixByText(
+        """
         mod foo {
             pub struct Foo<T>(T);
         }
@@ -150,9 +163,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         }
 
         fn f<T>(foo: Foo/*caret*/<T>) {}
-    """)
+    """
+    )
 
-    fun `test import item with type params (struct literal)`() = checkAutoImportFixByText("""
+    fun `test import item with type params (struct literal)`() = checkAutoImportFixByText(
+        """
         mod foo {
             pub struct Foo<T> { x: T }
         }
@@ -170,9 +185,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let f = Foo/*caret*/::<i32> {};
         }
-    """)
+    """
+    )
 
-    fun `test import item with type params (tuple struct literal)`() = checkAutoImportFixByText("""
+    fun `test import item with type params (tuple struct literal)`() = checkAutoImportFixByText(
+        """
         mod foo {
             pub struct Foo<T>(T);
             impl<T> Foo<T> {
@@ -196,9 +213,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let f = Foo/*caret*/::<i32>::bar();
         }
-    """)
+    """
+    )
 
-    fun `test import item with type params (pat struct)`() = checkAutoImportFixByText("""
+    fun `test import item with type params (pat struct)`() = checkAutoImportFixByText(
+        """
         mod foo {
             pub struct Foo<T> { x: T }
         }
@@ -216,9 +235,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let Foo/*caret*/::<i32> { x } = ();
         }
-    """)
+    """
+    )
 
-    fun `test import item with type params (pat tuple struct)`() = checkAutoImportFixByText("""
+    fun `test import item with type params (pat tuple struct)`() = checkAutoImportFixByText(
+        """
         mod foo {
             pub struct Foo<T>(T);
             impl<T> Foo<T> {
@@ -242,9 +263,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let Foo/*caret*/::<i32>::bar(x) = ();
         }
-    """)
+    """
+    )
 
-    fun `test import module`() = checkAutoImportFixByText("""
+    fun `test import module`() = checkAutoImportFixByText(
+        """
         mod foo {
             pub mod bar {
                 pub fn foo_bar() -> i32 { 0 }
@@ -266,9 +289,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let f = bar/*caret*/::foo_bar();
         }
-    """)
+    """
+    )
 
-    fun `test insert use item after existing use items`() = checkAutoImportFixByText("""
+    fun `test insert use item after existing use items`() = checkAutoImportFixByText(
+        """
         mod foo {
             pub struct Bar;
         }
@@ -297,9 +322,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let f = Foo/*caret*/;
         }
-    """)
+    """
+    )
 
-    fun `test insert use item after inner attributes`() = checkAutoImportFixByText("""
+    fun `test insert use item after inner attributes`() = checkAutoImportFixByText(
+        """
         #![allow(non_snake_case)]
 
         mod foo {
@@ -321,9 +348,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let f = Foo/*caret*/;
         }
-    """)
+    """
+    )
 
-    fun `test insert use item after outer attributes`() = checkAutoImportFixByText("""
+    fun `test insert use item after outer attributes`() = checkAutoImportFixByText(
+        """
         mod foo {
             pub struct Foo;
         }
@@ -345,9 +374,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
                 let f = Foo/*caret*/;
             }
         }
-    """)
+    """
+    )
 
-    fun `test import item from nested module`() = checkAutoImportFixByText("""
+    fun `test import item from nested module`() = checkAutoImportFixByText(
+        """
         mod foo {
             pub mod bar {
                 pub struct Foo;
@@ -369,9 +400,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let f = Foo/*caret*/;
         }
-    """)
+    """
+    )
 
-    fun `test don't try to import private item`() = checkAutoImportFixIsUnavailable("""
+    fun `test don't try to import private item`() = checkAutoImportFixIsUnavailable(
+        """
         mod foo {
             struct Foo;
         }
@@ -379,9 +412,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let f = <error descr="Unresolved reference: `Foo`">Foo/*caret*/</error>;
         }
-    """)
+    """
+    )
 
-    fun `test don't try to import from private mod`() = checkAutoImportFixIsUnavailable("""
+    fun `test don't try to import from private mod`() = checkAutoImportFixIsUnavailable(
+        """
         mod foo {
             mod bar {
                 pub struct Foo;
@@ -391,9 +426,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let f = <error descr="Unresolved reference: `Foo`">Foo/*caret*/</error>;
         }
-    """)
+    """
+    )
 
-    fun `test complex module structure`() = checkAutoImportFixByText("""
+    fun `test complex module structure`() = checkAutoImportFixByText(
+        """
         mod aaa {
             mod bbb {
                 fn foo() {
@@ -427,9 +464,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
                 struct Foo;
             }
         }
-    """)
+    """
+    )
 
-    fun `test complex module structure with file modules`() = checkAutoImportFixByFileTree("""
+    fun `test complex module structure with file modules`() = checkAutoImportFixByFileTree(
+        """
         //- aaa/mod.rs
         mod bbb;
         //- aaa/bbb/mod.rs
@@ -453,9 +492,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn foo() {
             let x = Foo/*caret*/;
         }
-    """)
+    """
+    )
 
-    fun `test import module declared via module declaration`() = checkAutoImportFixByFileTree("""
+    fun `test import module declared via module declaration`() = checkAutoImportFixByFileTree(
+        """
         //- foo/bar.rs
         fn foo_bar() {}
         //- main.rs
@@ -475,9 +516,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             bar/*caret*/::foo_bar();
         }
-    """)
+    """
+    )
 
-    fun `test filter import candidates 1`() = checkAutoImportFixByText("""
+    fun `test filter import candidates 1`() = checkAutoImportFixByText(
+        """
         mod foo1 {
             pub fn bar() {}
         }
@@ -507,9 +550,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             bar/*caret*/();
         }
-    """)
+    """
+    )
 
-    fun `test filter import candidates 2`() = checkAutoImportFixByText("""
+    fun `test filter import candidates 2`() = checkAutoImportFixByText(
+        """
         mod foo1 {
             pub fn bar() {}
         }
@@ -539,9 +584,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             bar/*caret*/::foo_bar();
         }
-    """)
+    """
+    )
 
-    fun `test filter members without owner prefix`() = checkAutoImportFixIsUnavailable("""
+    fun `test filter members without owner prefix`() = checkAutoImportFixIsUnavailable(
+        """
         mod foo {
             pub struct Foo;
             impl Foo {
@@ -552,9 +599,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             <error descr="Unresolved reference: `foo`">foo/*caret*/</error>();
         }
-    """)
+    """
+    )
 
-    fun `test don't try to import item if it can't be resolved`() = checkAutoImportFixIsUnavailable("""
+    fun `test don't try to import item if it can't be resolved`() = checkAutoImportFixIsUnavailable(
+        """
         mod foo {
             pub mod bar {
             }
@@ -562,9 +611,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             <error descr="Unresolved reference: `bar`">bar/*caret*/</error>::foo_bar();
         }
-    """)
+    """
+    )
 
-    fun `test don't import trait assoc function if its import is useless`() = checkAutoImportFixIsUnavailable("""
+    fun `test don't import trait assoc function if its import is useless`() = checkAutoImportFixIsUnavailable(
+        """
         mod foo {
             pub trait Bar {
                 fn bar();
@@ -573,9 +624,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             <error descr="Unresolved reference: `Bar`">Bar/*caret*/</error>::bar();
         }
-    """)
+    """
+    )
 
-    fun `test trait method with self parameter`() = checkAutoImportFixByText("""
+    fun `test trait method with self parameter`() = checkAutoImportFixByText(
+        """
         mod foo {
             pub trait Bar {
                 fn bar(&self);
@@ -595,9 +648,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             Bar::bar();
         }
-    """)
+    """
+    )
 
-    fun `test trait method with parameter contains Self type`() = checkAutoImportFixByText("""
+    fun `test trait method with parameter contains Self type`() = checkAutoImportFixByText(
+        """
         mod foo {
             pub trait Bar {
                 fn bar() -> Self;
@@ -617,9 +672,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             Bar/*caret*/::bar();
         }
-    """)
+    """
+    )
 
-    fun `test don't import trait associated const`() = checkAutoImportFixIsUnavailable("""
+    fun `test don't import trait associated const`() = checkAutoImportFixIsUnavailable(
+        """
         mod foo {
             pub trait Bar {
                 const BAR: i32;
@@ -628,9 +685,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             <error descr="Unresolved reference: `Bar`">Bar/*caret*/</error>::BAR();
         }
-    """)
+    """
+    )
 
-    fun `test trait const containing Self type`() = checkAutoImportFixByText("""
+    fun `test trait const containing Self type`() = checkAutoImportFixByText(
+        """
         mod foo {
             pub trait Bar {
                 const C: Self;
@@ -650,9 +709,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             Bar/*caret*/::C;
         }
-    """)
+    """
+    )
 
-    fun `test don't import trait associated type`() = checkAutoImportFixIsUnavailable("""
+    fun `test don't import trait associated type`() = checkAutoImportFixIsUnavailable(
+        """
         mod foo {
             pub trait Bar {
                 type Item;
@@ -661,9 +722,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let _: <error descr="Unresolved reference: `Bar`">Bar/*caret*/</error>::Item;
         }
-    """)
+    """
+    )
 
-    fun `test import reexported item`() = checkAutoImportFixByText("""
+    fun `test import reexported item`() = checkAutoImportFixByText(
+        """
         mod foo {
             mod bar {
                 pub struct Bar;
@@ -689,9 +752,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             Bar/*caret*/;
         }
-    """)
+    """
+    )
 
-    fun `test import reexported item with alias`() = checkAutoImportFixByText("""
+    fun `test import reexported item with alias`() = checkAutoImportFixByText(
+        """
         mod foo {
             mod bar {
                 pub struct Bar;
@@ -717,9 +782,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             Foo/*caret*/;
         }
-    """)
+    """
+    )
 
-    fun `test import reexported item via use group`() = checkAutoImportFixByText("""
+    fun `test import reexported item via use group`() = checkAutoImportFixByText(
+        """
         mod foo {
             mod bar {
                 pub struct Baz;
@@ -747,9 +814,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let a = Baz/*caret*/;
         }
-    """)
+    """
+    )
 
-    fun `test import reexported item via 'self'`() = checkAutoImportFixByText("""
+    fun `test import reexported item via 'self'`() = checkAutoImportFixByText(
+        """
         mod foo {
             mod bar {
                 pub struct Baz;
@@ -775,9 +844,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let a = Baz/*caret*/;
         }
-    """)
+    """
+    )
 
-    fun `test import reexported item with complex reexport`() = checkAutoImportFixByText("""
+    fun `test import reexported item with complex reexport`() = checkAutoImportFixByText(
+        """
         mod foo {
             mod bar {
                 pub struct Baz;
@@ -805,9 +876,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let a = Foo/*caret*/;
         }
-    """)
+    """
+    )
 
-    fun `test module reexport`() = checkAutoImportFixByText("""
+    fun `test module reexport`() = checkAutoImportFixByText(
+        """
         mod foo {
             mod bar {
                 pub mod baz {
@@ -837,17 +910,21 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let x = FooBar/*caret*/;
         }
-    """)
+    """
+    )
 
-    fun `test do not import path in use item`() = checkAutoImportFixIsUnavailable("""
+    fun `test do not import path in use item`() = checkAutoImportFixIsUnavailable(
+        """
         mod bar {
             pub struct Bar;
         }
 
         use <error descr="Unresolved reference: `Bar`">Bar/*caret*/</error>;
-    """, AutoImportFix.Testmarks.pathInUseItem)
+    """, AutoImportFix.Testmarks.pathInUseItem
+    )
 
-    fun `test multiple import`() = checkAutoImportFixByTextWithMultipleChoice("""
+    fun `test multiple import`() = checkAutoImportFixByTextWithMultipleChoice(
+        """
         mod foo {
             pub struct Foo;
             pub mod bar {
@@ -885,9 +962,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let f = Foo/*caret*/;
         }
-    """)
+    """
+    )
 
-    fun `test multiple import with reexports`() = checkAutoImportFixByTextWithMultipleChoice("""
+    fun `test multiple import with reexports`() = checkAutoImportFixByTextWithMultipleChoice(
+        """
         mod foo {
             pub struct Foo;
         }
@@ -911,7 +990,7 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let f = <error descr="Unresolved reference: `Foo`">Foo/*caret*/</error>;
         }
-    """, listOf( "bar::Foo","foo::Foo", "qwe::Foo"),  "bar::Foo", """
+    """, listOf("bar::Foo", "foo::Foo", "qwe::Foo"), "bar::Foo", """
         use bar::Foo;
 
         mod foo {
@@ -937,9 +1016,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let f = Foo/*caret*/;
         }
-    """)
+    """
+    )
 
-    fun `test double module reexport`() = checkAutoImportFixByTextWithMultipleChoice("""
+    fun `test double module reexport`() = checkAutoImportFixByTextWithMultipleChoice(
+        """
         mod foo {
             pub mod bar {
                 pub struct FooBar;
@@ -981,9 +1062,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let a = FooBar/*caret*/;
         }
-    """)
+    """
+    )
 
-    fun `test cyclic module reexports`() = checkAutoImportFixByTextWithMultipleChoice("""
+    fun `test cyclic module reexports`() = checkAutoImportFixByTextWithMultipleChoice(
+        """
         pub mod x {
             pub struct Z;
             pub use y;
@@ -1011,9 +1094,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let x = Z/*caret*/;
         }
-    """)
+    """
+    )
 
-    fun `test crazy cyclic module reexports`() = checkAutoImportFixByTextWithMultipleChoice("""
+    fun `test crazy cyclic module reexports`() = checkAutoImportFixByTextWithMultipleChoice(
+        """
         pub mod x {
             pub use u;
             pub mod y {
@@ -1060,9 +1145,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let z = Z/*caret*/;
         }
-    """)
+    """
+    )
 
-    fun `test filter imports`() = checkAutoImportFixByTextWithMultipleChoice("""
+    fun `test filter imports`() = checkAutoImportFixByTextWithMultipleChoice(
+        """
         mod foo {
             pub mod bar {
                 pub struct FooBar;
@@ -1104,9 +1191,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let x = FooBar/*caret*/;
         }
-    """)
+    """
+    )
 
-    fun `test filter by namespace - type`() = checkAutoImportFixByText("""
+    fun `test filter by namespace - type`() = checkAutoImportFixByText(
+        """
         mod struct_mod {
             pub struct Foo { foo: i32 }
         }
@@ -1132,10 +1221,12 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         }
 
         fn foo(x: Foo/*caret*/) {}
-    """)
+    """
+    )
 
     // should suggest only `enum_mod::Bar::Foo`
-    fun `test filter by namespace - value`() = checkAutoImportFixByTextWithMultipleChoice("""
+    fun `test filter by namespace - value`() = checkAutoImportFixByTextWithMultipleChoice(
+        """
         mod struct_mod {
             pub struct Foo { foo: i32 }
         }
@@ -1183,9 +1274,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let x = Foo/*caret*/;
         }
-    """)
+    """
+    )
 
-    fun `test filter by namespace - trait`() = checkAutoImportFixByText("""
+    fun `test filter by namespace - trait`() = checkAutoImportFixByText(
+        """
         mod struct_mod {
             pub struct Foo { foo: i32 }
         }
@@ -1219,9 +1312,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         }
 
         fn foo<T: Foo/*caret*/>(x: T) {}
-    """)
+    """
+    )
 
-    fun `test filter by namespace - struct literal`() = checkAutoImportFixByTextWithMultipleChoice("""
+    fun `test filter by namespace - struct literal`() = checkAutoImportFixByTextWithMultipleChoice(
+        """
         mod struct_mod {
             pub struct Foo;
         }
@@ -1289,9 +1384,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let x = Foo/*caret*/ { };
         }
-    """)
+    """
+    )
 
-    fun `test import trait method`() = checkAutoImportFixByText("""
+    fun `test import trait method`() = checkAutoImportFixByText(
+        """
         mod foo {
             pub trait Foo {
                 fn foo(&self);
@@ -1321,9 +1418,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let x = 123.foo/*caret*/();
         }
-    """)
+    """
+    )
 
-    fun `test import default trait method`() = checkAutoImportFixByText("""
+    fun `test import default trait method`() = checkAutoImportFixByText(
+        """
         mod foo {
             pub trait Foo {
                 fn foo(&self) {}
@@ -1349,9 +1448,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let x = 123.foo/*caret*/();
         }
-    """)
+    """
+    )
 
-    fun `test import trait method UFCS of primitive`() = checkAutoImportFixByText("""
+    fun `test import trait method UFCS of primitive`() = checkAutoImportFixByText(
+        """
         mod foo {
             pub trait Foo {
                 fn foo(&self);
@@ -1381,9 +1482,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let x = i32::foo/*caret*/(123);
         }
-    """)
+    """
+    )
 
-    fun `test import trait method UFCS of struct`() = checkAutoImportFixByText("""
+    fun `test import trait method UFCS of struct`() = checkAutoImportFixByText(
+        """
         mod foo {
             pub trait Foo {
                 fn foo(&self);
@@ -1415,9 +1518,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let x = S::foo/*caret*/(123);
         }
-    """)
+    """
+    )
 
-    fun `test import trait method UFCS of explicit type-qualified path`() = checkAutoImportFixByText("""
+    fun `test import trait method UFCS of explicit type-qualified path`() = checkAutoImportFixByText(
+        """
         mod foo {
             pub trait Foo {
                 fn foo(&self);
@@ -1447,9 +1552,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let x = <i32>::foo/*caret*/(123);
         }
-    """)
+    """
+    )
 
-    fun `test import trait associated constant`() = checkAutoImportFixByText("""
+    fun `test import trait associated constant`() = checkAutoImportFixByText(
+        """
         mod foo {
             pub trait Foo {
                 const C: i32;
@@ -1479,9 +1586,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let x = i32::C/*caret*/(123);
         }
-    """)
+    """
+    )
 
-    fun `test import trait default method UFCS`() = checkAutoImportFixByText("""
+    fun `test import trait default method UFCS`() = checkAutoImportFixByText(
+        """
         mod foo {
             pub trait Foo {
                 fn foo(&self) {}
@@ -1507,9 +1616,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let x = i32::foo/*caret*/(123);
         }
-    """)
+    """
+    )
 
-    fun `test import trait default assoc function`() = checkAutoImportFixByText("""
+    fun `test import trait default assoc function`() = checkAutoImportFixByText(
+        """
         mod foo {
             pub struct S;
             pub trait Foo {
@@ -1537,9 +1648,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let x = S/*caret*/::foo();
         }
-    """)
+    """
+    )
 
-    fun `test import reexported trait method`() = checkAutoImportFixByText("""
+    fun `test import reexported trait method`() = checkAutoImportFixByText(
+        """
         mod foo {
             mod bar {
                 pub mod baz {
@@ -1581,9 +1694,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let x = 123.foo_bar/*caret*/();
         }
-    """)
+    """
+    )
 
-    fun `test do not try to import non trait method`() = checkAutoImportFixIsUnavailable("""
+    fun `test do not try to import non trait method`() = checkAutoImportFixIsUnavailable(
+        """
         mod foo {
             pub trait Foo {
                 fn foo(&self);
@@ -1603,9 +1718,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let x = Bar.foo/*caret*/();
         }
-    """)
+    """
+    )
 
-    fun `test multiple trait method import`() = checkAutoImportFixByTextWithMultipleChoice("""
+    fun `test multiple trait method import`() = checkAutoImportFixByTextWithMultipleChoice(
+        """
         mod foo {
             pub trait Foo {
                 fn foo(&self);
@@ -1651,9 +1768,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let x = 123.foo/*caret*/();
         }
-    """)
+    """
+    )
 
-    fun `test suggest single method`() = checkAutoImportFixByText("""
+    fun `test suggest single method`() = checkAutoImportFixByText(
+        """
         struct Foo;
         struct Bar;
 
@@ -1713,10 +1832,12 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             Bar.do_x/*caret*/();
         }
-    """)
+    """
+    )
 
     /** Issue [2822](https://github.com/intellij-rust/intellij-rust/issues/2822) */
-    fun `test do not try to import trait object method`() = checkAutoImportFixIsUnavailable("""
+    fun `test do not try to import trait object method`() = checkAutoImportFixIsUnavailable(
+        """
         mod foo {
             pub trait Foo {
                 fn foo(&self) {}
@@ -1726,9 +1847,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn bar(t: &dyn foo::Foo) {
             t.foo/*caret*/();
         }
-    """)
+    """
+    )
 
-    fun `test do not try to import trait bound method`() = checkAutoImportFixIsUnavailable("""
+    fun `test do not try to import trait bound method`() = checkAutoImportFixIsUnavailable(
+        """
         mod foo {
             pub trait Foo {
                 fn foo(&self) {}
@@ -1738,10 +1861,12 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn bar<T: foo::Foo>(t: T) {
             t.foo/*caret*/();
         }
-    """)
+    """
+    )
 
     /** Issue [2863](https://github.com/intellij-rust/intellij-rust/issues/2863) */
-    fun `test do not try to import aliased trait`() = checkAutoImportFixIsUnavailable("""
+    fun `test do not try to import aliased trait`() = checkAutoImportFixIsUnavailable(
+        """
         mod foo {
             pub trait Foo {
                 fn foo(&self) {}
@@ -1755,9 +1880,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             123.foo/*caret*/();
         }
-    """)
+    """
+    )
 
-    fun `test do not try to import underscore aliased trait`() = checkAutoImportFixIsUnavailable("""
+    fun `test do not try to import underscore aliased trait`() = checkAutoImportFixIsUnavailable(
+        """
         mod foo {
             pub trait Foo {
                 fn foo(&self) {}
@@ -1771,9 +1898,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             123.foo/*caret*/();
         }
-    """)
+    """
+    )
 
-    fun `test do not try to import trait for method call inside impl of that trait`() = checkAutoImportFixIsUnavailable("""
+    fun `test do not try to import trait for method call inside impl of that trait`() = checkAutoImportFixIsUnavailable(
+        """
         mod foo {
             pub trait Foo { fn foo(&self) {} }
         }
@@ -1787,10 +1916,12 @@ class AutoImportFixTest : AutoImportFixTestBase() {
                 self.0.foo/*caret*/()
             }
         }
-    """)
+    """
+    )
 
     @MockEdition(CargoWorkspace.Edition.EDITION_2018)
-    fun `test import item in root module (edition 2018)`() = checkAutoImportFixByText("""
+    fun `test import item in root module (edition 2018)`() = checkAutoImportFixByText(
+        """
         mod foo {
             pub struct Foo;
         }
@@ -1808,10 +1939,12 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let f = Foo/*caret*/;
         }
-    """)
+    """
+    )
 
     @MockEdition(CargoWorkspace.Edition.EDITION_2018)
-    fun `test import item from root module (edition 2018)`() = checkAutoImportFixByText("""
+    fun `test import item from root module (edition 2018)`() = checkAutoImportFixByText(
+        """
         struct Foo;
 
         mod bar {
@@ -1825,9 +1958,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
 
             type T = Foo;
         }
-    """)
+    """
+    )
 
-    fun `test import inside nested module`() = checkAutoImportFixByText("""
+    fun `test import inside nested module`() = checkAutoImportFixByText(
+        """
         mod b {
             pub struct S;
         }
@@ -1847,9 +1982,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
 
             }
         }
-    """)
+    """
+    )
 
-    fun `test import inside nested pub module`() = checkAutoImportFixByText("""
+    fun `test import inside nested pub module`() = checkAutoImportFixByText(
+        """
         mod b {
             pub struct S;
         }
@@ -1865,9 +2002,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
 
             fn x() -> S {}
         }
-    """)
+    """
+    )
 
-    fun `test import inside nested module with multiple choice`() = checkAutoImportFixByTextWithMultipleChoice("""
+    fun `test import inside nested module with multiple choice`() = checkAutoImportFixByTextWithMultipleChoice(
+        """
         mod a {
             pub struct S;
         }
@@ -1893,9 +2032,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
 
             }
         }
-    """)
+    """
+    )
 
-    fun `test import with wildcard reexport 1`() = checkAutoImportFixByText("""
+    fun `test import with wildcard reexport 1`() = checkAutoImportFixByText(
+        """
         mod c {
             mod a {
                 pub struct A;
@@ -1919,9 +2060,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let a = A;
         }
-    """)
+    """
+    )
 
-    fun `test import with wildcard reexport 2`() = checkAutoImportFixByText("""
+    fun `test import with wildcard reexport 2`() = checkAutoImportFixByText(
+        """
         mod c {
             mod a {
                 pub struct A;
@@ -1945,9 +2088,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let a = A;
         }
-    """)
+    """
+    )
 
-    fun `test group imports`() = checkAutoImportFixByText("""
+    fun `test group imports`() = checkAutoImportFixByText(
+        """
         // comment
         use foo::Foo;
 
@@ -1971,9 +2116,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let f = Bar/*caret*/;
         }
-    """)
+    """
+    )
 
-    fun `test add import to existing group`() = checkAutoImportFixByText("""
+    fun `test add import to existing group`() = checkAutoImportFixByText(
+        """
         // comment
         use foo::{Foo, Bar};
 
@@ -1999,9 +2146,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let f = Baz/*caret*/;
         }
-    """)
+    """
+    )
 
-    fun `test group imports only at the last level`() = checkAutoImportFixByText("""
+    fun `test group imports only at the last level`() = checkAutoImportFixByText(
+        """
         use foo::Foo;
 
         mod foo {
@@ -2028,9 +2177,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let f = Bar/*caret*/;
         }
-    """)
+    """
+    )
 
-    fun `test group imports only if the other import doesn't have a modifier`() = checkAutoImportFixByText("""
+    fun `test group imports only if the other import doesn't have a modifier`() = checkAutoImportFixByText(
+        """
         pub use foo::Foo;
 
         mod foo {
@@ -2053,9 +2204,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let f = Bar/*caret*/;
         }
-    """)
+    """
+    )
 
-    fun `test group imports only if the other import doesn't have an attribute`() = checkAutoImportFixByText("""
+    fun `test group imports only if the other import doesn't have an attribute`() = checkAutoImportFixByText(
+        """
         #[attribute = "value"]
         use foo::Foo;
 
@@ -2080,9 +2233,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let f = Bar/*caret*/;
         }
-    """)
+    """
+    )
 
-    fun `test group imports with aliases 1`() = checkAutoImportFixByText("""
+    fun `test group imports with aliases 1`() = checkAutoImportFixByText(
+        """
         use foo::Foo as F;
 
         mod foo {
@@ -2104,9 +2259,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let f = Bar/*caret*/;
         }
-    """)
+    """
+    )
 
-    fun `test group imports with aliases 2`() = checkAutoImportFixByText("""
+    fun `test group imports with aliases 2`() = checkAutoImportFixByText(
+        """
         use foo::{Foo as F, Bar as B};
 
         mod foo {
@@ -2128,9 +2285,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let f = Bar/*caret*/;
         }
-    """)
+    """
+    )
 
-    fun `test group imports with nested groups`() = checkAutoImportFixByText("""
+    fun `test group imports with nested groups`() = checkAutoImportFixByText(
+        """
         use foo::{{Foo, Bar}};
 
         mod foo {
@@ -2154,10 +2313,12 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let f = Baz/*caret*/;
         }
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithDependencyRustProjectDescriptor::class)
-    fun `test import outer item in doctest injection`() = checkAutoImportFixByFileTreeWithouHighlighting("""
+    fun `test import outer item in doctest injection`() = checkAutoImportFixByFileTreeWithouHighlighting(
+        """
     //- lib.rs
         /// ```
         /// foo/*caret*/();
@@ -2170,10 +2331,12 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         /// foo();
         /// ```
         pub fn foo() {}
-    """, Testmarks.doctestInjectionImport)
+    """, Testmarks.doctestInjectionImport
+    )
 
     @ProjectDescriptor(WithDependencyRustProjectDescriptor::class)
-    fun `test import second outer item in doctest injection`() = checkAutoImportFixByFileTreeWithouHighlighting("""
+    fun `test import second outer item in doctest injection`() = checkAutoImportFixByFileTreeWithouHighlighting(
+        """
     //- lib.rs
         /// ```
         /// use test_package::foo;
@@ -2191,10 +2354,12 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         /// ```
         pub fn foo() {}
         pub fn bar() {}
-    """, Testmarks.doctestInjectionImport)
+    """, Testmarks.doctestInjectionImport
+    )
 
     @ProjectDescriptor(WithDependencyRustProjectDescriptor::class)
-    fun `test import second outer item without grouping in doctest injection`() = checkAutoImportFixByFileTreeWithouHighlighting("""
+    fun `test import second outer item without grouping in doctest injection`() = checkAutoImportFixByFileTreeWithouHighlighting(
+        """
     //- lib.rs
         /// ```
         /// use test_package::foo;
@@ -2213,10 +2378,12 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         /// ```
         pub fn foo() {}
         pub mod bar { pub fn baz() {} }
-    """, Testmarks.insertNewLineBeforeUseItem)
+    """, Testmarks.insertNewLineBeforeUseItem
+    )
 
     @ProjectDescriptor(WithDependencyRustProjectDescriptor::class)
-    fun `test import outer item in doctest injection with inner module`() = checkAutoImportFixByFileTreeWithouHighlighting("""
+    fun `test import outer item in doctest injection with inner module`() = checkAutoImportFixByFileTreeWithouHighlighting(
+        """
     //- lib.rs
         /// ```
         /// mod bar {
@@ -2237,10 +2404,12 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         /// }
         /// ```
         pub fn foo() {}
-    """, Testmarks.doctestInjectionImport)
+    """, Testmarks.doctestInjectionImport
+    )
 
     @ExpandMacros
-    fun `test import struct from macro`() = checkAutoImportFixByText("""
+    fun `test import struct from macro`() = checkAutoImportFixByText(
+        """
         mod foo {
             macro_rules! foo {
                 () => { pub struct Foo; };
@@ -2264,9 +2433,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn main() {
             let f = Foo/*caret*/;
         }
-    """)
+    """
+    )
 
-    fun `test import trait for bound (type-related path)`() = checkAutoImportFixByText("""
+    fun `test import trait for bound (type-related path)`() = checkAutoImportFixByText(
+        """
         mod foo {
             pub trait Foo { fn foo(&self) {} }
         }
@@ -2284,9 +2455,11 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn foo<T>(a: S<T>) where S<T>: foo::Foo {
             <S<T>>::foo/*caret*/(&a);
         }
-    """)
+    """
+    )
 
-    fun `test import trait for bound (method call)`() = checkAutoImportFixByText("""
+    fun `test import trait for bound (method call)`() = checkAutoImportFixByText(
+        """
         mod foo {
             pub trait Foo { fn foo(&self) {} }
         }
@@ -2304,11 +2477,13 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         fn foo<T>(a: S<T>) where S<T>: foo::Foo {
             a.foo();
         }
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithDependencyRustProjectDescriptor::class)
     @MockEdition(CargoWorkspace.Edition.EDITION_2015)
-    fun `test import item from a renamed crate (2015 edition)`() = checkAutoImportFixByFileTree("""
+    fun `test import item from a renamed crate (2015 edition)`() = checkAutoImportFixByFileTree(
+        """
         //- dep-lib-to-be-renamed/lib.rs
         pub mod foo {
             pub struct Bar;
@@ -2322,11 +2497,13 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         use dep_lib_renamed::foo::Bar;
 
         fn foo(t: Bar/*caret*/) {}
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithDependencyRustProjectDescriptor::class)
     @MockEdition(CargoWorkspace.Edition.EDITION_2018)
-    fun `test import item from a renamed crate (2018 edition)`() = checkAutoImportFixByFileTree("""
+    fun `test import item from a renamed crate (2018 edition)`() = checkAutoImportFixByFileTree(
+        """
         //- dep-lib-to-be-renamed/lib.rs
         pub mod foo {
             pub struct Bar;
@@ -2338,5 +2515,6 @@ class AutoImportFixTest : AutoImportFixTestBase() {
         use dep_lib_renamed::foo::Bar;
 
         fn foo(t: Bar/*caret*/) {}
-    """)
+    """
+    )
 }

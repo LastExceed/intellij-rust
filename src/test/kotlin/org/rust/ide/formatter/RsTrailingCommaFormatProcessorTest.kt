@@ -12,7 +12,8 @@ import org.rust.lang.core.psi.RsStructItem
 import org.rust.lang.core.psi.ext.descendantOfTypeStrict
 
 class RsTrailingCommaFormatProcessorTest : RsFormatterTestBase() {
-    fun `test removes trailing comma if single line in brace blocks`() = doTextTest("""
+    fun `test removes trailing comma if single line in brace blocks`() = doTextTest(
+        """
         use foo::{bar, baz,};
 
         struct S1 { a: i32, }
@@ -66,9 +67,11 @@ class RsTrailingCommaFormatProcessorTest : RsFormatterTestBase() {
                 x: 92
             };
         }
-    """)
+    """
+    )
 
-    fun `test removes trailing comma if single in parent blocks`() = doTextTest("""
+    fun `test removes trailing comma if single in parent blocks`() = doTextTest(
+        """
         struct T(i32,);
 
         fn f(x: i32,) {
@@ -82,9 +85,11 @@ class RsTrailingCommaFormatProcessorTest : RsFormatterTestBase() {
             foo(1);
             foo.bar(1, 2);
         }
-    """)
+    """
+    )
 
-    fun `test adds trailing commas in multiline blocks blocks`() = doTextTest("""
+    fun `test adds trailing commas in multiline blocks blocks`() = doTextTest(
+        """
         struct T1(
             i32
         );
@@ -128,7 +133,8 @@ class RsTrailingCommaFormatProcessorTest : RsFormatterTestBase() {
                 2,
             );
         }
-    """)
+    """
+    )
 
     fun `test trailing comma processor works when RustfmtExternalFormatProcessor is used`() {
         @Language("Rust")

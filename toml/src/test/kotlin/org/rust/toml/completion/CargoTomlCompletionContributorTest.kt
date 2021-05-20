@@ -30,7 +30,8 @@ class CargoTomlCompletionContributorTest : CargoTomlCompletionTestBase() {
         "[build-dependencies<caret>]"
     )
 
-    fun `test complete key in table`() = doSingleCompletion("""
+    fun `test complete key in table`() = doSingleCompletion(
+        """
         [profile.release]
         opt<caret>
     """, """

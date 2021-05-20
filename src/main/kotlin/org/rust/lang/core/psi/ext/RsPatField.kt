@@ -22,13 +22,14 @@ sealed class RsPatFieldKind {
      * let S { a : ref b } = ...
      *         ~~~~~~~~~
      */
-    data class Full(val ident: PsiElement, val pat: RsPat): RsPatFieldKind()
+    data class Full(val ident: PsiElement, val pat: RsPat) : RsPatFieldKind()
+
     /**
      * struct S { a: i32 }
      * let S { ref a } = ...
      *         ~~~~~
      */
-    data class Shorthand(val binding: RsPatBinding, val isBox: Boolean): RsPatFieldKind()
+    data class Shorthand(val binding: RsPatBinding, val isBox: Boolean) : RsPatFieldKind()
 }
 
 val RsPatFieldKind.fieldName: String

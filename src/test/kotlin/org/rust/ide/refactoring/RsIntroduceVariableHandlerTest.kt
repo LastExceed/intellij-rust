@@ -15,7 +15,8 @@ import org.rust.lang.core.psi.RsExpr
 
 
 class RsIntroduceVariableHandlerTest : RsTestBase() {
-    fun `test expression`() = doTest("""
+    fun `test expression`() = doTest(
+        """
         fn hello() {
             foo(5 + /*caret*/10);
         }
@@ -24,9 +25,11 @@ class RsIntroduceVariableHandlerTest : RsTestBase() {
             let i = 10;
             foo(5 + i);
         }
-    """)
+    """
+    )
 
-    fun `test caret just after the expression`() = doTest("""
+    fun `test caret just after the expression`() = doTest(
+        """
         fn main() {
             1/*caret*/;
         }
@@ -34,9 +37,11 @@ class RsIntroduceVariableHandlerTest : RsTestBase() {
         fn main() {
             let i = 1;
         }
-    """)
+    """
+    )
 
-    fun `test top level in block`() = doTest("""
+    fun `test top level in block`() = doTest(
+        """
         fn main() {
             let _ = {
                 1/*caret*/
@@ -48,9 +53,11 @@ class RsIntroduceVariableHandlerTest : RsTestBase() {
                 let i = 1;
             };
         }
-    """)
+    """
+    )
 
-    fun `test explicit selection works`() = doTest("""
+    fun `test explicit selection works`() = doTest(
+        """
         fn main() {
             1 + <selection>1</selection>;
         }
@@ -59,10 +66,12 @@ class RsIntroduceVariableHandlerTest : RsTestBase() {
             let i = 1;
             1 + i;
         }
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test replace occurrences forward`() = doTest("""
+    fun `test replace occurrences forward`() = doTest(
+        """
         fn hello() {
             foo(5 + /*caret*/10);
             foo(5 + 10);
@@ -73,10 +82,12 @@ class RsIntroduceVariableHandlerTest : RsTestBase() {
             foo(i);
             foo(i);
         }
-    """, replaceAll = true)
+    """, replaceAll = true
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test replace occurrences backward`() = doTest("""
+    fun `test replace occurrences backward`() = doTest(
+        """
         fn main() {
             let a = 1;
             let b = a + 1;
@@ -89,9 +100,11 @@ class RsIntroduceVariableHandlerTest : RsTestBase() {
             let b = i;
             let c = i;
         }
-    """, replaceAll = true)
+    """, replaceAll = true
+    )
 
-    fun `test statement`() = doTest("""
+    fun `test statement`() = doTest(
+        """
         fn hello() {
             foo(5 + /*caret*/10);
         }
@@ -99,9 +112,11 @@ class RsIntroduceVariableHandlerTest : RsTestBase() {
         fn hello() {
             let foo1 = foo(5 + 10);
         }
-    """)
+    """
+    )
 
-    fun `test match`() = doTest("""
+    fun `test match`() = doTest(
+        """
         fn bar() {
             ma/*caret*/tch 5 {
                 2 => 2,
@@ -115,9 +130,11 @@ class RsIntroduceVariableHandlerTest : RsTestBase() {
                 _ => 8,
             };
         }
-    """)
+    """
+    )
 
-    fun `test file`() = doTest("""
+    fun `test file`() = doTest(
+        """
         fn read_fle() -> Result<Vec<String, io::Error>> {
             File::op/*caret*/en("res/input.txt")?
         }
@@ -125,9 +142,11 @@ class RsIntroduceVariableHandlerTest : RsTestBase() {
         fn read_fle() -> Result<Vec<String, io::Error>> {
             let x = File::open("res/input.txt")?;
         }
-    """)
+    """
+    )
 
-    fun `test ref mut`() = doTest("""
+    fun `test ref mut`() = doTest(
+        """
         fn read_file() -> Result<String, Error> {
             let file = File::open("res/input.txt")?;
 
@@ -140,9 +159,11 @@ class RsIntroduceVariableHandlerTest : RsTestBase() {
             let mut string = String::new();
             file.read_to_string(&mut string)
         }
-    """)
+    """
+    )
 
-    fun `test tuple`() = doTest("""
+    fun `test tuple`() = doTest(
+        """
         fn foo((a, b): (u32, u32)) {}
         fn bar() -> (u32, u32) {
             (1, 2)
@@ -159,9 +180,11 @@ class RsIntroduceVariableHandlerTest : RsTestBase() {
             let bar1 = bar();
             foo(bar1);
         }
-    """)
+    """
+    )
 
-    fun `test tuple struct`() = doTest("""
+    fun `test tuple struct`() = doTest(
+        """
         pub struct NodeType(pub u32);
 
         pub struct Token {
@@ -182,10 +205,12 @@ class RsIntroduceVariableHandlerTest : RsTestBase() {
             let node_type = t.ty;
             foo(node_type)
         }
-    """, mark = IntroduceVariableTestmarks.invalidNamePart)
+    """, mark = IntroduceVariableTestmarks.invalidNamePart
+    )
 
     // https://github.com/intellij-rust/intellij-rust/issues/2919
-    fun `test issue2919`() = doTest("""
+    fun `test issue2919`() = doTest(
+        """
         fn main() {
             let i1 = 1;
             let i2 = 1;
@@ -206,9 +231,11 @@ class RsIntroduceVariableHandlerTest : RsTestBase() {
             let z = i4 + 4;
             let w = x + 5;
         }
-    """)
+    """
+    )
 
-    fun `test patterns 1`() = doTest("""
+    fun `test patterns 1`() = doTest(
+        """
         fn main() {
             let (i, x) = (1, 2);
             let z = /*caret*/3 + 4;
@@ -219,9 +246,11 @@ class RsIntroduceVariableHandlerTest : RsTestBase() {
             let i1 = 3;
             let z = i1 + 4;
         }
-    """)
+    """
+    )
 
-    fun `test patterns 2`() = doTest("""
+    fun `test patterns 2`() = doTest(
+        """
         struct S { a: i32 }
 
         fn main() {
@@ -244,9 +273,11 @@ class RsIntroduceVariableHandlerTest : RsTestBase() {
                 }
             }
         }
-    """)
+    """
+    )
 
-    fun `test nested scopes`() = doTest("""
+    fun `test nested scopes`() = doTest(
+        """
         fn main() {
             { { let i = 1; } }
             let i1 = /*caret*/3 + 5;
@@ -257,9 +288,11 @@ class RsIntroduceVariableHandlerTest : RsTestBase() {
             let i2 = 3;
             let i1 = i2 + 5;
         }
-    """)
+    """
+    )
 
-    fun `test functions and static`() = doTest("""
+    fun `test functions and static`() = doTest(
+        """
         fn i() -> i32 { 42 }
         static i1: i32 = 1;
         fn main() {
@@ -272,9 +305,11 @@ class RsIntroduceVariableHandlerTest : RsTestBase() {
             let i2 = 3;
             let x = i1 + i() + i2 + 5;
         }
-    """)
+    """
+    )
 
-    fun `test first anchor inside block`() = doTest("""
+    fun `test first anchor inside block`() = doTest(
+        """
         fn main() {
             let x1 = if true { { 7 } } else { 0 };
             let x2 = /*caret*/7;
@@ -285,9 +320,11 @@ class RsIntroduceVariableHandlerTest : RsTestBase() {
             let x1 = if true { { i } } else { 0 };
             let x2 = i;
         }
-    """, replaceAll = true)
+    """, replaceAll = true
+    )
 
-    fun `test newline before anchor`() = doTest("""
+    fun `test newline before anchor`() = doTest(
+        """
         fn main() {
             const C: i32 = 1;
 
@@ -300,7 +337,8 @@ class RsIntroduceVariableHandlerTest : RsTestBase() {
             let i = 7;
             let x = i;
         }
-    """)
+    """
+    )
 
     private fun doTest(
         @Language("Rust") before: String,

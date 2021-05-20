@@ -15,9 +15,11 @@ import org.rust.lang.RsFileType
 import org.rust.lang.RsLanguage
 
 abstract class RsSurrounderTestBase(private val surrounder: Surrounder) : RsTestBase() {
-    protected fun doTest(@Language("Rust") before: String,
-                         @Language("Rust") after: String,
-                         checkSyntaxErrors: Boolean = true) {
+    protected fun doTest(
+        @Language("Rust") before: String,
+        @Language("Rust") after: String,
+        checkSyntaxErrors: Boolean = true
+    ) {
         myFixture.configureByText(RsFileType, before)
 
         checkApplicability(fileName, true)
@@ -47,7 +49,8 @@ abstract class RsSurrounderTestBase(private val surrounder: Surrounder) : RsTest
             selectionModer.selectLineAtCaret()
 
         val elements = descriptor.getElementsToSurround(
-            myFixture.file, selectionModer.selectionStart, selectionModer.selectionEnd)
+            myFixture.file, selectionModer.selectionStart, selectionModer.selectionEnd
+        )
 
         check(surrounder.isApplicable(elements) == isApplicable) {
             "surrounder ${if (isApplicable) "should" else "shouldn't"} be applicable to given selection:\n\n" +

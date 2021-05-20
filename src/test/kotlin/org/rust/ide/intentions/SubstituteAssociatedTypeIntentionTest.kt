@@ -6,23 +6,28 @@
 package org.rust.ide.intentions
 
 class SubstituteAssociatedTypeIntentionTest : RsIntentionTestBase(SubstituteAssociatedTypeIntention::class) {
-    fun `test unavailable on type alias`() = doUnavailableTest("""
+    fun `test unavailable on type alias`() = doUnavailableTest(
+        """
         type Alias = u32;
         fn foo() -> Alias/*caret*/ {
             unimplemented!()
         }
-    """)
+    """
+    )
 
-    fun `test unavailable on trait associated type`() = doUnavailableTest("""
+    fun `test unavailable on trait associated type`() = doUnavailableTest(
+        """
         trait Trait {
             type Item;
         }
         fn foo<T: Trait>() -> T::/*caret*/Item {
             unimplemented!()
         }
-    """)
+    """
+    )
 
-    fun `test trait associated type with a default`() = doAvailableTest("""
+    fun `test trait associated type with a default`() = doAvailableTest(
+        """
         trait Trait {
             type Item = u32;
         }
@@ -36,9 +41,11 @@ class SubstituteAssociatedTypeIntentionTest : RsIntentionTestBase(SubstituteAsso
         fn foo<T: Trait>() -> u32 {
             unimplemented!()
         }
-    """)
+    """
+    )
 
-    fun `test associated type in type context`() = doAvailableTest("""
+    fun `test associated type in type context`() = doAvailableTest(
+        """
         trait Trait {
             type Item;
             fn foo(&self) -> Self::Item;
@@ -62,9 +69,11 @@ class SubstituteAssociatedTypeIntentionTest : RsIntentionTestBase(SubstituteAsso
                 unimplemented!()
             }
         }
-    """)
+    """
+    )
 
-    fun `test associated type in type context with type parameters`() = doAvailableTest("""
+    fun `test associated type in type context with type parameters`() = doAvailableTest(
+        """
         struct S<R>(R);
         trait Trait<T> {
             type Item;
@@ -90,9 +99,11 @@ class SubstituteAssociatedTypeIntentionTest : RsIntentionTestBase(SubstituteAsso
                 unimplemented!()
             }
         }
-    """)
+    """
+    )
 
-    fun `test associated type in expression context`() = doAvailableTest("""
+    fun `test associated type in expression context`() = doAvailableTest(
+        """
         struct S;
         impl S {
             fn bar() {}
@@ -124,9 +135,11 @@ class SubstituteAssociatedTypeIntentionTest : RsIntentionTestBase(SubstituteAsso
                 S::bar();
             }
         }
-    """)
+    """
+    )
 
-    fun `test associated type in expression context with type parameters`() = doAvailableTest("""
+    fun `test associated type in expression context with type parameters`() = doAvailableTest(
+        """
         struct S<R>(R);
         impl<R> S<R> {
             fn bar() {}
@@ -158,9 +171,11 @@ class SubstituteAssociatedTypeIntentionTest : RsIntentionTestBase(SubstituteAsso
                 S::<u32>::bar();
             }
         }
-    """)
+    """
+    )
 
-    fun `test associated type in expression context with type qual`() = doAvailableTest("""
+    fun `test associated type in expression context with type qual`() = doAvailableTest(
+        """
         struct S<R>(R);
         impl<R> S<R> {
             fn bar() {}
@@ -202,9 +217,11 @@ class SubstituteAssociatedTypeIntentionTest : RsIntentionTestBase(SubstituteAsso
                 S::<u32>::bar();
             }
         }
-    """)
+    """
+    )
 
-    fun `test import after substitution`() = doAvailableTest("""
+    fun `test import after substitution`() = doAvailableTest(
+        """
         mod foo {
             pub struct S;
             pub trait Trait {
@@ -226,5 +243,6 @@ class SubstituteAssociatedTypeIntentionTest : RsIntentionTestBase(SubstituteAsso
         fn foo<T: foo::Trait>() -> S {
             unimplemented!()
         }
-    """)
+    """
+    )
 }

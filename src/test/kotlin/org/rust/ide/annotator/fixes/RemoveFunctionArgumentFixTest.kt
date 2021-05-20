@@ -9,7 +9,8 @@ import org.rust.ide.annotator.RsAnnotatorTestBase
 import org.rust.ide.annotator.RsErrorAnnotator
 
 class RemoveFunctionArgumentFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
-    fun `test no parameters`() = checkFixByText("Remove argument", """
+    fun `test no parameters`() = checkFixByText(
+        "Remove argument", """
         fn foo() {}
 
         fn main() {
@@ -21,9 +22,11 @@ class RemoveFunctionArgumentFixTest : RsAnnotatorTestBase(RsErrorAnnotator::clas
         fn main() {
             foo();
         }
-    """)
+    """
+    )
 
-    fun `test single parameter`() = checkFixByText("Remove argument", """
+    fun `test single parameter`() = checkFixByText(
+        "Remove argument", """
         fn foo(a: u32) {}
 
         fn main() {
@@ -35,9 +38,11 @@ class RemoveFunctionArgumentFixTest : RsAnnotatorTestBase(RsErrorAnnotator::clas
         fn main() {
             foo(1);
         }
-    """)
+    """
+    )
 
-    fun `test multiple redundant arguments`() = checkFixByText("Remove argument", """
+    fun `test multiple redundant arguments`() = checkFixByText(
+        "Remove argument", """
         fn foo() {}
 
         fn main() {
@@ -49,9 +54,11 @@ class RemoveFunctionArgumentFixTest : RsAnnotatorTestBase(RsErrorAnnotator::clas
         fn main() {
             foo(2);
         }
-    """)
+    """
+    )
 
-    fun `test keep whitespace and comments`() = checkFixByText("Remove argument", """
+    fun `test keep whitespace and comments`() = checkFixByText(
+        "Remove argument", """
         fn foo() {}
 
         fn main() {
@@ -63,9 +70,11 @@ class RemoveFunctionArgumentFixTest : RsAnnotatorTestBase(RsErrorAnnotator::clas
         fn main() {
             foo(/* there is a comment here */ );
         }
-    """)
+    """
+    )
 
-    fun `test method call`() = checkFixByText("Remove argument", """
+    fun `test method call`() = checkFixByText(
+        "Remove argument", """
         struct S;
         impl S {
             fn foo(&self) {}
@@ -83,9 +92,11 @@ class RemoveFunctionArgumentFixTest : RsAnnotatorTestBase(RsErrorAnnotator::clas
         fn foo(s: S) {
             s.foo();
         }
-    """)
+    """
+    )
 
-    fun `test lambda`() = checkFixByText("Remove argument", """
+    fun `test lambda`() = checkFixByText(
+        "Remove argument", """
         fn main() {
             let foo = |x| x + 1;
             foo(0, <error>1/*caret*/</error>);
@@ -95,5 +106,6 @@ class RemoveFunctionArgumentFixTest : RsAnnotatorTestBase(RsErrorAnnotator::clas
             let foo = |x| x + 1;
             foo(0);
         }
-    """)
+    """
+    )
 }

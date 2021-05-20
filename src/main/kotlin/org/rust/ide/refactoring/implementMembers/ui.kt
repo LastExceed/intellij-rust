@@ -79,6 +79,7 @@ private val memberChooserDialog: TraitMemberChooser = { project, all, selectedBy
 }
 
 private var MOCK: TraitMemberChooser? = null
+
 @TestOnly
 fun withMockTraitMemberChooser(
     mock: TraitMemberChooser,

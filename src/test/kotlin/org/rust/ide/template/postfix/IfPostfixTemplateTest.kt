@@ -6,14 +6,17 @@
 package org.rust.ide.template.postfix
 
 class IfPostfixTemplateTest : RsPostfixTemplateTest(IfExpressionPostfixTemplate()) {
-    fun `test not boolean expr 1`() = doTestNotApplicable("""
+    fun `test not boolean expr 1`() = doTestNotApplicable(
+        """
         fn main() {
             let a = 4;
             a.if/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test not boolean expr 2`() = doTestNotApplicable("""
+    fun `test not boolean expr 2`() = doTestNotApplicable(
+        """
         fn func() -> i32 {
             1234
         }
@@ -21,9 +24,11 @@ class IfPostfixTemplateTest : RsPostfixTemplateTest(IfExpressionPostfixTemplate(
         fn main() {
             func().if/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test boolean expr`() = doTest("""
+    fun `test boolean expr`() = doTest(
+        """
         fn main() {
             let a = 4 == 2;
             a.if/*caret*/
@@ -33,9 +38,11 @@ class IfPostfixTemplateTest : RsPostfixTemplateTest(IfExpressionPostfixTemplate(
             let a = 4 == 2;
             if a {/*caret*/}
         }
-    """)
+    """
+    )
 
-    fun `test fun arg`() = doTest("""
+    fun `test fun arg`() = doTest(
+        """
         fn foo(a: bool) {
             a.if/*caret*/
         }
@@ -43,9 +50,11 @@ class IfPostfixTemplateTest : RsPostfixTemplateTest(IfExpressionPostfixTemplate(
         fn foo(a: bool) {
             if a {/*caret*/}
         }
-    """)
+    """
+    )
 
-    fun `test negated boolean expr`() = doTest("""
+    fun `test negated boolean expr`() = doTest(
+        """
         fn main() {
             let a = 4 == 2;
             !a.if/*caret*/
@@ -55,9 +64,11 @@ class IfPostfixTemplateTest : RsPostfixTemplateTest(IfExpressionPostfixTemplate(
             let a = 4 == 2;
             if !a {/*caret*/}
         }
-    """)
+    """
+    )
 
-    fun `test simple eq expr`() = doTest("""
+    fun `test simple eq expr`() = doTest(
+        """
         fn main() {
             true == true.if/*caret*/
         }
@@ -65,10 +76,12 @@ class IfPostfixTemplateTest : RsPostfixTemplateTest(IfExpressionPostfixTemplate(
         fn main() {
             if true == true {/*caret*/}
         }
-    """)
+    """
+    )
 
 
-    fun `test selector`() = doTest("""
+    fun `test selector`() = doTest(
+        """
         fn main() {
             let a = if (true) {
                 true == false.if/*caret*/
@@ -84,9 +97,11 @@ class IfPostfixTemplateTest : RsPostfixTemplateTest(IfExpressionPostfixTemplate(
                 false == true
             };
         }
-    """)
+    """
+    )
 
-    fun `test call`() = doTest("""
+    fun `test call`() = doTest(
+        """
         fn func() -> bool {
             false
         }
@@ -102,5 +117,6 @@ class IfPostfixTemplateTest : RsPostfixTemplateTest(IfExpressionPostfixTemplate(
         fn main() {
             if func() {/*caret*/}
         }
-    """)
+    """
+    )
 }

@@ -11,8 +11,7 @@ class WrapLambdaExprIntentionTest : RsIntentionTestBase(WrapLambdaExprIntention:
         fn main() {
             |x| x /*caret*/* x
         }
-        """
-        ,
+        """,
         """
         fn main() {
             |x| {

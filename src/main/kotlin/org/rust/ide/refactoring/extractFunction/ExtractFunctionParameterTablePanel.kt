@@ -16,6 +16,7 @@ class ParameterDataHolder(val parameter: Parameter, val onChange: () -> Unit) : 
         parameter.name = name
         onChange()
     }
+
     fun changeMutability(mutable: Boolean) {
         parameter.isMutable = mutable
         onChange()

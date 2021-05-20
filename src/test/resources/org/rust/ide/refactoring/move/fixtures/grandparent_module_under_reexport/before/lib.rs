@@ -8,10 +8,12 @@ pub mod inner1 {
         }
     }
 }
+
 mod usages {
     fn test1a() {
         crate::inner1::inner3::mod1::foo::func();
     }
+
     fn test1b() {
         use crate::inner1::inner3::mod1::foo::func;
     }
@@ -20,6 +22,7 @@ mod usages {
 fn test2a() {
     inner1::inner3::mod1::foo::func();
 }
+
 fn test2b() {
     use inner1::inner3::mod1::foo::func;
 }

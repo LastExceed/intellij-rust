@@ -8,7 +8,8 @@ package org.rust.ide.intentions
 
 class RemoveDbgIntentionTest : RsIntentionTestBase(RemoveDbgIntention::class) {
 
-    fun `test remove dbg! from expr`() = doAvailableTest("""
+    fun `test remove dbg! from expr`() = doAvailableTest(
+        """
         fn test() {
             let a = 1 + dbg!(3/*caret*/);
         }
@@ -16,9 +17,11 @@ class RemoveDbgIntentionTest : RsIntentionTestBase(RemoveDbgIntention::class) {
         fn test() {
             let a = 1 + 3/*caret*/;
         }
-    """)
+    """
+    )
 
-    fun `test remove dbg! from stmt`() = doAvailableTest("""
+    fun `test remove dbg! from stmt`() = doAvailableTest(
+        """
         fn test() {
             dbg!(3/*caret*/);
         }
@@ -26,9 +29,11 @@ class RemoveDbgIntentionTest : RsIntentionTestBase(RemoveDbgIntention::class) {
         fn test() {
             3/*caret*/;
         }
-    """)
+    """
+    )
 
-    fun `test remove recursive dbg!`() = doAvailableTest("""
+    fun `test remove recursive dbg!`() = doAvailableTest(
+        """
         fn test() {
             dbg!(dbg!(3/*caret*/));
         }
@@ -36,9 +41,11 @@ class RemoveDbgIntentionTest : RsIntentionTestBase(RemoveDbgIntention::class) {
         fn test() {
             dbg!(3/*caret*/);
         }
-    """)
+    """
+    )
 
-    fun `test remove dbg! from function parameter`() = doAvailableTest("""
+    fun `test remove dbg! from function parameter`() = doAvailableTest(
+        """
         fn f1(a: usize, b: usize) {}
 
         fn test() {
@@ -50,9 +57,11 @@ class RemoveDbgIntentionTest : RsIntentionTestBase(RemoveDbgIntention::class) {
         fn test() {
             f1(1 + ((3 + 1/*caret*/) * 2)), dbg!(10));
         }
-    """)
+    """
+    )
 
-    fun `test remove dbg!`() = doAvailableTest("""
+    fun `test remove dbg!`() = doAvailableTest(
+        """
         fn f1(a: usize) {}
 
         fn test() {
@@ -64,10 +73,12 @@ class RemoveDbgIntentionTest : RsIntentionTestBase(RemoveDbgIntention::class) {
         fn test() {
             f1(3/*caret*/);
         }
-    """)
+    """
+    )
 
 
-    fun `test remove dbg! 2`() = doAvailableTest("""
+    fun `test remove dbg! 2`() = doAvailableTest(
+        """
         fn test() {
             let a = dbg!(dbg!(1) + 3/*caret*/);
         }
@@ -75,9 +86,11 @@ class RemoveDbgIntentionTest : RsIntentionTestBase(RemoveDbgIntention::class) {
         fn test() {
             let a = dbg!(1) + 3/*caret*/;
         }
-    """)
+    """
+    )
 
-    fun `test remove outer dbg!`() = doAvailableTest("""
+    fun `test remove outer dbg!`() = doAvailableTest(
+        """
         fn test() {
             let a = dbg!(1 +/*caret*/ dbg!(3));
         }
@@ -85,9 +98,11 @@ class RemoveDbgIntentionTest : RsIntentionTestBase(RemoveDbgIntention::class) {
         fn test() {
             let a = 1 +/*caret*/ dbg!(3);
         }
-    """)
+    """
+    )
 
-    fun `test remove dbg! with paren`() = doAvailableTest("""
+    fun `test remove dbg! with paren`() = doAvailableTest(
+        """
         fn test() {
             let a = dbg!((1 + 3/*caret*/));
         }
@@ -95,9 +110,11 @@ class RemoveDbgIntentionTest : RsIntentionTestBase(RemoveDbgIntention::class) {
         fn test() {
             let a = (1 + 3/*caret*/);
         }
-    """)
+    """
+    )
 
-    fun `test remove dbg! with binary expr`() = doAvailableTest("""
+    fun `test remove dbg! with binary expr`() = doAvailableTest(
+        """
         fn main() {
             assert_eq!(dbg!(/*caret*/1 + 1) * 2, 4);
         }
@@ -105,9 +122,11 @@ class RemoveDbgIntentionTest : RsIntentionTestBase(RemoveDbgIntention::class) {
         fn main() {
             assert_eq!((/*caret*/1 + 1) * 2, 4);
         }
-    """)
+    """
+    )
 
-    fun `test remove dbg! with dot expr`() = doAvailableTest("""
+    fun `test remove dbg! with dot expr`() = doAvailableTest(
+        """
         fn main() {
             assert_eq!(dbg!(1i32 - 2/*caret*/).abs(), 1);
         }
@@ -115,9 +134,11 @@ class RemoveDbgIntentionTest : RsIntentionTestBase(RemoveDbgIntention::class) {
         fn main() {
             assert_eq!((1i32 - 2/*caret*/).abs(), 1);
         }
-    """)
+    """
+    )
 
-    fun `test cursor in dbg!`() = doAvailableTest("""
+    fun `test cursor in dbg!`() = doAvailableTest(
+        """
         fn test() {
             let a = db/*caret*/g!(1 + 3);
         }
@@ -125,9 +146,11 @@ class RemoveDbgIntentionTest : RsIntentionTestBase(RemoveDbgIntention::class) {
         fn test() {
             let a = /*caret*/1 + 3;
         }
-    """)
+    """
+    )
 
-    fun `test cursor in whitespace`() = doAvailableTest("""
+    fun `test cursor in whitespace`() = doAvailableTest(
+        """
         fn test() {
             let a = dbg!(1 + 3             /*caret*/        );
         }
@@ -135,5 +158,6 @@ class RemoveDbgIntentionTest : RsIntentionTestBase(RemoveDbgIntention::class) {
         fn test() {
             let a = 1 + 3/*caret*/;
         }
-    """)
+    """
+    )
 }

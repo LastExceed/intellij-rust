@@ -38,7 +38,8 @@ class AutoImportHintFix(
         val message = ShowAutoImportPass.getMessage(multiple, hint)
         val element = startElement
         HintManager.getInstance().showQuestionHint(
-            editor, message, element.textOffset, element.endOffset) {
+            editor, message, element.textOffset, element.endOffset
+        ) {
             delegate.invoke(element.project)
             true
         }

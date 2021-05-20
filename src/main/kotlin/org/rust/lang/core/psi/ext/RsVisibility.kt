@@ -105,6 +105,6 @@ val RsVis.visibility: RsVisibility
         RsVisStubKind.CRATE -> crateRoot?.let { RsVisibility.Restricted(it) } ?: RsVisibility.Public
         RsVisStubKind.RESTRICTED -> {
             val restrictedIn = visRestriction!!.path.reference?.resolve() as? RsMod
-            if (restrictedIn != null) RsVisibility.Restricted(restrictedIn) else  RsVisibility.Public
+            if (restrictedIn != null) RsVisibility.Restricted(restrictedIn) else RsVisibility.Public
         }
     }

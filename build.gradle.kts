@@ -619,7 +619,8 @@ task("updateCompilerFeatures") {
     doLast {
         val file = File("src/main/kotlin/org/rust/lang/core/CompilerFeatures.kt")
         file.bufferedWriter().use {
-            it.writeln("""
+            it.writeln(
+                """
                 /*
                  * Use of this source code is governed by the MIT license that can be
                  * found in the LICENSE file.
@@ -632,7 +633,8 @@ task("updateCompilerFeatures") {
                 import org.rust.lang.core.FeatureState.ACCEPTED
                 import org.rust.lang.core.FeatureState.ACTIVE
 
-            """.trimIndent())
+            """.trimIndent()
+            )
             it.writeFeatures("active", "https://raw.githubusercontent.com/rust-lang/rust/master/compiler/rustc_feature/src/active.rs")
             it.writeln()
             it.writeFeatures("accepted", "https://raw.githubusercontent.com/rust-lang/rust/master/compiler/rustc_feature/src/accepted.rs")
@@ -644,7 +646,8 @@ task("updateCargoOptions") {
     doLast {
         val file = File("src/main/kotlin/org/rust/cargo/util/CargoOptions.kt")
         file.bufferedWriter().use {
-            it.writeln("""
+            it.writeln(
+                """
                 /*
                  * Use of this source code is governed by the MIT license that can be
                  * found in the LICENSE file.
@@ -656,7 +659,8 @@ task("updateCargoOptions") {
                     val longName: String get() = "--${'$'}name"
                 }
 
-            """.trimIndent())
+            """.trimIndent()
+            )
             it.writeCargoOptions("https://doc.rust-lang.org/cargo/commands")
         }
     }
@@ -680,7 +684,8 @@ task("updateLints") {
                 "Lint(\"$name\", $isGroup)"
             }
             file.bufferedWriter().use {
-                it.writeln("""
+                it.writeln(
+                    """
 /*
  * Use of this source code is governed by the MIT license that can be
  * found in the LICENSE file.
@@ -691,7 +696,8 @@ package org.rust.lang.core.completion.lint
 val $variableName: List<Lint> = listOf(
     $items
 )
-""".trim())
+""".trim()
+                )
             }
         }
 
@@ -775,12 +781,14 @@ fun Writer.writeCargoOptions(baseUrl: String) {
             postfix = "\n        "
         ) { "CargoOption(\"${it.name}\", \"\"\"${it.description}\"\"\")" }
 
-        writeln("""
+        writeln(
+            """
         |    $variantName(
         |        description = "${command.description}",
         |        options = ${if (command.options.isEmpty()) "emptyList()" else "listOf($renderedOptions)"}
         |    )${if (isLast) ";" else ","}
-        """.trimMargin())
+        """.trimMargin()
+        )
         writeln()
     }
 

@@ -1,3 +1,4 @@
 #! [foo]
-#! [bar]
+#![bar]
+
 fn main() {}

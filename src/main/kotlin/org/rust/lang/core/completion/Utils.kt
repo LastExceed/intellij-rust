@@ -12,14 +12,14 @@ import com.intellij.codeInsight.completion.CompletionUtil
 import com.intellij.psi.PsiElement
 import org.rust.lang.core.psi.ext.ancestors
 
-fun <T: PsiElement> T.getOriginalOrSelf(): T = CompletionUtil.getOriginalOrSelf(this)
+fun <T : PsiElement> T.getOriginalOrSelf(): T = CompletionUtil.getOriginalOrSelf(this)
 
-fun <T: PsiElement> T.safeGetOriginalElement(): T? {
+fun <T : PsiElement> T.safeGetOriginalElement(): T? {
     return CompletionUtil.getOriginalElement(this)
         ?.takeIf { areAncestorTypesEquals(it, this) }
 }
 
-fun <T: PsiElement> T.safeGetOriginalOrSelf(): T {
+fun <T : PsiElement> T.safeGetOriginalOrSelf(): T {
     return safeGetOriginalElement() ?: this
 }
 

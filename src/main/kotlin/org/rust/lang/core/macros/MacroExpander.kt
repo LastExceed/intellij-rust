@@ -11,7 +11,7 @@ import org.rust.lang.core.macros.decl.DeclMacroExpander
 import org.rust.lang.core.macros.proc.ProcMacroExpander
 import org.rust.stdext.RsResult
 
-abstract class MacroExpander<in T: RsMacroData, out E> {
+abstract class MacroExpander<in T : RsMacroData, out E> {
     open fun expandMacroAsText(def: T, call: RsMacroCallData): Pair<CharSequence, RangeMap>? {
         return expandMacroAsTextWithErr(def, call).ok()
     }

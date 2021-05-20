@@ -12,64 +12,81 @@ import org.rust.cargo.project.workspace.CargoWorkspace
 import org.rust.ide.intentions.createFromUsage.CreateFunctionIntention
 
 class CreateFunctionIntentionTest : RsIntentionTestBase(CreateFunctionIntention::class) {
-    fun `test function availability range`() = checkAvailableInSelectionOnly("""
+    fun `test function availability range`() = checkAvailableInSelectionOnly(
+        """
         fn main() {
             <selection>foo</selection>(bar::baz);
         }
-    """)
+    """
+    )
 
-    fun `test method availability range`() = checkAvailableInSelectionOnly("""
+    fun `test method availability range`() = checkAvailableInSelectionOnly(
+        """
         struct S;
 
         fn foo(s: S) {
             s.<selection>foo</selection>();
         }
-    """)
+    """
+    )
 
-    fun `test unavailable on resolved function`() = doUnavailableTest("""
+    fun `test unavailable on resolved function`() = doUnavailableTest(
+        """
         fn foo() {}
 
         fn main() {
             /*caret*/foo();
         }
-    """)
+    """
+    )
 
-    fun `test unavailable on arguments`() = doUnavailableTest("""
+    fun `test unavailable on arguments`() = doUnavailableTest(
+        """
         fn main() {
             foo(1/*caret*/);
         }
-    """)
+    """
+    )
 
-    fun `test unavailable on path argument`() = doUnavailableTest("""
+    fun `test unavailable on path argument`() = doUnavailableTest(
+        """
         fn main() {
             foo(bar::baz/*caret*/);
         }
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test create function unavailable on std`() = doUnavailableTest("""
+    fun `test create function unavailable on std`() = doUnavailableTest(
+        """
         fn main() {
             std::foo/*caret*/();
         }
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test create method unavailable on std`() = doUnavailableTest("""
+    fun `test create method unavailable on std`() = doUnavailableTest(
+        """
         fn main() {
             let v: Vec<u32> = Vec::new();
             v.foo/*caret*/();
         }
-    """)
+    """
+    )
 
-    fun `test unavailable on trait associated function`() = doUnavailableTest("""
+    fun `test unavailable on trait associated function`() = doUnavailableTest(
+        """
         trait Trait {}
 
         fn foo() {
             Trait::baz/*caret*/();
         }
-    """)
+    """
+    )
 
-    fun `test create function`() = doAvailableTest("""
+    fun `test create function`() = doAvailableTest(
+        """
         fn main() {
             /*caret*/foo();
         }
@@ -81,9 +98,11 @@ class CreateFunctionIntentionTest : RsIntentionTestBase(CreateFunctionIntention:
         fn foo() {
             todo!()/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test create function in an existing module`() = doAvailableTest("""
+    fun `test create function in an existing module`() = doAvailableTest(
+        """
         mod foo {}
 
         fn main() {
@@ -99,9 +118,11 @@ class CreateFunctionIntentionTest : RsIntentionTestBase(CreateFunctionIntention:
         fn main() {
             foo::bar();
         }
-    """)
+    """
+    )
 
-    fun `test create function in an existing file`() = doAvailableTestWithFileTreeComplete("""
+    fun `test create function in an existing file`() = doAvailableTestWithFileTreeComplete(
+        """
         //- main.rs
             mod foo;
 
@@ -123,9 +144,11 @@ class CreateFunctionIntentionTest : RsIntentionTestBase(CreateFunctionIntention:
             pub(crate) fn bar() {
                 todo!()
             }
-    """)
+    """
+    )
 
-    fun `test create function in an existing file in other crate`() = doAvailableTestWithFileTreeComplete("""
+    fun `test create function in an existing file in other crate`() = doAvailableTestWithFileTreeComplete(
+        """
     //- main.rs
         fn main() {
             test_package::foo/*caret*/();
@@ -140,15 +163,19 @@ class CreateFunctionIntentionTest : RsIntentionTestBase(CreateFunctionIntention:
         pub fn foo() {
             todo!()
         }
-    """)
+    """
+    )
 
-    fun `test unresolved function call in a missing module`() = doUnavailableTest("""
+    fun `test unresolved function call in a missing module`() = doUnavailableTest(
+        """
         fn main() {
             foo::bar/*caret*/();
         }
-    """)
+    """
+    )
 
-    fun `test unresolved function call in a nested function`() = doAvailableTest("""
+    fun `test unresolved function call in a nested function`() = doAvailableTest(
+        """
         fn main() {
             fn foo() {
                 /*caret*/bar();
@@ -163,9 +190,11 @@ class CreateFunctionIntentionTest : RsIntentionTestBase(CreateFunctionIntention:
                 todo!()/*caret*/
             }
         }
-    """)
+    """
+    )
 
-    fun `test unresolved function call inside a module`() = doAvailableTest("""
+    fun `test unresolved function call inside a module`() = doAvailableTest(
+        """
         mod foo {
             fn main() {
                 /*caret*/bar();
@@ -181,9 +210,11 @@ class CreateFunctionIntentionTest : RsIntentionTestBase(CreateFunctionIntention:
                 todo!()/*caret*/
             }
         }
-    """)
+    """
+    )
 
-    fun `test simple parameters`() = doAvailableTest("""
+    fun `test simple parameters`() = doAvailableTest(
+        """
         fn main() {
             let a = 5;
             foo/*caret*/(1, "hello", &a);
@@ -197,9 +228,11 @@ class CreateFunctionIntentionTest : RsIntentionTestBase(CreateFunctionIntention:
         fn foo(p0: i32, p1: &str, p2: &i32) {
             todo!()
         }
-    """)
+    """
+    )
 
-    fun `test generic parameters`() = doAvailableTest("""
+    fun `test generic parameters`() = doAvailableTest(
+        """
         trait Trait1 {}
         trait Trait2 {}
 
@@ -217,9 +250,11 @@ class CreateFunctionIntentionTest : RsIntentionTestBase(CreateFunctionIntention:
         fn bar<T, R: Trait1>(p0: R, p1: T, p2: T) where T: Trait2 {
             todo!()
         }
-    """)
+    """
+    )
 
-    fun `test complex generic constraints inside impl`() = doAvailableTest("""
+    fun `test complex generic constraints inside impl`() = doAvailableTest(
+        """
         struct S<T>(T);
         trait Trait {}
         trait Trait2 {}
@@ -243,9 +278,11 @@ class CreateFunctionIntentionTest : RsIntentionTestBase(CreateFunctionIntention:
         fn bar<'a, R, T: 'a>(p0: T, p1: &R) where R: Trait + for<'d> Fn(&'d i32), T: Trait + Trait2, for<'c> T: Fn(&'c i32) + Trait {
             todo!()
         }
-    """)
+    """
+    )
 
-    fun `test nested function generic parameters`() = doAvailableTest("""
+    fun `test nested function generic parameters`() = doAvailableTest(
+        """
         fn foo<T>() where T: Foo {
             fn bar<T>(t: T) where T: Bar {
                 baz/*caret*/(t);
@@ -260,9 +297,11 @@ class CreateFunctionIntentionTest : RsIntentionTestBase(CreateFunctionIntention:
                 todo!()
             }
         }
-    """)
+    """
+    )
 
-    fun `test guess return type let decl`() = doAvailableTest("""
+    fun `test guess return type let decl`() = doAvailableTest(
+        """
         fn foo() {
             let x: u32 = bar/*caret*/();
         }
@@ -274,9 +313,11 @@ class CreateFunctionIntentionTest : RsIntentionTestBase(CreateFunctionIntention:
         fn bar() -> u32 {
             todo!()
         }
-    """)
+    """
+    )
 
-    fun `test guess return unknown type`() = doAvailableTest("""
+    fun `test guess return unknown type`() = doAvailableTest(
+        """
         fn foo() {
             let x: S = bar/*caret*/();
         }
@@ -288,9 +329,11 @@ class CreateFunctionIntentionTest : RsIntentionTestBase(CreateFunctionIntention:
         fn bar() -> _/*caret*/ {
             todo!()
         }
-    """)
+    """
+    )
 
-    fun `test guess return type empty let decl`() = doAvailableTest("""
+    fun `test guess return type empty let decl`() = doAvailableTest(
+        """
         fn foo() {
             let x = bar/*caret*/();
         }
@@ -302,9 +345,11 @@ class CreateFunctionIntentionTest : RsIntentionTestBase(CreateFunctionIntention:
         fn bar() -> _/*caret*/ {
             todo!()
         }
-    """)
+    """
+    )
 
-    fun `test guess return type assignment`() = doAvailableTest("""
+    fun `test guess return type assignment`() = doAvailableTest(
+        """
         fn foo() {
             let mut x: u32 = 0;
             x = bar/*caret*/();
@@ -318,9 +363,11 @@ class CreateFunctionIntentionTest : RsIntentionTestBase(CreateFunctionIntention:
         fn bar() -> u32 {
             todo!()
         }
-    """)
+    """
+    )
 
-    fun `test guess return type function call`() = doAvailableTest("""
+    fun `test guess return type function call`() = doAvailableTest(
+        """
         fn bar(x: u32) {}
         fn foo() {
             bar(baz/*caret*/());
@@ -334,9 +381,11 @@ class CreateFunctionIntentionTest : RsIntentionTestBase(CreateFunctionIntention:
         fn baz() -> u32 {
             todo!()
         }
-    """)
+    """
+    )
 
-    fun `test guess return type method call`() = doAvailableTest("""
+    fun `test guess return type method call`() = doAvailableTest(
+        """
         struct S;
         impl S {
             fn bar(&self, x: u32) {}
@@ -356,9 +405,11 @@ class CreateFunctionIntentionTest : RsIntentionTestBase(CreateFunctionIntention:
         fn baz() -> u32 {
             todo!()
         }
-    """)
+    """
+    )
 
-    fun `test guess return type struct literal`() = doAvailableTest("""
+    fun `test guess return type struct literal`() = doAvailableTest(
+        """
         struct S {
             a: u32
         }
@@ -380,9 +431,11 @@ class CreateFunctionIntentionTest : RsIntentionTestBase(CreateFunctionIntention:
         fn baz() -> u32 {
             todo!()
         }
-    """)
+    """
+    )
 
-    fun `test guess return type self parameter`() = doAvailableTest("""
+    fun `test guess return type self parameter`() = doAvailableTest(
+        """
         struct S;
         impl S {
             fn bar(&self) {}
@@ -402,9 +455,11 @@ class CreateFunctionIntentionTest : RsIntentionTestBase(CreateFunctionIntention:
         fn baz() -> &S {
             todo!()
         }
-    """)
+    """
+    )
 
-    fun `test guess return type generic parameter`() = doAvailableTest("""
+    fun `test guess return type generic parameter`() = doAvailableTest(
+        """
         fn foo<T>() {
             let x: T = bar/*caret*/();
         }
@@ -416,9 +471,11 @@ class CreateFunctionIntentionTest : RsIntentionTestBase(CreateFunctionIntention:
         fn bar<T>() -> T {
             todo!()
         }
-    """)
+    """
+    )
 
-    fun `test navigate to created function`() = doAvailableTest("""
+    fun `test navigate to created function`() = doAvailableTest(
+        """
         fn foo() {
             bar/*caret*/();
         }
@@ -430,9 +487,11 @@ class CreateFunctionIntentionTest : RsIntentionTestBase(CreateFunctionIntention:
         fn bar() {
             todo!()/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test create method create impl`() = doAvailableTest("""
+    fun `test create method create impl`() = doAvailableTest(
+        """
         trait Trait {}
         struct S<T>(T) where T: Trait;
 
@@ -452,9 +511,11 @@ class CreateFunctionIntentionTest : RsIntentionTestBase(CreateFunctionIntention:
         fn foo(s: S<u32>) {
             s.foo(1, 2);
         }
-    """)
+    """
+    )
 
-    fun `test create method no arguments`() = doAvailableTest("""
+    fun `test create method no arguments`() = doAvailableTest(
+        """
         struct S;
 
         fn foo(s: S) {
@@ -472,9 +533,11 @@ class CreateFunctionIntentionTest : RsIntentionTestBase(CreateFunctionIntention:
         fn foo(s: S) {
             s.foo();
         }
-    """)
+    """
+    )
 
-    fun `test create generic method`() = doAvailableTest("""
+    fun `test create generic method`() = doAvailableTest(
+        """
         struct S;
 
         fn foo<R>(s: S, r: R) {
@@ -492,9 +555,11 @@ class CreateFunctionIntentionTest : RsIntentionTestBase(CreateFunctionIntention:
         fn foo<R>(s: S, r: R) {
             s.foo(r);
         }
-    """)
+    """
+    )
 
-    fun `test create method inside impl`() = doAvailableTest("""
+    fun `test create method inside impl`() = doAvailableTest(
+        """
         struct S;
         impl S {
             fn foo(&self) {
@@ -511,9 +576,11 @@ class CreateFunctionIntentionTest : RsIntentionTestBase(CreateFunctionIntention:
                 todo!()
             }
         }
-    """)
+    """
+    )
 
-    fun `test create method inside generic impl`() = doAvailableTest("""
+    fun `test create method inside generic impl`() = doAvailableTest(
+        """
         struct S<T>(T);
         impl<T> S<T> {
             fn foo(&self, t: T) {
@@ -530,9 +597,11 @@ class CreateFunctionIntentionTest : RsIntentionTestBase(CreateFunctionIntention:
                 todo!()
             }
         }
-    """)
+    """
+    )
 
-    fun `test create method inside generic impl with where`() = doAvailableTest("""
+    fun `test create method inside generic impl with where`() = doAvailableTest(
+        """
         trait Trait {}
         struct S<T>(T);
         impl<T> S<T> where T: Trait {
@@ -551,16 +620,20 @@ class CreateFunctionIntentionTest : RsIntentionTestBase(CreateFunctionIntention:
                 todo!()
             }
         }
-    """)
+    """
+    )
 
-    fun `test unavailable inside method arguments`() = doUnavailableTest("""
+    fun `test unavailable inside method arguments`() = doUnavailableTest(
+        """
         struct S;
         fn foo(s: S) {
             s.bar(1, /*caret*/2);
         }
-    """)
+    """
+    )
 
-    fun `test available inside method name`() = doAvailableTest("""
+    fun `test available inside method name`() = doAvailableTest(
+        """
         struct S;
         fn foo(s: S) {
             s.b/*caret*/ar(1, 2);
@@ -577,9 +650,11 @@ class CreateFunctionIntentionTest : RsIntentionTestBase(CreateFunctionIntention:
         fn foo(s: S) {
             s.bar(1, 2);
         }
-    """)
+    """
+    )
 
-    fun `test available after method name`() = doAvailableTest("""
+    fun `test available after method name`() = doAvailableTest(
+        """
         struct S;
         fn foo(s: S) {
             s.bar/*caret*/(1, 2);
@@ -596,9 +671,11 @@ class CreateFunctionIntentionTest : RsIntentionTestBase(CreateFunctionIntention:
         fn foo(s: S) {
             s.bar(1, 2);
         }
-    """)
+    """
+    )
 
-    fun `test guess method return type`() = doAvailableTest("""
+    fun `test guess method return type`() = doAvailableTest(
+        """
         struct S;
         fn foo(s: S) {
             let a: u32 = s.bar/*caret*/(1, 2);
@@ -615,9 +692,11 @@ class CreateFunctionIntentionTest : RsIntentionTestBase(CreateFunctionIntention:
         fn foo(s: S) {
             let a: u32 = s.bar(1, 2);
         }
-    """)
+    """
+    )
 
-    fun `test create method inside trait impl`() = doAvailableTest("""
+    fun `test create method inside trait impl`() = doAvailableTest(
+        """
         trait Trait {
             fn foo(&self);
         }
@@ -644,9 +723,11 @@ class CreateFunctionIntentionTest : RsIntentionTestBase(CreateFunctionIntention:
                 self.bar();
             }
         }
-    """)
+    """
+    )
 
-    fun `test create method inside different impl`() = doAvailableTest("""
+    fun `test create method inside different impl`() = doAvailableTest(
+        """
         struct S;
         struct T;
         impl T {
@@ -669,9 +750,11 @@ class CreateFunctionIntentionTest : RsIntentionTestBase(CreateFunctionIntention:
                 s.bar();
             }
         }
-    """)
+    """
+    )
 
-    fun `test create method for struct in other crate`() = doAvailableTestWithFileTreeComplete("""
+    fun `test create method for struct in other crate`() = doAvailableTestWithFileTreeComplete(
+        """
     //- main.rs
         fn main(s: test_package::S) {
             s.foo/*caret*/();
@@ -691,9 +774,11 @@ class CreateFunctionIntentionTest : RsIntentionTestBase(CreateFunctionIntention:
                 todo!()
             }
         }
-    """)
+    """
+    )
 
-    fun `test create associated function for struct`() = doAvailableTest("""
+    fun `test create associated function for struct`() = doAvailableTest(
+        """
         struct S;
         fn foo() {
             S::bar/*caret*/(1, 2);
@@ -710,9 +795,11 @@ class CreateFunctionIntentionTest : RsIntentionTestBase(CreateFunctionIntention:
         fn foo() {
             S::bar(1, 2);
         }
-    """)
+    """
+    )
 
-    fun `test create associated function for enum`() = doAvailableTest("""
+    fun `test create associated function for enum`() = doAvailableTest(
+        """
         enum S {
             V1
         }
@@ -733,9 +820,11 @@ class CreateFunctionIntentionTest : RsIntentionTestBase(CreateFunctionIntention:
         fn foo() {
             S::bar(1, 2);
         }
-    """)
+    """
+    )
 
-    fun `test create associated function for generic struct`() = doAvailableTest("""
+    fun `test create associated function for generic struct`() = doAvailableTest(
+        """
         struct S<T>(T);
         fn foo() {
             S::<u32>::bar/*caret*/(1, 2);
@@ -752,14 +841,16 @@ class CreateFunctionIntentionTest : RsIntentionTestBase(CreateFunctionIntention:
         fn foo() {
             S::<u32>::bar(1, 2);
         }
-    """)
+    """
+    )
 
     @MockEdition(CargoWorkspace.Edition.EDITION_2018)
-    fun `test function call type to create async function`() = doAvailableTest("""
+    fun `test function call type to create async function`() = doAvailableTest(
+        """
         async fn foo() {
             /*caret*/bar().await;
         }
-    ""","""
+    """, """
         async fn foo() {
             bar().await;
         }
@@ -767,10 +858,12 @@ class CreateFunctionIntentionTest : RsIntentionTestBase(CreateFunctionIntention:
         async fn bar() {
             todo!()
         }
-    """)
+    """
+    )
 
     @MockEdition(CargoWorkspace.Edition.EDITION_2018)
-    fun `test function call type create async function in blocks`() = doAvailableTest("""
+    fun `test function call type create async function in blocks`() = doAvailableTest(
+        """
         fn foo() {
             async {
                 /*caret*/bar().await
@@ -786,10 +879,12 @@ class CreateFunctionIntentionTest : RsIntentionTestBase(CreateFunctionIntention:
         async fn bar() {
             todo!()
         }
-    """)
+    """
+    )
 
     @MockEdition(CargoWorkspace.Edition.EDITION_2018)
-    fun `test function call type create async function in nested blocks`() = doAvailableTest("""
+    fun `test function call type create async function in nested blocks`() = doAvailableTest(
+        """
         fn foo() {
             async {
                 {
@@ -809,10 +904,12 @@ class CreateFunctionIntentionTest : RsIntentionTestBase(CreateFunctionIntention:
         async fn bar() {
             todo!()
         }
-    """)
+    """
+    )
 
     @MockEdition(CargoWorkspace.Edition.EDITION_2018)
-    fun `test function call type create async function in nested function`() = doAvailableTest("""
+    fun `test function call type create async function in nested function`() = doAvailableTest(
+        """
         fn main() {
             async fn foo() {
                 /*caret*/bar().await;
@@ -827,12 +924,13 @@ class CreateFunctionIntentionTest : RsIntentionTestBase(CreateFunctionIntention:
                 todo!()
             }
         }
-    """)
-
+    """
+    )
 
 
     @MockEdition(CargoWorkspace.Edition.EDITION_2018)
-    fun `test method call type to create async function`() = doAvailableTest("""
+    fun `test method call type to create async function`() = doAvailableTest(
+        """
         struct S;
 
         impl S {
@@ -851,10 +949,12 @@ class CreateFunctionIntentionTest : RsIntentionTestBase(CreateFunctionIntention:
                 todo!()
             }
         }
-    """)
+    """
+    )
 
     @MockEdition(CargoWorkspace.Edition.EDITION_2018)
-    fun `test method call type create async function in blocks`() = doAvailableTest("""
+    fun `test method call type create async function in blocks`() = doAvailableTest(
+        """
         struct S;
 
         impl S {
@@ -877,10 +977,12 @@ class CreateFunctionIntentionTest : RsIntentionTestBase(CreateFunctionIntention:
                 todo!()
             }
         }
-    """)
+    """
+    )
 
     @MockEdition(CargoWorkspace.Edition.EDITION_2018)
-    fun `test method call type create async function in nested blocks`() = doAvailableTest("""
+    fun `test method call type create async function in nested blocks`() = doAvailableTest(
+        """
         struct S;
 
         impl S {
@@ -907,10 +1009,12 @@ class CreateFunctionIntentionTest : RsIntentionTestBase(CreateFunctionIntention:
                 todo!()
             }
         }
-    """)
+    """
+    )
 
     @MockEdition(CargoWorkspace.Edition.EDITION_2018)
-    fun `test method call type create async function in nested function`() = doAvailableTest("""
+    fun `test method call type create async function in nested function`() = doAvailableTest(
+        """
         struct S;
 
         impl S {
@@ -936,10 +1040,12 @@ class CreateFunctionIntentionTest : RsIntentionTestBase(CreateFunctionIntention:
                 }
             }
         }
-    """)
+    """
+    )
 
     @MockEdition(CargoWorkspace.Edition.EDITION_2018)
-    fun `test function call type create in the async function call`() = doAvailableTest("""
+    fun `test function call type create in the async function call`() = doAvailableTest(
+        """
         async fn foo() {
             baz(/*caret*/bar()).await;
         }
@@ -954,10 +1060,12 @@ class CreateFunctionIntentionTest : RsIntentionTestBase(CreateFunctionIntention:
         }
 
         async fn baz(a: u32) {}
-    """)
+    """
+    )
 
     @MockEdition(CargoWorkspace.Edition.EDITION_2018)
-    fun `test method call type create in the async function call`() = doAvailableTest("""
+    fun `test method call type create in the async function call`() = doAvailableTest(
+        """
         struct S;
 
         async fn foo(s: S) {
@@ -977,5 +1085,6 @@ class CreateFunctionIntentionTest : RsIntentionTestBase(CreateFunctionIntention:
             baz(s.bar()).await;
         }
         async fn baz(a: u32) {}
-    """)
+    """
+    )
 }

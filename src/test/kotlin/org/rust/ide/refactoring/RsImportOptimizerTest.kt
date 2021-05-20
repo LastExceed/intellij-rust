@@ -11,9 +11,10 @@ import org.rust.RsTestBase
 import org.rust.WithStdlibAndDependencyRustProjectDescriptor
 import org.rust.WithStdlibRustProjectDescriptor
 
-class RsImportOptimizerTest: RsTestBase() {
+class RsImportOptimizerTest : RsTestBase() {
 
-    fun `test should do nothing`() = doTest("""
+    fun `test should do nothing`() = doTest(
+        """
         use foo;
 
         fn main() {}
@@ -21,9 +22,11 @@ class RsImportOptimizerTest: RsTestBase() {
         use foo;
 
         fn main() {}
-    """)
+    """
+    )
 
-    fun `test extern crates should be sorted`() = doTest("""
+    fun `test extern crates should be sorted`() = doTest(
+        """
         extern crate b;
         extern crate a;
         extern crate c;
@@ -32,9 +35,11 @@ class RsImportOptimizerTest: RsTestBase() {
         extern crate b;
         extern crate c;
 
-    """)
+    """
+    )
 
-    fun `test extern crates should be sorted after inner attributes`() = doTest("""
+    fun `test extern crates should be sorted after inner attributes`() = doTest(
+        """
         #![allow(non_snake_case)]
         extern crate b;
         extern crate a;
@@ -45,9 +50,11 @@ class RsImportOptimizerTest: RsTestBase() {
         extern crate b;
         extern crate c;
 
-    """)
+    """
+    )
 
-    fun `test should be at the beginning`() = doTest("""
+    fun `test should be at the beginning`() = doTest(
+        """
         //! test
         extern crate log;
 
@@ -61,9 +68,11 @@ class RsImportOptimizerTest: RsTestBase() {
 
         fn test() {}
 
-    """)
+    """
+    )
 
-    fun `test should be after inner attributes 1`() = doTest("""
+    fun `test should be after inner attributes 1`() = doTest(
+        """
         #![allow(non_snake_case)]
         extern crate log;
 
@@ -79,9 +88,11 @@ class RsImportOptimizerTest: RsTestBase() {
         use foo;
 
         fn main() {}
-    """)
+    """
+    )
 
-    fun `test should be after inner attributes 2`() = doTest("""
+    fun `test should be after inner attributes 2`() = doTest(
+        """
         #![allow(non_snake_case)]
 
         use foo;
@@ -95,9 +106,11 @@ class RsImportOptimizerTest: RsTestBase() {
         use foo;
 
         fn main() {}
-    """)
+    """
+    )
 
-    fun `test sort alphabetical of useItem`() = doTest("""
+    fun `test sort alphabetical of useItem`() = doTest(
+        """
         use foo;
         use bar;
 
@@ -107,9 +120,11 @@ class RsImportOptimizerTest: RsTestBase() {
         use foo;
 
         fn main() {}
-    """)
+    """
+    )
 
-    fun `test sort alphabetical of multi layer paths`() = doTest("""
+    fun `test sort alphabetical of multi layer paths`() = doTest(
+        """
         use test::foo;
         use test::bar;
 
@@ -119,9 +134,11 @@ class RsImportOptimizerTest: RsTestBase() {
         use test::foo;
 
         fn main() {}
-    """)
+    """
+    )
 
-    fun `test sort alphabetical of useSpeck`() = doTest("""
+    fun `test sort alphabetical of useSpeck`() = doTest(
+        """
         use foo::{test, foo, bar};
 
         fn main() {}
@@ -129,9 +146,11 @@ class RsImportOptimizerTest: RsTestBase() {
         use foo::{bar, foo, test};
 
         fn main() {}
-    """)
+    """
+    )
 
-    fun `test sort alphabetical with self at start`() = doTest("""
+    fun `test sort alphabetical with self at start`() = doTest(
+        """
         use foo::{test, foo, bar, self};
 
         fn main() {}
@@ -139,9 +158,11 @@ class RsImportOptimizerTest: RsTestBase() {
         use foo::{self, bar, foo, test};
 
         fn main() {}
-    """)
+    """
+    )
 
-    fun `test sort alphabetical with self at star`() = doTest("""
+    fun `test sort alphabetical with self at star`() = doTest(
+        """
         use foo::{test, foo, bar, *};
 
         fn main() {}
@@ -149,9 +170,11 @@ class RsImportOptimizerTest: RsTestBase() {
         use foo::{*, bar, foo, test};
 
         fn main() {}
-    """)
+    """
+    )
 
-    fun `test sort alphabetical with multiple layer`() = doTest("""
+    fun `test sort alphabetical with multiple layer`() = doTest(
+        """
         use foo::bar;
         use bar::bar;
 
@@ -161,9 +184,11 @@ class RsImportOptimizerTest: RsTestBase() {
         use foo::bar;
 
         fn main() {}
-    """)
+    """
+    )
 
-    fun `test sort alphabetical with multiple layer of groups`() = doTest("""
+    fun `test sort alphabetical with multiple layer of groups`() = doTest(
+        """
         use foo::{
             baz::{Test, quux::Bar},
             bar::{Foo, Bar},
@@ -177,9 +202,11 @@ class RsImportOptimizerTest: RsTestBase() {
         };
 
         fn main() {}
-    """)
+    """
+    )
 
-    fun `test should sort mod areas by its own`() = doTest("""
+    fun `test should sort mod areas by its own`() = doTest(
+        """
         use foo;
         use bar;
 
@@ -205,9 +232,11 @@ class RsImportOptimizerTest: RsTestBase() {
                 use foo;
             }
         }
-    """)
+    """
+    )
 
-    fun `test remove curly braces simple`() = doTest("""
+    fun `test remove curly braces simple`() = doTest(
+        """
         use std::{mem};
 
         fn main() {}
@@ -215,9 +244,11 @@ class RsImportOptimizerTest: RsTestBase() {
         use std::mem;
 
         fn main() {}
-    """)
+    """
+    )
 
-    fun `test remove curly braces with no path`() = doTest("""
+    fun `test remove curly braces with no path`() = doTest(
+        """
         use {std};
 
         fn main() {}
@@ -225,9 +256,11 @@ class RsImportOptimizerTest: RsTestBase() {
         use std;
 
         fn main() {}
-    """)
+    """
+    )
 
-    fun `test remove curly braces longer`() = doTest("""
+    fun `test remove curly braces longer`() = doTest(
+        """
         use foo::bar::baz::{qux};
 
         fn main() {}
@@ -235,9 +268,11 @@ class RsImportOptimizerTest: RsTestBase() {
         use foo::bar::baz::qux;
 
         fn main() {}
-    """)
+    """
+    )
 
-    fun `test remove curly braces extra`() = doTest("""
+    fun `test remove curly braces extra`() = doTest(
+        """
         #[macro_use]
         pub use /*comment*/ std::{mem};
 
@@ -247,9 +282,11 @@ class RsImportOptimizerTest: RsTestBase() {
         pub use /*comment*/ std::mem;
 
         fn main() {}
-    """)
+    """
+    )
 
-    fun `test remove braces if single import with alias`() = doTest("""
+    fun `test remove braces if single import with alias`() = doTest(
+        """
         use getopts::{A as B};
 
         fn main() {}
@@ -257,9 +294,11 @@ class RsImportOptimizerTest: RsTestBase() {
         use getopts::A as B;
 
         fn main() {}
-    """)
+    """
+    )
 
-    fun `test remove braces if single import with alias and comma`() = doTest("""
+    fun `test remove braces if single import with alias and comma`() = doTest(
+        """
         use getopts::{A as B,};
 
         fn main() {}
@@ -267,33 +306,43 @@ class RsImportOptimizerTest: RsTestBase() {
         use getopts::A as B;
 
         fn main() {}
-    """)
+    """
+    )
 
-    fun `test won't remove braces if single import with alias with left comment`() = checkNotChanged("""
+    fun `test won't remove braces if single import with alias with left comment`() = checkNotChanged(
+        """
         use getopts::{/*comment*/A as B};
 
         fn main() {}
-    """)
+    """
+    )
 
-    fun `test won't remove braces if single import with alias with right comment`() = checkNotChanged("""
+    fun `test won't remove braces if single import with alias with right comment`() = checkNotChanged(
+        """
         use getopts::{A as B/*comment*/};
 
         fn main() {}
-    """)
+    """
+    )
 
-    fun `test won't remove braces if single import with alias with inner left comment`() = checkNotChanged("""
+    fun `test won't remove braces if single import with alias with inner left comment`() = checkNotChanged(
+        """
         use getopts::{A /*comment*/as B};
 
         fn main() {}
-    """)
+    """
+    )
 
-    fun `test won't remove braces if single import with alias with inner right comment`() = checkNotChanged("""
+    fun `test won't remove braces if single import with alias with inner right comment`() = checkNotChanged(
+        """
         use getopts::{A as /*comment*/ B};
 
         fn main() {}
-    """)
+    """
+    )
 
-    fun `test remove braces if single import with extra comma`() = doTest("""
+    fun `test remove braces if single import with extra comma`() = doTest(
+        """
         use getopts::{optopt,};
 
         fn main() {}
@@ -301,33 +350,43 @@ class RsImportOptimizerTest: RsTestBase() {
         use getopts::optopt;
 
         fn main() {}
-    """)
+    """
+    )
 
-    fun `test won't remove braces if import with left comment`() = checkNotChanged("""
+    fun `test won't remove braces if import with left comment`() = checkNotChanged(
+        """
         use getopts::{/*comment*/optopt};
 
         fn main() {}
-    """)
+    """
+    )
 
-    fun `test won't remove braces if import with right comment`() = checkNotChanged("""
+    fun `test won't remove braces if import with right comment`() = checkNotChanged(
+        """
         use getopts::{optopt/*comment*/};
 
         fn main() {}
-    """)
+    """
+    )
 
-    fun `test wont remove braces if multi import`() = checkNotChanged("""
+    fun `test wont remove braces if multi import`() = checkNotChanged(
+        """
         use getopts::{optarg, optopt};
 
         fn main() {}
-    """)
+    """
+    )
 
-    fun `test won't remove braces for single self`() = checkNotChanged("""
+    fun `test won't remove braces for single self`() = checkNotChanged(
+        """
         use getopts::{self};
 
         fn main() {}
-    """)
+    """
+    )
 
-    fun `test remove braces with multiple imports`() = doTest("""
+    fun `test remove braces with multiple imports`() = doTest(
+        """
         use getopts::{optopt};
         use getopts::{A as B};
         use std::io::{self, Read, Write};
@@ -344,17 +403,21 @@ class RsImportOptimizerTest: RsTestBase() {
         use std::Vec::Vec;
 
         fn main() {}
-    """)
+    """
+    )
 
-    fun `test remove empty use item 1`() = doTest("""
+    fun `test remove empty use item 1`() = doTest(
+        """
         use foo::{};
 
         fn main() {}
     """, """
         fn main() {}
-    """)
+    """
+    )
 
-    fun `test remove empty use item 2`() = doTest("""
+    fun `test remove empty use item 2`() = doTest(
+        """
         use aaa::foo;
         use bbb::{};
         use ccc::foo;
@@ -365,9 +428,11 @@ class RsImportOptimizerTest: RsTestBase() {
         use ccc::foo;
 
         fn main() {}
-    """)
+    """
+    )
 
-    fun `test remove empty use group`() = doTest("""
+    fun `test remove empty use group`() = doTest(
+        """
         use aaa1::{zzz::{}};
         use aaa2::{zzz::{{}}};
         use aaa3::{zzz::{}, bbb};
@@ -388,9 +453,11 @@ class RsImportOptimizerTest: RsTestBase() {
         use aaa8::zzz;
 
         fn main() {}
-    """)
+    """
+    )
 
-    fun `test do not move use items from test mod`() = doTest("""
+    fun `test do not move use items from test mod`() = doTest(
+        """
         use std::io::Read;
 
         #[cfg(test)]
@@ -404,9 +471,11 @@ class RsImportOptimizerTest: RsTestBase() {
         mod test {
             use std::io::Write;
         }
-    """)
+    """
+    )
 
-    fun `test sort inner modules if parent module does not have use items`() = doTest("""
+    fun `test sort inner modules if parent module does not have use items`() = doTest(
+        """
         mod baz {
             use foo;
             use bar;
@@ -416,9 +485,11 @@ class RsImportOptimizerTest: RsTestBase() {
             use bar;
             use foo;
         }
-    """)
+    """
+    )
 
-    fun `test do not move use items before mod block`() = doTest("""
+    fun `test do not move use items before mod block`() = doTest(
+        """
         pub mod foo {
             use std::time;
             use std::io;
@@ -428,10 +499,12 @@ class RsImportOptimizerTest: RsTestBase() {
             use std::io;
             use std::time;
         }
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibAndDependencyRustProjectDescriptor::class)
-    fun `test group imports by semantics`() = doTest("""
+    fun `test group imports by semantics`() = doTest(
+        """
         extern crate dep_lib_target;
 
         use bbb::{fff, eee};
@@ -452,10 +525,12 @@ class RsImportOptimizerTest: RsTestBase() {
         use bbb::{eee, fff};
 
         fn main() {}
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test group imports by semantics with mod`() = doTest("""
+    fun `test group imports by semantics with mod`() = doTest(
+        """
         use bbb::{fff, eee};
         use super::ccc::bbb;
         use aaa::bbb;
@@ -499,10 +574,12 @@ class RsImportOptimizerTest: RsTestBase() {
                 pub mod ccc {}
             }
         }
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test group imports by semantics remove extra newlines`() = doTest("""
+    fun `test group imports by semantics remove extra newlines`() = doTest(
+        """
         use aaa::bbb;
         mod aaa {
             pub mod bbb {
@@ -526,7 +603,8 @@ class RsImportOptimizerTest: RsTestBase() {
         }
 
         mod ccc {}
-    """)
+    """
+    )
 
     private fun doTest(@Language("Rust") code: String, @Language("Rust") excepted: String) =
         checkEditorAction(code, excepted, "OptimizeImports")

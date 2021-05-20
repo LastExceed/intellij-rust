@@ -30,7 +30,8 @@ def main():
     due_on = None
     if prev_milestone is not None and prev_milestone["due_on"] is not None:
         date = datetime.strptime(prev_milestone["due_on"], "%Y-%m-%dT%H:%M:%SZ") + timedelta(weeks=2)
-        due_on = "%04d-%02d-%02dT%02d:%02d:%02dZ" % (date.year, date.month, date.day, date.hour, date.minute, date.second)
+        due_on = "%04d-%02d-%02dT%02d:%02d:%02dZ" % (
+        date.year, date.month, date.day, date.hour, date.minute, date.second)
 
     maintainers = [
         "Undin",

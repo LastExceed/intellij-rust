@@ -50,7 +50,8 @@ class RsDanglingElseInspection : RsLocalInspectionTool() {
                         expr.containingFile,
                         TextRange(elseEl.endOffset, ifEl.startOffset),
                         " "
-                    ))
+                    )
+                )
             }
         }
 

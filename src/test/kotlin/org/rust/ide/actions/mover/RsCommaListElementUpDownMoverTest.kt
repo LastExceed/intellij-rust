@@ -6,7 +6,8 @@
 package org.rust.ide.actions.mover
 
 class RsCommaListElementUpDownMoverTest : RsStatementUpDownMoverTestBase() {
-    fun `test function parameter`() = moveDownAndBackUp("""
+    fun `test function parameter`() = moveDownAndBackUp(
+        """
         fn foo(
             /*caret*/x: i32,
             y: i32,
@@ -16,9 +17,11 @@ class RsCommaListElementUpDownMoverTest : RsStatementUpDownMoverTestBase() {
             y: i32,
             /*caret*/x: i32,
         ) { }
-    """)
+    """
+    )
 
-    fun `test function parameter adds comma 1`() = moveUp("""
+    fun `test function parameter adds comma 1`() = moveUp(
+        """
         fn foo(
             x: i32,
             /*caret*/y: i32
@@ -28,9 +31,11 @@ class RsCommaListElementUpDownMoverTest : RsStatementUpDownMoverTestBase() {
             /*caret*/y: i32,
             x: i32,
         ) { }
-    """)
+    """
+    )
 
-    fun `test function parameter adds comma 2`() = moveDown("""
+    fun `test function parameter adds comma 2`() = moveDown(
+        """
         fn foo(
             /*caret*/ x: i32,
             y: i32
@@ -40,9 +45,11 @@ class RsCommaListElementUpDownMoverTest : RsStatementUpDownMoverTestBase() {
             y: i32,
             /*caret*/x: i32,
         ) { }
-    """)
+    """
+    )
 
-    fun `test self parameter`() = moveDownAndBackUp("""
+    fun `test self parameter`() = moveDownAndBackUp(
+        """
         trait T {
             fn foo(
                 /*caret*/&self,
@@ -56,15 +63,19 @@ class RsCommaListElementUpDownMoverTest : RsStatementUpDownMoverTestBase() {
                 x: i32
             ) {}
         }
-    """)
+    """
+    )
 
-    fun `test prevent step out of parameter list`() = moveDownAndBackUp("""
+    fun `test prevent step out of parameter list`() = moveDownAndBackUp(
+        """
         fn foo(
             /*caret*/x: i32,
         ) { }
-    """)
+    """
+    )
 
-    fun `test function argument`() = moveDownAndBackUp("""
+    fun `test function argument`() = moveDownAndBackUp(
+        """
         fn main() {
             foo(
                 /*caret*/x,
@@ -78,9 +89,11 @@ class RsCommaListElementUpDownMoverTest : RsStatementUpDownMoverTestBase() {
                 /*caret*/x,
             );
         }
-    """)
+    """
+    )
 
-    fun `test function argument adds comma 1`() = moveUp("""
+    fun `test function argument adds comma 1`() = moveUp(
+        """
         fn main() {
             foo(
                 x,
@@ -94,9 +107,11 @@ class RsCommaListElementUpDownMoverTest : RsStatementUpDownMoverTestBase() {
                 x,
             );
         }
-    """)
+    """
+    )
 
-    fun `test function argument adds comma 2`() = moveDown("""
+    fun `test function argument adds comma 2`() = moveDown(
+        """
         fn main() {
             foo(
                 /*caret*/x,
@@ -110,23 +125,29 @@ class RsCommaListElementUpDownMoverTest : RsStatementUpDownMoverTestBase() {
                 /*caret*/x,
             );
         }
-    """)
+    """
+    )
 
-    fun `test prevent step out of argument list`() = moveDownAndBackUp("""
+    fun `test prevent step out of argument list`() = moveDownAndBackUp(
+        """
         fn main() {
             foo(
                 /*caret*/x,
             );
         }
-    """)
+    """
+    )
 
-    fun `test prevent step out of use group`() = moveDownAndBackUp("""
+    fun `test prevent step out of use group`() = moveDownAndBackUp(
+        """
         use foo::{
             /*caret*/foo
         };
-    """)
+    """
+    )
 
-    fun `test move struct fields`() = moveDownAndBackUp("""
+    fun `test move struct fields`() = moveDownAndBackUp(
+        """
         struct S {
             foo: u32,/*caret*/
             bar: u32,
@@ -136,9 +157,11 @@ class RsCommaListElementUpDownMoverTest : RsStatementUpDownMoverTestBase() {
             bar: u32,
             foo: u32,/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test move struct adds comma 1`() = moveDown("""
+    fun `test move struct adds comma 1`() = moveDown(
+        """
         struct S {
             foo: u32,/*caret*/
             bar: u32
@@ -148,9 +171,11 @@ class RsCommaListElementUpDownMoverTest : RsStatementUpDownMoverTestBase() {
             bar: u32,
             foo: u32,/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test move struct adds comma 2`() = moveUp("""
+    fun `test move struct adds comma 2`() = moveUp(
+        """
         struct S {
             foo: u32,
             /*caret*/bar: u32
@@ -160,6 +185,7 @@ class RsCommaListElementUpDownMoverTest : RsStatementUpDownMoverTestBase() {
             /*caret*/bar: u32,
             foo: u32,
         }
-    """)
+    """
+    )
 
 }

@@ -126,7 +126,7 @@ private fun reformatMacroExpansion(
 ): MacroExpansion {
     val file = expansion.file
         .takeIf { it.virtualFile == null }
-        // Without `eventSystemEnabled` file reformatting is too slow
+    // Without `eventSystemEnabled` file reformatting is too slow
         ?: RsPsiFactory(expansion.file.project, eventSystemEnabled = true).createFile(expansion.file.text)
 
     RsPsiManager.withIgnoredPsiEvents(file) {

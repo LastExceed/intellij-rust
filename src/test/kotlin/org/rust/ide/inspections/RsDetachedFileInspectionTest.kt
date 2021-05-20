@@ -12,22 +12,27 @@ import org.rust.cargo.project.workspace.CargoWorkspace
 import org.rust.ide.inspections.fixes.withMockModuleAttachSelector
 
 class RsDetachedFileInspectionTest : RsInspectionsTestBase(RsDetachedFileInspection::class) {
-    fun `test attached file`() = checkByFileTree("""
+    fun `test attached file`() = checkByFileTree(
+        """
         //- lib.rs
             mod foo;
         //- foo.rs
         /*caret*/
-    """)
+    """
+    )
 
-    fun `test included file`() = checkByFileTree("""
+    fun `test included file`() = checkByFileTree(
+        """
         //- lib.rs
             include!("foo.rs");
         //- foo.rs
         /*caret*/
-    """)
+    """
+    )
 
     @ExpandMacros
-    fun `test included file via macro`() = checkByFileTree("""
+    fun `test included file via macro`() = checkByFileTree(
+        """
         //- lib.rs
             macro_rules! generate_include {
                 (${'$'}package: tt) => {
@@ -38,33 +43,43 @@ class RsDetachedFileInspectionTest : RsInspectionsTestBase(RsDetachedFileInspect
             generate_include!("foo.rs");
         //- foo.rs
         /*caret*/
-    """)
+    """
+    )
 
-    fun `test not included file`() = checkByFileTree("""
+    fun `test not included file`() = checkByFileTree(
+        """
         //- foo.rs
         <warning descr="File is not included in module tree, analysis is not available"></warning>/*caret*/
-    """)
+    """
+    )
 
-    fun `test fix not available if no module is found`() = checkFixIsUnavailableByFileTree("Attach file to a module", """
+    fun `test fix not available if no module is found`() = checkFixIsUnavailableByFileTree(
+        "Attach file to a module", """
         //- foo.rs
         <warning descr="File is not included in module tree, analysis is not available"></warning>/*caret*/
-    """)
+    """
+    )
 
-    fun `test fix not available if module is not attached`() = checkFixIsUnavailableByFileTree("Attach file to mod.rs", """
+    fun `test fix not available if module is not attached`() = checkFixIsUnavailableByFileTree(
+        "Attach file to mod.rs", """
         //- mod.rs
             fn test() {}
         //- foo.rs
         <warning descr="File is not included in module tree, analysis is not available"></warning>/*caret*/
-    """)
+    """
+    )
 
-    fun `test fix not available if module is not in the same directory`() = checkFixIsUnavailableByFileTree("Attach file to lib.rs", """
+    fun `test fix not available if module is not in the same directory`() = checkFixIsUnavailableByFileTree(
+        "Attach file to lib.rs", """
         //- lib.rs
             fn test() {}
         //- a/foo.rs
         <warning descr="File is not included in module tree, analysis is not available"></warning>/*caret*/
-    """)
+    """
+    )
 
-    fun `test attach file to a local mod file`() = checkFixByFileTree("Attach file to mod.rs", """
+    fun `test attach file to a local mod file`() = checkFixByFileTree(
+        "Attach file to mod.rs", """
         //- lib.rs
             mod a;
         //- a/mod.rs
@@ -76,10 +91,12 @@ class RsDetachedFileInspectionTest : RsInspectionsTestBase(RsDetachedFileInspect
         //- a/mod.rs
             /*caret*/mod foo;
         //- a/foo.rs
-    """)
+    """
+    )
 
     @MockEdition(CargoWorkspace.Edition.EDITION_2018)
-    fun `test attach file to a parent mod file`() = checkFixByFileTree("Attach file to a.rs", """
+    fun `test attach file to a parent mod file`() = checkFixByFileTree(
+        "Attach file to a.rs", """
         //- lib.rs
             mod a;
         //- a.rs
@@ -91,9 +108,11 @@ class RsDetachedFileInspectionTest : RsInspectionsTestBase(RsDetachedFileInspect
         //- a.rs
             /*caret*/mod foo;
         //- a/foo.rs
-    """)
+    """
+    )
 
-    fun `test attach file to library root`() = checkFixByFileTree("Attach file to lib.rs", """
+    fun `test attach file to library root`() = checkFixByFileTree(
+        "Attach file to lib.rs", """
         //- lib.rs
             fn test() {}
         //- foo.rs
@@ -104,9 +123,11 @@ class RsDetachedFileInspectionTest : RsInspectionsTestBase(RsDetachedFileInspect
 
             fn test() {}
         //- foo.rs
-    """)
+    """
+    )
 
-    fun `test attach file to binary root`() = checkFixByFileTree("Attach file to main.rs", """
+    fun `test attach file to binary root`() = checkFixByFileTree(
+        "Attach file to main.rs", """
         //- main.rs
             fn main() {}
         //- foo.rs
@@ -117,9 +138,11 @@ class RsDetachedFileInspectionTest : RsInspectionsTestBase(RsDetachedFileInspect
 
             fn main() {}
         //- foo.rs
-    """)
+    """
+    )
 
-    fun `test attach file to selected module 1`() = checkFixWithMultipleModules("""
+    fun `test attach file to selected module 1`() = checkFixWithMultipleModules(
+        """
         //- main.rs
             fn main() {}
         //- lib.rs
@@ -134,9 +157,11 @@ class RsDetachedFileInspectionTest : RsInspectionsTestBase(RsDetachedFileInspect
         //- lib.rs
             fn test() {}
         //- foo.rs
-    """, "main.rs")
+    """, "main.rs"
+    )
 
-    fun `test attach file to selected module 2`() = checkFixWithMultipleModules("""
+    fun `test attach file to selected module 2`() = checkFixWithMultipleModules(
+        """
         //- main.rs
             fn main() {}
         //- lib.rs
@@ -151,9 +176,11 @@ class RsDetachedFileInspectionTest : RsInspectionsTestBase(RsDetachedFileInspect
 
             fn test() {}
         //- foo.rs
-    """, "lib.rs")
+    """, "lib.rs"
+    )
 
-    fun `test attach module file 1`() = checkFixWithMultipleModules("""
+    fun `test attach module file 1`() = checkFixWithMultipleModules(
+        """
         //- main.rs
             fn main() {}
         //- lib.rs
@@ -168,9 +195,11 @@ class RsDetachedFileInspectionTest : RsInspectionsTestBase(RsDetachedFileInspect
 
             fn test() {}
         //- a/mod.rs
-    """, "lib.rs")
+    """, "lib.rs"
+    )
 
-    fun `test attach module file 2`() = checkFixByFileTree("Attach file to mod.rs", """
+    fun `test attach module file 2`() = checkFixByFileTree(
+        "Attach file to mod.rs", """
         //- lib.rs
             mod a;
         //- a/mod.rs
@@ -185,9 +214,11 @@ class RsDetachedFileInspectionTest : RsInspectionsTestBase(RsDetachedFileInspect
 
             fn foo() {}
         //- a/b/mod.rs
-    """)
+    """
+    )
 
-    fun `test attach file find existing mod item`() = checkFixByFileTree("Attach file to lib.rs", """
+    fun `test attach file find existing mod item`() = checkFixByFileTree(
+        "Attach file to lib.rs", """
         //- lib.rs
             mod a;
         //- foo.rs
@@ -197,9 +228,11 @@ class RsDetachedFileInspectionTest : RsInspectionsTestBase(RsDetachedFileInspect
             mod a;
             mod foo;
         //- foo.rs
-    """)
+    """
+    )
 
-    fun `test attach file multiple mod items`() = checkFixByFileTree("Attach file to lib.rs", """
+    fun `test attach file multiple mod items`() = checkFixByFileTree(
+        "Attach file to lib.rs", """
         //- lib.rs
             mod a;
             mod b;
@@ -211,9 +244,11 @@ class RsDetachedFileInspectionTest : RsInspectionsTestBase(RsDetachedFileInspect
             mod b;
             mod foo;
         //- foo.rs
-    """)
+    """
+    )
 
-    fun `test attach file find last existing mod item`() = checkFixByFileTree("Attach file to lib.rs", """
+    fun `test attach file find last existing mod item`() = checkFixByFileTree(
+        "Attach file to lib.rs", """
         //- lib.rs
             fn test1() {}
 
@@ -237,9 +272,11 @@ class RsDetachedFileInspectionTest : RsInspectionsTestBase(RsDetachedFileInspect
 
             fn test2() {}
         //- foo.rs
-    """)
+    """
+    )
 
-    fun `test attach file skip attributes`() = checkFixByFileTree("Attach file to lib.rs", """
+    fun `test attach file skip attributes`() = checkFixByFileTree(
+        "Attach file to lib.rs", """
         //- lib.rs
             #![allow(dead_code)]
             #![feature(async_closure)]
@@ -252,9 +289,11 @@ class RsDetachedFileInspectionTest : RsInspectionsTestBase(RsDetachedFileInspect
 
             mod foo;
         //- foo.rs
-    """)
+    """
+    )
 
-    fun `test attach file skip attributes with comments`() = checkFixByFileTree("Attach file to lib.rs", """
+    fun `test attach file skip attributes with comments`() = checkFixByFileTree(
+        "Attach file to lib.rs", """
         //- lib.rs
             //! foo
             //! bar
@@ -271,9 +310,11 @@ class RsDetachedFileInspectionTest : RsInspectionsTestBase(RsDetachedFileInspect
 
             mod foo;
         //- foo.rs
-    """)
+    """
+    )
 
-    fun `test attach file skip comments`() = checkFixByFileTree("Attach file to lib.rs", """
+    fun `test attach file skip comments`() = checkFixByFileTree(
+        "Attach file to lib.rs", """
         //- lib.rs
             //! foo
             //! bar
@@ -285,7 +326,8 @@ class RsDetachedFileInspectionTest : RsInspectionsTestBase(RsDetachedFileInspect
             //! bar
             mod foo;
         //- foo.rs
-    """)
+    """
+    )
 
     private fun checkFixWithMultipleModules(
         @Language("Rust") before: String,

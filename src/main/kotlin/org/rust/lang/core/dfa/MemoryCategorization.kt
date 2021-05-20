@@ -120,8 +120,10 @@ enum class AliasableReason {
 enum class MutabilityCategory {
     /** Any immutable */
     Immutable,
+
     /** Directly declared as mutable */
     Declared,
+
     /** Inherited from the fact that owner is mutable */
     Inherited;
 

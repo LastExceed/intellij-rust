@@ -20,22 +20,26 @@ import org.rust.openapiext.toPsiDirectory
 class TestRunConfigurationProducerTest : RunConfigurationProducerTestBase() {
     fun `test test producer works for annotated functions`() {
         testProject {
-            lib("foo", "src/lib.rs", """
+            lib(
+                "foo", "src/lib.rs", """
                 #[test]
                 fn test_foo() { as/*caret*/sert!(true); }
-            """).open()
+            """
+            ).open()
         }
         checkOnTopLevel<RsFunction>()
     }
 
     fun `test test producer uses complete function path`() {
         testProject {
-            lib("foo", "src/lib.rs", """
+            lib(
+                "foo", "src/lib.rs", """
             mod foo_mod {
                 #[test]
                 fn test_foo() { as/*caret*/sert!(true); }
             }
-            """).open()
+            """
+            ).open()
         }
         checkOnTopLevel<RsFunction>()
     }
@@ -49,7 +53,8 @@ class TestRunConfigurationProducerTest : RunConfigurationProducerTestBase() {
 
     fun `test test producer remembers context`() {
         testProject {
-            lib("foo", "src/lib.rs", """
+            lib(
+                "foo", "src/lib.rs", """
                 #[test]
                 fn test_foo() {
                     assert_eq!(2 + 2, 4);
@@ -59,7 +64,8 @@ class TestRunConfigurationProducerTest : RunConfigurationProducerTestBase() {
                 fn test_bar() {
                     assert_eq!(2 * 2, 4);
                 }
-            """).open()
+            """
+            ).open()
         }
 
         val ctx1 = myFixture.findElementByText("+", PsiElement::class.java)
@@ -69,7 +75,8 @@ class TestRunConfigurationProducerTest : RunConfigurationProducerTestBase() {
 
     fun `test test producer remembers context in test mod`() {
         testProject {
-            lib("foo", "src/lib.rs", """
+            lib(
+                "foo", "src/lib.rs", """
                 #[cfg(test)]
                 mod tests {
                     fn foo() {
@@ -81,7 +88,8 @@ class TestRunConfigurationProducerTest : RunConfigurationProducerTestBase() {
                         let x = 2 * 2;
                     }
                 }
-            """).open()
+            """
+            ).open()
         }
 
         val ctx1 = myFixture.findElementByText("+", PsiElement::class.java)
@@ -91,7 +99,8 @@ class TestRunConfigurationProducerTest : RunConfigurationProducerTestBase() {
 
     fun `test test producer works for modules`() {
         testProject {
-            lib("foo", "src/lib.rs", """
+            lib(
+                "foo", "src/lib.rs", """
                 mod foo {
                     #[test] fn bar() {}
 
@@ -99,27 +108,33 @@ class TestRunConfigurationProducerTest : RunConfigurationProducerTestBase() {
 
                     fn quux() {/*caret*/}
                 }
-            """).open()
+            """
+            ).open()
         }
         checkOnTopLevel<RsMod>()
     }
 
     fun `test test producer works for module declarations`() {
         testProject {
-            file("src/tests.rs", """
+            file(
+                "src/tests.rs", """
                 #[test]
                 fn test() {}
-            """)
-            lib("foo", "src/lib.rs", """
+            """
+            )
+            lib(
+                "foo", "src/lib.rs", """
                 mod tests/*caret*/;
-            """).open()
+            """
+            ).open()
         }
         checkOnTopLevel<RsModDeclItem>()
     }
 
     fun `test test producer works for nested modules 1`() {
         testProject {
-            lib("foo", "src/lib.rs", """
+            lib(
+                "foo", "src/lib.rs", """
                 mod foo {
                     mod bar {
                         #[test] fn bar() {}
@@ -129,14 +144,16 @@ class TestRunConfigurationProducerTest : RunConfigurationProducerTestBase() {
                         fn quux() { /*caret*/ }
                     }
                 }
-            """).open()
+            """
+            ).open()
         }
         checkOnTopLevel<RsMod>()
     }
 
     fun `test test producer works for nested modules 2`() {
         testProject {
-            lib("foo", "src/lib.rs", """
+            lib(
+                "foo", "src/lib.rs", """
                 mod foo {
                     mod bar {
                         #[test] fn bar() {}
@@ -145,7 +162,8 @@ class TestRunConfigurationProducerTest : RunConfigurationProducerTestBase() {
                     }
                     fn quux() { /*caret*/ }
                 }
-            """).open()
+            """
+            ).open()
         }
         checkOnTopLevel<RsMod>()
     }
@@ -159,13 +177,15 @@ class TestRunConfigurationProducerTest : RunConfigurationProducerTestBase() {
 
     fun `test test producer works for root module`() {
         testProject {
-            lib("foo", "src/lib.rs", """
+            lib(
+                "foo", "src/lib.rs", """
                 #[test] fn bar() {}
 
                 #[test] fn baz() {}
 
                 fn quux() {/*caret*/}
-            """).open()
+            """
+            ).open()
         }
         checkOnLeaf()
     }
@@ -173,48 +193,58 @@ class TestRunConfigurationProducerTest : RunConfigurationProducerTestBase() {
     fun `test meaningful test configuration name`() {
         testProject {
             lib("foo", "src/lib.rs", "mod bar;")
-            file("src/bar/mod.rs", """
+            file(
+                "src/bar/mod.rs", """
                 mod tests {
                     fn quux() /*caret*/{}
 
                     #[test] fn baz() {}
                 }
-            """).open()
+            """
+            ).open()
         }
         checkOnLeaf()
     }
 
     fun `test take into account path attribute`() {
         testProject {
-            lib("foo", "src/lib.rs", """
+            lib(
+                "foo", "src/lib.rs", """
                 #[cfg(test)]
                 #[path = "foo.rs"]
                 mod test;
-            """)
-            file("src/foo.rs", """
+            """
+            )
+            file(
+                "src/foo.rs", """
                 #[test]
                 fn foo() {/*caret*/}
-            """).open()
+            """
+            ).open()
         }
         checkOnTopLevel<RsFunction>()
     }
 
     fun `test test producer adds bin name`() {
         testProject {
-            bin("foo", "src/bin/foo.rs", """
+            bin(
+                "foo", "src/bin/foo.rs", """
                 #[test]
                 fn test_foo() { as/*caret*/sert!(true); }
-            """).open()
+            """
+            ).open()
         }
         checkOnLeaf()
     }
 
     fun `test test configuration uses default environment`() {
         testProject {
-            lib("foo", "src/lib.rs", """
+            lib(
+                "foo", "src/lib.rs", """
                 #[test]
                 fn test_foo() { as/*caret*/sert!(true); }
-            """).open()
+            """
+            ).open()
         }
 
         modifyTemplateConfiguration {
@@ -232,17 +262,23 @@ class TestRunConfigurationProducerTest : RunConfigurationProducerTestBase() {
 
     fun `test test producer works for multiple files`() {
         testProject {
-            test("foo", "tests/foo.rs", """
+            test(
+                "foo", "tests/foo.rs", """
                 #[test] fn test_foo() {}
-            """)
+            """
+            )
 
-            test("bar", "tests/bar.rs", """
+            test(
+                "bar", "tests/bar.rs", """
                 #[test] fn test_bar() {}
-            """)
+            """
+            )
 
-            test("baz", "tests/baz.rs", """
+            test(
+                "baz", "tests/baz.rs", """
                 #[test] fn test_baz() {}
-            """)
+            """
+            )
         }
 
         openFileInEditor("tests/foo.rs")
@@ -254,17 +290,23 @@ class TestRunConfigurationProducerTest : RunConfigurationProducerTestBase() {
 
     fun `test test producer ignores selected files that contain no tests`() {
         testProject {
-            test("foo", "tests/foo.rs", """
+            test(
+                "foo", "tests/foo.rs", """
                 #[test] fn test_foo() {}
-            """)
+            """
+            )
 
-            test("bar", "tests/bar.rs", """
+            test(
+                "bar", "tests/bar.rs", """
                 fn test_bar() {}
-            """)
+            """
+            )
 
-            test("baz", "tests/baz.rs", """
+            test(
+                "baz", "tests/baz.rs", """
                 #[test] fn test_baz() {}
-            """)
+            """
+            )
         }
 
         openFileInEditor("tests/foo.rs")
@@ -276,9 +318,11 @@ class TestRunConfigurationProducerTest : RunConfigurationProducerTestBase() {
 
     fun `test test producer works for tests source root`() {
         testProject {
-            test("foo", "tests/foo.rs", """
+            test(
+                "foo", "tests/foo.rs", """
                 #[test] fn test_foo() {}
-            """)
+            """
+            )
         }
 
         openFileInEditor("tests/foo.rs")
@@ -288,17 +332,23 @@ class TestRunConfigurationProducerTest : RunConfigurationProducerTestBase() {
 
     fun `test test producer works for directories inside tests source root`() {
         testProject {
-            test("foo", "tests/dir/foo.rs", """
+            test(
+                "foo", "tests/dir/foo.rs", """
                 #[test] fn test_foo() {}
-            """)
+            """
+            )
 
-            test("bar", "tests/dir/bar.rs", """
+            test(
+                "bar", "tests/dir/bar.rs", """
                 fn test_bar() {}
-            """)
+            """
+            )
 
-            test("baz", "tests/dir/baz.rs", """
+            test(
+                "baz", "tests/dir/baz.rs", """
                 #[test] fn test_baz() {}
-            """)
+            """
+            )
         }
 
         openFileInEditor("tests/dir/foo.rs")
@@ -308,9 +358,11 @@ class TestRunConfigurationProducerTest : RunConfigurationProducerTestBase() {
 
     fun `test test producer doesn't works for directories without tests`() {
         testProject {
-            test("foo", "tests/foo.rs", """
+            test(
+                "foo", "tests/foo.rs", """
                 fn foo() {}
-            """)
+            """
+            )
         }
 
         openFileInEditor("tests/foo.rs")
@@ -320,9 +372,11 @@ class TestRunConfigurationProducerTest : RunConfigurationProducerTestBase() {
 
     fun `test test producer works for project root`() {
         testProject {
-            test("foo", "tests/foo.rs", """
+            test(
+                "foo", "tests/foo.rs", """
                 #[test] fn test_foo() {}
-            """)
+            """
+            )
         }
 
         openFileInEditor("tests/foo.rs")

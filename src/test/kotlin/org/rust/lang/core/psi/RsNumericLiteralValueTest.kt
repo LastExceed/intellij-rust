@@ -15,9 +15,11 @@ import org.rust.lang.core.psi.RsElementTypes.FLOAT_LITERAL
 import java.util.*
 
 @RunWith(Parameterized::class)
-class RsNumericLiteralValueTest(private val constructor: (String) -> RsLiteralKind.Float,
-                                private val input: String,
-                                private val expectedOutput: Any?) {
+class RsNumericLiteralValueTest(
+    private val constructor: (String) -> RsLiteralKind.Float,
+    private val input: String,
+    private val expectedOutput: Any?
+) {
     @Test
     fun test() {
         val elem = constructor(input)
@@ -26,7 +28,8 @@ class RsNumericLiteralValueTest(private val constructor: (String) -> RsLiteralKi
 
     companion object {
         @Parameterized.Parameters(name = "{index}: {1}")
-        @JvmStatic fun data(): Collection<Array<out Any?>> = listOf(
+        @JvmStatic
+        fun data(): Collection<Array<out Any?>> = listOf(
             arrayOf(f64, "1.0", 1.0),
             arrayOf(f64, "1.0_1", 1.01),
             arrayOf(f64, "2.4e8", 2.4e8),
@@ -49,7 +52,7 @@ class RsNumericLiteralValueFuzzyTest {
     private fun doTest(text: String) {
         try {
             RsLiteralKind.Float(LeafPsiElement(FLOAT_LITERAL, text)).value
-        } catch(e: Exception) {
+        } catch (e: Exception) {
             fail("exception thrown by $text")
         }
     }

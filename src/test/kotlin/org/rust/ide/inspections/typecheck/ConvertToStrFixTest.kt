@@ -12,7 +12,8 @@ import org.rust.ide.inspections.RsTypeCheckInspection
 
 @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
 class ConvertToStrFixTest : RsInspectionsTestBase(RsTypeCheckInspection::class) {
-    fun `test String to &str`() = checkFixByText("Convert to &str using `as_str` method", """
+    fun `test String to &str`() = checkFixByText(
+        "Convert to &str using `as_str` method", """
             fn main () {
                 let _: &str = <error>String::from("Hello World!")<caret></error>;
             }
@@ -20,9 +21,11 @@ class ConvertToStrFixTest : RsInspectionsTestBase(RsTypeCheckInspection::class) 
             fn main () {
                 let _: &str = String::from("Hello World!").as_str();
             }
-            """)
+            """
+    )
 
-    fun `test String to &mut str`() = checkFixByText("Convert to &mut str using `as_mut_str` method", """
+    fun `test String to &mut str`() = checkFixByText(
+        "Convert to &mut str using `as_mut_str` method", """
             fn main () {
                 let _: &mut str = <error>String::from("Hello World!")<caret></error>;
             }
@@ -30,5 +33,6 @@ class ConvertToStrFixTest : RsInspectionsTestBase(RsTypeCheckInspection::class) 
             fn main () {
                 let _: &mut str = String::from("Hello World!").as_mut_str();
             }
-            """)
+            """
+    )
 }

@@ -7,7 +7,8 @@ package org.rust.ide.template.postfix
 
 class OkPostfixTemplateTest : RsPostfixTemplateTest(OkPostfixTemplate(RsPostfixTemplateProvider())) {
 
-    fun `test expr`() = doTest("""
+    fun `test expr`() = doTest(
+        """
         fn foo(number: i32) -> Result<i32, ()> {
             number.ok/*caret*/
         }
@@ -15,11 +16,14 @@ class OkPostfixTemplateTest : RsPostfixTemplateTest(OkPostfixTemplate(RsPostfixT
         fn foo(number: i32) -> Result<i32, ()> {
             Ok(number)
         }
-    """)
+    """
+    )
 
-    fun `test not expr`() = doTestNotApplicable("""
+    fun `test not expr`() = doTestNotApplicable(
+        """
         fn main() {
             println!("Hello!");.ok/*caret*/
         }
-    """)
+    """
+    )
 }

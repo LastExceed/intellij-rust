@@ -187,12 +187,13 @@ private inline fun <reified T : TomlElement> CompositePsiElement.childOfTypeNull
 
 private inline fun <reified T : TomlElement> CompositePsiElement.childOfTypeNotNull(): T =
     PsiTreeUtil.getChildOfType(this, T::class.java)
-        ?: error("""
+        ?: error(
+            """
             Invalid TOML PSI
             Expected to find `${T::class.simpleName}` child of ${this::class.simpleName}
             Element text:
         """.trimIndent() + "\n$text"
-    )
+        )
 
 private inline fun <reified T : TomlElement> CompositePsiElement.childrenOfType(): List<T> =
     PsiTreeUtil.getChildrenOfTypeAsList(this, T::class.java)

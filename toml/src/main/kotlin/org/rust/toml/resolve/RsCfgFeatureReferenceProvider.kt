@@ -31,7 +31,8 @@ class RsCfgFeatureReferenceProvider : PsiReferenceProvider() {
 private class RsCfgFeatureReferenceReference(element: RsLitExpr) : PsiPolyVariantReferenceBase<RsLitExpr>(element) {
     override fun multiResolve(incompleteCode: Boolean): Array<ResolveResult> {
         val literalValue = (element.kind as? RsLiteralKind.String)?.value ?: return ResolveResult.EMPTY_ARRAY
-        val toml = element.containingCargoPackage?.getPackageTomlFile(element.project) ?: return ResolveResult.EMPTY_ARRAY
+        val toml = element.containingCargoPackage?.getPackageTomlFile(element.project)
+            ?: return ResolveResult.EMPTY_ARRAY
         return toml.resolveFeature(literalValue)
     }
 }

@@ -63,6 +63,7 @@ class RsMacroExpansionCachingToolchainTest : RsWithToolchainTestBase() {
             VfsUtil.saveText(file, VfsUtil.loadText(file) + " ")
         }
     }
+
     private fun replaceInFile(path: String, find: String, replace: String): (p: TestProject) -> Unit = { p ->
         val file = p.file(path)
         runWriteAction {
@@ -78,12 +79,14 @@ class RsMacroExpansionCachingToolchainTest : RsWithToolchainTestBase() {
 
     private fun checkReExpanded(action: (p: TestProject) -> Unit, @Language("Rust") code: String, vararg names: String) {
         val p = fileTree {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "hello"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
 
             dir("src", fileTreeFromText(code))
         }.create(project, dirFixture.getFile(".")!!)
@@ -124,15 +127,18 @@ class RsMacroExpansionCachingToolchainTest : RsWithToolchainTestBase() {
         }
     }
 
-    fun `test re-open project without changes`() = stubBasedRefMatch.checkReExpanded(doNothing(), """
+    fun `test re-open project without changes`() = stubBasedRefMatch.checkReExpanded(
+        doNothing(), """
         //- main.rs
         macro_rules! foo { ($ i:ident) => { mod $ i {} } }
         macro_rules! bar { ($ i:ident) => { mod $ i {} } }
         foo!(a);
         bar!(a);
-    """)
+    """
+    )
 
-    fun `test touch definition at separate file`() = stubBasedRefMatch.checkReExpanded(touchFile("src/foo.rs"), """
+    fun `test touch definition at separate file`() = stubBasedRefMatch.checkReExpanded(
+        touchFile("src/foo.rs"), """
         //- foo.rs
         macro_rules! foo { ($ i:ident) => { mod $ i {} } }
         //- bar.rs
@@ -144,44 +150,55 @@ class RsMacroExpansionCachingToolchainTest : RsWithToolchainTestBase() {
         mod bar;
         foo!(a);
         bar!(a);
-    """)
+    """
+    )
 
-    fun `test touch usage at separate file`() = refsRecoverExactHit.checkReExpanded(touchFile("src/main.rs"), """
+    fun `test touch usage at separate file`() = refsRecoverExactHit.checkReExpanded(
+        touchFile("src/main.rs"), """
         //- def.rs
         macro_rules! foo { ($ i:ident) => { mod $ i {} } }
         //- main.rs
         #[macro_use]
         mod def;
         foo!(a);
-    """)
+    """
+    )
 
-    fun `test edit usage at same file`() = refsRecoverNotHit.checkReExpanded(replaceInFile("src/main.rs", "aaa", "aab"), """
+    fun `test edit usage at same file`() = refsRecoverNotHit.checkReExpanded(
+        replaceInFile("src/main.rs", "aaa", "aab"), """
         //- main.rs
         macro_rules! foo { ($ i:ident) => { mod $ i {} } }
         foo!(aaa);
-    """, "foo")
+    """, "foo"
+    )
 
-    fun `test edit usage at separate file`() = refsRecoverNotHit.checkReExpanded(replaceInFile("src/main.rs", "aaa", "aab"), """
+    fun `test edit usage at separate file`() = refsRecoverNotHit.checkReExpanded(
+        replaceInFile("src/main.rs", "aaa", "aab"), """
         //- def.rs
         macro_rules! foo { ($ i:ident) => { mod $ i {} } }
         //- main.rs
         #[macro_use]
         mod def;
         foo!(aaa);
-    """, "foo")
+    """, "foo"
+    )
 
-    fun `test edit definition at same file`() = refsRecoverCallHit.checkReExpanded(replaceInFile("src/main.rs", "aaa", "aab"), """
+    fun `test edit definition at same file`() = refsRecoverCallHit.checkReExpanded(
+        replaceInFile("src/main.rs", "aaa", "aab"), """
         //- main.rs
         macro_rules! foo { ($ i:ident) => { fn $ i() { aaa; } } }
         foo!(a);
-    """, "foo")
+    """, "foo"
+    )
 
-    fun `test edit definition at separate file`() = stubBasedRefMatch.checkReExpanded(replaceInFile("src/def.rs", "aaa", "aab"), """
+    fun `test edit definition at separate file`() = stubBasedRefMatch.checkReExpanded(
+        replaceInFile("src/def.rs", "aaa", "aab"), """
         //- def.rs
         macro_rules! foo { ($ i:ident) => { fn $ i() { aaa; } } }
         //- main.rs
         #[macro_use]
         mod def;
         foo!(a);
-    """, "foo")
+    """, "foo"
+    )
 }

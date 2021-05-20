@@ -9,15 +9,18 @@ import org.rust.lang.core.psi.ext.ArithmeticOp
 import org.rust.lang.core.types.infer.TypeInferenceMarks
 
 class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
-    fun `test fn`() = checkByCode("""
+    fun `test fn`() = checkByCode(
+        """
         fn foo<T>() -> T {
              //X
             let x: T = unimplemented!();
                  //^
             }
-    """)
+    """
+    )
 
-    fun `test impl method`() = checkByCode("""
+    fun `test impl method`() = checkByCode(
+        """
         struct S;
 
         impl S {
@@ -26,42 +29,52 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
                 param: Param
             ) {}      //^
         }
-    """)
+    """
+    )
 
-    fun `test trait method`() = checkByCode("""
+    fun `test trait method`() = checkByCode(
+        """
         trait T {
             fn f<Param>()
                 //X
                 -> Param;
                     //^
         }
-    """)
+    """
+    )
 
-    fun `test struct`() = checkByCode("""
+    fun `test struct`() = checkByCode(
+        """
         struct S<Thing> {
                 //X
             field: Vec<Thing>
                       //^
         }
-    """)
+    """
+    )
 
-    fun `test enum`() = checkByCode("""
+    fun `test enum`() = checkByCode(
+        """
         enum E<T> {
              //X
             V(T)
             //^
         }
-    """)
+    """
+    )
 
-    fun `test trait`() = checkByCode("""
+    fun `test trait`() = checkByCode(
+        """
         trait T<Param> {
                 //X
             fn new() -> Param;
                         //^
         }
-    """)
+    """
+    )
 
-    fun `test impl`() = checkByCode("""
+    fun `test impl`() = checkByCode(
+        """
         struct S<T> { field: T }
 
         impl<T> S<T> {
@@ -69,32 +82,40 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
             fn foo() -> T { }
                       //^
         }
-    """)
+    """
+    )
 
-    fun `test type alias`() = checkByCode("""
+    fun `test type alias`() = checkByCode(
+        """
         use std::result;
 
         pub type Result<T> =
                       //X
             result::Result<T, Error>;
                          //^
-    """)
+    """
+    )
 
-    fun `test no leak in enum`() = checkByCode("""
+    fun `test no leak in enum`() = checkByCode(
+        """
         enum E<T> { X }
 
         fn main() { let _ = E::T; }
                              //^ unresolved
-    """)
+    """
+    )
 
-    fun `test no leak in struct`() = checkByCode("""
+    fun `test no leak in struct`() = checkByCode(
+        """
         struct S<T>;
 
         fn main() { let _: S::T = unreachable!(); }
                             //^ unresolved
-    """)
+    """
+    )
 
-    fun `test don't check type parameter name when looking for impls`() = checkByCode("""
+    fun `test don't check type parameter name when looking for impls`() = checkByCode(
+        """
         struct S<FOO> { field: FOO }
 
         fn main() {
@@ -108,25 +129,31 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
             fn transmogrify(&self) { }
                 //X
         }
-    """)
+    """
+    )
 
-    fun `test method call on trait from bound`() = checkByCode("""
+    fun `test method call on trait from bound`() = checkByCode(
+        """
         trait Spam { fn eggs(&self); }
                         //X
 
         fn foo<T: Spam>(x: T) { x.eggs() }
                                   //^
-    """)
+    """
+    )
 
-    fun `test method call on trait from bound in where`() = checkByCode("""
+    fun `test method call on trait from bound in where`() = checkByCode(
+        """
         trait Spam { fn eggs(&self); }
                         //X
 
         fn foo<T>(x: T) where T: Spam { x.eggs() }
                                           //^
-    """)
+    """
+    )
 
-    fun `test method call on trait from bound's closure`() = checkByCode("""
+    fun `test method call on trait from bound's closure`() = checkByCode(
+        """
         trait A { fn foo(&self) {} }
                     //X
         trait B : A {}
@@ -138,17 +165,21 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
 
         fn bar<T: D>(x: T) { x.foo() }
                               //^
-    """)
+    """
+    )
 
-    fun `test method call on trait with cyclic bounds`() = checkByCode("""
+    fun `test method call on trait with cyclic bounds`() = checkByCode(
+        """
         trait A: B {}
         trait B: A {}
 
         fn bar<T: A>(x: T) { x.foo() }
                               //^ unresolved
-    """)
+    """
+    )
 
-    fun `test trait bound propagates type arguments`() = checkByCode("""
+    fun `test trait bound propagates type arguments`() = checkByCode(
+        """
         trait I<A> {
             fn foo(&self) -> A;
         }
@@ -161,26 +192,32 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
         fn baz<T: I<S>>(t: T) {
             t.foo().bar()
         }         //^
-    """)
+    """
+    )
 
-    fun `test method call on trait from bound on reference type`() = checkByCode("""
+    fun `test method call on trait from bound on reference type`() = checkByCode(
+        """
         trait Foo { fn foo(&self) {} }
                      //X
         fn foo<'a, T>(t: &'a T) where &'a T: Foo {
             t.foo();
         }   //^
-    """)
+    """
+    )
 
-    fun `test associated function call on trait from bound for type without type parameter`() = checkByCode("""
+    fun `test associated function call on trait from bound for type without type parameter`() = checkByCode(
+        """
         struct S2;
         trait From<T> { fn from(_: T) -> Self; }
                          //X
         fn foo<T>(t: T) -> S2 where S2: From<T> {
             S2::from(t)
         }     //^
-    """)
+    """
+    )
 
-    fun `test method call on trait from bound for associated type`() = checkByCode("""
+    fun `test method call on trait from bound for associated type`() = checkByCode(
+        """
         trait Foo {
             type Item;
             fn foo(&self) -> Self::Item;
@@ -192,9 +229,11 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
                   T1::Item: Bar<T2> {
             t.foo().bar();
         }         //^
-    """)
+    """
+    )
 
-    fun `test method call on Self trait from bound for Self`() = checkByCode("""
+    fun `test method call on Self trait from bound for Self`() = checkByCode(
+        """
         trait Foo {
             fn foo(&self) -> i32;
         }    //X
@@ -204,9 +243,11 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
                 s.foo();
             }   //^
         }
-    """)
+    """
+    )
 
-    fun `test method call on self trait from bound for Self`() = checkByCode("""
+    fun `test method call on self trait from bound for Self`() = checkByCode(
+        """
         trait Foo {
             fn foo(&self) -> i32;
         }    //X
@@ -216,9 +257,11 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
                 self.foo();
             }      //^
         }
-    """)
+    """
+    )
 
-    fun `test UFCS assoc function call on self trait from bound for Self`() = checkByCode("""
+    fun `test UFCS assoc function call on self trait from bound for Self`() = checkByCode(
+        """
         trait Foo {
             fn foo() {}
         }    //X
@@ -227,9 +270,11 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
                 Self::foo();
             }        //^
         }
-    """)
+    """
+    )
 
-    fun `test Result unwrap`() = checkByCode("""
+    fun `test Result unwrap`() = checkByCode(
+        """
         enum Result<T, E> { Ok(T), Err(E)}
 
         impl<T, E: fmt::Debug> Result<T, E> {
@@ -245,9 +290,11 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
             s.field;
             //^
         }
-    """)
+    """
+    )
 
-    fun `test unwrap with aliased Result`() = checkByCode("""
+    fun `test unwrap with aliased Result`() = checkByCode(
+        """
         enum Result<T, E> { Ok(T), Err(E)}
         impl<T, E: fmt::Debug> Result<T, E> {
             pub fn unwrap(self) -> T { unimplemented!() }
@@ -267,9 +314,11 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
             s.field;
               //^
         }
-    """)
+    """
+    )
 
-    fun `test generic function call`() = checkByCode("""
+    fun `test generic function call`() = checkByCode(
+        """
         struct S;
         impl S { fn m(&self) {} }
                   //X
@@ -278,9 +327,11 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
             f(S).m();
                //^
         }
-    """)
+    """
+    )
 
-    fun `test iterator for loop resolve`() = checkByCode("""
+    fun `test iterator for loop resolve`() = checkByCode(
+        """
         #[lang = "core::iter::Iterator"]
         trait Iterator { type Item; fn next(&mut self) -> Option<Self::Item>; }
         #[lang = "core::iter::IntoIterator"]
@@ -309,9 +360,11 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
                 s.foo();
             }    //^
         }
-    """)
+    """
+    )
 
-    fun `test into iterator for loop resolve`() = checkByCode("""
+    fun `test into iterator for loop resolve`() = checkByCode(
+        """
         #[lang = "core::iter::Iterator"]
         trait Iterator { type Item; fn next(&mut self) -> Option<Self::Item>; }
         #[lang = "core::iter::IntoIterator"]
@@ -342,10 +395,12 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
                 s.foo()
             }   //^
         }
-    """)
+    """
+    )
 
     // really unresolved in rustc, but IDE will resolve it anyway
-    fun `test no stack overflow if struct name is the same as generic type`() = checkByCode("""
+    fun `test no stack overflow if struct name is the same as generic type`() = checkByCode(
+        """
         struct S;
         trait Tr1 {}
         trait Tr2 { fn some_fn(&self) {} }
@@ -355,9 +410,11 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
             v.some_fn();
             //^
         }
-    """)
+    """
+    )
 
-    fun `test single auto deref`() = checkByCode("""
+    fun `test single auto deref`() = checkByCode(
+        """
         struct A;
         struct B;
         impl B { fn some_fn(&self) { } }
@@ -370,9 +427,11 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
             a.some_fn()
             //^
         }
-    """)
+    """
+    )
 
-    fun `test multiple auto deref`() = checkByCode("""
+    fun `test multiple auto deref`() = checkByCode(
+        """
         struct A;
         struct B;
         struct C;
@@ -387,9 +446,11 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
             a.some_fn()
             //^
         }
-    """)
+    """
+    )
 
-    fun `test recursive auto deref`() = checkByCode("""
+    fun `test recursive auto deref`() = checkByCode(
+        """
         #[lang = "deref"]
         trait Deref { type Target; }
 
@@ -409,9 +470,11 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
             a.some_fn()
             //^
         }
-    """)
+    """
+    )
 
-    fun `test method with same name on different deref levels`() = checkByCode("""
+    fun `test method with same name on different deref levels`() = checkByCode(
+        """
         #[lang = "deref"]
         trait Deref { type Target; }
 
@@ -426,9 +489,11 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
         fn main() {
             A.foo();
         }   //^
-    """, TypeInferenceMarks.methodPickDerefOrder)
+    """, TypeInferenceMarks.methodPickDerefOrder
+    )
 
-    fun `test non inherent impl 2`() = checkByCode("""
+    fun `test non inherent impl 2`() = checkByCode(
+        """
         trait T { fn foo(&self); }
         struct S;
 
@@ -440,9 +505,11 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
             (&S).foo()
                //^
         }
-    """, TypeInferenceMarks.methodPickDerefOrder)
+    """, TypeInferenceMarks.methodPickDerefOrder
+    )
 
-    fun `test non inherent impl 3`() = checkByCode("""
+    fun `test non inherent impl 3`() = checkByCode(
+        """
         trait T { fn foo(&self); }
         struct S;
 
@@ -454,9 +521,11 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
             (&&S).foo()
                 //^
         }
-    """, TypeInferenceMarks.methodPickDerefOrder)
+    """, TypeInferenceMarks.methodPickDerefOrder
+    )
 
-    fun `test non inherent impl 4`() = checkByCode("""
+    fun `test non inherent impl 4`() = checkByCode(
+        """
         trait T1 { fn foo(&mut self); }
         trait T2 { fn foo(&self); }
         struct S;
@@ -468,9 +537,11 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
             (&S).foo()
                //^
         }
-    """, TypeInferenceMarks.methodPickDerefOrder)
+    """, TypeInferenceMarks.methodPickDerefOrder
+    )
 
-    fun `test non inherent impl 5`() = checkByCode("""
+    fun `test non inherent impl 5`() = checkByCode(
+        """
         trait T1 { fn foo(&self); }
         trait T2 { fn foo(self); }
         struct S;
@@ -481,9 +552,11 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
         fn main() {
             (&S).foo();
         }      //^ unresolved
-    """, TypeInferenceMarks.methodPickDerefOrder)
+    """, TypeInferenceMarks.methodPickDerefOrder
+    )
 
-    fun `test indexing`() = checkByCode("""
+    fun `test indexing`() = checkByCode(
+        """
         #[lang = "index"]
         trait Index<Idx: ?Sized> {
             type Output: ?Sized;
@@ -504,9 +577,11 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
             c[0].foo()
                 //^
         }
-    """)
+    """
+    )
 
-    fun `test indexing with multiple impls`() = checkByCode("""
+    fun `test indexing with multiple impls`() = checkByCode(
+        """
         #[lang = "index"]
         trait Index<Idx: ?Sized> {
             type Output: ?Sized;
@@ -534,9 +609,11 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
             c[0.0].foo()
                   //^
         }
-    """)
+    """
+    )
 
-    fun `test simple generic function argument`() = checkByCode("""
+    fun `test simple generic function argument`() = checkByCode(
+        """
         struct Foo<F>(F);
         struct Bar;
         impl Bar {
@@ -549,9 +626,11 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
             x.bar();
              //^
         }
-    """)
+    """
+    )
 
-    fun `test complex generic function argument`() = checkByCode("""
+    fun `test complex generic function argument`() = checkByCode(
+        """
         struct Foo<T1, T2>(T1, T2);
         enum Bar<T3> { V(T3) }
         struct FooBar<T4, T5>(T4, T5);
@@ -568,9 +647,11 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
             x.1.bar();
               //^
         }
-    """)
+    """
+    )
 
-    fun `test generic method argument`() = checkByCode("""
+    fun `test generic method argument`() = checkByCode(
+        """
         struct Foo<F>(F);
         enum Bar<B> { V(B) }
         struct FooBar<E1, E2>(E1, E2);
@@ -590,11 +671,13 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
             x.1.bar();
               //^
         }
-    """)
+    """
+    )
 
     fun `test arithmetic operations`() {
         for ((traitName, itemName, fnName, sign) in ArithmeticOp.values()) {
-            checkByCode("""
+            checkByCode(
+                """
                 #[lang = "$itemName"]
                 pub trait $traitName<RHS=Self> {
                     type Output;
@@ -619,13 +702,15 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
                     x.bar()
                      //^
                 }
-            """)
+            """
+            )
         }
     }
 
     fun `test arithmetic operations with multiple impls`() {
         for ((traitName, itemName, fnName, sign) in ArithmeticOp.values()) {
-            checkByCode("""
+            checkByCode(
+                """
                 #[lang = "$itemName"]
                 pub trait $traitName<RHS=Self> {
                     type Output;
@@ -660,11 +745,13 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
                     x.foo()
                      //^
                 }
-            """)
+            """
+            )
         }
     }
 
-    fun `test generic method with type parameters`() = checkByCode("""
+    fun `test generic method with type parameters`() = checkByCode(
+        """
         struct S;
         impl S {
             fn make_t<T>(&self) -> T { unimplemented!() }
@@ -677,9 +764,11 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
             let t = S.make_t::<X>();
             t.foo();
         }    //^
-    """)
+    """
+    )
 
-    fun `test trait with bounds on itself`() = checkByCode("""
+    fun `test trait with bounds on itself`() = checkByCode(
+        """
         trait Foo<T: Foo<T>> {
             fn foo(&self) { }
         }     //X
@@ -691,34 +780,42 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
         }    //^
 
         fn main() { bar(()) }
-    """)
+    """
+    )
 
-    fun `test bound associated type`() = checkByCode("""
+    fun `test bound associated type`() = checkByCode(
+        """
         trait Tr { type Item; }
                       //X
         struct S<A>(A);
         impl<B: Tr> S<B> { fn foo(self) -> B::Item { unimplemented!() } }
                                             //^
-    """)
+    """
+    )
 
-    fun `test bound associated type in explicit UFCS form`() = checkByCode("""
+    fun `test bound associated type in explicit UFCS form`() = checkByCode(
+        """
         trait Tr { type Item; }
                       //X
         struct S<A>(A);
         impl<B: Tr> S<B> { fn foo(self) -> <B as Tr>::Item { unimplemented!() } }
                                                     //^
-    """)
+    """
+    )
 
-    fun `test bound inherited associated type`() = checkByCode("""
+    fun `test bound inherited associated type`() = checkByCode(
+        """
         trait Tr1 { type Item; }
                        //X
         trait Tr2: Tr1 {}
         struct S<A>(A);
         impl<B: Tr2> S<B> { fn foo(self) -> B::Item { unimplemented!() } }
                                              //^
-    """)
+    """
+    )
 
-    fun `test no stack overflow on self unification with Eq bound`() = checkByCode("""
+    fun `test no stack overflow on self unification with Eq bound`() = checkByCode(
+        """
         pub trait PartialEq<Rhs: ?Sized> {}
         pub trait Eq: PartialEq<Self> {}
         struct S<A>(A);
@@ -728,9 +825,11 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
                 self.bar()
             }      //^ unresolved
         }
-    """)
+    """
+    )
 
-    fun `test no stack overflow (issue 1523)`() = checkByCode("""
+    fun `test no stack overflow (issue 1523)`() = checkByCode(
+        """
         struct S1;
         struct S2<A>(A);
 
@@ -741,9 +840,11 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
         fn main() {
             S2(S1).foo()
         }         //^
-    """)
+    """
+    )
 
-    fun `test no stack overflow (issue 1578)`() = checkByCode("""
+    fun `test no stack overflow (issue 1578)`() = checkByCode(
+        """
         pub trait Rem<RHS=Self> {
             type Output = Self;
         }
@@ -754,9 +855,11 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
         fn foo<C: Rem>(t: C) {
             S(t).foo()
         }      //^
-    """)
+    """
+    )
 
-    fun `test resolve assoc constant`() = checkByCode("""
+    fun `test resolve assoc constant`() = checkByCode(
+        """
         trait T {
             const C: i32;
         }       //X
@@ -764,9 +867,11 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
         fn foo<X: T>() {
             X::C
         }    //^
-    """)
+    """
+    )
 
-    fun `test assoc type in fn parameter`() = checkByCode("""
+    fun `test assoc type in fn parameter`() = checkByCode(
+        """
         pub trait Iter {
             type Item;
                 //X
@@ -774,9 +879,11 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
             fn scan<St, B, F>(self, initial_state: St, f: F) -> Scan<Self, St, F>
                 where Self: Sized, F: FnMut(&mut St, Self::Item) -> Option<B> { unimplemented!() }
         }                                                 //^
-    """)
+    """
+    )
 
-    fun `test direct trait methods wins over inherent via deref`() = checkByCode("""
+    fun `test direct trait methods wins over inherent via deref`() = checkByCode(
+        """
         struct Foo;
         impl Foo {
             fn foo(&self) { println!("Inherent"); }
@@ -799,9 +906,11 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
             let bar = Bar(Foo);
             bar.foo();
         }      //^
-    """)
+    """
+    )
 
-    fun `test impl for type parameter`() = checkByCode("""
+    fun `test impl for type parameter`() = checkByCode(
+        """
         trait Foo {
             fn foo(&self) {}
               //X
@@ -812,9 +921,11 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
             Bar.foo();
                //^
         }
-    """)
+    """
+    )
 
-    fun `test impl for type parameter with bound`() = checkByCode("""
+    fun `test impl for type parameter with bound`() = checkByCode(
+        """
         trait Bar {}
         trait Foo {
             fn foo(&self) {}
@@ -829,10 +940,12 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
             S.foo();
              //^
         }
-    """)
+    """
+    )
 
     // really unresolved in rustc, but IDE will resolve it anyway
-    fun `test impl for type parameter with recursive bounds`() = checkByCode("""
+    fun `test impl for type parameter with recursive bounds`() = checkByCode(
+        """
         trait Foo { fn foo(&self) {} }
                      //X
         trait Bar { fn bar(&self) {} }
@@ -846,9 +959,11 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
             S.foo();
              //^
         }
-    """)
+    """
+    )
 
-    fun `test impl for reference of type parameter`() = checkByCode("""
+    fun `test impl for reference of type parameter`() = checkByCode(
+        """
         trait Foo {
             fn foo(&self) {}
               //X
@@ -859,9 +974,11 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
             (&Bar).foo();
                  //^
         }
-    """)
+    """
+    )
 
-    fun `test resolve method call with multiple impls of the same trait`() = checkByCode("""
+    fun `test resolve method call with multiple impls of the same trait`() = checkByCode(
+        """
         struct S; struct S1; struct S2;
         trait T<A> { fn foo(&self, _: A); }
         impl T<S1> for S { fn foo(&self, _: S1) {} }
@@ -870,9 +987,11 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
         fn main() {
             S.foo(S2)
         }    //^
-    """, TypeInferenceMarks.methodPickCollapseTraits)
+    """, TypeInferenceMarks.methodPickCollapseTraits
+    )
 
-    fun `test resolve UFCS method call with multiple impls of the same trait`() = checkByCode("""
+    fun `test resolve UFCS method call with multiple impls of the same trait`() = checkByCode(
+        """
         struct S; struct S1; struct S2;
         trait T<A> { fn foo(&self, _: A); }
         impl T<S1> for S { fn foo(&self, _: S1) {} }
@@ -881,9 +1000,11 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
         fn main() {
             T::foo(&S, S2);
         }    //^
-    """)
+    """
+    )
 
-    fun `test resolve trait associated function with multiple impls of the same trait`() = checkByCode("""
+    fun `test resolve trait associated function with multiple impls of the same trait`() = checkByCode(
+        """
         struct S; struct S1; struct S2;
         trait T<A> { fn foo(_: A) -> Self; }
         impl T<S1> for S { fn foo(_: S1) -> Self { unimplemented!() } }
@@ -892,9 +1013,11 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
         fn main() {
             let a: S = T::foo(S2);
         }               //^
-    """)
+    """
+    )
 
-    fun `test resolve trait associated function with multiple impls of the same trait 2`() = checkByCode("""
+    fun `test resolve trait associated function with multiple impls of the same trait 2`() = checkByCode(
+        """
         struct S; struct S1; struct S2;
         trait T<A> { fn foo(_: A) -> Self; }
         impl T<S1> for S { fn foo(_: S1) -> Self { unimplemented!() } }
@@ -903,9 +1026,11 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
         fn main() {
             S::foo(S2);
         }    //^
-    """)
+    """
+    )
 
-    fun `test method with multiple impls of the same trait on multiple deref levels`() = checkByCode("""
+    fun `test method with multiple impls of the same trait on multiple deref levels`() = checkByCode(
+        """
         #[lang = "deref"]
         trait Deref { type Target; }
 
@@ -920,9 +1045,11 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
         fn main() {
             A.foo(0u16);
         }    //^
-    """, TypeInferenceMarks.methodPickCollapseTraits)
+    """, TypeInferenceMarks.methodPickCollapseTraits
+    )
 
-    fun `test method with multiple impls of the same trait on 2nd deref level`() = checkByCode("""
+    fun `test method with multiple impls of the same trait on 2nd deref level`() = checkByCode(
+        """
         #[lang = "deref"]
         trait Deref { type Target; }
 
@@ -936,10 +1063,12 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
         fn main() {
             A.foo(0u16);
         }    //^
-    """, TypeInferenceMarks.methodPickCollapseTraits)
+    """, TypeInferenceMarks.methodPickCollapseTraits
+    )
 
     // https://github.com/intellij-rust/intellij-rust/issues/1649
-    fun `test issue 1649`() = checkByCode("""
+    fun `test issue 1649`() = checkByCode(
+        """
         trait Foo {}
         struct S<A: Foo> { a: A }
         struct C;
@@ -951,10 +1080,12 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
         fn main() {
           S1::bar();
         }   //^
-    """)
+    """
+    )
 
     // https://github.com/intellij-rust/intellij-rust/issues/1927
-    fun `test no stack overflow with cyclic type of infinite size`() = checkByCode("""
+    fun `test no stack overflow with cyclic type of infinite size`() = checkByCode(
+        """
         struct S<T>(T);
         fn foo<T>() -> T { unimplemented!() }
         fn unify<T>(_: T, _: T) { unimplemented!() }
@@ -965,9 +1096,11 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
             b.bar();
             //^ unresolved
         }
-    """, TypeInferenceMarks.cyclicType)
+    """, TypeInferenceMarks.cyclicType
+    )
 
-    fun `test resolve generic impl from impl trait`() = checkByCode("""
+    fun `test resolve generic impl from impl trait`() = checkByCode(
+        """
         trait Foo {}
         trait Bar { fn bar(&self) {} }
                      //X
@@ -976,9 +1109,11 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
         fn main() {
             foo().bar();
         }       //^
-    """)
+    """
+    )
 
-    fun `test method refinement after unconstrained integer fallback to i32`() = checkByCode("""
+    fun `test method refinement after unconstrained integer fallback to i32`() = checkByCode(
+        """
         pub trait MyAdd<RHS=Self> {
             type Output;
             fn my_add(self, rhs: RHS) -> Self::Output;
@@ -994,9 +1129,11 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
         fn main() {
             0.my_add(0);
         }   //^
-    """)
+    """
+    )
 
-    fun `test specific method is not known during type inference`() = checkByCode("""
+    fun `test specific method is not known during type inference`() = checkByCode(
+        """
         pub trait MyAdd<RHS=Self> {
             type Output;
             fn my_add(self, rhs: RHS) -> Self::Output;
@@ -1014,9 +1151,11 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
             // full function body, so second call can't be resolved
             0.my_add(0).my_add(0);
         }             //^ unresolved
-    """)
+    """
+    )
 
-    fun `test method in "impl for generic type" at type parameter with bound`() = checkByCode("""
+    fun `test method in "impl for generic type" at type parameter with bound`() = checkByCode(
+        """
         trait Bound {}
         trait Tr {
             fn foo(&self) {}
@@ -1025,36 +1164,44 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
         fn foo<B: Bound>(b: B) {
             b.foo();
         }   //^
-    """)
+    """
+    )
 
-    fun `test "impl for generic type" is NOT used for associated type resolve`() = checkByCode("""
+    fun `test "impl for generic type" is NOT used for associated type resolve`() = checkByCode(
+        """
         trait Bound {}
         trait Tr { type Item; }
         impl<A: Bound> Tr for A { type Item = (); }
         fn foo<B: Bound>(b: B) {
             let a: B::Item;
         }           //^ unresolved
-    """, NameResolutionTestmarks.skipAssocTypeFromImpl)
+    """, NameResolutionTestmarks.skipAssocTypeFromImpl
+    )
 
-    fun `test "impl for generic type" is USED for associated type resolve UFCS 1`() = checkByCode("""
+    fun `test "impl for generic type" is USED for associated type resolve UFCS 1`() = checkByCode(
+        """
         trait Bound {}
         trait Tr { type Item; }
         impl<A: Bound> Tr for A { type Item = (); }
         fn foo<B: Bound>(b: B) {     //X
             let a: <B as Tr>::Item;
         }                   //^
-    """)
+    """
+    )
 
-    fun `test "impl for generic type" is USED for associated type resolve UFCS 2`() = checkByCode("""
+    fun `test "impl for generic type" is USED for associated type resolve UFCS 2`() = checkByCode(
+        """
         trait Bound { type Item; }
         impl<A: Bound> Bound for &A { type Item = (); }
                                           //X
         fn foo<B: Bound>(b: B) {
             let a: <&B as Bound>::Item;
         }                       //^
-    """)
+    """
+    )
 
-    fun `test non-inherent impl with unresolved trait does not affect name resolution`() = checkByCode("""
+    fun `test non-inherent impl with unresolved trait does not affect name resolution`() = checkByCode(
+        """
         struct S;
         struct X; struct Y; struct Z;
 
@@ -1068,9 +1215,11 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
         fn main() {
             S::foo(X);
         }    //^
-    """)
+    """
+    )
 
-    fun `test generic trait object inherent impl`() = checkByCode("""
+    fun `test generic trait object inherent impl`() = checkByCode(
+        """
         trait Foo<T>{}
         impl<T> dyn Foo<T>{
             fn foo(&self){}
@@ -1078,9 +1227,11 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
         fn foo(a: &dyn Foo<i32>){
             a.foo()
         }   //^
-    """)
+    """
+    )
 
-    fun `test impl for type parameter resolved for trait object`() = checkByCode("""
+    fun `test impl for type parameter resolved for trait object`() = checkByCode(
+        """
         trait Foo {}
         trait Bar { fn bar(&self); }
         impl<T: ?Sized> Bar for T {
@@ -1089,27 +1240,33 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
         fn foo(a: &dyn Foo) {
             (*a).bar()
         }      //^
-    """)
+    """
+    )
 
-    fun `test trait bounds normalization`() = checkByCode("""
+    fun `test trait bounds normalization`() = checkByCode(
+        """
         trait Foo { fn foo(&self) {} }
                      //X
         trait Bar { type Item; }
         fn foo<A: Bar<Item=B>, B>(b: B) where A::Item: Foo {
             b.foo()
         }   //^
-    """)
+    """
+    )
 
-    fun `test assoc type bound method`() = checkByCode("""
+    fun `test assoc type bound method`() = checkByCode(
+        """
         trait Foo { fn foo(&self) {} }
                      //X
         trait Bar where Self::Item: Foo { type Item; }
         fn bar<A: Bar>(_: A, b: A::Item) {
             b.foo();
         }   //^
-    """)
+    """
+    )
 
-    fun `test assoc type bound method 2`() = checkByCode("""
+    fun `test assoc type bound method 2`() = checkByCode(
+        """
         trait Foo { type Item: Bar; }
         trait Bar: Baz {}
         trait Baz {
@@ -1119,9 +1276,11 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
         fn foobar<T: Foo>(a: T::Item) {
             a.baz();
         }   //^
-    """)
+    """
+    )
 
-    fun `test assoc type bound method 3`() = checkByCode("""
+    fun `test assoc type bound method 3`() = checkByCode(
+        """
         trait Foo { type Item: Bar1 + Bar2; }
         trait Bar1: Baz {}
         trait Bar2: Baz {}
@@ -1132,5 +1291,6 @@ class RsTypeAwareGenericResolveTest : RsResolveTestBase() {
         fn foobar<T: Foo>(a: T::Item) {
             a.baz();
         }   //^
-    """)
+    """
+    )
 }

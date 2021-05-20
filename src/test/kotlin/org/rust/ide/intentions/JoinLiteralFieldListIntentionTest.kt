@@ -6,7 +6,8 @@
 package org.rust.ide.intentions
 
 class JoinLiteralFieldListIntentionTest : RsIntentionTestBase(JoinLiteralFieldListIntention::class) {
-    fun `test one parameter`() = doAvailableTest("""
+    fun `test one parameter`() = doAvailableTest(
+        """
         struct S { x: i32 }
         fn foo() {
             S {
@@ -17,9 +18,11 @@ class JoinLiteralFieldListIntentionTest : RsIntentionTestBase(JoinLiteralFieldLi
         struct S { x: i32 }
         fn foo() {
             S { x: 0 };
-        }""")
+        }"""
+    )
 
-    fun `test two parameters`() = doAvailableTest("""
+    fun `test two parameters`() = doAvailableTest(
+        """
         struct S { x: i32, y: i32 }
         fn foo() {
             S {
@@ -32,16 +35,20 @@ class JoinLiteralFieldListIntentionTest : RsIntentionTestBase(JoinLiteralFieldLi
         fn foo() {
             S { x: 0, y: 0 };
         }
-    """)
+    """
+    )
 
-    fun `test no line breaks`() = doUnavailableTest("""
+    fun `test no line breaks`() = doUnavailableTest(
+        """
         struct S { x: i32, y: i32, z: i32 }
         fn foo() {
             S { /*caret*/x: 0, y: 0, z: 0 };
         }
-    """)
+    """
+    )
 
-    fun `test has some line breaks`() = doAvailableTest("""
+    fun `test has some line breaks`() = doAvailableTest(
+        """
         struct S { x: i32, y: i32, z: i32 }
         fn foo() {
             S { x: 0, /*caret*/y: 0,
@@ -52,9 +59,11 @@ class JoinLiteralFieldListIntentionTest : RsIntentionTestBase(JoinLiteralFieldLi
         fn foo() {
             S { x: 0, y: 0, z: 0 };
         }
-    """)
+    """
+    )
 
-    fun `test has some line breaks 2`() = doAvailableTest("""
+    fun `test has some line breaks 2`() = doAvailableTest(
+        """
         struct S { x: i32, y: i32, z: i32 }
         fn foo() {
             S {
@@ -66,16 +75,20 @@ class JoinLiteralFieldListIntentionTest : RsIntentionTestBase(JoinLiteralFieldLi
         fn foo() {
             S { x: 0, y: 0, z: 0 };
         }
-    """)
+    """
+    )
 
-    fun `test has comment`() = doUnavailableTest("""
+    fun `test has comment`() = doUnavailableTest(
+        """
         struct S { x: i32, y: i32, z: i32 }
         fn foo() {
             S { /*caret*/x: 0, /* comment */ y: 0, z: 0 };
         }
-    """)
+    """
+    )
 
-    fun `test has comment 2`() = doAvailableTest("""
+    fun `test has comment 2`() = doAvailableTest(
+        """
         struct S { x: i32, y: i32, z: i32 }
         fn foo() {
             S { /*caret*/x: 0, /*
@@ -91,9 +104,11 @@ class JoinLiteralFieldListIntentionTest : RsIntentionTestBase(JoinLiteralFieldLi
                 comment
                 */ y: 0, z: 0 };
         }
-    """)
+    """
+    )
 
-    fun `test init shorthand`() = doAvailableTest("""
+    fun `test init shorthand`() = doAvailableTest(
+        """
         struct S {  x: i32, y: i32, z: i32 }
         fn foo() {
             let x = 1;
@@ -111,9 +126,11 @@ class JoinLiteralFieldListIntentionTest : RsIntentionTestBase(JoinLiteralFieldLi
             let y = 2;
             S { x, z: 3, y };
         }
-    """)
+    """
+    )
 
-    fun `test dotdot`() = doAvailableTest("""
+    fun `test dotdot`() = doAvailableTest(
+        """
         struct S {  x: i32, y: i32, z: i32 }
         fn foo() {
             let s = S { x: 0, y: 1, z: 2 };
@@ -128,9 +145,11 @@ class JoinLiteralFieldListIntentionTest : RsIntentionTestBase(JoinLiteralFieldLi
             let s = S { x: 0, y: 1, z: 2 };
             S { x: 0, ..s };
         }
-    """)
+    """
+    )
 
-    fun `test enum`() = doAvailableTest("""
+    fun `test enum`() = doAvailableTest(
+        """
         enum E { A { x: i32, y: i32, z: i32 } }
         fn foo() {
             let e = E::A {
@@ -144,9 +163,11 @@ class JoinLiteralFieldListIntentionTest : RsIntentionTestBase(JoinLiteralFieldLi
         fn foo() {
             let e = E::A { x: 0, y: 0, z: 0 };
         }
-    """)
+    """
+    )
 
-    fun `test has end-of-line comments`() = doUnavailableTest("""
+    fun `test has end-of-line comments`() = doUnavailableTest(
+        """
         struct S { x: i32, y: i32 }
         fn foo() {
             S {
@@ -154,5 +175,6 @@ class JoinLiteralFieldListIntentionTest : RsIntentionTestBase(JoinLiteralFieldLi
                 y: 0
             };
         }
-    """)
+    """
+    )
 }

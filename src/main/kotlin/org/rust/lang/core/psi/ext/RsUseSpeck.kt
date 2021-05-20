@@ -14,10 +14,11 @@ import org.rust.lang.core.stubs.RsUseSpeckStub
 
 val RsUseSpeck.isStarImport: Boolean get() = greenStub?.isStarImport ?: (mul != null) // I hate operator precedence
 val RsUseSpeck.hasColonColon: Boolean get() = greenStub?.hasColonColon ?: (coloncolon != null)
-val RsUseSpeck.qualifier: RsPath? get() {
-    val parentUseSpeck = (context as? RsUseGroup)?.parentUseSpeck ?: return null
-    return parentUseSpeck.pathOrQualifier
-}
+val RsUseSpeck.qualifier: RsPath?
+    get() {
+        val parentUseSpeck = (context as? RsUseGroup)?.parentUseSpeck ?: return null
+        return parentUseSpeck.pathOrQualifier
+    }
 
 val RsUseSpeck.pathOrQualifier: RsPath? get() = path ?: qualifier
 

@@ -18,14 +18,14 @@
     </option>
     <option name="org.rust.MUT_BINDING">
         <value>
-            <option name="EFFECT_COLOR" value="000000" />
-            <option name="EFFECT_TYPE" value="1" />
+            <option name="EFFECT_COLOR" value="000000"/>
+            <option name="EFFECT_TYPE" value="1"/>
         </value>
     </option>
     <option name="org.rust.MUT_PARAMETER">
         <value>
-            <option name="EFFECT_COLOR" value="000000" />
-            <option name="EFFECT_TYPE" value="1" />
+            <option name="EFFECT_COLOR" value="000000"/>
+            <option name="EFFECT_TYPE" value="1"/>
         </value>
     </option>
     <option name="org.rust.DOC_CODE">
@@ -50,7 +50,7 @@
     </option>
     <option name="org.rust.GENERATED_ITEM">
         <value>
-            <option name="FOREGROUND" value="727238" />
+            <option name="FOREGROUND" value="727238"/>
         </value>
     </option>
 </list>

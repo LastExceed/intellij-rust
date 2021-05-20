@@ -19,13 +19,13 @@ const T: i32 = 92;
 
 fn attrs_on_statements() {
     #[cfg(test)]
-    let x = 92;
+        let x = 92;
 
     #[cfg(test)]
     loop {}
 
     #[cfg(test)]
-    1 + 1;
+        1 + 1;
 
     S { #[foo] foo: 92 };
 }

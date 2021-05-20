@@ -17,7 +17,8 @@ import org.rust.lang.core.psi.RsConstant
 import org.rust.lang.core.psi.ext.RsElement
 
 class RsQuickDocumentationTest : RsDocumentationProviderTest() {
-    fun `test fn`() = doTest("""
+    fun `test fn`() = doTest(
+        """
         /// Adds one to the number given.
         ///
         /// # Examples
@@ -36,33 +37,41 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
         <div class='definition'><pre>test_package
         fn <b>add_one</b>(x: i32) -&gt; i32</pre></div>
         <div class='content'><p>Adds one to the number given.</p><h2>Examples</h2><p>Some text</p></div>
-    """)
+    """
+    )
 
-    fun `test pub fn`() = doTest("""
+    fun `test pub fn`() = doTest(
+        """
         pub fn foo() {}
               //^
     """, """
         <div class='definition'><pre>test_package
         pub fn <b>foo</b>()</pre></div>
-    """)
+    """
+    )
 
-    fun `test const fn`() = doTest("""
+    fun `test const fn`() = doTest(
+        """
         const fn foo() {}
                  //^
     """, """
         <div class='definition'><pre>test_package
         const fn <b>foo</b>()</pre></div>
-    """)
+    """
+    )
 
-    fun `test unsafe fn`() = doTest("""
+    fun `test unsafe fn`() = doTest(
+        """
         unsafe fn foo() {}
                   //^
     """, """
         <div class='definition'><pre>test_package
         unsafe fn <b>foo</b>()</pre></div>
-    """)
+    """
+    )
 
-    fun `test fn in extern block`() = doTest("""
+    fun `test fn in extern block`() = doTest(
+        """
         extern {
             fn foo();
               //^
@@ -70,9 +79,11 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
     """, """
         <div class='definition'><pre>test_package
         extern fn <b>foo</b>()</pre></div>
-    """)
+    """
+    )
 
-    fun `test fn in extern block with abi name`() = doTest("""
+    fun `test fn in extern block with abi name`() = doTest(
+        """
         extern "C" {
             fn foo();
               //^
@@ -80,60 +91,74 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
     """, """
         <div class='definition'><pre>test_package
         extern "C" fn <b>foo</b>()</pre></div>
-    """)
+    """
+    )
 
-    fun `test extern fn`() = doTest("""
+    fun `test extern fn`() = doTest(
+        """
         extern fn foo() {}
                  //^
     """, """
         <div class='definition'><pre>test_package
         extern fn <b>foo</b>()</pre></div>
-    """)
+    """
+    )
 
-    fun `test extern fn with abi name`() = doTest("""
+    fun `test extern fn with abi name`() = doTest(
+        """
         extern "C" fn foo() {}
                       //^
     """, """
         <div class='definition'><pre>test_package
         extern "C" fn <b>foo</b>()</pre></div>
-    """)
+    """
+    )
 
-    fun `test async fn`() = doTest("""
+    fun `test async fn`() = doTest(
+        """
         async fn foo() {}
                 //^
     """, """
         <div class='definition'><pre>test_package
         async fn <b>foo</b>()</pre></div>
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test generic fn`() = doTest("""
+    fun `test generic fn`() = doTest(
+        """
         fn foo<T: Into<String>>(t: T) {}
           //^
     """, """
         <div class='definition'><pre>test_package
         fn <b>foo</b>&lt;T: <a href="psi_element://Into">Into</a>&lt;<a href="psi_element://String">String</a>&gt;&gt;(t: T)</pre></div>
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test generic fn with where clause`() = doTest("""
+    fun `test generic fn with where clause`() = doTest(
+        """
         fn foo<T>(t: T) where T: Into<String> {}
           //^
     """, """
         <div class='definition'><pre>test_package
         fn <b>foo</b>&lt;T&gt;(t: T)<br>where<br>&nbsp;&nbsp;&nbsp;&nbsp;T: <a href="psi_element://Into">Into</a>&lt;<a href="psi_element://String">String</a>&gt;,</pre></div>
-    """)
+    """
+    )
 
-    fun `test generic fn with const generic`() = doTest("""
+    fun `test generic fn with const generic`() = doTest(
+        """
         fn foo<'a, const N: usize, T>(x: &'a [T; N]) {}
           //^
     """, """
         <div class='definition'><pre>test_package
         fn <b>foo</b>&lt;&#39;a, const N: usize, T&gt;(x: &amp;&#39;a [T; N])</pre></div>
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test complex fn`() = doTest("""
+    fun `test complex fn`() = doTest(
+        """
         /// Docs
         /// More Docs
         pub const unsafe extern "C" fn foo<T: Into<String>, F>(t: T, f: F) where F: Ord {}
@@ -143,10 +168,12 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
         pub const unsafe extern "C" fn <b>foo</b>&lt;T: <a href="psi_element://Into">Into</a>&lt;<a href="psi_element://String">String</a>&gt;, F&gt;(t: T, f: F)<br>where<br>&nbsp;&nbsp;&nbsp;&nbsp;F: <a href="psi_element://Ord">Ord</a>,</pre></div>
         <div class='content'><p>Docs
         More Docs</p></div>
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test fn with complex types`() = doTest("""
+    fun `test fn with complex types`() = doTest(
+        """
         fn foo<'a>(tuple: (String, &'a i32), f: fn(String) -> [Vec<u32>; 3]) -> Option<[Vec<u32>; 3]> {
           //^
             unimplemented!();
@@ -154,9 +181,11 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
     """, """
         <div class='definition'><pre>test_package
         fn <b>foo</b>&lt;&#39;a&gt;(tuple: (<a href="psi_element://String">String</a>, &amp;&#39;a i32), f: fn(<a href="psi_element://String">String</a>) -&gt; [<a href="psi_element://Vec">Vec</a>&lt;u32&gt;; 3]) -&gt; <a href="psi_element://Option">Option</a>&lt;[<a href="psi_element://Vec">Vec</a>&lt;u32&gt;; 3]&gt;</pre></div>
-    """)
+    """
+    )
 
-    fun `test method`() = doTest("""
+    fun `test method`() = doTest(
+        """
         struct Foo;
 
         impl Foo {
@@ -166,9 +195,11 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
     """, """
         <div class='definition'><pre>test_package<br>impl <a href="psi_element://Foo">Foo</a>
         pub fn <b>foo</b>(&amp;self)</pre></div>
-    """)
+    """
+    )
 
-    fun `test method with Self ret type`() = doTest("""
+    fun `test method with Self ret type`() = doTest(
+        """
         struct Foo;
 
         impl Foo {
@@ -178,9 +209,11 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
     """, """
         <div class='definition'><pre>test_package<br>impl <a href="psi_element://Foo">Foo</a>
         pub fn <b>foo</b>(&amp;self) -&gt; Self</pre></div>
-    """)
+    """
+    )
 
-    fun `test generic struct method`() = doTest("""
+    fun `test generic struct method`() = doTest(
+        """
         struct Foo<T>(T);
 
         impl<T> Foo<T> {
@@ -190,10 +223,12 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
     """, """
         <div class='definition'><pre>test_package<br>impl&lt;T&gt; <a href="psi_element://Foo">Foo</a>&lt;T&gt;
         pub fn <b>foo</b>(&amp;self)</pre></div>
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test generic struct method with where clause`() = doTest("""
+    fun `test generic struct method with where clause`() = doTest(
+        """
         struct Foo<T, F>(T, F);
 
         impl<T, F> Foo<T, F> where T: Ord, F: Into<String> {
@@ -203,17 +238,21 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
     """, """
         <div class='definition'><pre>test_package<br>impl&lt;T, F&gt; <a href="psi_element://Foo">Foo</a>&lt;T, F&gt;<br>where<br>&nbsp;&nbsp;&nbsp;&nbsp;T: <a href="psi_element://Ord">Ord</a>,<br>&nbsp;&nbsp;&nbsp;&nbsp;F: <a href="psi_element://Into">Into</a>&lt;<a href="psi_element://String">String</a>&gt;,
         pub fn <b>foo</b>(&amp;self)</pre></div>
-    """)
+    """
+    )
 
-    fun `test generic struct with const generic`() = doTest("""
+    fun `test generic struct with const generic`() = doTest(
+        """
         struct Foo<'a, T, const N: usize>(&'a [T; N]);
               //^
     """, """
         <div class='definition'><pre>test_package
         struct <b>Foo</b>&lt;&#39;a, T, const N: usize&gt;</pre></div>
-    """)
+    """
+    )
 
-    fun `test different comments`() = doTest("""
+    fun `test different comments`() = doTest(
+        """
         /// Outer comment
         /// 111
         #[doc = "outer attribute"]
@@ -236,42 +275,52 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
         second outer attribute
         inner attribute
         Inner comment</p></div>
-    """)
+    """
+    )
 
-    fun `test struct`() = doTest("""
+    fun `test struct`() = doTest(
+        """
         struct Foo(i32);
               //^
     """, """
         <div class='definition'><pre>test_package
         struct <b>Foo</b></pre></div>
-    """)
+    """
+    )
 
-    fun `test pub struct`() = doTest("""
+    fun `test pub struct`() = doTest(
+        """
         pub struct Foo(i32);
                   //^
     """, """
         <div class='definition'><pre>test_package
         pub struct <b>Foo</b></pre></div>
-    """)
+    """
+    )
 
-    fun `test generic struct`() = doTest("""
+    fun `test generic struct`() = doTest(
+        """
         struct Foo<T>(T);
               //^
     """, """
         <div class='definition'><pre>test_package
         struct <b>Foo</b>&lt;T&gt;</pre></div>
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test generic struct with where clause`() = doTest("""
+    fun `test generic struct with where clause`() = doTest(
+        """
         struct Foo<T>(T) where T: Into<String>;
               //^
     """, """
         <div class='definition'><pre>test_package
         struct <b>Foo</b>&lt;T&gt;<br>where<br>&nbsp;&nbsp;&nbsp;&nbsp;T: <a href="psi_element://Into">Into</a>&lt;<a href="psi_element://String">String</a>&gt;,</pre></div>
-    """)
+    """
+    )
 
-    fun `test enum`() = doTest("""
+    fun `test enum`() = doTest(
+        """
         enum Foo {
             //^
             Bar
@@ -279,9 +328,11 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
     """, """
         <div class='definition'><pre>test_package
         enum <b>Foo</b></pre></div>
-    """)
+    """
+    )
 
-    fun `test pub enum`() = doTest("""
+    fun `test pub enum`() = doTest(
+        """
         pub enum Foo {
                //^
             Bar
@@ -289,9 +340,11 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
     """, """
         <div class='definition'><pre>test_package
         pub enum <b>Foo</b></pre></div>
-    """)
+    """
+    )
 
-    fun `test generic enum`() = doTest("""
+    fun `test generic enum`() = doTest(
+        """
         enum Foo<T> {
             //^
             Bar(T)
@@ -299,10 +352,12 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
     """, """
         <div class='definition'><pre>test_package
         enum <b>Foo</b>&lt;T&gt;</pre></div>
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test generic enum with where clause`() = doTest("""
+    fun `test generic enum with where clause`() = doTest(
+        """
         enum Foo<T> where T: Into<String> {
              //^
             Bar(T)
@@ -310,9 +365,11 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
     """, """
         <div class='definition'><pre>test_package
         enum <b>Foo</b>&lt;T&gt;<br>where<br>&nbsp;&nbsp;&nbsp;&nbsp;T: <a href="psi_element://Into">Into</a>&lt;<a href="psi_element://String">String</a>&gt;,</pre></div>
-    """)
+    """
+    )
 
-    fun `test enum variant`() = doTest("""
+    fun `test enum variant`() = doTest(
+        """
         enum Foo {
             /// I am a well documented enum variant
             Bar { field: i32 },
@@ -327,92 +384,112 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
         <div class='definition'><pre>test_package::Foo::Bar
         </pre></div>
         <div class='content'><p>I am a well documented enum variant</p></div>
-    """)
+    """
+    )
 
-    fun `test trait`() = doTest("""
+    fun `test trait`() = doTest(
+        """
         trait Foo {
             //^
         }
     """, """
         <div class='definition'><pre>test_package
         trait <b>Foo</b></pre></div>
-    """)
+    """
+    )
 
-    fun `test pub trait`() = doTest("""
+    fun `test pub trait`() = doTest(
+        """
         pub trait Foo {
                  //^
         }
     """, """
         <div class='definition'><pre>test_package
         pub trait <b>Foo</b></pre></div>
-    """)
+    """
+    )
 
-    fun `test unsafe trait`() = doTest("""
+    fun `test unsafe trait`() = doTest(
+        """
         unsafe trait Foo {
                     //^
         }
     """, """
         <div class='definition'><pre>test_package
         unsafe trait <b>Foo</b></pre></div>
-    """)
+    """
+    )
 
-    fun `test generic trait`() = doTest("""
+    fun `test generic trait`() = doTest(
+        """
         trait Foo<T> {
              //^
         }
     """, """
         <div class='definition'><pre>test_package
         trait <b>Foo</b>&lt;T&gt;</pre></div>
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test generic trait with where clause`() = doTest("""
+    fun `test generic trait with where clause`() = doTest(
+        """
         trait Foo<T> where T: Into<String> {
              //^
         }
     """, """
         <div class='definition'><pre>test_package
         trait <b>Foo</b>&lt;T&gt;<br>where<br>&nbsp;&nbsp;&nbsp;&nbsp;T: <a href="psi_element://Into">Into</a>&lt;<a href="psi_element://String">String</a>&gt;,</pre></div>
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test type alias`() = doTest("""
+    fun `test type alias`() = doTest(
+        """
         type Foo = Result<(), i32>;
             //^
     """, """
         <div class='definition'><pre>test_package
         type <b>Foo</b> = <a href="psi_element://Result">Result</a>&lt;(), i32&gt;</pre></div>
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test pub type alias`() = doTest("""
+    fun `test pub type alias`() = doTest(
+        """
         pub type Foo = Result<(), i32>;
                 //^
     """, """
         <div class='definition'><pre>test_package
         pub type <b>Foo</b> = <a href="psi_element://Result">Result</a>&lt;(), i32&gt;</pre></div>
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test generic type alias`() = doTest("""
+    fun `test generic type alias`() = doTest(
+        """
         type Foo<T> = Result<T, i32>;
             //^
     """, """
         <div class='definition'><pre>test_package
         type <b>Foo</b>&lt;T&gt; = <a href="psi_element://Result">Result</a>&lt;T, i32&gt;</pre></div>
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test generic type alias with where clause`() = doTest("""
+    fun `test generic type alias with where clause`() = doTest(
+        """
         type Foo<T> where T: Into<String> = Result<T, i32>;
              //^
     """, """
         <div class='definition'><pre>test_package
         type <b>Foo</b>&lt;T&gt; = <a href="psi_element://Result">Result</a>&lt;T, i32&gt;<br>where<br>&nbsp;&nbsp;&nbsp;&nbsp;T: <a href="psi_element://Into">Into</a>&lt;<a href="psi_element://String">String</a>&gt;,</pre></div>
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test impl assoc type`() = doTest("""
+    fun `test impl assoc type`() = doTest(
+        """
         trait Trait {
             type AssocType;
         }
@@ -424,10 +501,12 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
     """, """
         <div class='definition'><pre>test_package<br>impl <a href="psi_element://Trait">Trait</a> for <a href="psi_element://Foo">Foo</a>
         type <b>AssocType</b> = <a href="psi_element://Option">Option</a>&lt;i32&gt;</pre></div>
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test generic impl assoc type`() = doTest("""
+    fun `test generic impl assoc type`() = doTest(
+        """
         trait Trait {
             type AssocType;
         }
@@ -439,10 +518,12 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
     """, """
         <div class='definition'><pre>test_package<br>impl&lt;T&gt; <a href="psi_element://Trait">Trait</a> for <a href="psi_element://Foo">Foo</a>&lt;T&gt;
         type <b>AssocType</b> = <a href="psi_element://Option">Option</a>&lt;T&gt;</pre></div>
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test generic impl assoc type with where clause`() = doTest("""
+    fun `test generic impl assoc type with where clause`() = doTest(
+        """
         trait Trait {
             type AssocType;
         }
@@ -454,9 +535,11 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
     """, """
         <div class='definition'><pre>test_package<br>impl&lt;T&gt; <a href="psi_element://Trait">Trait</a> for <a href="psi_element://Foo">Foo</a>&lt;T&gt;<br>where<br>&nbsp;&nbsp;&nbsp;&nbsp;T: <a href="psi_element://Into">Into</a>&lt;<a href="psi_element://String">String</a>&gt;,
         type <b>AssocType</b> = <a href="psi_element://Option">Option</a>&lt;T&gt;</pre></div>
-    """)
+    """
+    )
 
-    fun `test trait assoc type`() = doTest("""
+    fun `test trait assoc type`() = doTest(
+        """
         trait MyTrait {
             /// Documented
             type Awesome;
@@ -466,9 +549,11 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
         <div class='definition'><pre>test_package::MyTrait
         type <b>Awesome</b></pre></div>
         <div class='content'><p>Documented</p></div>
-    """)
+    """
+    )
 
-    fun `test generic trait assoc type`() = doTest("""
+    fun `test generic trait assoc type`() = doTest(
+        """
         trait MyTrait<T> {
             /// Documented
             type Awesome;
@@ -478,10 +563,12 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
         <div class='definition'><pre>test_package::MyTrait&lt;T&gt;
         type <b>Awesome</b></pre></div>
         <div class='content'><p>Documented</p></div>
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test generic trait assoc type with where clause`() = doTest("""
+    fun `test generic trait assoc type with where clause`() = doTest(
+        """
         trait MyTrait<T> where T: Into<String> {
             /// Documented
             type Awesome;
@@ -491,9 +578,11 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
         <div class='definition'><pre>test_package::MyTrait&lt;T&gt;<br>where<br>&nbsp;&nbsp;&nbsp;&nbsp;T: <a href="psi_element://Into">Into</a>&lt;<a href="psi_element://String">String</a>&gt;,
         type <b>Awesome</b></pre></div>
         <div class='content'><p>Documented</p></div>
-    """)
+    """
+    )
 
-    fun `test const`() = doTest("""
+    fun `test const`() = doTest(
+        """
         fn main() {
             /// Documented
             const AWESOME: i32 = 1;
@@ -503,9 +592,11 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
         <div class='definition'><pre>test_package
         const <b>AWESOME</b>: i32 = 1</pre></div>
         <div class='content'><p>Documented</p></div>
-    """)
+    """
+    )
 
-    fun `test static`() = doTest("""
+    fun `test static`() = doTest(
+        """
         fn main() {
             /// Documented
             static AWESOME: i32 = 1;
@@ -515,9 +606,11 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
         <div class='definition'><pre>test_package
         static <b>AWESOME</b>: i32 = 1</pre></div>
         <div class='content'><p>Documented</p></div>
-    """)
+    """
+    )
 
-    fun `test trait const`() = doTest("""
+    fun `test trait const`() = doTest(
+        """
         trait MyTrait {
             /// Documented
             const AWESOME: i32;
@@ -527,9 +620,11 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
         <div class='definition'><pre>test_package::MyTrait
         const <b>AWESOME</b>: i32</pre></div>
         <div class='content'><p>Documented</p></div>
-    """)
+    """
+    )
 
-    fun `test impl assoc const`() = doTest("""
+    fun `test impl assoc const`() = doTest(
+        """
         trait Trait {
             const AWESOME: u8;
         }
@@ -541,9 +636,11 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
     """, """
         <div class='definition'><pre>test_package<br>impl <a href="psi_element://Trait">Trait</a> for <a href="psi_element://Foo">Foo</a>
         const <b>AWESOME</b>: u8 = 42</pre></div>
-    """)
+    """
+    )
 
-    fun `test trait method`() = doTest("""
+    fun `test trait method`() = doTest(
+        """
         trait MyTrait {
             /// Documented
             fn my_func();
@@ -553,9 +650,11 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
         <div class='definition'><pre>test_package::MyTrait
         fn <b>my_func</b>()</pre></div>
         <div class='content'><p>Documented</p></div>
-    """)
+    """
+    )
 
-    fun `test generic trait method`() = doTest("""
+    fun `test generic trait method`() = doTest(
+        """
         trait MyTrait<T> {
             /// Documented
             fn my_func();
@@ -565,10 +664,12 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
         <div class='definition'><pre>test_package::MyTrait&lt;T&gt;
         fn <b>my_func</b>()</pre></div>
         <div class='content'><p>Documented</p></div>
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test generic trait method with where clause`() = doTest("""
+    fun `test generic trait method with where clause`() = doTest(
+        """
         trait MyTrait<T> where T: Into<String> {
             /// Documented
             fn my_func();
@@ -578,9 +679,11 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
         <div class='definition'><pre>test_package::MyTrait&lt;T&gt;<br>where<br>&nbsp;&nbsp;&nbsp;&nbsp;T: <a href="psi_element://Into">Into</a>&lt;<a href="psi_element://String">String</a>&gt;,
         fn <b>my_func</b>()</pre></div>
         <div class='content'><p>Documented</p></div>
-    """)
+    """
+    )
 
-    fun `test trait method impl`() = doTest("""
+    fun `test trait method impl`() = doTest(
+        """
         trait Trait {
             fn foo();
         }
@@ -592,9 +695,11 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
     """, """
         <div class='definition'><pre>test_package<br>impl <a href="psi_element://Trait">Trait</a> for <a href="psi_element://Foo">Foo</a>
         fn <b>foo</b>()</pre></div>
-    """)
+    """
+    )
 
-    fun `test generic trait method impl`() = doTest("""
+    fun `test generic trait method impl`() = doTest(
+        """
         trait Trait<T> {
             fn foo();
         }
@@ -606,10 +711,12 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
     """, """
         <div class='definition'><pre>test_package<br>impl&lt;T, F&gt; <a href="psi_element://Trait">Trait</a>&lt;T&gt; for <a href="psi_element://Foo">Foo</a>&lt;F&gt;
         fn <b>foo</b>()</pre></div>
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test generic trait method impl with where clause`() = doTest("""
+    fun `test generic trait method impl with where clause`() = doTest(
+        """
         trait Trait<T> {
             fn foo();
         }
@@ -621,9 +728,11 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
     """, """
         <div class='definition'><pre>test_package<br>impl&lt;T, F&gt; <a href="psi_element://Trait">Trait</a>&lt;T&gt; for <a href="psi_element://Foo">Foo</a>&lt;F&gt;<br>where<br>&nbsp;&nbsp;&nbsp;&nbsp;T: <a href="psi_element://Ord">Ord</a>,<br>&nbsp;&nbsp;&nbsp;&nbsp;F: <a href="psi_element://Into">Into</a>&lt;<a href="psi_element://String">String</a>&gt;,
         fn <b>foo</b>()</pre></div>
-    """)
+    """
+    )
 
-    fun `test trait method provided`() = doTest("""
+    fun `test trait method provided`() = doTest(
+        """
         trait MyTrait {
             fn my_func() {
              //^
@@ -634,9 +743,11 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
         <div class='definition'><pre>test_package::MyTrait
         fn <b>my_func</b>()</pre></div>
         <div class='content'><p>Inner doc</p></div>
-    """)
+    """
+    )
 
-    fun `test mod inner docstring`() = doTest("""
+    fun `test mod inner docstring`() = doTest(
+        """
         /// *outer*
         mod foo {
             //! **inner**
@@ -652,9 +763,11 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
         </pre></div>
         <div class='content'><p><em>outer</em>
         <strong>inner</strong></p></div>
-    """)
+    """
+    )
 
-    fun `test fn inner docstring`() = doTest("""
+    fun `test fn inner docstring`() = doTest(
+        """
         fn foo() {
             //! Inner doc.
         }
@@ -667,9 +780,11 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
         <div class='definition'><pre>test_package
         fn <b>foo</b>()</pre></div>
         <div class='content'><p>Inner doc.</p></div>
-    """)
+    """
+    )
 
-    fun `test file inner docstring`() = doTest("""
+    fun `test file inner docstring`() = doTest(
+        """
         //! Module level docs
         //! Module level docs
 
@@ -684,10 +799,12 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
         </pre></div>
         <div class='content'><p>Module level docs
         Module level docs</p></div>
-    """)
+    """
+    )
 
     //
-    fun `test macro outer docstring`() = doTest("""
+    fun `test macro outer docstring`() = doTest(
+        """
         /// Outer documentation
         macro_rules! makro {
                    //^
@@ -700,9 +817,11 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
         <div class='definition'><pre>test_package
         macro <b>makro</b></pre></div>
         <div class='content'><p>Outer documentation</p></div>
-    """)
+    """
+    )
 
-    fun `test macro 2 outer docs`() = doTest("""
+    fun `test macro 2 outer docs`() = doTest(
+        """
         pub struct Foo;
 
         /// Outer doc
@@ -714,9 +833,11 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
         </pre></div>
         <div class='content'><p>Outer doc
         <a href="psi_element://test_package/Foo">link</a></p></div>
-    """)
+    """
+    )
 
-    fun `test qualified name`() = doTest("""
+    fun `test qualified name`() = doTest(
+        """
         mod q {
             /// Blurb.
             fn foo() {
@@ -732,16 +853,20 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
         <div class='definition'><pre>test_package::q
         fn <b>foo</b>()</pre></div>
         <div class='content'><p>Blurb.</p></div>
-    """)
+    """
+    )
 
-    fun `test fn arg`() = doTest("""
+    fun `test fn arg`() = doTest(
+        """
         fn foo(x: i32) -> i32 { x }
              //^
     """, """
         <div class='definition'><pre>value parameter <b>x</b>: i32</pre></div>
-    """)
+    """
+    )
 
-    fun `test variable`() = doTest("""
+    fun `test variable`() = doTest(
+        """
         fn main() {
             let x = "bar";
             println!(x);
@@ -749,9 +874,11 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
         }
     """, """
         <div class='definition'><pre>variable <b>x</b>: &amp;str</pre></div>
-    """)
+    """
+    )
 
-    fun `test generic enum variable`() = doTest("""
+    fun `test generic enum variable`() = doTest(
+        """
         enum E<T> {
             L,
             R(T),
@@ -764,9 +891,11 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
         }
     """, """
         <div class='definition'><pre>variable <b>x</b>: E&lt;i32&gt;</pre></div>
-    """)
+    """
+    )
 
-    fun `test generic struct variable`() = doTest("""
+    fun `test generic struct variable`() = doTest(
+        """
         struct S<T> { s: T }
 
         fn main() {
@@ -776,9 +905,11 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
         }
     """, """
         <div class='definition'><pre>variable <b>x</b>: S&lt;i32&gt;</pre></div>
-    """)
+    """
+    )
 
-    fun `test variable type alias`() = doTest("""
+    fun `test variable type alias`() = doTest(
+        """
         struct S;
         type T = S;
 
@@ -788,18 +919,22 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
         }
     """, """
         <div class='definition'><pre>variable <b>x</b>: T</pre></div>
-    """)
+    """
+    )
 
-    fun `test tuple destructuring`() = doTest("""
+    fun `test tuple destructuring`() = doTest(
+        """
         fn main() {
             let (a, b) = (1, ("foo", 1));
                   //^
         }
     """, """
         <div class='definition'><pre>variable <b>b</b>: (&amp;str, i32)</pre></div>
-    """)
+    """
+    )
 
-    fun `test conditional binding`() = doTest("""
+    fun `test conditional binding`() = doTest(
+        """
         fn main() {
             let x: (i32, f64) = unimplemented!();
             if let (1, y) = x {
@@ -808,9 +943,11 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
         }
     """, """
         <div class='definition'><pre>condition binding <b>y</b>: f64</pre></div>
-    """)
+    """
+    )
 
-    fun `test struct field`() = doTest("""
+    fun `test struct field`() = doTest(
+        """
         struct Foo {
             /// Documented
             pub foo: i32
@@ -825,9 +962,11 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
         <div class='definition'><pre>test_package::Foo
         pub <b>foo</b>: i32</pre></div>
         <div class='content'><p>Documented</p></div>
-    """)
+    """
+    )
 
-    fun `test enum variant field`() = doTest("""
+    fun `test enum variant field`() = doTest(
+        """
         enum Foo {
             Bar {
                 /// Documented
@@ -843,27 +982,33 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
         <div class='definition'><pre>test_package::Foo::Bar
         <b>baz</b>: i32</pre></div>
         <div class='content'><p>Documented</p></div>
-    """)
+    """
+    )
 
-    fun `test type parameter`() = doTest("""
+    fun `test type parameter`() = doTest(
+        """
         fn foo<T>() { unimplemented!() }
              //^
     """, """
         <div class='definition'><pre>type parameter <b>T</b></pre></div>
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test type parameter with single bound`() = doTest("""
+    fun `test type parameter with single bound`() = doTest(
+        """
         use std::borrow::Borrow;
 
         fn foo<T: Borrow<Q>>() { unimplemented!() }
              //^
     """, """
         <div class='definition'><pre>type parameter <b>T</b>: <a href="psi_element://Borrow">Borrow</a>&lt;Q&gt;</pre></div>
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test type parameter with multiple bounds`() = doTest("""
+    fun `test type parameter with multiple bounds`() = doTest(
+        """
         use std::borrow::Borrow;
         use std::hash::Hash;
 
@@ -871,27 +1016,33 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
                 //^
     """, """
         <div class='definition'><pre>type parameter <b>T</b>: <a href="psi_element://Eq">Eq</a> + <a href="psi_element://Hash">Hash</a> + <a href="psi_element://Borrow">Borrow</a>&lt;Q&gt;</pre></div>
-    """)
+    """
+    )
 
-    fun `test type parameter with lifetime bound`() = doTest("""
+    fun `test type parameter with lifetime bound`() = doTest(
+        """
         fn foo<'a, T: 'a>() { unimplemented!() }
                  //^
     """, """
         <div class='definition'><pre>type parameter <b>T</b>: &#39;a</pre></div>
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test type parameter with default value`() = doTest("""
+    fun `test type parameter with default value`() = doTest(
+        """
         use std::collections::hash_map::RandomState;
 
         fn foo<T = RandomState>() { unimplemented!() }
              //^
     """, """
         <div class='definition'><pre>type parameter <b>T</b> = <a href="psi_element://RandomState">RandomState</a></pre></div>
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test type parameter with bounds in where clause`() = doTest("""
+    fun `test type parameter with bounds in where clause`() = doTest(
+        """
         use std::borrow::Borrow;
         use std::hash::Hash;
 
@@ -899,10 +1050,12 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
                 //^
     """, """
         <div class='definition'><pre>type parameter <b>T</b>: <a href="psi_element://Eq">Eq</a> + <a href="psi_element://Hash">Hash</a> + <a href="psi_element://Borrow">Borrow</a>&lt;Q&gt;</pre></div>
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test type parameter with complex bounds`() = doTest("""
+    fun `test type parameter with complex bounds`() = doTest(
+        """
         use std::borrow::Borrow;
         use std::hash::Hash;
 
@@ -910,18 +1063,22 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
                     //^
     """, """
         <div class='definition'><pre>type parameter <b>T</b>: &#39;a + <a href="psi_element://Eq">Eq</a> + <a href="psi_element://Hash">Hash</a> + <a href="psi_element://Borrow">Borrow</a>&lt;Q&gt;</pre></div>
-    """)
+    """
+    )
 
-    fun `test don't create link for unresolved items`() = doTest("""
+    fun `test don't create link for unresolved items`() = doTest(
+        """
         fn foo() -> Foo { unimplemented!() }
            //^
     """, """
         <div class='definition'><pre>test_package
         fn <b>foo</b>() -&gt; Foo</pre></div>
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test assoc type bound`() = doTest("""
+    fun `test assoc type bound`() = doTest(
+        """
         trait Foo {
             type Bar;
         }
@@ -931,9 +1088,11 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
     """, """
         <div class='definition'><pre>test_package
         fn <b>foo</b>&lt;T&gt;(t: T)<br>where<br>&nbsp;&nbsp;&nbsp;&nbsp;T: <a href="psi_element://Foo">Foo</a>,<br>&nbsp;&nbsp;&nbsp;&nbsp;T::<a href="psi_element://T::Bar">Bar</a>: <a href="psi_element://Into">Into</a>&lt;<a href="psi_element://String">String</a>&gt;,</pre></div>
-    """)
+    """
+    )
 
-    fun `test type qual`() = doTest("""
+    fun `test type qual`() = doTest(
+        """
         trait Foo1 {
             type Bar;
         }
@@ -955,28 +1114,34 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
     """, """
         <div class='definition'><pre>test_package<br>impl <a href="psi_element://Foo2">Foo2</a> for <a href="psi_element://S">S</a>
         type <b>Bar</b> = &lt;Self as <a href="psi_element://Foo1">Foo1</a>&gt;::<a href="psi_element://&lt;Self as Foo1&gt;::Bar">Bar</a></pre></div>
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test type value parameters 1`() = doTest("""
+    fun `test type value parameters 1`() = doTest(
+        """
         fn run<F, T>(f: F, t: T) where F: FnOnce(T) { f(t); }
           //^
     """, """
         <div class='definition'><pre>test_package
         fn <b>run</b>&lt;F, T&gt;(f: F, t: T)<br>where<br>&nbsp;&nbsp;&nbsp;&nbsp;F: <a href="psi_element://FnOnce">FnOnce</a>(T),</pre></div>
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test type value parameters 2`() = doTest("""
+    fun `test type value parameters 2`() = doTest(
+        """
         fn call<F, T, R>(f: F, t: T) -> R where F: FnOnce(T) -> R { f(t) }
           //^
     """, """
         <div class='definition'><pre>test_package
         fn <b>call</b>&lt;F, T, R&gt;(f: F, t: T) -&gt; R<br>where<br>&nbsp;&nbsp;&nbsp;&nbsp;F: <a href="psi_element://FnOnce">FnOnce</a>(T) -&gt; R,</pre></div>
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test type value parameters 3`() = doTest("""
+    fun `test type value parameters 3`() = doTest(
+        """
         pub trait Iter {
             type Item;
 
@@ -987,9 +1152,11 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
     """, """
         <div class='definition'><pre>test_package::Iter
         fn <b>scan</b>&lt;St, B, F&gt;(self, initial_state: St, f: F) -&gt; Scan&lt;Self, St, F&gt;<br>where<br>&nbsp;&nbsp;&nbsp;&nbsp;Self: <a href="psi_element://Sized">Sized</a>,<br>&nbsp;&nbsp;&nbsp;&nbsp;F: <a href="psi_element://FnMut">FnMut</a>(&amp;mut St, Self::<a href="psi_element://Self::Item">Item</a>) -&gt; <a href="psi_element://Option">Option</a>&lt;B&gt;,</pre></div>
-    """)
+    """
+    )
 
-    fun `test markdown sections`() = doTest("""
+    fun `test markdown sections`() = doTest(
+        """
         /// Some text
         ///
         /// # Section level 1
@@ -1005,9 +1172,11 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
         <div class='definition'><pre>test_package
         struct <b>Foo</b></pre></div>
         <div class='content'><p>Some text</p><h2>Section level 1</h2><p>Some text</p><h3>Section level 2</h3><p>Some other text</p></div>
-    """)
+    """
+    )
 
-    fun `test lang item links in doc comment`() = doTest("""
+    fun `test lang item links in doc comment`() = doTest(
+        """
         struct Bar;
         /// [`Bar`]
         ///
@@ -1018,9 +1187,11 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
         <div class='definition'><pre>test_package
         struct <b>Foo</b></pre></div>
         <div class='content'><p><a href="psi_element://test_package/struct.Bar.html"><code>Bar</code></a></p></div>
-    """)
+    """
+    )
 
-    fun `test lang item links in doc comment 2`() = doTest("""
+    fun `test lang item links in doc comment 2`() = doTest(
+        """
         enum Bar { V }
         mod foo {
             /// [`Bar`]
@@ -1033,9 +1204,11 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
         <div class='definition'><pre>test_package::foo
         struct <b>Foo</b></pre></div>
         <div class='content'><p><a href="psi_element://test_package/enum.Bar.html"><code>Bar</code></a></p></div>
-    """)
+    """
+    )
 
-    fun `test lang item links in doc comment 3`() = doTest("""
+    fun `test lang item links in doc comment 3`() = doTest(
+        """
         struct Foo;
 
         impl Foo {
@@ -1050,9 +1223,11 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
         <div class='definition'><pre>test_package<br>impl <a href="psi_element://Foo">Foo</a>
         fn <b>foo</b>(&amp;self)</pre></div>
         <div class='content'><p><a href="psi_element://test_package/struct.Foo.html#method.bar"><code>Foo::bar</code></a></p></div>
-    """)
+    """
+    )
 
-    fun `test trait item doc 1`() = doTest("""
+    fun `test trait item doc 1`() = doTest(
+        """
         trait Foo {
             /// Trait doc
             fn foo();
@@ -1068,9 +1243,11 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
         <div class='definition'><pre>test_package<br>impl <a href="psi_element://Foo">Foo</a> for <a href="psi_element://Bar">Bar</a>
         fn <b>foo</b>()</pre></div>
         <div class='content'><p>Impl doc</p></div>
-    """)
+    """
+    )
 
-    fun `test trait item doc 2`() = doTest("""
+    fun `test trait item doc 2`() = doTest(
+        """
         trait Foo {
             /// Trait doc
             type Baz;
@@ -1085,25 +1262,30 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
         <div class='definition'><pre>test_package<br>impl <a href="psi_element://Foo">Foo</a> for <a href="psi_element://Bar">Bar</a>
         type <b>Baz</b> = ()</pre></div>
         <div class='content'><p>Trait doc</p></div>
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test primitive type doc`() = doTestRegex("""
+    fun `test primitive type doc`() = doTestRegex(
+        """
         fn foo() -> i32 {}
                    //^
     """, """
         <div class='definition'><pre>std
         primitive type <b>i32</b></pre></div><div class='content'><p>.+</p></div>
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test primitive type doc in stdlib`() = doTestRegex("""
+    fun `test primitive type doc in stdlib`() = doTestRegex(
+        """
         const C: u32 = std::f64::DIGITS;
                                 //^
     """, """
         <div class='definition'><pre>std
         primitive type <b>u32</b></pre></div><div class='content'><p>.+</p></div>
-    """) {
+    """
+    ) {
         val element = findElementWithDataAndOffsetInEditor<RsElement>().first
         val const = element.reference?.resolve() as? RsConstant ?: error("Failed to resolve `${element.text}`")
         val originalElement = (const.typeReference as RsBaseType).path!!
@@ -1113,36 +1295,43 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
     }
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test keyword doc`() = doTestRegex("""
+    fun `test keyword doc`() = doTestRegex(
+        """
         enum Foo { V1 }
         //^
     """, """
         <div class='definition'><pre>std
         keyword <b>enum</b></pre></div><div class='content'><p>.+</p></div>
-    """)
+    """
+    )
 
     @MockEdition(CargoWorkspace.Edition.EDITION_2018)
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test async keyword doc`() = doTestRegex("""
+    fun `test async keyword doc`() = doTestRegex(
+        """
         async fn foo() {}
         //^
     """, """
         <div class='definition'><pre>std
         keyword <b>async</b></pre></div><div class='content'><p>.+</p></div>
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test dyn keyword doc`() = doTestRegex("""
+    fun `test dyn keyword doc`() = doTestRegex(
+        """
         trait Foo {}
         fn foo(x: &dyn Foo) {}
                  //^
     """, """
         <div class='definition'><pre>std
         keyword <b>dyn</b></pre></div><div class='content'><p>.+</p></div>
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test boolean value doc`() = doTestRegex("""
+    fun `test boolean value doc`() = doTestRegex(
+        """
         fn main() {
             let a = false;
                     //^
@@ -1150,20 +1339,24 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
     """, """
         <div class='definition'><pre>std
         keyword <b>false</b></pre></div><div class='content'><p>.+</p></div>
-    """)
+    """
+    )
 
     @MockEdition(CargoWorkspace.Edition.EDITION_2015)
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test await doc 1`() = doTest("""
+    fun `test await doc 1`() = doTest(
+        """
         fn main() {
             foo().await;
                   //^
         }
-    """, null)
+    """, null
+    )
 
     @MockEdition(CargoWorkspace.Edition.EDITION_2018)
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test await doc 2`() = doTestRegex("""
+    fun `test await doc 2`() = doTestRegex(
+        """
         fn main() {
             foo().await;
                   //^
@@ -1171,16 +1364,19 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
     """, """
         <div class='definition'><pre>std
         keyword <b>await</b></pre></div><div class='content'><p>.+</p></div>
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test keyword doc in stdlib`() = doTestRegex("""
+    fun `test keyword doc in stdlib`() = doTestRegex(
+        """
         const C: u32 = std::f64::DIGITS;
                                 //^
     """, """
         <div class='definition'><pre>std
         keyword <b>const</b></pre></div><div class='content'><p>.+</p></div>
-    """) {
+    """
+    ) {
         val element = findElementWithDataAndOffsetInEditor<RsElement>().first
         val const = element.reference?.resolve() as? RsConstant ?: error("Failed to resolve `${element.text}`")
         val originalElement = const.const!!
@@ -1190,7 +1386,8 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
     }
 
     @ExpandMacros
-    fun `test documentation provided via macro definition 1`() = doTest("""
+    fun `test documentation provided via macro definition 1`() = doTest(
+        """
         macro_rules! foobar {
             ($ name:ident) => {
                 /// Say hello!
@@ -1210,10 +1407,12 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
         <div class='definition'><pre>test_package
         pub fn <b>foo</b>()</pre></div>
         <div class='content'><p>Say hello!</p></div>
-    """)
+    """
+    )
 
     @ExpandMacros
-    fun `test documentation provided via macro definition 2`() = doTest("""
+    fun `test documentation provided via macro definition 2`() = doTest(
+        """
         pub struct Bar {
             pub bar: i32
         }
@@ -1240,10 +1439,12 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
         <div class='definition'><pre>test_package<br>impl <a href="psi_element://Bar">Bar</a>
         pub fn <b>hello</b>(&amp; self)</pre></div>
         <div class='content'><p>Say hello</p></div>
-    """)
+    """
+    )
 
     @ExpandMacros
-    fun `test documentation provided via macro call`() = doTest("""
+    fun `test documentation provided via macro call`() = doTest(
+        """
         macro_rules! foo {
             ($ i:item) => { $ i }
         }
@@ -1259,10 +1460,10 @@ class RsQuickDocumentationTest : RsDocumentationProviderTest() {
         <div class='definition'><pre>test_package
         fn <b>foo</b>()</pre></div>
         <div class='content'><p>Some docs</p></div>
-    """)
+    """
+    )
 
-    private fun doTest(@Language("Rust") code: String, @Language("Html") expected: String?)
-        = doTest(code, expected, block = RsDocumentationProvider::generateDoc)
+    private fun doTest(@Language("Rust") code: String, @Language("Html") expected: String?) = doTest(code, expected, block = RsDocumentationProvider::generateDoc)
 
     private fun doTestRegex(
         @Language("Rust") code: String,

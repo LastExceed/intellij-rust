@@ -21,43 +21,57 @@ class RsBacktraceFilterTest : HighlightFilterTestBase() {
         get() = RsBacktraceFilter(project, projectDir, project.cargoProjects.singleWorkspace())
 
     fun `test rustc source code link`() =
-        checkHighlights(filter,
+        checkHighlights(
+            filter,
             "          at src/main.rs:24",
-            "          at [src/main.rs:24 -> main.rs]")
+            "          at [src/main.rs:24 -> main.rs]"
+        )
 
     fun `test rustc source code link with absolute path`() {
         // Windows does not handle abs paths on the tmpfs
         if (SystemInfo.isWindows) return
         val absPath = "${projectDir.canonicalPath}/src/main.rs"
-        checkHighlights(filter,
+        checkHighlights(
+            filter,
             "          at $absPath:24",
-            "          at [$absPath:24 -> main.rs]")
+            "          at [$absPath:24 -> main.rs]"
+        )
     }
 
     fun `test full backtrace line`() =
-        checkHighlights(filter,
+        checkHighlights(
+            filter,
             "   7:     0x7feeefb7d11f - std::io::Stdin::read_line::h93df64e7370b5253",
-            "   7:     0x7feeefb7d11f - [std::io::Stdin::read_line -> stdio.rs][::h93df64e7370b5253]")
+            "   7:     0x7feeefb7d11f - [std::io::Stdin::read_line -> stdio.rs][::h93df64e7370b5253]"
+        )
 
     fun `test short backtrace line`() =
-        checkHighlights(filter,
+        checkHighlights(
+            filter,
             "   7: std::io::Stdin::read_line",
-            "   7: [std::io::Stdin::read_line -> stdio.rs]")
+            "   7: [std::io::Stdin::read_line -> stdio.rs]"
+        )
 
     fun `test backtrace no links to internal calls`() =
-        checkHighlights(filter,
+        checkHighlights(
+            filter,
             "  16:        0x106bfe616 - std::rt::lang_start::h538f8960e7644c80",
-            "  16:        0x106bfe616 - std::rt::lang_start[::h538f8960e7644c80]")
+            "  16:        0x106bfe616 - std::rt::lang_start[::h538f8960e7644c80]"
+        )
 
     fun `test backtrace line with closure`() =
-        checkHighlights(filter,
+        checkHighlights(
+            filter,
             " 103:     0x7feeefb480ee - std::io::Stdin::lock::{{closure}}::hbe9ea065746f6376",
-            " 103:     0x7feeefb480ee - [std::io::Stdin::lock::{{closure}} -> stdio.rs][::hbe9ea065746f6376]")
+            " 103:     0x7feeefb480ee - [std::io::Stdin::lock::{{closure}} -> stdio.rs][::hbe9ea065746f6376]"
+        )
 
     fun `test backtrace line with generics`() =
-        checkHighlights(filter,
+        checkHighlights(
+            filter,
             "  10:     0x70ae3fe9d6a3 - <core::option::Option<T>>::unwrap::h5dd7da6bb3d06020",
-            "  10:     0x70ae3fe9d6a3 - [<core::option::Option<T>>::unwrap -> option.rs][::h5dd7da6bb3d06020]")
+            "  10:     0x70ae3fe9d6a3 - [<core::option::Option<T>>::unwrap -> option.rs][::h5dd7da6bb3d06020]"
+        )
 
     fun `test backtrace no links to unknown functions`() =
         checkNoHighlights(filter, "  17:        0x106c24240 - foo::bar::unknown[::h5dd7da6bb3d06020]")
@@ -66,7 +80,8 @@ class RsBacktraceFilterTest : HighlightFilterTestBase() {
         checkNoHighlights(filter, "  19:        0x106bf9a49 - main")
 
     fun `test full output`() =
-        checkHighlights(filter,
+        checkHighlights(
+            filter,
             """    Running `target/debug/test`
 thread '<main>' panicked at 'called `Option::unwrap()` on a `None` value', ../src/libcore/option.rs:325
 stack backtrace:
@@ -82,13 +97,15 @@ stack backtrace:
                         at ../src/libcore/macros.rs:21
   10:     0x7feeefb3f538 - btest::main::h888e623968051ab6
                         at src/main.rs:22""",
-            "                        at [src/main.rs:22 -> main.rs]", 14)
+            "                        at [src/main.rs:22 -> main.rs]", 14
+        )
 
     fun `test full output without explicit project dir and workspace`() {
         val cargoProject = project.cargoProjects.singleProject()
         cargoProject.setRootDir(projectDir)
 
-        checkHighlights(RsBacktraceFilter(project),
+        checkHighlights(
+            RsBacktraceFilter(project),
             """    Running `target/debug/test`
 thread '<main>' panicked at 'called `Option::unwrap()` on a `None` value', ../src/libcore/option.rs:325
 stack backtrace:
@@ -104,36 +121,41 @@ stack backtrace:
                         at ../src/libcore/macros.rs:21
   10:     0x7feeefb3f538 - btest::main::h888e623968051ab6
                         at src/main.rs:22""",
-            "                        at [src/main.rs:22 -> main.rs]", 14)
+            "                        at [src/main.rs:22 -> main.rs]", 14
+        )
     }
 
     @ProjectDescriptor(WithDependencyRustProjectDescriptor::class)
     fun `test crate with "-" in name`() =
-        checkHighlights(filter,
+        checkHighlights(
+            filter,
             """
                 //- dep-lib/lib.rs
                 fn foo() {}/*caret*/
             """,
             "  6: dep_lib::foo",
-            "  6: [dep_lib::foo -> lib.rs]")
+            "  6: [dep_lib::foo -> lib.rs]"
+        )
 
-    fun `test resolve stdlib link`()
-        = checkHighlights(filter,
-            """
+    fun `test resolve stdlib link`() = checkHighlights(
+        filter,
+        """
                 //- lib.rs
                 fn foo() {}/*caret*/
             """,
-            " at src/libstd/panicking.rs:342",
-            " at [src/libstd/panicking.rs:342]")
+        " at src/libstd/panicking.rs:342",
+        " at [src/libstd/panicking.rs:342]"
+    )
 
-    fun `test resolve long stdlib link`()
-        = checkHighlights(filter,
-            """
+    fun `test resolve long stdlib link`() = checkHighlights(
+        filter,
+        """
                 //- lib.rs
                 fn foo() {}/*caret*/
             """,
         " at /rustc/foo/src/libstd/panicking.rs:342",
-        " at [/rustc/foo/src/libstd/panicking.rs:342]")
+        " at [/rustc/foo/src/libstd/panicking.rs:342]"
+    )
 
     fun `test backtrace filter can be safely created as extension`() {
         val filter = AnalyzeStacktraceUtil.EP_NAME.getExtensions(project).find { it is RsBacktraceFilter }

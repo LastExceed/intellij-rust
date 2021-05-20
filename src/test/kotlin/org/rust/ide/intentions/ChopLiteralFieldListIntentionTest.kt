@@ -6,14 +6,17 @@
 package org.rust.ide.intentions
 
 class ChopLiteralFieldListIntentionTest : RsIntentionTestBase(ChopLiteralFieldListIntention::class) {
-    fun `test one parameter`() = doUnavailableTest("""
+    fun `test one parameter`() = doUnavailableTest(
+        """
         struct S { x: i32 }
         fn foo {
             S { /*caret*/x: 0 };
         }
-    """)
+    """
+    )
 
-    fun `test two parameters`() = doAvailableTest("""
+    fun `test two parameters`() = doAvailableTest(
+        """
         struct S { x: i32, y: i32 }
         fn foo() {
             S { /*caret*/x: 0, y: 0 };
@@ -26,9 +29,11 @@ class ChopLiteralFieldListIntentionTest : RsIntentionTestBase(ChopLiteralFieldLi
                 y: 0
             };
         }
-    """)
+    """
+    )
 
-    fun `test has all line breaks`() = doUnavailableTest("""
+    fun `test has all line breaks`() = doUnavailableTest(
+        """
         struct S { x: i32, y: i32, z: i32 }
         fn foo() {
             S {
@@ -37,9 +42,11 @@ class ChopLiteralFieldListIntentionTest : RsIntentionTestBase(ChopLiteralFieldLi
                 z: 0
             };
         }
-    """)
+    """
+    )
 
-    fun `test has some line breaks`() = doAvailableTest("""
+    fun `test has some line breaks`() = doAvailableTest(
+        """
         struct S { x: i32, y: i32, z: i32 }
         fn foo() {
             S { x: 0, /*caret*/y: 0,
@@ -55,9 +62,11 @@ class ChopLiteralFieldListIntentionTest : RsIntentionTestBase(ChopLiteralFieldLi
                 z: 0
             };
         }
-    """)
+    """
+    )
 
-    fun `test has some line breaks 2`() = doAvailableTest("""
+    fun `test has some line breaks 2`() = doAvailableTest(
+        """
         struct S { x: i32, y: i32, z: i32 }
         fn foo() {
             S {
@@ -73,23 +82,27 @@ class ChopLiteralFieldListIntentionTest : RsIntentionTestBase(ChopLiteralFieldLi
                 z: 0
             };
         }
-    """)
+    """
+    )
 
-    fun `test has comment`() = doUnavailableTest("""
+    fun `test has comment`() = doUnavailableTest(
+        """
         struct S {  x: i32, y: i32, z: i32 }
         fn foo() {
-            S { 
-                /*caret*/x: 0, /* comment */ 
+            S {
+                /*caret*/x: 0, /* comment */
                 y: 0,
                 z: 0
             };
         }
-    """)
+    """
+    )
 
-    fun `test has comment 2`() = doAvailableTest("""
+    fun `test has comment 2`() = doAvailableTest(
+        """
         struct S {  x: i32, y: i32, z: i32 }
         fn foo() {
-            S { 
+            S {
                 /*caret*/x: 0, /*
                     comment
                 */y: 0,
@@ -107,9 +120,11 @@ class ChopLiteralFieldListIntentionTest : RsIntentionTestBase(ChopLiteralFieldLi
                 z: 0
             };
         }
-    """)
+    """
+    )
 
-    fun `test has single line comment`() = doAvailableTest("""
+    fun `test has single line comment`() = doAvailableTest(
+        """
         struct S {  x: i32, y: i32, z: i32 }
         fn foo() {
             S {
@@ -126,9 +141,11 @@ class ChopLiteralFieldListIntentionTest : RsIntentionTestBase(ChopLiteralFieldLi
                 z: 0 // comment z
             };
         }
-    """)
+    """
+    )
 
-    fun `test init shorthand`() = doAvailableTest("""
+    fun `test init shorthand`() = doAvailableTest(
+        """
         struct S {  x: i32, y: i32, z: i32 }
         fn foo() {
             let x = 1;
@@ -148,9 +165,11 @@ class ChopLiteralFieldListIntentionTest : RsIntentionTestBase(ChopLiteralFieldLi
                 y
             };
         }
-    """)
+    """
+    )
 
-    fun `test dotdot`() = doAvailableTest("""
+    fun `test dotdot`() = doAvailableTest(
+        """
         struct S {  x: i32, y: i32, z: i32 }
         fn foo() {
             let s = S { x: 0, y: 0, z: 0 };
@@ -165,9 +184,11 @@ class ChopLiteralFieldListIntentionTest : RsIntentionTestBase(ChopLiteralFieldLi
                 ..s
             };
         }
-    """)
+    """
+    )
 
-    fun `test enum`() = doAvailableTest("""
+    fun `test enum`() = doAvailableTest(
+        """
         enum E { A { x: i32, y: i32, z: i32 } }
         fn foo() {
             let e = E::A { /*caret*/ x: 0, y: 0, z: 0 };
@@ -181,5 +202,6 @@ class ChopLiteralFieldListIntentionTest : RsIntentionTestBase(ChopLiteralFieldLi
                 z: 0
             };
         }
-    """)
+    """
+    )
 }

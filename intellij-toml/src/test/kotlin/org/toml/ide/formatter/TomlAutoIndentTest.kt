@@ -8,7 +8,8 @@ package org.toml.ide.formatter
 import org.toml.ide.typing.TomlTypingTestBase
 
 class TomlAutoIndentTest : TomlTypingTestBase() {
-    fun `test new array element`() = doTestByText("""
+    fun `test new array element`() = doTestByText(
+        """
         [key]
         foo = [
             "text",<caret>
@@ -19,5 +20,6 @@ class TomlAutoIndentTest : TomlTypingTestBase() {
             "text",
             <caret>
         ]
-    """)
+    """
+    )
 }

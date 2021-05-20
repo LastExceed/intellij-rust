@@ -41,7 +41,8 @@ class RsMacroArgFmtBlock(
                     alignment = null,
                     indent = computeIndentForChild(childNode),
                     wrap = null,
-                    ctx = ctx)
+                    ctx = ctx
+                )
             }
     }
 

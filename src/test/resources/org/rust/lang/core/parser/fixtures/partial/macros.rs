@@ -8,7 +8,7 @@ fn f() {
 foo! { (a }
 foo! { [ (a ] }
 foo! { [ a ) }
-foo! ( { a ] );
+foo!( { a ] );
 
 // Should be the last in the file
 foo! { (

@@ -11,166 +11,212 @@ import org.rust.RsTestBase
 import org.rust.lang.core.parser.createRustPsiBuilder
 
 class DocsLoweringTest : RsTestBase() {
-    fun `test EOL doc 0 spaces`() = doTest("""
+    fun `test EOL doc 0 spaces`() = doTest(
+        """
         ///foo
     """, """
         #[doc="foo"]
-    """)
+    """
+    )
 
-    fun `test EOL doc 1 space`() = doTest("""
+    fun `test EOL doc 1 space`() = doTest(
+        """
         /// foo
     """, """
         #[doc=" foo"]
-    """)
+    """
+    )
 
-    fun `test EOL doc 2 spaces`() = doTest("""
+    fun `test EOL doc 2 spaces`() = doTest(
+        """
         ///  foo
     """, """
         #[doc="  foo"]
-    """)
+    """
+    )
 
-    fun `test 2 EOL comments`() = doTest("""
+    fun `test 2 EOL comments`() = doTest(
+        """
         /// foo
         /// bar
     """, """
         #[doc=" foo"]
         #[doc=" bar"]
-    """)
+    """
+    )
 
-    fun `test 2 EOL comments with different indent`() = doTest("""
+    fun `test 2 EOL comments with different indent`() = doTest(
+        """
         /// foo
             /// bar
     """, """
         #[doc=" foo"]
         #[doc=" bar"]
-    """)
+    """
+    )
 
-    fun `test empty EOL comment`() = doTest("""
+    fun `test empty EOL comment`() = doTest(
+        """
         ///
         /// foo
     """, """
         #[doc=""]
         #[doc=" foo"]
-    """)
+    """
+    )
 
-    fun `test one-line block comment`() = doTest("""
+    fun `test one-line block comment`() = doTest(
+        """
         /**foo*/
     """, """
         #[doc="foo"]
-    """)
+    """
+    )
 
-    fun `test one-line block comment with space before`() = doTest("""
+    fun `test one-line block comment with space before`() = doTest(
+        """
         /** foo*/
     """, """
         #[doc=" foo"]
-    """)
+    """
+    )
 
-    fun `test one-line block comment with space before and after`() = doTest("""
+    fun `test one-line block comment with space before and after`() = doTest(
+        """
         /** foo */
     """, """
         #[doc=" foo "]
-    """)
+    """
+    )
 
-    fun `test one-line block comment with extra asterisk`() = doTest("""
+    fun `test one-line block comment with extra asterisk`() = doTest(
+        """
         /**foo**/
     """, """
         #[doc="foo*"]
-    """)
+    """
+    )
 
-    fun `test block comment`() = doTest("""
+    fun `test block comment`() = doTest(
+        """
         /**
          * foo
          */
     """, """
         #[doc="\n * foo\n "]
-    """)
+    """
+    )
 
-    fun `test block comment with extra asterisk`() = doTest("""
+    fun `test block comment with extra asterisk`() = doTest(
+        """
         /**
          * foo
          **/
     """, """
         #[doc="\n * foo\n *"]
-    """)
+    """
+    )
 
-    fun `test block comment 2 lines`() = doTest("""
+    fun `test block comment 2 lines`() = doTest(
+        """
         /**
          * foo
          * bar
          */
     """, """
         #[doc="\n * foo\n * bar\n "]
-    """)
+    """
+    )
 
-    fun `test block comment with docs on the first line`() = doTest("""
+    fun `test block comment with docs on the first line`() = doTest(
+        """
         /** foo
          *  bar
          *  baz
          */
     """, """
         #[doc=" foo\n *  bar\n *  baz\n "]
-    """)
+    """
+    )
 
-    fun `test block comment 2 lines with docs on the last line`() = doTest("""
+    fun `test block comment 2 lines with docs on the last line`() = doTest(
+        """
         /**
          * foo
          * bar */
     """, """
         #[doc="\n * foo\n * bar "]
-    """)
+    """
+    )
 
-    fun `test block comment without infix`() = doTest("""
+    fun `test block comment without infix`() = doTest(
+        """
         /**
          foo
          */
     """, """
         #[doc="\n foo\n "]
-    """)
+    """
+    )
 
-    fun `test quote escaping`() = doTest("""
+    fun `test quote escaping`() = doTest(
+        """
         /// "foo"
     """, """
         #[doc=" \"foo\""]
-    """)
+    """
+    )
 
-    fun `test apostrophe escaping`() = doTest("""
+    fun `test apostrophe escaping`() = doTest(
+        """
         /// 'foo'
     """, """
         #[doc=" \'foo\'"]
-    """)
+    """
+    )
 
-    fun `test simple emoji is not escaped`() = doTest("""
+    fun `test simple emoji is not escaped`() = doTest(
+        """
         /// ❤
     """, """
         #[doc=" ❤"]
-    """)
+    """
+    )
 
     // TODO We should find a way to detect Grapheme_Extend characters in Java
     fun `test character from Grapheme_Extend`() = expect<ComparisonFailure> {
-    doTest("""
+        doTest(
+            """
         /// ${0x981.toChar()}
     """, """
         #[doc=" \u{981}"]
-    """)
+    """
+        )
     }
 
-    fun `test non-printable character`() = doTest("""
+    fun `test non-printable character`() = doTest(
+        """
         /// ${1.toChar()}
     """, """
         #[doc=" \u{1}"]
-    """)
+    """
+    )
 
-    fun `test inner EOL doc`() = doTest("""
+    fun `test inner EOL doc`() = doTest(
+        """
         //! foo
     """, """
         #![doc=" foo"]
-    """)
+    """
+    )
 
-    fun `test inner block doc`() = doTest("""
+    fun `test inner block doc`() = doTest(
+        """
         /*! foo */
     """, """
         #![doc=" foo "]
-    """)
+    """
+    )
 
     private fun doTest(
         @Language("Rust") code: String,

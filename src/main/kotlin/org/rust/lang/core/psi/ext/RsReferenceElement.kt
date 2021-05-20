@@ -17,7 +17,8 @@ interface RsReferenceElementBase : RsElement {
     val referenceNameElement: PsiElement?
 
     @JvmDefault
-    val referenceName: String? get() = referenceNameElement?.unescapedText
+    val referenceName: String?
+        get() = referenceNameElement?.unescapedText
 }
 
 /**
@@ -35,7 +36,8 @@ interface RsMandatoryReferenceElement : RsReferenceElement {
     override val referenceNameElement: PsiElement
 
     @JvmDefault
-    override val referenceName: String get() = referenceNameElement.unescapedText
+    override val referenceName: String
+        get() = referenceNameElement.unescapedText
 
     override fun getReference(): RsReference
 }

@@ -13,17 +13,21 @@ class CargoTomlRenameTest : RsTestBase() {
 
     fun `test rename path 1`() {
         val before = fileTree {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [lib]
                 path = "foo.rs"
-            """)
+            """
+            )
             rust("foo.rs", "")
         }
         val after = fileTree {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [lib]
                 path = "bar.rs"
-            """)
+            """
+            )
             rust("bar.rs", "")
         }
         doTest(before, after, "foo.rs", "bar")
@@ -31,10 +35,12 @@ class CargoTomlRenameTest : RsTestBase() {
 
     fun `test rename path 2`() {
         val before = fileTree {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [dependencies]
                 bar = { path = '''foo/bar''' }
-            """)
+            """
+            )
             dir("foo") {
                 dir("bar") {}
             }

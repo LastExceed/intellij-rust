@@ -6,7 +6,8 @@
 package org.rust.ide.intentions
 
 class ConvertUFCSToMethodCallTest : RsIntentionTestBase(ConvertUFCSToMethodCallIntention::class) {
-    fun `test not available for methods`() = doUnavailableTest("""
+    fun `test not available for methods`() = doUnavailableTest(
+        """
         struct S;
         impl S {
             fn foo(&self) {}
@@ -14,16 +15,20 @@ class ConvertUFCSToMethodCallTest : RsIntentionTestBase(ConvertUFCSToMethodCallI
         fn foo(s: S) {
             s./*caret*/foo();
         }
-    """)
+    """
+    )
 
-    fun `test not available for functions`() = doUnavailableTest("""
+    fun `test not available for functions`() = doUnavailableTest(
+        """
         fn foo() {}
         fn bar() {
             /*caret*/foo();
         }
-    """)
+    """
+    )
 
-    fun `test not available for associated functions`() = doUnavailableTest("""
+    fun `test not available for associated functions`() = doUnavailableTest(
+        """
         struct S;
         impl S {
             fn foo() {}
@@ -31,9 +36,11 @@ class ConvertUFCSToMethodCallTest : RsIntentionTestBase(ConvertUFCSToMethodCallI
         fn foo() {
             S::/*caret*/foo();
         }
-    """)
+    """
+    )
 
-    fun `test not available without self argument`() = doUnavailableTest("""
+    fun `test not available without self argument`() = doUnavailableTest(
+        """
         struct S;
         impl S {
             fn foo(&self) {}
@@ -41,9 +48,11 @@ class ConvertUFCSToMethodCallTest : RsIntentionTestBase(ConvertUFCSToMethodCallI
         fn foo() {
             S::/*caret*/foo();
         }
-    """)
+    """
+    )
 
-    fun `test keep other arguments`() = doAvailableTest("""
+    fun `test keep other arguments`() = doAvailableTest(
+        """
         struct S;
         impl S {
             fn foo(&self, _: u32, _: u32) {}
@@ -59,9 +68,11 @@ class ConvertUFCSToMethodCallTest : RsIntentionTestBase(ConvertUFCSToMethodCallI
         fn foo(s: &S) {
             s.foo(1, 2);
         }
-    """)
+    """
+    )
 
-    fun `test self ref receiver move`() = doAvailableTest("""
+    fun `test self ref receiver move`() = doAvailableTest(
+        """
         struct S;
         impl S {
             fn foo(&self) {}
@@ -77,9 +88,11 @@ class ConvertUFCSToMethodCallTest : RsIntentionTestBase(ConvertUFCSToMethodCallI
         fn foo(s: S) {
             s.foo();
         }
-    """)
+    """
+    )
 
-    fun `test self ref receiver ref`() = doAvailableTest("""
+    fun `test self ref receiver ref`() = doAvailableTest(
+        """
         struct S;
         impl S {
             fn foo(&self) {}
@@ -95,9 +108,11 @@ class ConvertUFCSToMethodCallTest : RsIntentionTestBase(ConvertUFCSToMethodCallI
         fn foo(s: &S) {
             s.foo();
         }
-    """)
+    """
+    )
 
-    fun `test self mut ref receiver move`() = doAvailableTest("""
+    fun `test self mut ref receiver move`() = doAvailableTest(
+        """
         struct S;
         impl S {
             fn foo(&mut self) {}
@@ -113,9 +128,11 @@ class ConvertUFCSToMethodCallTest : RsIntentionTestBase(ConvertUFCSToMethodCallI
         fn foo(mut s: S) {
             s.foo();
         }
-    """)
+    """
+    )
 
-    fun `test self mut ref receiver mut ref`() = doAvailableTest("""
+    fun `test self mut ref receiver mut ref`() = doAvailableTest(
+        """
         struct S;
         impl S {
             fn foo(&mut self) {}
@@ -131,9 +148,11 @@ class ConvertUFCSToMethodCallTest : RsIntentionTestBase(ConvertUFCSToMethodCallI
         fn foo(s: &mut S) {
             s.foo();
         }
-    """)
+    """
+    )
 
-    fun `test function call self argument`() = doAvailableTest("""
+    fun `test function call self argument`() = doAvailableTest(
+        """
         struct S;
         impl S {
             fn foo(&self) {}
@@ -151,9 +170,11 @@ class ConvertUFCSToMethodCallTest : RsIntentionTestBase(ConvertUFCSToMethodCallI
         fn foo() {
             bar().foo();
         }
-    """)
+    """
+    )
 
-    fun `test complex self argument`() = doAvailableTest("""
+    fun `test complex self argument`() = doAvailableTest(
+        """
         struct S;
         impl S {
             fn foo(&self) {}
@@ -169,9 +190,11 @@ class ConvertUFCSToMethodCallTest : RsIntentionTestBase(ConvertUFCSToMethodCallI
         fn foo() {
             (x1() + x2()).foo();
         }
-    """)
+    """
+    )
 
-    fun `test generic struct`() = doAvailableTest("""
+    fun `test generic struct`() = doAvailableTest(
+        """
         struct S<T>(T);
         impl<T> S<T> {
             fn foo(&self, _: &T) {}
@@ -187,9 +210,11 @@ class ConvertUFCSToMethodCallTest : RsIntentionTestBase(ConvertUFCSToMethodCallI
         fn foo<T>(s: S<T>, t: T) {
             s.foo(&t);
         }
-    """)
+    """
+    )
 
-    fun `test trait`() = doAvailableTest("""
+    fun `test trait`() = doAvailableTest(
+        """
         trait Trait {
             fn foo(&self);
         }
@@ -203,5 +228,6 @@ class ConvertUFCSToMethodCallTest : RsIntentionTestBase(ConvertUFCSToMethodCallI
         fn foo(s: &dyn Trait) {
             s.foo();
         }
-    """)
+    """
+    )
 }

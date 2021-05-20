@@ -1,3 +1,2 @@
-
 <caret>
 // Some comment

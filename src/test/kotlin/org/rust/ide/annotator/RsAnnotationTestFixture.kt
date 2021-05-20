@@ -36,13 +36,15 @@ open class RsAnnotationTestFixture<C>(
         ignoreExtraHighlighting: Boolean = false,
         stubOnly: Boolean = true,
         testmark: Testmark? = null
-    ) = check(text,
+    ) = check(
+        text,
         checkWarn = checkWarn,
         checkInfo = checkInfo,
         checkWeakWarn = checkWeakWarn,
         ignoreExtraHighlighting = ignoreExtraHighlighting,
         configure = { configureByFileTree(it, stubOnly) },
-        testmark = testmark)
+        testmark = testmark
+    )
 
     fun checkFixByFileTree(
         fixName: String,
@@ -53,11 +55,13 @@ open class RsAnnotationTestFixture<C>(
         checkWeakWarn: Boolean = false,
         stubOnly: Boolean = true,
         testmark: Testmark? = null
-    ) = checkFix(fixName, before, after,
+    ) = checkFix(
+        fixName, before, after,
         configure = { configureByFileTree(it, stubOnly) },
         checkBefore = { codeInsightFixture.checkHighlighting(checkWarn, checkInfo, checkWeakWarn) },
         checkAfter = this::checkByFileTree,
-        testmark = testmark)
+        testmark = testmark
+    )
 
     fun checkFixByFileTreeWithoutHighlighting(
         fixName: String,
@@ -65,11 +69,13 @@ open class RsAnnotationTestFixture<C>(
         @Language("Rust") after: String,
         stubOnly: Boolean = true,
         testmark: Testmark? = null
-    ) = checkFix(fixName, before, after,
+    ) = checkFix(
+        fixName, before, after,
         configure = { configureByFileTree(it, stubOnly) },
         checkBefore = {},
         checkAfter = this::checkByFileTree,
-        testmark = testmark)
+        testmark = testmark
+    )
 
     fun checkFixIsUnavailableByFileTree(
         fixName: String,
@@ -80,13 +86,15 @@ open class RsAnnotationTestFixture<C>(
         ignoreExtraHighlighting: Boolean = false,
         stubOnly: Boolean = true,
         testmark: Testmark? = null
-    ) = checkFixIsUnavailable(fixName, text,
+    ) = checkFixIsUnavailable(
+        fixName, text,
         checkWarn = checkWarn,
         checkInfo = checkInfo,
         checkWeakWarn = checkWeakWarn,
         ignoreExtraHighlighting = ignoreExtraHighlighting,
         configure = { configureByFileTree(it, stubOnly) },
-        testmark = testmark)
+        testmark = testmark
+    )
 
     fun checkByFile(
         file: VirtualFile,
@@ -96,13 +104,15 @@ open class RsAnnotationTestFixture<C>(
         checkWeakWarn: Boolean = false,
         ignoreExtraHighlighting: Boolean = false,
         testmark: Testmark? = null,
-    ) = check(file,
+    ) = check(
+        file,
         checkWarn = checkWarn,
         checkInfo = checkInfo,
         checkWeakWarn = checkWeakWarn,
         ignoreExtraHighlighting = ignoreExtraHighlighting,
         configure = { configureByFile(file, context) },
-        testmark = testmark)
+        testmark = testmark
+    )
 
     private fun checkByFileTree(text: String) {
         fileTreeFromText(replaceCaretMarker(text)).check(codeInsightFixture)

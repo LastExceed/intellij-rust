@@ -31,7 +31,8 @@ class ShareInPlaygroundActionTest : RsWithToolchainTestBase() {
         super.tearDown()
     }
 
-    fun `test share whole file`() = doTest(Edition.EDITION_2018, """
+    fun `test share whole file`() = doTest(
+        Edition.EDITION_2018, """
         fn main() {
             println!("Hello!");/*caret*/
         }
@@ -39,9 +40,11 @@ class ShareInPlaygroundActionTest : RsWithToolchainTestBase() {
         fn main() {
             println!("Hello!");
         }
-    """)
+    """
+    )
 
-    fun `test share selected code`() = doTest(Edition.EDITION_2018, """
+    fun `test share selected code`() = doTest(
+        Edition.EDITION_2018, """
         <selection>fn main() {
             println!("Hello!");
         }</selection>
@@ -50,9 +53,11 @@ class ShareInPlaygroundActionTest : RsWithToolchainTestBase() {
         fn main() {
             println!("Hello!");
         }
-    """)
+    """
+    )
 
-    fun `test correct edition`() = doTest(Edition.EDITION_2015, """
+    fun `test correct edition`() = doTest(
+        Edition.EDITION_2015, """
         fn main() {
             println!("Hello!");/*caret*/
         }
@@ -60,25 +65,30 @@ class ShareInPlaygroundActionTest : RsWithToolchainTestBase() {
         fn main() {
             println!("Hello!");
         }
-    """)
+    """
+    )
 
     fun `test failed request`() {
-        val notificationContent = launchAction(Edition.EDITION_2018, """
+        val notificationContent = launchAction(
+            Edition.EDITION_2018, """
             fn main() {
                 println!("Hello!");/*caret*/
             }
-        """, TestDialog.OK) {
+        """, TestDialog.OK
+        ) {
             MockResponse().setResponseCode(404)
         }
         assertEquals(notificationContent, RsBundle.message("action.Rust.ShareInPlayground.notification.error"))
     }
 
     fun `test do not perform network request without user confirmation`() {
-        launchAction(Edition.EDITION_2018, """
+        launchAction(
+            Edition.EDITION_2018, """
             fn main() {
                 println!("Hello!");/*caret*/
             }
-        """, TestDialog.NO) {
+        """, TestDialog.NO
+        ) {
             error("Unexpected network request without user confirmation")
         }
     }
@@ -106,13 +116,15 @@ class ShareInPlaygroundActionTest : RsWithToolchainTestBase() {
 
     private fun configure(@Language("Rust") code: String, edition: Edition) {
         val testProject = fileTree {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "hello"
                 version = "0.1.0"
                 authors = []
                 edition = "${edition.presentation}"
-            """)
+            """
+            )
             dir("src") {
                 rust("main.rs", code)
             }
@@ -143,11 +155,13 @@ class ShareInPlaygroundActionTest : RsWithToolchainTestBase() {
                 val gson = Gson()
                 requestCode = gson.fromJson(it.body.inputStream().reader(), ShareInPlaygroundAction.PlaygroundCode::class.java).code
 
-                val response = gson.toJson(mapOf(
-                    "id" to MOCK_GIST_ID,
-                    "url" to "https://gist.github.com/$MOCK_GIST_ID",
-                    "code" to requestCode
-                ))
+                val response = gson.toJson(
+                    mapOf(
+                        "id" to MOCK_GIST_ID,
+                        "url" to "https://gist.github.com/$MOCK_GIST_ID",
+                        "code" to requestCode
+                    )
+                )
 
                 MockResponse()
                     .setBody(response)

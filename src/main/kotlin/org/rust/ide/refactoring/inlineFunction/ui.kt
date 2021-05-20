@@ -25,13 +25,15 @@ class RsInlineFunctionDialog(
 
     public override fun doAction() {
         val inlineThisOnly = allowInlineThisOnly && isInlineThisOnly
-        invokeRefactoring(RsInlineFunctionProcessor(
-            project,
-            function,
-            refElement,
-            inlineThisOnly,
-            !inlineThisOnly && !isKeepTheDeclaration
-        ))
+        invokeRefactoring(
+            RsInlineFunctionProcessor(
+                project,
+                function,
+                refElement,
+                inlineThisOnly,
+                !inlineThisOnly && !isKeepTheDeclaration
+            )
+        )
     }
 
     override fun getBorderTitle(): String =

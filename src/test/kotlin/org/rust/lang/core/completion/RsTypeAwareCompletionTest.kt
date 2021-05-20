@@ -6,7 +6,8 @@
 package org.rust.lang.core.completion
 
 class RsTypeAwareCompletionTest : RsCompletionTestBase() {
-    fun `test method call only self`() = doSingleCompletion("""
+    fun `test method call only self`() = doSingleCompletion(
+        """
         struct S;
         impl S { fn frobnicate(self) {} }
         fn main() { S.frob/*caret*/ }
@@ -14,9 +15,11 @@ class RsTypeAwareCompletionTest : RsCompletionTestBase() {
         struct S;
         impl S { fn frobnicate(self) {} }
         fn main() { S.frobnicate()/*caret*/ }
-    """)
+    """
+    )
 
-    fun `test method call self and arg`() = doSingleCompletion("""
+    fun `test method call self and arg`() = doSingleCompletion(
+        """
         struct S;
         impl S { fn frobnicate(self, foo: i32) {} }
         fn main() { S.frob/*caret*/ }
@@ -24,9 +27,11 @@ class RsTypeAwareCompletionTest : RsCompletionTestBase() {
         struct S;
         impl S { fn frobnicate(self, foo: i32) {} }
         fn main() { S.frobnicate(/*caret*/) }
-    """)
+    """
+    )
 
-    fun `test don't suggest fields for methods`() = doSingleCompletion("""
+    fun `test don't suggest fields for methods`() = doSingleCompletion(
+        """
         struct S { transmogrificator: i32 }
         impl S { fn transmogrify(&self) {} }
 
@@ -42,9 +47,11 @@ class RsTypeAwareCompletionTest : RsCompletionTestBase() {
             let x: S = unimplemented!();
             x.transmogrify()/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test method call on &self`() = doSingleCompletion( """
+    fun `test method call on &self`() = doSingleCompletion(
+        """
         struct S;
 
         impl S {
@@ -60,9 +67,11 @@ class RsTypeAwareCompletionTest : RsCompletionTestBase() {
 
             fn foo(&self) { self.transmogrify()/*caret*/ }
         }
-    """)
+    """
+    )
 
-    fun `test method call on enum`() = doSingleCompletion("""
+    fun `test method call on enum`() = doSingleCompletion(
+        """
         enum E { X }
         impl E { fn quux(&self) {} }
 
@@ -78,9 +87,11 @@ class RsTypeAwareCompletionTest : RsCompletionTestBase() {
             let e = E::X;
             e.quux()/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test call trait impl for struct method`() = doSingleCompletion("""
+    fun `test call trait impl for struct method`() = doSingleCompletion(
+        """
         trait SomeTrait { fn some_fn(&self); }
         struct SomeStruct;
         impl SomeTrait for SomeStruct {
@@ -98,9 +109,11 @@ class RsTypeAwareCompletionTest : RsCompletionTestBase() {
         fn main() {
             SomeStruct.some_fn()/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test call trait impl for enum method`() = doSingleCompletion("""
+    fun `test call trait impl for enum method`() = doSingleCompletion(
+        """
         trait SomeTrait { fn some_fn(&self); }
         enum SomeEnum { Var1, Var2 }
         impl SomeTrait for SomeEnum {
@@ -120,9 +133,11 @@ class RsTypeAwareCompletionTest : RsCompletionTestBase() {
             let v = SomeEnum::Var1;
             v.some_fn()/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test field expr`() = doSingleCompletion("""
+    fun `test field expr`() = doSingleCompletion(
+        """
         struct S { transmogrificator: f32 }
 
         fn main() {
@@ -136,9 +151,11 @@ class RsTypeAwareCompletionTest : RsCompletionTestBase() {
             let s = S { transmogrificator: 92};
             s.transmogrificator/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test static method`() = doSingleCompletion("""
+    fun `test static method`() = doSingleCompletion(
+        """
         struct S;
         impl S { fn create() -> S { S } }
 
@@ -148,9 +165,11 @@ class RsTypeAwareCompletionTest : RsCompletionTestBase() {
         impl S { fn create() -> S { S } }
 
         fn main() { let _ = S::create()/*caret*/; }
-    """)
+    """
+    )
 
-    fun `test self method`() = doSingleCompletion("""
+    fun `test self method`() = doSingleCompletion(
+        """
         trait Foo {
             fn frobnicate(&self);
             fn bar(&self) { self.frob/*caret*/ }
@@ -160,9 +179,11 @@ class RsTypeAwareCompletionTest : RsCompletionTestBase() {
             fn frobnicate(&self);
             fn bar(&self) { self.frobnicate()/*caret*/ }
         }
-    """)
+    """
+    )
 
-    fun `test default method`() = doSingleCompletion("""
+    fun `test default method`() = doSingleCompletion(
+        """
         trait Frob { fn frobnicate(&self) { } }
         struct S;
         impl Frob for S {}
@@ -174,9 +195,11 @@ class RsTypeAwareCompletionTest : RsCompletionTestBase() {
         impl Frob for S {}
 
         fn foo(s: S) { s.frobnicate()/*caret*/ }
-    """)
+    """
+    )
 
-    fun `test bound associated type`() = doSingleCompletion("""
+    fun `test bound associated type`() = doSingleCompletion(
+        """
         trait Tr { type Item; }
         struct S<A>(A);
         impl<B: Tr> S<B> { fn foo(self) -> B::It/*caret*/ }
@@ -184,9 +207,11 @@ class RsTypeAwareCompletionTest : RsCompletionTestBase() {
         trait Tr { type Item; }
         struct S<A>(A);
         impl<B: Tr> S<B> { fn foo(self) -> B::Item/*caret*/ }
-    """)
+    """
+    )
 
-    fun `test bound associated type in explicit UFCS form`() = doSingleCompletion("""
+    fun `test bound associated type in explicit UFCS form`() = doSingleCompletion(
+        """
         trait Tr { type Item; }
         struct S<A>(A);
         impl<B: Tr> S<B> { fn foo(self) -> <B as Tr>::It/*caret*/ }
@@ -194,17 +219,21 @@ class RsTypeAwareCompletionTest : RsCompletionTestBase() {
         trait Tr { type Item; }
         struct S<A>(A);
         impl<B: Tr> S<B> { fn foo(self) -> <B as Tr>::Item/*caret*/ }
-    """)
+    """
+    )
 
     // https://doc.rust-lang.org/error-index.html#E0223
-    fun `test no completion for associated type of type other then type parameter`() = checkNoCompletion("""
+    fun `test no completion for associated type of type other then type parameter`() = checkNoCompletion(
+        """
         trait Tr { type Item; }
         impl<T> Tr for T { type Item = (); }
         struct S;
         fn main() { let a: S::/*caret*/; }
-    """)
+    """
+    )
 
-    fun `test associated type in explicit UFCS form`() = doSingleCompletion("""
+    fun `test associated type in explicit UFCS form`() = doSingleCompletion(
+        """
         trait Tr { type Item; }
         impl<T> Tr for T { type Item = (); }
         struct S;
@@ -214,9 +243,11 @@ class RsTypeAwareCompletionTest : RsCompletionTestBase() {
         impl<T> Tr for T { type Item = (); }
         struct S;
         fn main() { let a: <S as Tr>::Item/*caret*/; }
-    """)
+    """
+    )
 
-    fun `test impl for 'Sized' type parameter is not completed for trait object`() = checkNotContainsCompletion("bar", """
+    fun `test impl for 'Sized' type parameter is not completed for trait object`() = checkNotContainsCompletion(
+        "bar", """
         trait Foo { fn foo(&self); fn foo2(&self); }
         trait Bar { fn bar(&self); }
         impl<T> Bar for T {
@@ -225,5 +256,6 @@ class RsTypeAwareCompletionTest : RsCompletionTestBase() {
         fn foo(a: &dyn Foo) {
             (*a)./*caret*/
         }
-    """)
+    """
+    )
 }

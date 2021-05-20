@@ -15,30 +15,30 @@ import org.rust.lang.core.psi.MacroBraces
  * returns a [TokenTree].
  */
 sealed class TokenTree {
-    sealed class Leaf: TokenTree() {
+    sealed class Leaf : TokenTree() {
         abstract val id: TokenId
 
         data class Literal(
             val text: String,
             override val id: TokenId
-        ): Leaf()
+        ) : Leaf()
 
         data class Punct(
             val char: String,
             val spacing: Spacing,
             override val id: TokenId
-        ): Leaf()
+        ) : Leaf()
 
         data class Ident(
             val text: String,
             override val id: TokenId
-        ): Leaf()
+        ) : Leaf()
     }
 
     data class Subtree(
         val delimiter: Delimiter?,
         val tokenTrees: List<TokenTree>
-    ): TokenTree()
+    ) : TokenTree()
 }
 
 typealias TokenId = Int

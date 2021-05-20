@@ -6,7 +6,8 @@
 package org.rust.ide.actions.mover
 
 class RsStatementUpDownMoverTest : RsStatementUpDownMoverTestBase() {
-    fun `test straightline down`() = moveDown("""
+    fun `test straightline down`() = moveDown(
+        """
         fn main() {
             1;
             2/*caret*/;
@@ -18,9 +19,11 @@ class RsStatementUpDownMoverTest : RsStatementUpDownMoverTestBase() {
             3;
             2/*caret*/;
         }
-    """)
+    """
+    )
 
-    fun `test straightline up`() = moveUp("""
+    fun `test straightline up`() = moveUp(
+        """
         fn main() {
             1;
             2;
@@ -32,25 +35,31 @@ class RsStatementUpDownMoverTest : RsStatementUpDownMoverTestBase() {
             3/*caret*/;
             2;
         }
-    """)
+    """
+    )
 
-    fun `test straightline down out of body`() = moveDown("""
+    fun `test straightline down out of body`() = moveDown(
+        """
         fn main() {
             1;
             2;
             3/*caret*/;
         }
-    """, testmark = UpDownMoverTestMarks.moveOutOfBody)
+    """, testmark = UpDownMoverTestMarks.moveOutOfBody
+    )
 
-    fun `test straightline up out of body`() = moveUp("""
+    fun `test straightline up out of body`() = moveUp(
+        """
         fn main() {
             1/*caret*/;
             2;
             3;
         }
-    """, testmark = UpDownMoverTestMarks.moveOutOfBody)
+    """, testmark = UpDownMoverTestMarks.moveOutOfBody
+    )
 
-    fun `test up into if block`() = moveUp("""
+    fun `test up into if block`() = moveUp(
+        """
         fn main() {
             if something {
             }
@@ -62,9 +71,11 @@ class RsStatementUpDownMoverTest : RsStatementUpDownMoverTestBase() {
                 1/*caret*/;
             }
         }
-    """)
+    """
+    )
 
-    fun `test down from if block`() = moveDown("""
+    fun `test down from if block`() = moveDown(
+        """
         fn main() {
             if something {
                1/*caret*/;
@@ -76,9 +87,11 @@ class RsStatementUpDownMoverTest : RsStatementUpDownMoverTestBase() {
             }
             1/*caret*/;
         }
-    """)
+    """
+    )
 
-    fun `test up into else block`() = moveUp("""
+    fun `test up into else block`() = moveUp(
+        """
         fn main() {
             if something {
             } else {
@@ -92,9 +105,11 @@ class RsStatementUpDownMoverTest : RsStatementUpDownMoverTestBase() {
                 1/*caret*/;
             }
         }
-    """)
+    """
+    )
 
-    fun `test down from else block`() = moveDown("""
+    fun `test down from else block`() = moveDown(
+        """
         fn main() {
             if something {
             } else {
@@ -108,9 +123,11 @@ class RsStatementUpDownMoverTest : RsStatementUpDownMoverTestBase() {
             }
             1/*caret*/;
         }
-    """)
+    """
+    )
 
-    fun `test down into if block`() = moveDown("""
+    fun `test down into if block`() = moveDown(
+        """
         fn main() {
             1/*caret*/;
             if something {
@@ -126,9 +143,11 @@ class RsStatementUpDownMoverTest : RsStatementUpDownMoverTestBase() {
                 2;
             }
         }
-    """)
+    """
+    )
 
-    fun `test up from if block`() = moveUp("""
+    fun `test up from if block`() = moveUp(
+        """
         fn main() {
             if something {
                 1/*caret*/;
@@ -142,9 +161,11 @@ class RsStatementUpDownMoverTest : RsStatementUpDownMoverTestBase() {
             } else {
             }
         }
-    """)
+    """
+    )
 
-    fun `test down into else block from if block`() = moveDown("""
+    fun `test down into else block from if block`() = moveDown(
+        """
         fn main() {
             if something {
                 1/*caret*/;
@@ -158,9 +179,11 @@ class RsStatementUpDownMoverTest : RsStatementUpDownMoverTestBase() {
                 1/*caret*/;
             }
         }
-    """)
+    """
+    )
 
-    fun `test up into if block from else block`() = moveDown("""
+    fun `test up into if block from else block`() = moveDown(
+        """
         fn main() {
             if something {
                 1/*caret*/;
@@ -174,9 +197,11 @@ class RsStatementUpDownMoverTest : RsStatementUpDownMoverTestBase() {
                 1/*caret*/;
             }
         }
-    """)
+    """
+    )
 
-    fun `test expr down`() = moveDown("""
+    fun `test expr down`() = moveDown(
+        """
         fn main() {
             if something {
                 1;
@@ -192,9 +217,11 @@ class RsStatementUpDownMoverTest : RsStatementUpDownMoverTestBase() {
             2/*caret*/
             3;
         }
-    """)
+    """
+    )
 
-    fun `test expr down 2`() = moveDown("""
+    fun `test expr down 2`() = moveDown(
+        """
         fn main() {
             for x in xs {
                 1;
@@ -212,9 +239,11 @@ class RsStatementUpDownMoverTest : RsStatementUpDownMoverTestBase() {
             2;
             3;
         }
-    """)
+    """
+    )
 
-    fun `test expr up 2`() = moveUp("""
+    fun `test expr up 2`() = moveUp(
+        """
         fn main() {
             1;
             for x in xs {
@@ -232,10 +261,12 @@ class RsStatementUpDownMoverTest : RsStatementUpDownMoverTestBase() {
             }
             3;
         }
-    """)
+    """
+    )
 
 
-    fun `test expr up`() = moveUp("""
+    fun `test expr up`() = moveUp(
+        """
         fn main() {
             1;
             2/*caret*/
@@ -245,9 +276,11 @@ class RsStatementUpDownMoverTest : RsStatementUpDownMoverTestBase() {
             2/*caret*/
             1;
         }
-    """)
+    """
+    )
 
-    fun `test expr down nested blocks`() = moveDown("""
+    fun `test expr down nested blocks`() = moveDown(
+        """
         fn main() {
             if something1 {
                 if something2 {
@@ -269,9 +302,11 @@ class RsStatementUpDownMoverTest : RsStatementUpDownMoverTestBase() {
             }
             3;
         }
-    """)
+    """
+    )
 
-    fun `test expr up nested blocks`() = moveUp("""
+    fun `test expr up nested blocks`() = moveUp(
+        """
         fn main() {
             if something1 {
                 1;
@@ -291,9 +326,11 @@ class RsStatementUpDownMoverTest : RsStatementUpDownMoverTestBase() {
                 }
             }
         }
-    """)
+    """
+    )
 
-    fun `test down into for loop`() = moveDown("""
+    fun `test down into for loop`() = moveDown(
+        """
         fn main() {
             1/*caret*/;
             for x in xs {
@@ -307,9 +344,11 @@ class RsStatementUpDownMoverTest : RsStatementUpDownMoverTestBase() {
                 2;
             }
         }
-    """)
+    """
+    )
 
-    fun `test down into while loop`() = moveDown("""
+    fun `test down into while loop`() = moveDown(
+        """
         fn main() {
             1/*caret*/;
             while something {
@@ -323,9 +362,11 @@ class RsStatementUpDownMoverTest : RsStatementUpDownMoverTestBase() {
                 2;
             }
         }
-    """)
+    """
+    )
 
-    fun `test down into loop`() = moveDown("""
+    fun `test down into loop`() = moveDown(
+        """
         fn main() {
             1/*caret*/;
             loop {
@@ -339,9 +380,11 @@ class RsStatementUpDownMoverTest : RsStatementUpDownMoverTestBase() {
                 2;
             }
         }
-    """)
+    """
+    )
 
-    fun `test inside closure`() = moveDown("""
+    fun `test inside closure`() = moveDown(
+        """
         fn main() {
             let f = |x| {
                 1/*caret*/
@@ -355,9 +398,11 @@ class RsStatementUpDownMoverTest : RsStatementUpDownMoverTestBase() {
                 1/*caret*/
             };
         }
-    """)
+    """
+    )
 
-    fun `test down into closure`() = moveDown("""
+    fun `test down into closure`() = moveDown(
+        """
         fn main() {
             1/*caret*/;
             |x| {
@@ -371,9 +416,11 @@ class RsStatementUpDownMoverTest : RsStatementUpDownMoverTestBase() {
                 2;
             }
         }
-    """)
+    """
+    )
 
-    fun `test up from closure`() = moveUp("""
+    fun `test up from closure`() = moveUp(
+        """
         fn main() {
             |x| {
                 1/*caret*/;
@@ -387,9 +434,11 @@ class RsStatementUpDownMoverTest : RsStatementUpDownMoverTestBase() {
                 2;
             }
         }
-    """)
+    """
+    )
 
-    fun `test multiple dot expr`() = moveUp("""
+    fun `test multiple dot expr`() = moveUp(
+        """
         fn main() {
             if something {
                 1;
@@ -407,9 +456,11 @@ class RsStatementUpDownMoverTest : RsStatementUpDownMoverTestBase() {
                     .xyz()
             }
         }
-    """)
+    """
+    )
 
-    fun `test up empty line`() = moveUp("""
+    fun `test up empty line`() = moveUp(
+        """
         fn main() {
             1;
 
@@ -421,9 +472,11 @@ class RsStatementUpDownMoverTest : RsStatementUpDownMoverTestBase() {
             2/*caret*/;
 
         }
-    """)
+    """
+    )
 
-    fun `test down empty line`() = moveDown("""
+    fun `test down empty line`() = moveDown(
+        """
         fn main() {
             1/*caret*/;
 
@@ -435,9 +488,11 @@ class RsStatementUpDownMoverTest : RsStatementUpDownMoverTestBase() {
             1/*caret*/;
             2;
         }
-    """)
+    """
+    )
 
-    fun `test down empty line block`() = moveDown("""
+    fun `test down empty line block`() = moveDown(
+        """
         fn main() {
             1/*caret*/;
 
@@ -451,9 +506,11 @@ class RsStatementUpDownMoverTest : RsStatementUpDownMoverTestBase() {
             if cond {
             }
         }
-    """)
+    """
+    )
 
-    fun `test up empty line block`() = moveUp("""
+    fun `test up empty line block`() = moveUp(
+        """
         fn main() {
             if cond {
             }
@@ -467,9 +524,11 @@ class RsStatementUpDownMoverTest : RsStatementUpDownMoverTestBase() {
             1/*caret*/;
 
         }
-    """)
+    """
+    )
 
-    fun `test up empty line at start`() = moveUp("""
+    fun `test up empty line at start`() = moveUp(
+        """
         fn main() {
 
             1/*caret*/;
@@ -479,9 +538,11 @@ class RsStatementUpDownMoverTest : RsStatementUpDownMoverTestBase() {
             1/*caret*/;
 
         }
-    """)
+    """
+    )
 
-    fun `test up empty line at end`() = moveDown("""
+    fun `test up empty line at end`() = moveDown(
+        """
         fn main() {
             1/*caret*/;
 
@@ -491,11 +552,13 @@ class RsStatementUpDownMoverTest : RsStatementUpDownMoverTestBase() {
 
             1/*caret*/;
         }
-    """)
+    """
+    )
 
 
     // https://github.com/intellij-rust/intellij-rust/issues/3548
-    fun `test statement ends with comment`() = moveDown("""
+    fun `test statement ends with comment`() = moveDown(
+        """
         fn main() {
             1;
             {
@@ -515,9 +578,11 @@ class RsStatementUpDownMoverTest : RsStatementUpDownMoverTestBase() {
             }
             5;
         }
-    """)
+    """
+    )
 
-    fun `test move up statement in match arm body`() = moveUp("""
+    fun `test move up statement in match arm body`() = moveUp(
+        """
         fn main() {
              match x {
                  foo => {
@@ -549,9 +614,11 @@ class RsStatementUpDownMoverTest : RsStatementUpDownMoverTestBase() {
                  }
              };
         }
-    """)
+    """
+    )
 
-    fun `test move down statement in match arm body`() = moveDown("""
+    fun `test move down statement in match arm body`() = moveDown(
+        """
         fn main() {
              match x {
                  foo => {
@@ -583,9 +650,11 @@ class RsStatementUpDownMoverTest : RsStatementUpDownMoverTestBase() {
                  }
              };
         }
-    """)
+    """
+    )
 
-    fun `test move up first statement in match arm body`() = moveUp("""
+    fun `test move up first statement in match arm body`() = moveUp(
+        """
         fn main() {
              match x {
                  foo => {
@@ -601,9 +670,11 @@ class RsStatementUpDownMoverTest : RsStatementUpDownMoverTestBase() {
                  }
              };
         }
-    """, testmark = UpDownMoverTestMarks.moveOutOfBody)
+    """, testmark = UpDownMoverTestMarks.moveOutOfBody
+    )
 
-    fun `test move down last statement in match arm body`() = moveDown("""
+    fun `test move down last statement in match arm body`() = moveDown(
+        """
         fn main() {
              match x {
                  foo => {
@@ -619,5 +690,6 @@ class RsStatementUpDownMoverTest : RsStatementUpDownMoverTestBase() {
                  }
              };
         }
-    """, testmark = UpDownMoverTestMarks.moveOutOfBody)
+    """, testmark = UpDownMoverTestMarks.moveOutOfBody
+    )
 }

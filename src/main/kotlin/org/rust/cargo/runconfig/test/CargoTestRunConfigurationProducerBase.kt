@@ -129,8 +129,10 @@ abstract class CargoTestRunConfigurationProducerBase : CargoRunConfigurationProd
             ?: return null
         val target = sourceElement.containingCargoTarget ?: return null
         val configPath = sourceElement.crateRelativePath.configPath() ?: return null
-        return SingleItemTestConfig(commandName, configPath, target, sourceElement, originalElement,
-            isIgnoredTest(sourceElement))
+        return SingleItemTestConfig(
+            commandName, configPath, target, sourceElement, originalElement,
+            isIgnoredTest(sourceElement)
+        )
     }
 
     private inline fun <reified T : PsiElement> findElement(base: PsiElement, climbUp: Boolean): T? {

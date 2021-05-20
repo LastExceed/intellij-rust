@@ -10,19 +10,24 @@ import org.rust.RsTestBase
 import org.rust.launchAction
 
 class RsExtractEnumVariantTest : RsTestBase() {
-    fun `test not available on empty variant`() = doUnavailableTest("""
+    fun `test not available on empty variant`() = doUnavailableTest(
+        """
         enum A {
             /*caret*/V1
         }
-    """)
+    """
+    )
 
-    fun `test not available on variant with discriminant`() = doUnavailableTest("""
+    fun `test not available on variant with discriminant`() = doUnavailableTest(
+        """
         enum A {
             /*caret*/V1 = 1
         }
-    """)
+    """
+    )
 
-    fun `test tuple variant`() = doAvailableTest("""
+    fun `test tuple variant`() = doAvailableTest(
+        """
         enum A {
             /*caret*/V1(i32, bool, String),
             V2
@@ -34,9 +39,11 @@ class RsExtractEnumVariantTest : RsTestBase() {
             V1(V1),
             V2
         }
-    """)
+    """
+    )
 
-    fun `test struct variant`() = doAvailableTest("""
+    fun `test struct variant`() = doAvailableTest(
+        """
         enum A {
             /*caret*/V1 { a: i32, b: bool, c: String },
             V2
@@ -52,9 +59,11 @@ class RsExtractEnumVariantTest : RsTestBase() {
             V1(V1),
             V2
         }
-    """)
+    """
+    )
 
-    fun `test generic type`() = doAvailableTest("""
+    fun `test generic type`() = doAvailableTest(
+        """
         enum A<T> {
             /*caret*/V1(T),
             V2
@@ -66,9 +75,11 @@ class RsExtractEnumVariantTest : RsTestBase() {
             V1(V1<T>),
             V2
         }
-    """)
+    """
+    )
 
-    fun `test type bound`() = doAvailableTest("""
+    fun `test type bound`() = doAvailableTest(
+        """
         trait Trait {}
         enum A<T: Trait> {
             /*caret*/V1(T),
@@ -83,9 +94,11 @@ class RsExtractEnumVariantTest : RsTestBase() {
             V1(V1<T>),
             V2
         }
-    """)
+    """
+    )
 
-    fun `test where clause tuple`() = doAvailableTest("""
+    fun `test where clause tuple`() = doAvailableTest(
+        """
         trait Trait {}
         enum A<T> where T: Trait {
             /*caret*/V1(T),
@@ -100,9 +113,11 @@ class RsExtractEnumVariantTest : RsTestBase() {
             V1(V1<T>),
             V2
         }
-    """)
+    """
+    )
 
-    fun `test where clause struct`() = doAvailableTest("""
+    fun `test where clause struct`() = doAvailableTest(
+        """
         trait Trait {}
         enum A<T> where T: Trait {
             /*caret*/V1 { a: T },
@@ -119,9 +134,11 @@ class RsExtractEnumVariantTest : RsTestBase() {
             V1(V1<T>),
             V2
         }
-    """)
+    """
+    )
 
-    fun `test select only used parameters in where clause`() = doAvailableTest("""
+    fun `test select only used parameters in where clause`() = doAvailableTest(
+        """
         trait Trait {}
         trait Trait2<S> {
             type Item;
@@ -148,9 +165,11 @@ class RsExtractEnumVariantTest : RsTestBase() {
             V1(V1<'a, 'b, T, S, U>),
             V2((&'b R, &'c T, S))
         }
-    """)
+    """
+    )
 
-    fun `test lifetime bounds`() = doAvailableTest("""
+    fun `test lifetime bounds`() = doAvailableTest(
+        """
         enum A<'a: 'b, 'b: 'a> {
             /*caret*/V1 { a: &'a u32, b: &'b u32 }
         }
@@ -163,9 +182,11 @@ class RsExtractEnumVariantTest : RsTestBase() {
         enum A<'a: 'b, 'b: 'a> {
             V1(V1<'a, 'b>)
         }
-    """)
+    """
+    )
 
-    fun `test type parameter bounded by lifetime`() = doAvailableTest("""
+    fun `test type parameter bounded by lifetime`() = doAvailableTest(
+        """
         trait Sync {}
 
         enum S<'a, T: 'a> where &'a T: Sync {
@@ -181,9 +202,11 @@ class RsExtractEnumVariantTest : RsTestBase() {
             V1(V1<'a, T>),
             V2
         }
-    """)
+    """
+    )
 
-    fun `test transitive lifetime bound`() = doAvailableTest("""
+    fun `test transitive lifetime bound`() = doAvailableTest(
+        """
         trait Sync {}
 
         enum S<'a: 'b, 'b, T: 'a> where &'b T: Sync {
@@ -199,9 +222,11 @@ class RsExtractEnumVariantTest : RsTestBase() {
             V1(V1<'a, 'b, T>),
             V2(&'b u32)
         }
-    """)
+    """
+    )
 
-    fun `test const generics`() = doAvailableTest("""
+    fun `test const generics`() = doAvailableTest(
+        """
         trait Trait {}
         enum A<const T: usize> {
             /*caret*/V1 { a: [u32; T] },
@@ -218,9 +243,11 @@ class RsExtractEnumVariantTest : RsTestBase() {
             V1(V1<{ T }>),
             V2
         }
-    """)
+    """
+    )
 
-    fun `test lifetime`() = doAvailableTest("""
+    fun `test lifetime`() = doAvailableTest(
+        """
         enum A<'a> {
             /*caret*/V1(&'a u32),
             V2
@@ -232,9 +259,11 @@ class RsExtractEnumVariantTest : RsTestBase() {
             V1(V1<'a>),
             V2
         }
-    """)
+    """
+    )
 
-    fun `test skip unused generic type`() = doAvailableTest("""
+    fun `test skip unused generic type`() = doAvailableTest(
+        """
         struct S<X> { a: X }
 
         enum A<'a, T1, T2, T3, T4> {
@@ -250,9 +279,11 @@ class RsExtractEnumVariantTest : RsTestBase() {
             V1(V1<'a, T1, T2, T4>),
             V2(T3)
         }
-    """)
+    """
+    )
 
-    fun `test skip unused lifetime`() = doAvailableTest("""
+    fun `test skip unused lifetime`() = doAvailableTest(
+        """
         struct S<X> { a: X }
 
         enum A<'a, 'b> {
@@ -268,9 +299,11 @@ class RsExtractEnumVariantTest : RsTestBase() {
             V1(V1<'a>),
             V2('b u32)
         }
-    """)
+    """
+    )
 
-    fun `test replace usage tuple in pattern`() = doAvailableTest("""
+    fun `test replace usage tuple in pattern`() = doAvailableTest(
+        """
         enum A {
             /*caret*/V1(u32, bool, i32)
         }
@@ -279,7 +312,7 @@ class RsExtractEnumVariantTest : RsTestBase() {
 
         fn foo(mut a: A, mut b: Option<A>) {
             match a {
-                A::V1(ref mut x, ref y, ..) => {},
+                A::V1(ref mut x, ref y, ..) => {}
             }
 
             if let Option::Some(A::V1(ref mut x, ref y, z)) = b {
@@ -297,16 +330,18 @@ class RsExtractEnumVariantTest : RsTestBase() {
 
         fn foo(mut a: A, mut b: Option<A>) {
             match a {
-                A::V1(V1(ref mut x, ref y, ..)) => {},
+                A::V1(V1(ref mut x, ref y, ..)) => {}
             }
 
             if let Option::Some(A::V1(V1(ref mut x, ref y, z))) = b {
 
             }
         }
-    """)
+    """
+    )
 
-    fun `test replace usage struct in pattern`() = doAvailableTest("""
+    fun `test replace usage struct in pattern`() = doAvailableTest(
+        """
         enum A {
             /*caret*/V1 { x: u32, y: bool, z: i32 }
         }
@@ -344,9 +379,11 @@ class RsExtractEnumVariantTest : RsTestBase() {
 
             }
         }
-    """)
+    """
+    )
 
-    fun `test replace usage struct`() = doAvailableTest("""
+    fun `test replace usage struct`() = doAvailableTest(
+        """
         enum E {
             /*caret*/V1 { x: i32, y: u32, z: u32 },
             V2
@@ -374,9 +411,11 @@ class RsExtractEnumVariantTest : RsTestBase() {
             let v = E::V1(V1 { x: 42, y: 50, z });
             let v = E::V1(V1 { x: 42, y: 50 /* comment */, z: 3 });
         }
-    """)
+    """
+    )
 
-    fun `test replace usage tuple`() = doAvailableTest("""
+    fun `test replace usage tuple`() = doAvailableTest(
+        """
         enum E {
             /*caret*/V1(i32, String),
             V2
@@ -398,9 +437,11 @@ class RsExtractEnumVariantTest : RsTestBase() {
             let v = E::V1(V1(1, String::new()));
             let v = E::V1(V1(1, /*comment*/ String::new()));
         }
-    """)
+    """
+    )
 
-    fun `test generated struct has same visibility`() = doAvailableTest("""
+    fun `test generated struct has same visibility`() = doAvailableTest(
+        """
         pub enum A {
             /*caret*/V1 { a: i32, b: bool, c: String },
             V2
@@ -416,9 +457,11 @@ class RsExtractEnumVariantTest : RsTestBase() {
             V1(V1),
             V2
         }
-    """)
+    """
+    )
 
-    fun `test add pub to all struct's fields with default vis`() = doAvailableTest("""
+    fun `test add pub to all struct's fields with default vis`() = doAvailableTest(
+        """
         enum A {
             /*caret*/V1 { /* comment */a: i32, /* comment */b: i32, pub c: i32, pub(crate) d: i32 },
             V2
@@ -435,9 +478,11 @@ class RsExtractEnumVariantTest : RsTestBase() {
             V1(V1),
             V2
         }
-    """)
+    """
+    )
 
-    fun `test add pub to all tuple's fields with default vis`() = doAvailableTest("""
+    fun `test add pub to all tuple's fields with default vis`() = doAvailableTest(
+        """
         enum A {
             /*caret*/V1(/* comment */i32, /* comment */i32, pub i32, pub(crate) i32),
             V2
@@ -449,9 +494,11 @@ class RsExtractEnumVariantTest : RsTestBase() {
             V1(V1),
             V2
         }
-    """)
+    """
+    )
 
-    fun `test import generated struct if needed`() = doAvailableTest("""
+    fun `test import generated struct if needed`() = doAvailableTest(
+        """
         use a::E;
 
         mod a {
@@ -482,9 +529,11 @@ class RsExtractEnumVariantTest : RsTestBase() {
         fn main() {
             let _ = E::V1(V1 { x: 0, y: 1 });
         }
-    """)
+    """
+    )
 
-    fun `test import generated tuple if needed`() = doAvailableTest("""
+    fun `test import generated tuple if needed`() = doAvailableTest(
+        """
         use a::E;
 
         mod a {
@@ -512,10 +561,12 @@ class RsExtractEnumVariantTest : RsTestBase() {
         fn main() {
             let _ = E::V1(V1(0, 1));
         }
-    """)
+    """
+    )
 
     // TODO: fix
-    fun `test don't import generated struct if its name already in scope`() = doAvailableTest("""
+    fun `test don't import generated struct if its name already in scope`() = doAvailableTest(
+        """
         use a::E;
 
         struct V1;
@@ -550,9 +601,11 @@ class RsExtractEnumVariantTest : RsTestBase() {
         fn main() {
             let _ = E::V1(V1 { x: 0, y: 1 });
         }
-    """)
+    """
+    )
 
-    fun `test keep supported attributes`() = doAvailableTest("""
+    fun `test keep supported attributes`() = doAvailableTest(
+        """
         #[derive(Debug, Clone)]
         #[repr(C)]
         pub enum E {
@@ -573,9 +626,11 @@ class RsExtractEnumVariantTest : RsTestBase() {
             V1(V1),
             V2
         }
-    """)
+    """
+    )
 
-    fun `test ignore unsupported attributes`() = doAvailableTest("""
+    fun `test ignore unsupported attributes`() = doAvailableTest(
+        """
         #[attr]
         pub enum E {
             /*caret*/V1 { x: i32, y: i32 },
@@ -592,9 +647,11 @@ class RsExtractEnumVariantTest : RsTestBase() {
             V1(V1),
             V2
         }
-    """)
+    """
+    )
 
-    fun `test reference to tuple constructor`() = doAvailableTest("""
+    fun `test reference to tuple constructor`() = doAvailableTest(
+        """
         mod foo {
             pub enum Foo { Bar/*caret*/(i32, u32) }
         }
@@ -618,9 +675,11 @@ class RsExtractEnumVariantTest : RsTestBase() {
             let ctr2 = ctr;
             let f = ctr2(0, 1);
         }
-    """)
+    """
+    )
 
-    fun `test tuple constructor in a function call`() = doAvailableTest("""
+    fun `test tuple constructor in a function call`() = doAvailableTest(
+        """
         enum Foo { Bar/*caret*/(i32) }
         fn id<T>(x: T) -> T { x }
 
@@ -636,7 +695,8 @@ class RsExtractEnumVariantTest : RsTestBase() {
         fn main() {
             id(|p0| Foo::Bar(Bar(p0)))(42);
         }
-    """)
+    """
+    )
 
     private fun doAvailableTest(@Language("Rust") before: String, @Language("Rust") after: String) {
         checkEditorAction(before, after, "Rust.RsExtractEnumVariant")

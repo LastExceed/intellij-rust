@@ -20,9 +20,11 @@ import javax.swing.DefaultListCellRenderer
 import javax.swing.JList
 import javax.swing.ListSelectionModel
 
-fun showEnclosingFunctionsChooser(editor: Editor,
-                                  methods: List<RsFunction>,
-                                  callback: (RsFunction) -> Unit) {
+fun showEnclosingFunctionsChooser(
+    editor: Editor,
+    methods: List<RsFunction>,
+    callback: (RsFunction) -> Unit
+) {
     if (isUnitTestMode && methods.size > 1) {
         callback(MOCK!!.chooseMethod(methods))
         return
@@ -46,11 +48,13 @@ fun showEnclosingFunctionsChooser(editor: Editor,
             }
         })
         .setRenderer(object : DefaultListCellRenderer() {
-            override fun getListCellRendererComponent(list: JList<*>,
-                                                      value: Any?,
-                                                      index: Int,
-                                                      isSelected: Boolean,
-                                                      cellHasFocus: Boolean): Component {
+            override fun getListCellRendererComponent(
+                list: JList<*>,
+                value: Any?,
+                index: Int,
+                isSelected: Boolean,
+                cellHasFocus: Boolean
+            ): Component {
                 val rendererComponent = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus)
                 text = (value as RsFunction).title
                 return rendererComponent

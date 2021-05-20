@@ -99,6 +99,7 @@ class GatherMoveContext(private val bccx: BorrowCheckContext, private val moveDa
 
 // TODO: use ImplLookup
 @Suppress("unused")
-val RsStructOrEnumItemElement.hasDestructor: Boolean get() = false
+val RsStructOrEnumItemElement.hasDestructor: Boolean
+    get() = false
 
 val Ty.isAdtWithDestructor: Boolean get() = this is TyAdt && this.item.hasDestructor

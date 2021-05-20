@@ -24,9 +24,8 @@ import org.rust.lang.core.psi.*
 import org.rust.lang.core.psi.ext.*
 import org.rust.stdext.buildList
 
-class RsStructureViewModel(editor: Editor?, file: RsFileBase)
-    : StructureViewModelBase(file, editor, RsStructureViewElement(file)),
-      StructureViewModel.ElementInfoProvider {
+class RsStructureViewModel(editor: Editor?, file: RsFileBase) : StructureViewModelBase(file, editor, RsStructureViewElement(file)),
+                                                                StructureViewModel.ElementInfoProvider {
 
     init {
         withSuitableClasses(

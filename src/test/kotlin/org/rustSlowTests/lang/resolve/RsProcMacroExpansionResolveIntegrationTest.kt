@@ -24,7 +24,8 @@ class RsProcMacroExpansionResolveIntegrationTest : RsWithToolchainTestBase() {
     fun `test 2 cargo projects (proc macro is a separate cargo project)`() = runWithProcMacrosEnabled {
         fileTree {
             dir("my_proc_macro") {
-                toml("Cargo.toml", """
+                toml(
+                    "Cargo.toml", """
                     [package]
                     name = "my_proc_macro"
                     version = "1.0.0"
@@ -34,9 +35,11 @@ class RsProcMacroExpansionResolveIntegrationTest : RsWithToolchainTestBase() {
                     proc-macro = true
 
                     [dependencies]
-                """)
+                """
+                )
                 dir("src") {
-                    rust("lib.rs", """
+                    rust(
+                        "lib.rs", """
                         extern crate proc_macro;
                         use proc_macro::TokenStream;
 
@@ -44,11 +47,13 @@ class RsProcMacroExpansionResolveIntegrationTest : RsWithToolchainTestBase() {
                         pub fn my_macro(input: TokenStream) -> TokenStream {
                             return input;
                         }
-                    """)
+                    """
+                    )
                 }
             }
             dir("mylib") {
-                toml("Cargo.toml", """
+                toml(
+                    "Cargo.toml", """
                     [package]
                     name = "mylib"
                     version = "1.0.0"
@@ -56,9 +61,11 @@ class RsProcMacroExpansionResolveIntegrationTest : RsWithToolchainTestBase() {
 
                     [dependencies]
                     my_proc_macro = { path = "../my_proc_macro" }
-                """)
+                """
+                )
                 dir("src") {
-                    rust("lib.rs", """
+                    rust(
+                        "lib.rs", """
                         use my_proc_macro::my_macro;
 
                         struct Foo;
@@ -73,7 +80,8 @@ class RsProcMacroExpansionResolveIntegrationTest : RsWithToolchainTestBase() {
                         fn main() {
                             foo().bar()
                         }       //^
-                    """)
+                    """
+                    )
                 }
             }
         }.run {
@@ -86,7 +94,8 @@ class RsProcMacroExpansionResolveIntegrationTest : RsWithToolchainTestBase() {
 
     fun `test from crates_io`() = runWithProcMacrosEnabled {
         buildProject {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "mylib"
                 version = "1.0.0"
@@ -94,9 +103,11 @@ class RsProcMacroExpansionResolveIntegrationTest : RsWithToolchainTestBase() {
 
                 [dependencies]
                 proc-macro-id = "=1.0.1"
-            """)
+            """
+            )
             dir("src") {
-                rust("lib.rs", """
+                rust(
+                    "lib.rs", """
                     use proc_macro_id::id;
 
                     struct Foo;
@@ -111,7 +122,8 @@ class RsProcMacroExpansionResolveIntegrationTest : RsWithToolchainTestBase() {
                     fn main() {
                         foo().bar()
                     }       //^
-                """)
+                """
+                )
             }
         }.checkReferenceIsResolved<RsMethodCall>("src/lib.rs")
     }

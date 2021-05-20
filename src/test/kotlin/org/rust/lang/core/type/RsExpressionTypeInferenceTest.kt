@@ -11,7 +11,8 @@ import org.rust.WithStdlibRustProjectDescriptor
 import org.rust.cargo.project.workspace.CargoWorkspace
 
 class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
-    fun `test function call`() = testExpr("""
+    fun `test function call`() = testExpr(
+        """
         struct S;
 
         fn new() -> S { S }
@@ -21,18 +22,22 @@ class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
             x;
           //^ S
         }
-    """)
+    """
+    )
 
-    fun `test unit function call`() = testExpr("""
+    fun `test unit function call`() = testExpr(
+        """
         fn foo() {}
         fn main() {
             let x = foo();
             x;
           //^ ()
         }
-    """)
+    """
+    )
 
-    fun `test static method call`() = testExpr("""
+    fun `test static method call`() = testExpr(
+        """
         struct S;
         struct T;
         impl S { fn new() -> T { T } }
@@ -42,9 +47,11 @@ class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
             x;
           //^ T
         }
-    """)
+    """
+    )
 
-    fun `test block expr`() = testExpr("""
+    fun `test block expr`() = testExpr(
+        """
         struct S;
 
         fn foo() -> S {}
@@ -53,9 +60,11 @@ class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
             x;
           //^ S
         }
-    """)
+    """
+    )
 
-    fun `test unit block expr`() = testExpr("""
+    fun `test unit block expr`() = testExpr(
+        """
         struct S;
 
         fn foo() -> S {}
@@ -64,28 +73,34 @@ class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
             x
           //^ ()
         }
-    """)
+    """
+    )
 
-    fun `test empty block expr`() = testExpr("""
+    fun `test empty block expr`() = testExpr(
+        """
         fn main() {
             let x = {};
             x
           //^ ()
         }
-    """)
+    """
+    )
 
-    fun `test labeled block expr 1`() = testExpr("""
+    fun `test labeled block expr 1`() = testExpr(
+        """
         fn main() {
             let x = 'a: {
-                if true { break 'a 1u32 }
+                if true { break 'a 1u32; }
                 123
             };
             x;
           //^ u32
         }
-    """)
+    """
+    )
 
-    fun `test labeled block expr 2`() = testExpr("""
+    fun `test labeled block expr 2`() = testExpr(
+        """
         fn main() {
             let x = 'a: {
                 loop {
@@ -100,9 +115,11 @@ class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
             x;
           //^ u32
         }
-    """)
+    """
+    )
 
-    fun `test labeled block expr 3`() = testExpr("""
+    fun `test labeled block expr 3`() = testExpr(
+        """
         struct S<T>(T);
         impl<T> S<T> {
             fn new(t: T) -> S<T> { S(t) }
@@ -122,9 +139,11 @@ class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
             foo(x);
         }
         fn foo(s: S<u32>) {}
-    """)
+    """
+    )
 
-    fun `test try block expr (option)`() = testExpr("""
+    fun `test try block expr (option)`() = testExpr(
+        """
         #[lang = "core::option::Option"]
         enum Option<T> { None, Some(T) }
         #[lang = "core::ops::try::Try"]
@@ -135,9 +154,11 @@ class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
             x;
           //^ Option<i32>
         }
-    """)
+    """
+    )
 
-    fun `test try block expr transitive (option)`() = testExpr("""
+    fun `test try block expr transitive (option)`() = testExpr(
+        """
         #[lang = "core::option::Option"]
         enum Option<T> { None, Some(T) }
         #[lang = "core::ops::try::Try"]
@@ -149,9 +170,11 @@ class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
             x;
           //^ Option<i32>
         }
-    """)
+    """
+    )
 
-    fun `test try expr custom type`() = testExpr("""
+    fun `test try expr custom type`() = testExpr(
+        """
         struct S;
 
         #[lang = "core::result::Result"]
@@ -184,9 +207,11 @@ class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
           //^ u32
             Result::Ok(0)
         }
-    """)
+    """
+    )
 
-    fun `test try expr custom generic type`() = testExpr("""
+    fun `test try expr custom generic type`() = testExpr(
+        """
         struct S<T>(T);
 
         #[lang = "core::result::Result"]
@@ -218,9 +243,11 @@ class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
           //^ u32
             Result::Ok(0)
         }
-    """)
+    """
+    )
 
-    fun `test generator expr`() = testExpr("""
+    fun `test generator expr`() = testExpr(
+        """
         #[lang = "core::ops::generator::Generator"]
         trait Generator { type Yield; type Return; }
         fn main() {
@@ -231,9 +258,11 @@ class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
             x;
           //^ impl Generator<Yield=i32, Return=&str>
         }
-    """)
+    """
+    )
 
-    fun `test async block expr`() = testExpr("""
+    fun `test async block expr`() = testExpr(
+        """
         #[lang = "core::future::future::Future"]
         trait Future { type Output; }
         fn main() {
@@ -241,9 +270,11 @@ class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
             x;
           //^ impl Future<Output=i32>
         }
-    """)
+    """
+    )
 
-    fun `test async fn`() = testExpr("""
+    fun `test async fn`() = testExpr(
+        """
         #[lang = "core::future::future::Future"]
         trait Future { type Output; }
         async fn foo() -> i32 { 42 }
@@ -252,9 +283,11 @@ class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
             x;
           //^ impl Future<Output=i32>
         }
-    """)
+    """
+    )
 
-    fun `test async method`() = testExpr("""
+    fun `test async method`() = testExpr(
+        """
         #[lang = "core::future::future::Future"]
         trait Future { type Output; }
         struct S;
@@ -266,9 +299,11 @@ class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
             x;
           //^ impl Future<Output=i32>
         }
-    """)
+    """
+    )
 
-    fun `test async lambda expr`() = testExpr("""
+    fun `test async lambda expr`() = testExpr(
+        """
         #[lang = "core::future::future::Future"]
         trait Future { type Output; }
         fn main() {
@@ -276,9 +311,11 @@ class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
             x;
           //^ fn() -> impl Future<Output=i32>
         }
-    """)
+    """
+    )
 
-    fun `test lambda async expr`() = testExpr("""
+    fun `test lambda async expr`() = testExpr(
+        """
         #[lang = "core::future::future::Future"]
         trait Future { type Output; }
         fn main() {
@@ -286,9 +323,11 @@ class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
             x;
           //^ fn() -> impl Future<Output=i32>
         }
-    """)
+    """
+    )
 
-    fun `test async lambda async expr`() = testExpr("""
+    fun `test async lambda async expr`() = testExpr(
+        """
         #[lang = "core::future::future::Future"]
         trait Future { type Output; }
         fn main() {
@@ -296,9 +335,11 @@ class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
             x;
           //^ fn() -> impl Future<Output=impl Future<Output=i32>>
         }
-    """)
+    """
+    )
 
-    fun `test lambda try expr`() = testExpr("""
+    fun `test lambda try expr`() = testExpr(
+        """
         #[lang = "core::option::Option"]
         enum Option<T> { None, Some(T) }
         #[lang = "core::ops::try::Try"]
@@ -309,61 +350,77 @@ class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
             x;
           //^ fn() -> Option<i32>
         }
-    """)
+    """
+    )
 
-    fun `test type parameters`() = testExpr("""
+    fun `test type parameters`() = testExpr(
+        """
         fn foo<FOO>(foo: FOO) {
             let bar = foo;
             bar
           //^ FOO
         }
-    """)
+    """
+    )
 
-    fun `test const parameters`() = testExpr("""
+    fun `test const parameters`() = testExpr(
+        """
         fn foo<const N: i32>() {
             let bar = N;
             bar;
           //^ i32
         }
-    """)
+    """
+    )
 
-    fun `test if condition`() = testExpr("""
+    fun `test if condition`() = testExpr(
+        """
         fn main() {
             if true {};
         }    //^ bool
-    """)
+    """
+    )
 
-    fun `test unit if`() = testExpr("""
+    fun `test unit if`() = testExpr(
+        """
         fn main() {
             let x = if true { 92 };
             x
           //^ ()
         }
-    """)
+    """
+    )
 
-    fun `test if`() = testExpr("""
+    fun `test if`() = testExpr(
+        """
         fn main() {
             let x = if true { 92 } else { 62 };
             x;
           //^ i32
         }
-    """)
+    """
+    )
 
-    fun `test if else with return 1`() = testExpr("""
+    fun `test if else with return 1`() = testExpr(
+        """
         fn main() {
-            let a = if true { return } else { 1 };
+            let a = if true { return; } else { 1 };
             a;
         } //^ i32
-    """)
+    """
+    )
 
-    fun `test if else with return 2`() = testExpr("""
+    fun `test if else with return 2`() = testExpr(
+        """
         fn main() {
             let a = if true { return } else if true { return } else { 1 };
             a;
         } //^ i32
-    """)
+    """
+    )
 
-    fun `test match with return`() = testExpr("""
+    fun `test match with return`() = testExpr(
+        """
         fn main() {
             let a = match true {
                 true => return,
@@ -371,33 +428,41 @@ class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
             };
             a;
         } //^ i32
-    """)
+    """
+    )
 
-    fun `test loop`() = testExpr("""
+    fun `test loop`() = testExpr(
+        """
         fn main() {
             let x = loop { break; };
             x;
           //^ ()
         }
-    """)
+    """
+    )
 
-    fun `test endless loop`() = testExpr("""
+    fun `test endless loop`() = testExpr(
+        """
         fn main() {
             let x = loop { };
             x;
           //^ !
         }
-    """)
+    """
+    )
 
-    fun `test loop break value`() = testExpr("""
+    fun `test loop break value`() = testExpr(
+        """
         fn main() {
             let x = loop { break 7; };
             x;
           //^ i32
         }
-    """)
+    """
+    )
 
-    fun `test loop break value in not direct child`() = testExpr("""
+    fun `test loop break value in not direct child`() = testExpr(
+        """
         fn foo(v: bool) {
             let x = loop {
                 if v { break 7; }
@@ -405,9 +470,11 @@ class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
             x;
           //^ i32
         }
-    """)
+    """
+    )
 
-    fun `test loop with several breaks`() = testExpr("""
+    fun `test loop with several breaks`() = testExpr(
+        """
         fn foo(v: bool) {
             let x = loop {
                 if v {
@@ -419,9 +486,11 @@ class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
             x;
           //^ u32
         }
-    """)
+    """
+    )
 
-    fun `test loop with inner loop`() = testExpr("""
+    fun `test loop with inner loop`() = testExpr(
+        """
         fn main() {
             let x = loop {
                 loop { break "bar"; }
@@ -430,9 +499,11 @@ class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
             x;
           //^ i32
         }
-    """)
+    """
+    )
 
-    fun `test loop labeled break value 1`() = testExpr("""
+    fun `test loop labeled break value 1`() = testExpr(
+        """
         fn foo(v: bool) {
             let x = 'outer: loop {
                 if v { break 7; }
@@ -445,9 +516,11 @@ class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
             x;
           //^ u32
         }
-    """)
+    """
+    )
 
-    fun `test loop labeled break value 2`() = testExpr("""
+    fun `test loop labeled break value 2`() = testExpr(
+        """
         fn foo(v: bool) {
             let x = 'outer: loop {
                 let y = loop {
@@ -458,9 +531,11 @@ class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
               //^ i32
             };
         }
-    """)
+    """
+    )
 
-    fun `test loop labeled break value 3`() = testExpr("""
+    fun `test loop labeled break value 3`() = testExpr(
+        """
         fn foo(v: bool) {
             let x = 'outer: loop {
                 break loop {
@@ -471,137 +546,175 @@ class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
             x;
           //^ u32
         }
-    """)
+    """
+    )
 
-    fun `test while condition`() = testExpr("""
+    fun `test while condition`() = testExpr(
+        """
         fn main() {
             while true {};
         }       //^ bool
-    """)
+    """
+    )
 
-    fun `test while`() = testExpr("""
+    fun `test while`() = testExpr(
+        """
         fn main() {
             let x = while false { 92 };
             x
           //^ ()
         }
-    """)
+    """
+    )
 
-    fun `test for`() = testExpr("""
+    fun `test for`() = testExpr(
+        """
         fn main() {
             let x = for _ in 62..92 {};
             x
           //^ ()
         }
-    """)
+    """
+    )
 
-    fun `test parenthesis`() = testExpr("""
+    fun `test parenthesis`() = testExpr(
+        """
         fn main() {
             (false);
           //^ bool
         }
-    """)
+    """
+    )
 
-    fun `test bool true`() = testExpr("""
+    fun `test bool true`() = testExpr(
+        """
         fn main() {
             let a = true;
                      //^ bool
         }
-    """)
+    """
+    )
 
-    fun `test bool false`() = testExpr("""
+    fun `test bool false`() = testExpr(
+        """
         fn main() {
             let a = false;
                       //^ bool
         }
-    """)
+    """
+    )
 
-    fun `test char`() = testExpr("""
+    fun `test char`() = testExpr(
+        """
         fn main() {
             let a = 'A';
                    //^ char
         }
-    """)
+    """
+    )
 
-    fun `test byte char`() = testExpr("""
+    fun `test byte char`() = testExpr(
+        """
         fn main() {
             let a = b'A';
                     //^ u8
         }
-    """)
+    """
+    )
 
-    fun `test byte str`() = testExpr("""
+    fun `test byte str`() = testExpr(
+        """
         fn main() {
             let a = b"ABC";
                     //^ &[u8; 3]
         }
-    """)
+    """
+    )
 
-    fun `test byte str escape 1`() = testExpr("""
+    fun `test byte str escape 1`() = testExpr(
+        """
         fn main() {
             let a = b"\x52"; // R
                     //^ &[u8; 1]
         }
-    """)
+    """
+    )
 
-    fun `test byte str escape 2`() = testExpr("""
+    fun `test byte str escape 2`() = testExpr(
+        """
         fn main() {
             let a = b"\\x52"; // \x52
                     //^ &[u8; 4]
         }
-    """)
+    """
+    )
 
-    fun `test byte str escape 3`() = testExpr("""
+    fun `test byte str escape 3`() = testExpr(
+        """
         fn main() {
             let a = br"\x52"; // \x52
                     //^ &[u8; 4]
         }
-    """)
+    """
+    )
 
-    fun `test byte str escape 4`() = testExpr("""
+    fun `test byte str escape 4`() = testExpr(
+        """
         fn main() {
             let a = br##"\x52"#"##; // \x52"#
                     //^ &[u8; 6]
         }
-    """)
+    """
+    )
 
-    fun `test str ref`() = testExpr("""
+    fun `test str ref`() = testExpr(
+        """
         fn main() {
             let a = "Hello";
                        //^ &str
         }
-    """)
+    """
+    )
 
-    fun `test never`() = testExpr("""
+    fun `test never`() = testExpr(
+        """
         fn never() -> ! { unimplemented!() }
         fn main() {
             let a = never();
             a
         } //^ !
-    """)
+    """
+    )
 
-    fun `test unimplemented macro`() = testExpr("""
+    fun `test unimplemented macro`() = testExpr(
+        """
         fn main() {
             let a = unimplemented!();
             a
         } //^ !
-    """)
+    """
+    )
 
-    fun `test unreachable macro`() = testExpr("""
+    fun `test unreachable macro`() = testExpr(
+        """
         fn main() {
             let a = unreachable!();
             a
         } //^ !
-    """)
+    """
+    )
 
-    fun `test panic macro`() = testExpr("""
+    fun `test panic macro`() = testExpr(
+        """
         fn main() {
             let a = panic!();
             a
         } //^ !
-    """)
+    """
+    )
 
-    fun `test await macro`() = testExpr("""
+    fun `test await macro`() = testExpr(
+        """
         #[lang = "core::future::future::Future"]
         trait Future { type Output; }
         fn main() {
@@ -609,16 +722,20 @@ class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
             x;
           //^ i32
         }
-    """)
+    """
+    )
 
-    fun `test await macro argument`() = testExpr("""
+    fun `test await macro argument`() = testExpr(
+        """
         fn main() {
             let a = await!(42);
         }                //^ i32
-    """)
+    """
+    )
 
     @MockEdition(CargoWorkspace.Edition.EDITION_2018)
-    fun `test await postfix 2018 (anon)`() = testExpr("""
+    fun `test await postfix 2018 (anon)`() = testExpr(
+        """
         #[lang = "core::future::future::Future"]
         trait Future { type Output; }
         fn main() {
@@ -626,10 +743,12 @@ class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
             x;
           //^ i32
         }
-    """)
+    """
+    )
 
     @MockEdition(CargoWorkspace.Edition.EDITION_2018)
-    fun `test await postfix 2018 (adt)`() = testExpr("""
+    fun `test await postfix 2018 (adt)`() = testExpr(
+        """
         #[lang = "core::future::future::Future"]
         trait Future { type Output; }
         struct S;
@@ -640,42 +759,52 @@ class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
             x;
           //^ i32
         }
-    """)
+    """
+    )
 
-    fun `test await postfix 2015`() = testExpr("""
+    fun `test await postfix 2015`() = testExpr(
+        """
         struct S { await: i32 }
         fn main() {
             let x = (S { await: 42 }).await;
             x;
           //^ i32
         }
-    """)
+    """
+    )
 
-    fun `test enum variant A`() = testExpr("""
+    fun `test enum variant A`() = testExpr(
+        """
         enum E { A(i32), B { val: bool }, C }
         fn main() {
             (E::A(92));
           //^ E
         }
-    """)
+    """
+    )
 
-    fun `test enum variant B`() = testExpr("""
+    fun `test enum variant B`() = testExpr(
+        """
         enum E { A(i32), B { val: bool }, C }
         fn main() {
             (E::B { val: false });
           //^ E
         }
-    """)
+    """
+    )
 
-    fun `test enum variant C`() = testExpr("""
+    fun `test enum variant C`() = testExpr(
+        """
         enum E { A(i32), B { val: bool }, C }
         fn main() {
             (E::C);
           //^ E
         }
-    """)
+    """
+    )
 
-    fun `test match expr`() = testExpr("""
+    fun `test match expr`() = testExpr(
+        """
         struct S;
 
         enum E { A(S), B }
@@ -687,15 +816,19 @@ class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
             };
             s;
         } //^ &S
-    """)
+    """
+    )
 
-    fun `test parens`() = testExpr("""
+    fun `test parens`() = testExpr(
+        """
         type T = (i32);
         fn foo(x: T) { x; }
                      //^ i32
-    """)
+    """
+    )
 
-    fun `test no stack overflow 1`() = testExpr("""
+    fun `test no stack overflow 1`() = testExpr(
+        """
         pub struct P<T: ?Sized> { ptr: Box<T> }
 
         #[allow(non_snake_case)]
@@ -708,48 +841,61 @@ class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
             x;
           //^ P<i32>
         }
-    """)
+    """
+    )
 
-    fun `test no stack overflow 2`() = testExpr("""
+    fun `test no stack overflow 2`() = testExpr(
+        """
         fn foo(S: S){
             let x = S;
             x.foo()
               //^ <unknown>
         }
-    """)
+    """
+    )
 
-    fun `test usize in array size`() = testExpr("""
+    fun `test usize in array size`() = testExpr(
+        """
         fn foo() { let _ = [0u8; 10]; }
                                 //^ usize
-    """)
+    """
+    )
 
-    fun `test isize in enum variant discriminant`() = testExpr("""
+    fun `test isize in enum variant discriminant`() = testExpr(
+        """
         enum Foo { BAR = 32 }
                         //^ isize
-    """)
+    """
+    )
 
-    fun `test u8 in enum variant discriminant repr()`() = testExpr("""
+    fun `test u8 in enum variant discriminant repr()`() = testExpr(
+        """
         #[repr(u8)]
         enum Foo { BAR = 32 }
                         //^ u8
-    """)
+    """
+    )
 
-    fun `test isize in enum variant discriminant unknown repr()`() = testExpr("""
+    fun `test isize in enum variant discriminant unknown repr()`() = testExpr(
+        """
         #[repr(unrecognized_future_attribute)]
         enum Foo { BAR = 32 }
                         //^ isize
-    """)
+    """
+    )
 
     // With rustc, duplicate representation hints only produces a "warning[E0566]: conflicting representation hints"
     // while using the last found explicit representation
-    fun `test u16 in enum variant discriminant duplicate repr()`() = testExpr("""
+    fun `test u16 in enum variant discriminant duplicate repr()`() = testExpr(
+        """
         #[repr(u8)]
         #[repr(i8, u16)]
         #[repr(C)]
         #[repr(unrecognized_future_attribute)]
         enum Foo { BAR = 32 }
                         //^ u16
-    """)
+    """
+    )
 
     fun `test bin operators bool`() {
         val cases = listOf(
@@ -764,64 +910,76 @@ class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
         )
 
         for ((i, case) in cases.withIndex()) {
-            testExpr("""
+            testExpr(
+                """
                 fn main() {
                     let x = ${case.first};
                     x;
                   //^ ${case.second}
                 }
-                """
-                ,
-                "Case number: $i")
+                """,
+                "Case number: $i"
+            )
         }
     }
 
     fun `test assign`() {
         for (op in listOf("=", "+=", "-=", "*=", "/=", "%=", "&=", "|=", "^=", "<<=", ">>="))
-            testExpr("""
+            testExpr(
+                """
             fn main() {
                 let mut x;
                 let y = (x $op 2);
                 y
               //^ ()
             }
-        """)
+        """
+            )
     }
 
-    fun `test const pointer`() = testExpr("""
+    fun `test const pointer`() = testExpr(
+        """
         fn main() {
             let y = 42;
             let x = &y as *const i32;
             x;
           //^ *const i32
         }
-    """)
+    """
+    )
 
-    fun `test cast`() = testExpr("""
+    fun `test cast`() = testExpr(
+        """
         fn main() {
             let y = 42;
             let x = &y as i64;
             x;
           //^ i64
         }
-    """)
+    """
+    )
 
-    fun `test cast inner expr`() = testExpr("""
+    fun `test cast inner expr`() = testExpr(
+        """
         fn main() {
             let a = 1 as u8;
         }         //^ i32
-    """)
+    """
+    )
 
-    fun `test pointer deref`() = testExpr("""
+    fun `test pointer deref`() = testExpr(
+        """
         fn main() {
             let x : *const i32;
             let y = unsafe { *x };
             y;
           //^ i32
         }
-    """)
+    """
+    )
 
-    fun `test overloaded deref`() = testExpr("""
+    fun `test overloaded deref`() = testExpr(
+        """
         #[lang = "deref"]
         trait Deref { type Target; }
         struct A;
@@ -832,167 +990,207 @@ class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
             let b = *a;
             b;
         } //^ B
-    """)
+    """
+    )
 
-    fun `test slice type`() = testExpr("""
+    fun `test slice type`() = testExpr(
+        """
         fn main() {
             let x : [i32];
             x;
           //^ [i32]
         }
-    """)
+    """
+    )
 
-    fun `test array type`() = testExpr("""
+    fun `test array type`() = testExpr(
+        """
         fn main() {
             let x : [i32; 8];
             x;
           //^ [i32; 8]
         }
-    """)
+    """
+    )
 
-    fun `test array type2`() = testExpr("""
+    fun `test array type2`() = testExpr(
+        """
         fn main() {
             let x : [bool; 8];
             x;
           //^ [bool; 8]
         }
-    """)
+    """
+    )
 
-    fun `test array type3`() = testExpr("""
+    fun `test array type3`() = testExpr(
+        """
         fn main() {
             let x : [bool; 8usize];
             x;
           //^ [bool; 8]
         }
-    """)
+    """
+    )
 
-    fun `test array expression type1`() = testExpr("""
+    fun `test array expression type1`() = testExpr(
+        """
         fn main() {
             let x = [""];
             x;
         } //^ [&str; 1]
-    """)
+    """
+    )
 
-    fun `test array expression type2`() = testExpr("""
+    fun `test array expression type2`() = testExpr(
+        """
         fn main() {
             let x = [1, 2, 3];
             x;
           //^ [i32; 3]
         }
-    """)
+    """
+    )
 
-    fun `test array expression type3`() = testExpr("""
+    fun `test array expression type3`() = testExpr(
+        """
         fn main() {
             let x = [0; 8];
             x;
           //^ [i32; 8]
         }
-    """)
+    """
+    )
 
-    fun `test array expression type4`() = testExpr("""
+    fun `test array expression type4`() = testExpr(
+        """
         fn main() {
             let x = [0; 8usize];
             x;
           //^ [i32; 8]
         }
-    """)
+    """
+    )
 
-    fun `test array expression type5`() = testExpr("""
+    fun `test array expression type5`() = testExpr(
+        """
         fn main() {
             let x = [1, 2u16, 3];
             x;
           //^ [u16; 3]
         }
-    """)
+    """
+    )
 
-    fun `test array expression type6`() = testExpr("""
+    fun `test array expression type6`() = testExpr(
+        """
         fn main() {
             let x: [i32; 0] = [];
                             //^ [i32; 0]
         }
-    """)
+    """
+    )
 
-    fun `test usize constant as array size`() = testExpr("""
+    fun `test usize constant as array size`() = testExpr(
+        """
         const COUNT: usize = 2;
         fn main() {
             let x = [1; COUNT];
             x;
           //^ [i32; 2]
         }
-    """)
+    """
+    )
 
-    fun `test not usize constant as array size`() = testExpr("""
+    fun `test not usize constant as array size`() = testExpr(
+        """
         const COUNT: i32 = 2;
         fn main() {
             let x = [1; COUNT];
             x;
           //^ [i32; <unknown>]
         }
-    """)
+    """
+    )
 
-    fun `test binary expr as array size`() = testExpr("""
+    fun `test binary expr as array size`() = testExpr(
+        """
         fn main() {
             let x = [1; 2 + 3];
             x;
           //^ [i32; 5]
         }
-    """)
+    """
+    )
 
-    fun `test negative binary expr as array size`() = testExpr("""
+    fun `test negative binary expr as array size`() = testExpr(
+        """
         fn main() {
             let x = [1; 2 - 3];
             x;
           //^ [i32; <unknown>]
         }
-    """)
+    """
+    )
 
-    fun `test complex expr as array size`() = testExpr("""
+    fun `test complex expr as array size`() = testExpr(
+        """
         const COUNT: usize = 2;
         fn main() {
             let x = [1; (2 * COUNT + 3) << (4 / 2)];
             x;
           //^ [i32; 28]
         }
-    """)
+    """
+    )
 
-    fun `test recursive expr as array size`() = testExpr("""
+    fun `test recursive expr as array size`() = testExpr(
+        """
         const COUNT: usize = 2 + COUNT;
         fn main() {
             let x = [1; COUNT];
             x;
           //^ [i32; <unknown>]
         }
-    """)
+    """
+    )
 
     // https://github.com/intellij-rust/intellij-rust/issues/1269
-    fun `test tuple field`() = testExpr("""
+    fun `test tuple field`() = testExpr(
+        """
         fn main() {
             let x = (1, "foo").1;
             x;
           //^ &str
         }
-    """)
+    """
+    )
 
     // https://github.com/intellij-rust/intellij-rust/issues/1269
-    fun `test tuple out of bound field`() = testExpr("""
+    fun `test tuple out of bound field`() = testExpr(
+        """
         fn main() {
             let x = (1, "foo").2;
             x;
           //^ <unknown>
         }
-    """)
+    """
+    )
 
     // https://github.com/intellij-rust/intellij-rust/issues/1423
-    fun `test tuple incorrect field`() = testExpr("""
+    fun `test tuple incorrect field`() = testExpr(
+        """
         fn main() {
             let x = (1, "foo").1departure_code;
             x;
           //^ <unknown>
         }
-    """)
+    """
+    )
 
     // https://github.com/intellij-rust/intellij-rust/issues/1584
-    fun `test tuple reference field`() = testExpr("""
+    fun `test tuple reference field`() = testExpr(
+        """
         fn main() {
             let a: (u32, u32) = (0, 0);
             let v = &a;
@@ -1000,18 +1198,22 @@ class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
             i;
           //^ u32
         }
-    """)
+    """
+    )
 
     // https://github.com/intellij-rust/intellij-rust/issues/6029
-    fun `test nested tuple fields`() = testExpr("""
+    fun `test nested tuple fields`() = testExpr(
+        """
         fn foo(a: ((i32, ), )) {
             let b = a.0.0;
             b;
         } //^ i32
-    """)
+    """
+    )
 
 
-    fun `test associated types for impl`() = testExpr("""
+    fun `test associated types for impl`() = testExpr(
+        """
         trait A {
             type Item;
             fn foo(self) -> Self::Item;
@@ -1026,9 +1228,11 @@ class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
             let a = s.foo();
             a;
         } //^ S
-    """)
+    """
+    )
 
-    fun `test associated types for default impl`() = testExpr("""
+    fun `test associated types for default impl`() = testExpr(
+        """
         trait A {
             type Item;
             fn foo(self) -> Self::Item { () }
@@ -1042,10 +1246,12 @@ class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
             let a = s.foo();
             a;
         } //^ S
-    """)
+    """
+    )
 
     // https://github.com/intellij-rust/intellij-rust/issues/1549
-    fun `test Self type in assoc function`() = testExpr("""
+    fun `test Self type in assoc function`() = testExpr(
+        """
         struct Foo;
         impl Foo {
             fn new() -> Self { unimplemented!() }
@@ -1055,10 +1261,12 @@ class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
             x;
           //^ Foo
         }
-    """)
+    """
+    )
 
     // https://github.com/intellij-rust/intellij-rust/issues/1549
-    fun `test Self type in assoc function with complex ret type`() = testExpr("""
+    fun `test Self type in assoc function with complex ret type`() = testExpr(
+        """
         struct Foo;
         impl Foo {
             fn new_pair() -> (Self, Self) { unimplemented!() }
@@ -1068,9 +1276,11 @@ class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
             x;
           //^ (Foo, Foo)
         }
-    """)
+    """
+    )
 
-    fun `test Self struct literal`() = testExpr("""
+    fun `test Self struct literal`() = testExpr(
+        """
         struct S;
         impl S {
             fn new() {
@@ -1078,10 +1288,12 @@ class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
                 a;
             } //^ S
         }
-    """)
+    """
+    )
 
     // TODO
-    fun `test Self tuple struct init`() = testExpr("""
+    fun `test Self tuple struct init`() = testExpr(
+        """
         struct S();
         impl S {
             fn new() {
@@ -1089,18 +1301,22 @@ class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
                 a;
             } //^ <unknown>
         }
-    """)
+    """
+    )
 
-    fun `test Self as struct field type`() = testExpr("""
+    fun `test Self as struct field type`() = testExpr(
+        """
         pub struct S<'a> {
             field: &'a Self
         }
         fn bar(s: S) {
             s.field;
         }   //^ &S
-    """)
+    """
+    )
 
-    fun `test Self as enum variant field type`() = testExpr("""
+    fun `test Self as enum variant field type`() = testExpr(
+        """
         pub enum E<'a> {
             V { field: &'a Self }
         }
@@ -1109,71 +1325,91 @@ class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
                 field;
             } //^ &E
         }
-    """)
+    """
+    )
 
-    fun `test argument expr of unresolved function`() = testExpr("""
+    fun `test argument expr of unresolved function`() = testExpr(
+        """
         fn main() {
             foo(1);
         }     //^ i32
-    """)
+    """
+    )
 
-    fun `test excess argument expr of function`() = testExpr("""
+    fun `test excess argument expr of function`() = testExpr(
+        """
         fn foo(a: i32) {}
         fn main() {
             foo(1, 2);
         }        //^ i32
-    """)
+    """
+    )
 
-    fun `test tuple expr with more types than expected`() = testExpr("""
+    fun `test tuple expr with more types than expected`() = testExpr(
+        """
         fn main() {
             let a: (u8,) = (1, 2);
         }                    //^ i32
-    """, allowErrors = true)
+    """, allowErrors = true
+    )
 
-    fun `test argument expr of unresolved method`() = testExpr("""
+    fun `test argument expr of unresolved method`() = testExpr(
+        """
         struct S;
         fn main() {
             S.foo(1);
         }       //^ i32
-    """)
+    """
+    )
 
-    fun `test field expr of unresolved struct`() = testExpr("""
+    fun `test field expr of unresolved struct`() = testExpr(
+        """
         fn main() {
             S { f: 1 }
         }        //^ i32
-    """)
+    """
+    )
 
-    fun `test unresolved field expr`() = testExpr("""
+    fun `test unresolved field expr`() = testExpr(
+        """
         struct S;
         fn main() {
             S { f: 1 };
         }        //^ i32
-    """)
+    """
+    )
 
-    fun `test resolved named field expr`() = testExpr("""
+    fun `test resolved named field expr`() = testExpr(
+        """
         struct S { f: u8 }
         fn main() {
             S { f: 1 };
         }        //^ u8
-    """)
+    """
+    )
 
-    fun `test resolved positional field expr`() = testExpr("""
+    fun `test resolved positional field expr`() = testExpr(
+        """
         struct S(u8);
         fn main() {
             S { 0: 1 };
         }        //^ u8
-    """)
+    """
+    )
 
-    fun `test struct with alias`() = testExpr("""
+    fun `test struct with alias`() = testExpr(
+        """
         struct S;
         type T1 = S;
         type T2 = T1;
         fn main() {
             T2 { };
         } //^ S
-    """)
+    """
+    )
 
-    fun `test cyclic type aliases`() = testExpr("""
+    fun `test cyclic type aliases`() = testExpr(
+        """
         type Foo = Bar;
         type Bar = Foo;
         fn main() {
@@ -1181,10 +1417,12 @@ class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
             x;
           //^ <unknown>
         }
-    """)
+    """
+    )
     // More struct alias tests in [RsGenericExpressionTypeInferenceTest]
 
-    fun `test struct update syntax`() = testExpr("""
+    fun `test struct update syntax`() = testExpr(
+        """
         struct S {
             f1: u32,
             f2: u8,
@@ -1197,9 +1435,11 @@ class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
         fn main() {
             let a = S { f1: 1, ..S::new() };
         }                            //^ S
-    """)
+    """
+    )
 
-    fun `test struct update syntax Default`() = testExpr("""
+    fun `test struct update syntax Default`() = testExpr(
+        """
         trait Default {
             fn default() -> Self;
         }
@@ -1215,180 +1455,232 @@ class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
         fn main() {
             let a = S { f1: 1, ..Default::default() };
         }                                      //^ S
-    """)
+    """
+    )
 
-    fun `test struct update syntax Default on unknown type`() = testExpr("""
+    fun `test struct update syntax Default on unknown type`() = testExpr(
+        """
         trait Default {
             fn default() -> Self;
         }
         fn main() {
             let a = UnknownStruct { f1: 1, ..Default::default() };
         }                                                  //^ <unknown>
-    """)
+    """
+    )
 
-    fun `test index expr of unresolved path`() = testExpr("""
+    fun `test index expr of unresolved path`() = testExpr(
+        """
         fn main() {
             a[1]
         }   //^ i32
-    """)
+    """
+    )
 
-    fun `test return inner expr`() = testExpr("""
+    fun `test return inner expr`() = testExpr(
+        """
         fn foo() -> i32 {
             return 1;
         }        //^ i32
-    """)
+    """
+    )
 
-    fun `test loop break inner expr`() = testExpr("""
+    fun `test loop break inner expr`() = testExpr(
+        """
         fn main() {
             loop {
                 break 1;
             };      //^ i32
         }
-    """)
+    """
+    )
 
-    fun `test return expr`() = testExpr("""
+    fun `test return expr`() = testExpr(
+        """
         fn main() {
             return;
         } //^ !
-    """)
+    """
+    )
 
-    fun `test loop break expr`() = testExpr("""
+    fun `test loop break expr`() = testExpr(
+        """
         fn main() {
             loop {
                 break 1;
             };//^ !
         }
-    """)
+    """
+    )
 
-    fun `test loop continue expr`() = testExpr("""
+    fun `test loop continue expr`() = testExpr(
+        """
         fn main() {
             loop {
                 continue;
             } //^ !
         }
-    """)
+    """
+    )
 
-    fun `test infer explicit lambda parameter type`() = testExpr("""
+    fun `test infer explicit lambda parameter type`() = testExpr(
+        """
         fn main() {
             let a = |x: u8| x;
         }                 //^ u8
-    """)
+    """
+    )
 
-    fun `test infer lambda type with explicit parameters`() = testExpr("""
+    fun `test infer lambda type with explicit parameters`() = testExpr(
+        """
         fn main() {
             let a = |x: u8| x;
             a;
         } //^ fn(u8) -> u8
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test infer lambda parameters from type parameter`() = testExpr("""
+    fun `test infer lambda parameters from type parameter`() = testExpr(
+        """
         fn test<T:Sync + FnOnce(u8)->u8>(arg:T) {}
         fn main(){
             test(|x| x );
                    //^ u8
         }
-    """)
+    """
+    )
 
-    fun `test infer lambda parameters rvalue from lvalue fn pointer`() = testExpr("""
+    fun `test infer lambda parameters rvalue from lvalue fn pointer`() = testExpr(
+        """
         fn main() {
             let a: fn(u8) = |x| { x; };
         }                       //^ u8
-    """)
+    """
+    )
 
-    fun `test infer excess explicit lambda parameter`() = testExpr("""
+    fun `test infer excess explicit lambda parameter`() = testExpr(
+        """
         fn main() {
             let a: fn(u8) = |x, y: u8| y;
         }                            //^ u8
-    """, allowErrors = true)
+    """, allowErrors = true
+    )
 
-    fun `test infer const inside a function`() = testExpr("""
+    fun `test infer const inside a function`() = testExpr(
+        """
         fn main() {
             const X: i32 = 1;
         }                //^ i32
-    """)
+    """
+    )
 
-    fun `test infer complex expr in const`() = testExpr("""
+    fun `test infer complex expr in const`() = testExpr(
+        """
         struct S { f: u8 }
         const X: i32 = (**&&S { f: 0 }).f as i32;
                                       //^ u8
-    """)
+    """
+    )
 
-    fun `test infer complex expr in array size`() = testExpr("""
+    fun `test infer complex expr in array size`() = testExpr(
+        """
         struct S { f: u8 }
         const X: [u8; S { f: 1 }.f as usize] = [0];
                                //^ u8
-    """)
+    """
+    )
 
-    fun `test infer complex expr in enum variant discriminant`() = testExpr("""
+    fun `test infer complex expr in enum variant discriminant`() = testExpr(
+        """
         struct S { f: u8 }
         enum Foo { BAR = S { f: 1 }.f as isize }
                                   //^ u8
-    """)
+    """
+    )
 
-    fun `test infer static inside a function`() = testExpr("""
+    fun `test infer static inside a function`() = testExpr(
+        """
         fn main() {
             static X: i32 = 1;
         }                 //^ i32
-    """)
+    """
+    )
 
-    fun `test unknown type is more priority than '!' type`() = testExpr("""
+    fun `test unknown type is more priority than '!' type`() = testExpr(
+        """
         fn main() {
             let a = if true { UnknownFoo } else { return };
             a
         } //^ <unknown>
-    """)
+    """
+    )
 
-    fun `test infer return expr from fn return type`() = testExpr("""
+    fun `test infer return expr from fn return type`() = testExpr(
+        """
         fn foo() -> u8 {
             return 0;
         }        //^ u8
-    """)
+    """
+    )
 
-    fun `test infer tail expr from fn return type`() = testExpr("""
+    fun `test infer tail expr from fn return type`() = testExpr(
+        """
         fn foo() -> u8 {
             0
         } //^ u8
-    """)
+    """
+    )
 
-    fun `test lambda body typified`() = testExpr("""
+    fun `test lambda body typified`() = testExpr(
+        """
         fn main() {
             || { 0 };
         }    //^ i32
-    """)
+    """
+    )
 
-    fun `test lambda without explicit return`() = testExpr("""
+    fun `test lambda without explicit return`() = testExpr(
+        """
         fn main() {
             let a = || {};
             a;
         } //^ fn()
-    """)
+    """
+    )
 
-    fun `test infer return expr from explicit closure return type`() = testExpr("""
+    fun `test infer return expr from explicit closure return type`() = testExpr(
+        """
         fn main() {
             || -> u8 {
                 return 0;
             };       //^ u8
         }
-    """)
+    """
+    )
 
-    fun `test infer tail expr from explicit closure return type`() = testExpr("""
+    fun `test infer tail expr from explicit closure return type`() = testExpr(
+        """
         fn main() {
             || -> u8 {
                 0
             };//^ u8
         }
-    """)
+    """
+    )
 
-    fun `test infer return expr from expected closure return type`() = testExpr("""
+    fun `test infer return expr from expected closure return type`() = testExpr(
+        """
         fn main() {
             let _: fn() -> u8 = || {
                 return 0;
             };       //^ u8
         }
-    """)
+    """
+    )
 
-    fun `test infer return expr from another return expr in closure`() = testExpr("""
+    fun `test infer return expr from another return expr in closure`() = testExpr(
+        """
         fn main() {
             || {
                 if 2 > 1 {
@@ -1398,71 +1690,87 @@ class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
                 }
             };
         }
-    """)
+    """
+    )
 
-    fun `test infer return expr from inferred-later closure return type`() = testExpr("""
+    fun `test infer return expr from inferred-later closure return type`() = testExpr(
+        """
         fn main() {
             let a = || {
                 return 0;
             };       //^ u8
             let b: u8 = a();
         }
-    """)
+    """
+    )
 
-    fun `test var lateinit`() = testExpr("""
+    fun `test var lateinit`() = testExpr(
+        """
         fn main() {
             let a;
             a = 0;
             a;
         } //^ i32
-    """)
+    """
+    )
 
-    fun `test type of ambiguously resolved paths is unknown 1`() = testExpr("""
+    fun `test type of ambiguously resolved paths is unknown 1`() = testExpr(
+        """
         struct S;
         struct S;
         fn main() {
             let a: S;
             a;
         } //^ <unknown>
-    """)
+    """
+    )
 
-    fun `test type of ambiguously resolved paths is unknown 2`() = testExpr("""
+    fun `test type of ambiguously resolved paths is unknown 2`() = testExpr(
+        """
         struct S;
         struct S;
         fn main() {
             let a = S;
             a;
         } //^ <unknown>
-    """)
+    """
+    )
 
     /** part of [issue 2688](https://github.com/intellij-rust/intellij-rust/issues/2688) */
-    fun `test call expr with callee of struct without fields type 1`() = testExpr("""
+    fun `test call expr with callee of struct without fields type 1`() = testExpr(
+        """
         struct S;
         fn main() {
             let a = S;
             let b = a();
             b;
         } //^ <unknown>
-    """)
+    """
+    )
 
-    fun `test call expr with callee of struct without fields type 2`() = testExpr("""
+    fun `test call expr with callee of struct without fields type 2`() = testExpr(
+        """
         struct S;
         fn main() {
             let a = S();
             b;
         } //^ <unknown>
-    """)
+    """
+    )
 
-    fun `test call expr with callee of struct without fields type 3`() = testExpr("""
+    fun `test call expr with callee of struct without fields type 3`() = testExpr(
+        """
         struct S();
         fn main() {
             let a = S;
             let b = a();
             b;
         } //^ S
-    """)
+    """
+    )
 
-    fun `test type coercion in tuple`() = testExpr("""
+    fun `test type coercion in tuple`() = testExpr(
+        """
         #[lang = "deref"]
         trait Deref { type Target; }
 
@@ -1477,9 +1785,11 @@ class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
             let a: (&Bar, &Bar) = (&Foo, &Foo);
                                 //^ (&Bar, &Bar)
         }
-    """)
+    """
+    )
 
-    fun `test type coercion in array`() = testExpr("""
+    fun `test type coercion in array`() = testExpr(
+        """
         #[lang = "deref"]
         trait Deref { type Target; }
 
@@ -1494,9 +1804,11 @@ class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
             let a: [&Bar; 2] = [&Foo, &Foo];
                              //^ [&Bar; 2]
         }
-    """)
+    """
+    )
 
-    fun `test type coercion in vec! macro`() = testExpr("""
+    fun `test type coercion in vec! macro`() = testExpr(
+        """
         #[lang = "alloc::vec::Vec"]
         struct Vec<T>(T);
         #[lang = "deref"]
@@ -1513,25 +1825,31 @@ class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
             let a: Vec<&Bar> = vec![&Foo, &Foo];
                              //^ Vec<&Bar>
         }
-    """)
+    """
+    )
 
-    fun `test dbg macro call type`() = testExpr("""
+    fun `test dbg macro call type`() = testExpr(
+        """
         fn main() {
             let a = dbg!(123);
             a;
           //^ i32
         }
-    """)
+    """
+    )
 
-    fun `test unclosed paren`() = testExpr("""
+    fun `test unclosed paren`() = testExpr(
+        """
         fn main() {
             let a = (;
             a;
           //^ <unknown>
         }
-    """)
+    """
+    )
 
-    fun `test negative impl is ignored`() = testExpr("""
+    fun `test negative impl is ignored`() = testExpr(
+        """
         struct S;
         trait Clone: Sized { fn clone(&self) -> Self { unimplemented!() } }
         impl Clone for S {}
@@ -1542,9 +1860,11 @@ class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
             b;
           //^ S
         }
-    """)
+    """
+    )
 
-    fun `test macro type`() = testExpr("""
+    fun `test macro type`() = testExpr(
+        """
         fn main() {
           macro_rules! i32_ty {
                 () => { i32 }
@@ -1552,9 +1872,11 @@ class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
             let a: i32_ty!() = unresolved();
             a;
         } //^ i32
-    """)
+    """
+    )
 
-    fun `test infinite macro type`() = testExpr("""
+    fun `test infinite macro type`() = testExpr(
+        """
         fn main() {
           macro_rules! infinite {
                 () => { infinite!() }
@@ -1562,5 +1884,6 @@ class RsExpressionTypeInferenceTest : RsTypificationTestBase() {
             let a: infinite!() = unresolved();
             a;
         } //^ <unknown>
-    """)
+    """
+    )
 }

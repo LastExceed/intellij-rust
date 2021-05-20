@@ -12,22 +12,27 @@ import org.rust.lang.core.psi.ext.RsNamedElement
 
 class RsResolveLinkTest : RsTestBase() {
 
-    fun `test struct`() = doTest("""
+    fun `test struct`() = doTest(
+        """
         struct Foo;
               //X
         fn foo(s: Foo) {}
            //^
-    """, "Foo")
+    """, "Foo"
+    )
 
-    fun `test generic struct`() = doTest("""
+    fun `test generic struct`() = doTest(
+        """
         struct Foo<T>(T);
         struct Bar;
              //X
         fn foo_bar() -> Foo<Bar> { unimplemented!() }
            //^
-    """, "Bar")
+    """, "Bar"
+    )
 
-    fun `test full path`() = doTest("""
+    fun `test full path`() = doTest(
+        """
         mod foo {
             pub struct Foo;
                       //X
@@ -35,17 +40,21 @@ class RsResolveLinkTest : RsTestBase() {
 
         fn foo(f: foo::Foo) {}
            //^
-    """, "foo::Foo")
+    """, "foo::Foo"
+    )
 
-    fun `test type bound`() = doTest("""
+    fun `test type bound`() = doTest(
+        """
         trait Foo {}
              //X
 
         fn foo<T: Foo>(t: T) {}
           //^
-    """, "Foo")
+    """, "Foo"
+    )
 
-    fun `test assoc type`() = doTest("""
+    fun `test assoc type`() = doTest(
+        """
         trait Foo {
             type Bar;
                 //X
@@ -53,9 +62,11 @@ class RsResolveLinkTest : RsTestBase() {
 
         fn foo<T>(t: T) where T: Foo, T::Bar: Into<String> {}
           //^
-    """, "T::Bar")
+    """, "T::Bar"
+    )
 
-    fun `test assoc type with type qual`() = doTest("""
+    fun `test assoc type with type qual`() = doTest(
+        """
         trait Foo1 {
             type Bar;
         }
@@ -74,53 +85,67 @@ class RsResolveLinkTest : RsTestBase() {
             type Bar = <Self as Foo1>::Bar;
                 //^
         }
-    """, "<Self as Foo1>::Bar")
+    """, "<Self as Foo1>::Bar"
+    )
 
-    fun `test struct fqn link`() = doTest("""
+    fun `test struct fqn link`() = doTest(
+        """
         struct Foo;
               //X
         struct Bar;
               //^
-    """, "test_package/struct.Foo.html")
+    """, "test_package/struct.Foo.html"
+    )
 
-    fun `test enum fqn link`() = doTest("""
+    fun `test enum fqn link`() = doTest(
+        """
         enum Foo { V }
             //X
         struct Bar;
               //^
-    """, "test_package/enum.Foo.html")
+    """, "test_package/enum.Foo.html"
+    )
 
-    fun `test function fqn link`() = doTest("""
+    fun `test function fqn link`() = doTest(
+        """
         fn foo() { }
           //X
         struct Bar;
               //^
-    """, "test_package/fn.foo.html")
+    """, "test_package/fn.foo.html"
+    )
 
-    fun `test type alias fqn link`() = doTest("""
+    fun `test type alias fqn link`() = doTest(
+        """
         type Foo = i32;
             //X
         struct Bar;
               //^
-    """, "test_package/type.Foo.html")
+    """, "test_package/type.Foo.html"
+    )
 
-    fun `test trait alias fqn link`() = doTest("""
+    fun `test trait alias fqn link`() = doTest(
+        """
         trait Foo {}
              //X
         struct Bar;
               //^
-    """, "test_package/trait.Foo.html")
+    """, "test_package/trait.Foo.html"
+    )
 
-    fun `test mod fqn link`() = doTest("""
+    fun `test mod fqn link`() = doTest(
+        """
         mod foo {
             //X
         }
 
         struct Bar;
               //^
-    """, "test_package/foo/index.html")
+    """, "test_package/foo/index.html"
+    )
 
-    fun `test macro fqn link 1`() = doTest("""
+    fun `test macro fqn link 1`() = doTest(
+        """
         macro_rules! foo {
                     //X
             () => {};
@@ -128,9 +153,11 @@ class RsResolveLinkTest : RsTestBase() {
 
         struct Bar;
               //^
-    """, "test_package/macro.foo.html")
+    """, "test_package/macro.foo.html"
+    )
 
-    fun `test macro fqn link 2`() = doTest("""
+    fun `test macro fqn link 2`() = doTest(
+        """
         mod foo {
             macro_rules! bar {
                        //X
@@ -139,9 +166,11 @@ class RsResolveLinkTest : RsTestBase() {
         }
         struct Foo;
              //^
-    """, "test_package/macro.bar.html")
+    """, "test_package/macro.bar.html"
+    )
 
-    fun `test method fqn link`() = doTest("""
+    fun `test method fqn link`() = doTest(
+        """
         struct Foo;
         impl Foo {
             fn foo(&self) {}
@@ -150,9 +179,11 @@ class RsResolveLinkTest : RsTestBase() {
 
         struct Bar;
               //^
-    """, "test_package/struct.Foo.html#method.foo")
+    """, "test_package/struct.Foo.html#method.foo"
+    )
 
-    fun `test tymethod fqn link`() = doTest("""
+    fun `test tymethod fqn link`() = doTest(
+        """
         trait Foo {
             fn foo(&self);
                //X
@@ -160,9 +191,11 @@ class RsResolveLinkTest : RsTestBase() {
 
         struct Bar;
               //^
-    """, "test_package/trait.Foo.html#tymethod.foo")
+    """, "test_package/trait.Foo.html#tymethod.foo"
+    )
 
-    fun `test enum variant fqn link`() = doTest("""
+    fun `test enum variant fqn link`() = doTest(
+        """
         enum Foo {
             Var1,
             //X
@@ -171,9 +204,11 @@ class RsResolveLinkTest : RsTestBase() {
 
         struct Bar;
               //^
-    """, "test_package/enum.Foo.html#variant.Var1")
+    """, "test_package/enum.Foo.html#variant.Var1"
+    )
 
-    fun `test struct field fqn link`() = doTest("""
+    fun `test struct field fqn link`() = doTest(
+        """
         struct Foo {
             foo: i32
             //X
@@ -181,9 +216,11 @@ class RsResolveLinkTest : RsTestBase() {
 
         struct Bar;
               //^
-    """, "test_package/struct.Foo.html#structfield.foo")
+    """, "test_package/struct.Foo.html#structfield.foo"
+    )
 
-    fun `test enum variant field fqn link`() = doTest("""
+    fun `test enum variant field fqn link`() = doTest(
+        """
         pub enum Foo {
             Bar {
                 baz: i32
@@ -192,9 +229,11 @@ class RsResolveLinkTest : RsTestBase() {
 
         struct S;
              //^
-    """, "test_package/enum.Foo.html#variant.Bar.field.baz")
+    """, "test_package/enum.Foo.html#variant.Bar.field.baz"
+    )
 
-    fun `test assoc type fqn link 1`() = doTest("""
+    fun `test assoc type fqn link 1`() = doTest(
+        """
         trait Foo {
             type Bar;
                 //X
@@ -202,9 +241,11 @@ class RsResolveLinkTest : RsTestBase() {
 
         struct Bar;
               //^
-    """, "test_package/trait.Foo.html#associatedtype.Bar")
+    """, "test_package/trait.Foo.html#associatedtype.Bar"
+    )
 
-    fun `test assoc type fqn link 2`() = doTest("""
+    fun `test assoc type fqn link 2`() = doTest(
+        """
         trait Foo {
             type Bar;
         }
@@ -215,9 +256,11 @@ class RsResolveLinkTest : RsTestBase() {
             type Bar = i32;
                 //X
         }
-    """, "test_package/struct.Bar.html#associatedtype.Bar")
+    """, "test_package/struct.Bar.html#associatedtype.Bar"
+    )
 
-    fun `test assoc const fqn link 2`() = doTest("""
+    fun `test assoc const fqn link 2`() = doTest(
+        """
         struct Foo;
         impl Foo {
             const FOO: i32 = 123;
@@ -226,9 +269,11 @@ class RsResolveLinkTest : RsTestBase() {
 
         struct Bar;
               //^
-    """, "test_package/struct.Foo.html#associatedconstant.FOO")
+    """, "test_package/struct.Foo.html#associatedconstant.FOO"
+    )
 
-    fun `test complex fqn link`() = doTest("""
+    fun `test complex fqn link`() = doTest(
+        """
         mod foo {
             mod baz {
                 trait foo {
@@ -251,9 +296,11 @@ class RsResolveLinkTest : RsTestBase() {
 
         struct Bar;
               //^
-    """, "test_package/foo/bar/struct.foo.html")
+    """, "test_package/foo/bar/struct.foo.html"
+    )
 
-    fun `test fqn link with direct reexports`() = doTest("""
+    fun `test fqn link with direct reexports`() = doTest(
+        """
         mod foo {
             pub mod bar {
                 pub struct Baz;
@@ -264,9 +311,11 @@ class RsResolveLinkTest : RsTestBase() {
 
         struct Foo;
               //^
-    """, "test_package/foo/struct.Baz.html")
+    """, "test_package/foo/struct.Baz.html"
+    )
 
-    fun `test fqn link with module reexports`() = doTest("""
+    fun `test fqn link with module reexports`() = doTest(
+        """
         mod foo {
             pub mod bar {
                 pub mod baz {
@@ -279,9 +328,11 @@ class RsResolveLinkTest : RsTestBase() {
 
         struct Foo;
               //^
-    """, "test_package/foo/baz/struct.Baz.html")
+    """, "test_package/foo/baz/struct.Baz.html"
+    )
 
-    fun `test fqn link with wildcard reexport`() = doTest("""
+    fun `test fqn link with wildcard reexport`() = doTest(
+        """
         mod foo {
             pub mod bar {
                 pub mod baz {
@@ -294,7 +345,8 @@ class RsResolveLinkTest : RsTestBase() {
 
         struct Foo;
               //^
-    """, "test_package/foo/baz/struct.Baz.html")
+    """, "test_package/foo/baz/struct.Baz.html"
+    )
 
     private fun doTest(@Language("Rust") code: String, link: String) {
         InlineFile(code)

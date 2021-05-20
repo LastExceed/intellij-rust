@@ -112,7 +112,8 @@ class RsBacktraceItemFilter(
             "std::panicking",
             "std::sys::backtrace",
             "std::sys::imp::backtrace",
-            "core::panicking")
+            "core::panicking"
+        )
 
         data class BacktraceRecord(val header: String, val functionName: String, val functionHash: String?)
 

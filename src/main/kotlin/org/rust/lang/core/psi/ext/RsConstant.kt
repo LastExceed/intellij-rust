@@ -28,11 +28,12 @@ val RsConstant.isMut: Boolean get() = greenStub?.isMut ?: (mut != null)
 
 val RsConstant.isConst: Boolean get() = greenStub?.isConst ?: (const != null)
 
-val RsConstant.kind: RsConstantKind get() = when {
-    isMut -> RsConstantKind.MUT_STATIC
-    isConst -> RsConstantKind.CONST
-    else -> RsConstantKind.STATIC
-}
+val RsConstant.kind: RsConstantKind
+    get() = when {
+        isMut -> RsConstantKind.MUT_STATIC
+        isConst -> RsConstantKind.CONST
+        else -> RsConstantKind.STATIC
+    }
 
 val RsConstant.default: PsiElement?
     get() = node.findChildByType(DEFAULT)?.psi

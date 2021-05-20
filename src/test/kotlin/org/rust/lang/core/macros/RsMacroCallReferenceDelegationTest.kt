@@ -12,16 +12,19 @@ import org.rust.lang.core.resolve.ref.RsMacroBodyReferenceDelegateImpl.Testmarks
 
 @ExpandMacros
 class RsMacroCallReferenceDelegationTest : RsResolveTestBase() {
-    fun `test item context`() = checkByCode("""
+    fun `test item context`() = checkByCode(
+        """
         struct X;
              //X
         macro_rules! foo { ($($ i:item)*) => { $( $ i )* }; }
         foo! {
             type T = X;
         }          //^
-    """, Testmarks.touched)
+    """, Testmarks.touched
+    )
 
-    fun `test statement context`() = checkByCode("""
+    fun `test statement context`() = checkByCode(
+        """
         struct X;
              //X
         macro_rules! foo { ($($ i:item)*) => { $( $ i )* }; }
@@ -30,29 +33,35 @@ class RsMacroCallReferenceDelegationTest : RsResolveTestBase() {
                 type T = X;
             };         //^
         }
-    """, Testmarks.touched)
+    """, Testmarks.touched
+    )
 
-    fun `test expression context`() = checkByCode("""
+    fun `test expression context`() = checkByCode(
+        """
         struct X;
              //X
         macro_rules! foo { ($($ i:tt)*) => { $( $ i )* }; }
         fn main () {
             let a = foo!(X);
         }              //^
-    """, Testmarks.touched)
+    """, Testmarks.touched
+    )
 
     @UseOldResolve
-    fun `test type context`() = checkByCode("""
+    fun `test type context`() = checkByCode(
+        """
         struct X;
              //X
         macro_rules! foo { ($($ i:tt)*) => { $( $ i )* }; }
         type T = foo!(X);
                     //^
-    """, Testmarks.touched)
+    """, Testmarks.touched
+    )
 
     // TODO implement `getContext()` in all RsPat PSI elements
     fun `test pattern context`() = expect<IllegalStateException> {
-        checkByCode("""
+        checkByCode(
+            """
         const X: i32 = 0;
             //X
         macro_rules! foo { ($($ i:tt)*) => { $( $ i )* }; }
@@ -63,10 +72,12 @@ class RsMacroCallReferenceDelegationTest : RsResolveTestBase() {
                 _ => {}
             }
         }
-    """, Testmarks.touched)
+    """, Testmarks.touched
+        )
     }
 
-    fun `test lifetime`() = checkByCode("""
+    fun `test lifetime`() = checkByCode(
+        """
         macro_rules! foo {
             ($ i:item) => { $ i };
         }
@@ -77,9 +88,11 @@ class RsMacroCallReferenceDelegationTest : RsResolveTestBase() {
                 fn foo(&self) -> &'a u8 {}
             }                    //^
         }
-    """, Testmarks.touched)
+    """, Testmarks.touched
+    )
 
-    fun `test 2-segment path 1`() = checkByCode("""
+    fun `test 2-segment path 1`() = checkByCode(
+        """
         mod foo {
           //X
             pub struct X;
@@ -88,9 +101,11 @@ class RsMacroCallReferenceDelegationTest : RsResolveTestBase() {
         foo! {
             type T = foo::X;
         }          //^
-    """, Testmarks.touched)
+    """, Testmarks.touched
+    )
 
-    fun `test 2-segment path 2`() = checkByCode("""
+    fun `test 2-segment path 2`() = checkByCode(
+        """
         mod foo {
             pub struct X;
         }            //X
@@ -98,5 +113,6 @@ class RsMacroCallReferenceDelegationTest : RsResolveTestBase() {
         foo! {
             type T = foo::X;
         }               //^
-    """, Testmarks.touched)
+    """, Testmarks.touched
+    )
 }

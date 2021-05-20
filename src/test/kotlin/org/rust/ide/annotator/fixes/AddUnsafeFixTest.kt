@@ -9,7 +9,8 @@ import org.rust.ide.annotator.RsAnnotatorTestBase
 import org.rust.ide.annotator.RsUnsafeExpressionAnnotator
 
 class AddUnsafeFixTest : RsAnnotatorTestBase(RsUnsafeExpressionAnnotator::class) {
-    fun `test add unsafe to function`() = checkFixByText("Add unsafe to function", """
+    fun `test add unsafe to function`() = checkFixByText(
+        "Add unsafe to function", """
         unsafe fn foo() {}
 
         fn main() {
@@ -21,9 +22,11 @@ class AddUnsafeFixTest : RsAnnotatorTestBase(RsUnsafeExpressionAnnotator::class)
         unsafe fn main() {
             foo();
         }
-    """)
+    """
+    )
 
-    fun `test add unsafe to function (method)`() = checkFixByText("Add unsafe to function", """
+    fun `test add unsafe to function (method)`() = checkFixByText(
+        "Add unsafe to function", """
         struct S;
 
         impl S {
@@ -45,9 +48,11 @@ class AddUnsafeFixTest : RsAnnotatorTestBase(RsUnsafeExpressionAnnotator::class)
             let s = S;
             s.foo();
         }
-    """)
+    """
+    )
 
-    fun `test add unsafe to function (external linkage)`() = checkFixByText("Add unsafe to function", """
+    fun `test add unsafe to function (external linkage)`() = checkFixByText(
+        "Add unsafe to function", """
         extern "C" { fn foo(); }
 
         fn test() {
@@ -59,9 +64,11 @@ class AddUnsafeFixTest : RsAnnotatorTestBase(RsUnsafeExpressionAnnotator::class)
         unsafe fn test() {
             foo();
         }
-    """)
+    """
+    )
 
-    fun `test add unsafe to block`() = checkFixByText("Add unsafe to block", """
+    fun `test add unsafe to block`() = checkFixByText(
+        "Add unsafe to block", """
         unsafe fn foo() {}
 
         fn main() {
@@ -77,9 +84,11 @@ class AddUnsafeFixTest : RsAnnotatorTestBase(RsUnsafeExpressionAnnotator::class)
                 foo();
             }
         }
-    """)
+    """
+    )
 
-    fun `test add unsafe inside for`() = checkFixByText("Add unsafe to function", """
+    fun `test add unsafe inside for`() = checkFixByText(
+        "Add unsafe to function", """
         unsafe fn foo() {}
 
         fn main() {
@@ -95,9 +104,11 @@ class AddUnsafeFixTest : RsAnnotatorTestBase(RsUnsafeExpressionAnnotator::class)
                 foo();
             }
         }
-    """)
+    """
+    )
 
-    fun `test add unsafe inside loop`() = checkFixByText("Add unsafe to function", """
+    fun `test add unsafe inside loop`() = checkFixByText(
+        "Add unsafe to function", """
         unsafe fn foo() {}
 
         fn main() {
@@ -113,9 +124,11 @@ class AddUnsafeFixTest : RsAnnotatorTestBase(RsUnsafeExpressionAnnotator::class)
                 foo();
             }
         }
-    """)
+    """
+    )
 
-    fun `test add unsafe inside if`() = checkFixByText("Add unsafe to function", """
+    fun `test add unsafe inside if`() = checkFixByText(
+        "Add unsafe to function", """
         unsafe fn foo() {}
 
         fn main() {
@@ -131,9 +144,11 @@ class AddUnsafeFixTest : RsAnnotatorTestBase(RsUnsafeExpressionAnnotator::class)
                 foo();
             }
         }
-    """)
+    """
+    )
 
-    fun `test add unsafe inside if in a block`() = checkFixByText("Add unsafe to block", """
+    fun `test add unsafe inside if in a block`() = checkFixByText(
+        "Add unsafe to block", """
         unsafe fn foo() -> u32 { 0 }
 
         fn main() {
@@ -157,9 +172,11 @@ class AddUnsafeFixTest : RsAnnotatorTestBase(RsUnsafeExpressionAnnotator::class)
                 }
             };
         }
-    """)
+    """
+    )
 
-    fun `test wrap function with an unsafe block`() = checkFixByText("Surround with unsafe block", """
+    fun `test wrap function with an unsafe block`() = checkFixByText(
+        "Surround with unsafe block", """
         unsafe fn foo() {}
 
         fn main() {
@@ -171,9 +188,11 @@ class AddUnsafeFixTest : RsAnnotatorTestBase(RsUnsafeExpressionAnnotator::class)
         fn main() {
             unsafe { foo(); }
         }
-    """)
+    """
+    )
 
-    fun `test wrap function with an unsafe block 2`() = checkFixByText("Surround with unsafe block", """
+    fun `test wrap function with an unsafe block 2`() = checkFixByText(
+        "Surround with unsafe block", """
         unsafe fn foo() {}
 
         fn main() {
@@ -185,9 +204,11 @@ class AddUnsafeFixTest : RsAnnotatorTestBase(RsUnsafeExpressionAnnotator::class)
         fn main() {
             unsafe { foo() }
         }
-    """)
+    """
+    )
 
-    fun `test wrap function with an unsafe block inline`() = checkFixByText("Surround with unsafe block", """
+    fun `test wrap function with an unsafe block inline`() = checkFixByText(
+        "Surround with unsafe block", """
         unsafe fn pi() -> f64 { 3.14 }
 
         fn main() {
@@ -199,9 +220,11 @@ class AddUnsafeFixTest : RsAnnotatorTestBase(RsUnsafeExpressionAnnotator::class)
         fn main() {
             let s = unsafe { pi() } * 10.0;
         }
-    """)
+    """
+    )
 
-    fun `test wrap ptr deref with a unsafe block inline`() = checkFixByText("Surround with unsafe block", """
+    fun `test wrap ptr deref with a unsafe block inline`() = checkFixByText(
+        "Surround with unsafe block", """
         fn main() {
             let char_ptr: *const char = 42 as *const _;
             let val = <error>*char_ptr/*caret*/</error>;
@@ -211,9 +234,11 @@ class AddUnsafeFixTest : RsAnnotatorTestBase(RsUnsafeExpressionAnnotator::class)
             let char_ptr: *const char = 42 as *const _;
             let val = unsafe { *char_ptr };
         }
-    """)
+    """
+    )
 
-    fun `test wrap function call with unsafe block (external linkage)`() = checkFixByText("Surround with unsafe block", """
+    fun `test wrap function call with unsafe block (external linkage)`() = checkFixByText(
+        "Surround with unsafe block", """
         extern "C" { fn foo(); }
 
         fn test() {
@@ -225,9 +250,11 @@ class AddUnsafeFixTest : RsAnnotatorTestBase(RsUnsafeExpressionAnnotator::class)
         fn test() {
             unsafe { foo(); }
         }
-    """)
+    """
+    )
 
-    fun `test left-hand side assignment`() = checkFixByText("Surround with unsafe block", """
+    fun `test left-hand side assignment`() = checkFixByText(
+        "Surround with unsafe block", """
         fn test() {
             let buffer = 0xb00000 as *mut u8;
             <error>*buffer/*caret*/</error> = 5;
@@ -237,9 +264,11 @@ class AddUnsafeFixTest : RsAnnotatorTestBase(RsUnsafeExpressionAnnotator::class)
             let buffer = 0xb00000 as *mut u8;
             unsafe { *buffer = 5; }
         }
-    """)
+    """
+    )
 
-    fun `test nested left-hand side assignment`() = checkFixByText("Surround with unsafe block", """
+    fun `test nested left-hand side assignment`() = checkFixByText(
+        "Surround with unsafe block", """
         extern "C" { fn foo() -> *mut u8; }
 
         fn test() {
@@ -251,5 +280,6 @@ class AddUnsafeFixTest : RsAnnotatorTestBase(RsUnsafeExpressionAnnotator::class)
         fn test() {
             unsafe { *foo() = 5; }
         }
-    """)
+    """
+    )
 }

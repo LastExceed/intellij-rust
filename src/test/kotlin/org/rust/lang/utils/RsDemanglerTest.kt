@@ -126,11 +126,13 @@ class RsDemanglerTest {
         demangle("_ZN2222222222222222222222EE").toString()
         demangle("_ZN5*70527e27.ll34csaғE").toString()
         demangle("_ZN5*70527a54.ll34_\$b.1E").toString()
-        demangle("""
+        demangle(
+            """
             _ZN5~saäb4e
             2734cOsbE
             5usage20h)3\0\0\0\0\0\0\07e2734cOsbE
-        """).toString()
+        """
+        ).toString()
     }
 
     @Test

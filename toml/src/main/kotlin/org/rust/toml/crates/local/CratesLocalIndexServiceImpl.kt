@@ -69,7 +69,8 @@ class CratesLocalIndexServiceImpl
         get() {
             // BACKCOMPAT: Rust 1.49
             // Since 1.50 there should always be CARGO_REGISTRY_INDEX_TAG
-            val objectId = repository.resolve(CARGO_REGISTRY_INDEX_TAG) ?: repository.resolve(CARGO_REGISTRY_INDEX_TAG_PRE_1_50)
+            val objectId = repository.resolve(CARGO_REGISTRY_INDEX_TAG)
+                ?: repository.resolve(CARGO_REGISTRY_INDEX_TAG_PRE_1_50)
 
             return objectId?.name ?: run {
                 LOG.error("Failed to resolve remote branch in the cargo registry index repository")

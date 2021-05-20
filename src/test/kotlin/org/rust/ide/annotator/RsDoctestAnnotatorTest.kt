@@ -11,114 +11,144 @@ import org.rust.WithDependencyRustProjectDescriptor
 
 @ProjectDescriptor(WithDependencyRustProjectDescriptor::class)
 class RsDoctestAnnotatorTest : RsAnnotatorTestBase(RsDoctestAnnotator::class) {
-    fun `test no injection 1`() = doTest("""
+    fun `test no injection 1`() = doTest(
+        """
         |/// ``` ```
         |fn foo() {}
-        |""")
+        |"""
+    )
 
-    fun `test no injection 2`() = doTest("""
+    fun `test no injection 2`() = doTest(
+        """
         |/// ```
         |/// ```
         |fn foo() {}
-        |""")
+        |"""
+    )
 
-    fun `test single line injection`() = doTest("""
+    fun `test single line injection`() = doTest(
+        """
         |/// ```
         |///<info> <inject>let a = 0;
         |</inject></info>/// ```
         |fn foo() {}
-        |""")
+        |"""
+    )
 
-    fun `test multi line injection`() = doTest("""
+    fun `test multi line injection`() = doTest(
+        """
         |/// ```
         |///<info> <inject>let a = 0;
         |</inject></info>///<info> <inject>let b = 0;
         |</inject></info>/// ```
         |fn foo() {}
-        |""")
+        |"""
+    )
 
-    fun `test multi line injection with empty line`() = doTest("""
+    fun `test multi line injection with empty line`() = doTest(
+        """
         |/// ```
         |///<info> <inject>let a = 0;
         |</inject></info>///<info>
         |</info>///<info> <inject>let a = 0;
         |</inject></info>/// ```
         |fn foo() {}
-        |""")
+        |"""
+    )
 
-    fun `test acceptable "lang" string`() = doTest("""
+    fun `test acceptable "lang" string`() = doTest(
+        """
         |/// ```rust, allow_fail, should_panic, no_run, test_harness, edition2018, edition2015
         |///<info> <inject>let a = 0;
         |</inject></info>/// ```
         |fn foo() {}
-        |""")
+        |"""
+    )
 
-    fun `test no injection with unacceptable "lang" string`() = doTest("""
+    fun `test no injection with unacceptable "lang" string`() = doTest(
+        """
         |/// ```foobar
         |///let a = 0;
         |/// ```
         |fn foo() {}
-        |""")
+        |"""
+    )
 
-    fun `test no injection with unacceptable "lang" string contain acceptable parts`() = doTest("""
+    fun `test no injection with unacceptable "lang" string contain acceptable parts`() = doTest(
+        """
         |/// ```rust, foobar
         |///let a = 0;
         |/// ```
         |fn foo() {}
-        |""")
+        |"""
+    )
 
-    fun `test "# " escape`() = doTest("""
+    fun `test "# " escape`() = doTest(
+        """
         |/// ```
         |///<info> # <inject>extern crate foobar;
         |</inject></info>/// ```
         |fn foo() {}
-        |""")
+        |"""
+    )
 
-    fun `test "##" escape`() = doTest("""
+    fun `test "##" escape`() = doTest(
+        """
         |/// ```
         |///<info> #<inject>#![allow(deprecated)]
         |</inject></info>/// ```
         |fn foo() {}
-        |""")
+        |"""
+    )
 
-    fun `test "#" escape`() = doTest("""
+    fun `test "#" escape`() = doTest(
+        """
         |/// ```
         |///<info> #<inject>
         |</inject></info>/// ```
         |fn foo() {}
-        |""")
+        |"""
+    )
 
-    fun `test no infix in block comment`() = doTest("""
+    fun `test no infix in block comment`() = doTest(
+        """
         |/** ```
         |<info> <inject>let a = 0;
         |</inject></info> ```*/
         |fn foo() {}
-        |""")
+        |"""
+    )
 
-    fun `test no infix in block comment multiline`() = doTest("""
+    fun `test no infix in block comment multiline`() = doTest(
+        """
         |/** ```
         |<info> <inject>let a = 0;
         |</inject></info><info> <inject>let b = 0;
         |</inject></info>```
         |*/
         |fn foo() {}
-        |""")
+        |"""
+    )
 
 
-    fun `test no injection in non-lib target`() = checkByText("""
+    fun `test no injection in non-lib target`() = checkByText(
+        """
         /// ```
         /// let a = 0;
         /// ```
         fn foo() {}
-    """, checkInfo = true)
+    """, checkInfo = true
+    )
 
     @BatchMode
-    fun `test no highlighting in batch mod`() = doTest("""
+    fun `test no highlighting in batch mod`() = doTest(
+        """
         |/// ```
         |/// <inject>let a = 0;
         |</inject>/// ```
         |fn foo() {}
-        |""")
+        |"""
+    )
 
     fun doTest(code: String) = checkByFileTree(
         "//- lib.rs\n/*caret*/${code.trimMargin()}",

@@ -63,7 +63,7 @@ class RsCompleteParsingTestCase : RsParsingTestCaseBase("complete") {
 
     override fun checkResult(targetDataName: String, file: PsiFile) {
         super.checkResult(targetDataName, file)
-        check(!hasError(file)){
+        check(!hasError(file)) {
             "Error in well formed file ${file.name}"
         }
     }

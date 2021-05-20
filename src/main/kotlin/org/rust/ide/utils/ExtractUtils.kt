@@ -50,8 +50,10 @@ data class GenericConstraints(
         val typeParameters = gatherTypeParameters(types, typeParameters)
         val constParameters = constParameters
             .filter { param -> types.any { matchesConstParameter(it, param) } }
-        return GenericConstraints(gatherLifetimesFromTypeParameters(lifetimes, typeParameters),
-            typeParameters, constParameters, whereClauses)
+        return GenericConstraints(
+            gatherLifetimesFromTypeParameters(lifetimes, typeParameters),
+            typeParameters, constParameters, whereClauses
+        )
     }
 
     fun buildTypeParameters(): String {

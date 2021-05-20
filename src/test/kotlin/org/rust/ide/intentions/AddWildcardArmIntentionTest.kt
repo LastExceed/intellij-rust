@@ -10,7 +10,8 @@ package org.rust.ide.intentions
  */
 class AddWildcardArmIntentionTest : RsIntentionTestBase(AddWildcardArmIntention::class) {
 
-    fun `test empty match`() = doUnavailableTest("""
+    fun `test empty match`() = doUnavailableTest(
+        """
         enum E { A, B, C }
         fn main() {
             let a = E::A;
@@ -18,9 +19,11 @@ class AddWildcardArmIntentionTest : RsIntentionTestBase(AddWildcardArmIntention:
                 /*caret*/
             }
         }
-    """)
+    """
+    )
 
-    fun `test empty non-exhaustive match`() = doAvailableTest("""
+    fun `test empty non-exhaustive match`() = doAvailableTest(
+        """
         fn main() {
             let a = true;
             match a/*caret*/ {
@@ -35,9 +38,11 @@ class AddWildcardArmIntentionTest : RsIntentionTestBase(AddWildcardArmIntention:
                 _ => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test do not duplicate inspection quick fixes 1`() = doUnavailableTest("""
+    fun `test do not duplicate inspection quick fixes 1`() = doUnavailableTest(
+        """
         enum E { A, B, C }
         fn main() {
             let a = E::A;
@@ -45,9 +50,11 @@ class AddWildcardArmIntentionTest : RsIntentionTestBase(AddWildcardArmIntention:
 
             }
         }
-    """)
+    """
+    )
 
-    fun `test do not duplicate inspection quick fixes 2`() = doUnavailableTest("""
+    fun `test do not duplicate inspection quick fixes 2`() = doUnavailableTest(
+        """
         enum E { A, B, C }
         fn main() {
             let a = E::A;
@@ -55,9 +62,11 @@ class AddWildcardArmIntentionTest : RsIntentionTestBase(AddWildcardArmIntention:
 
             }
         }
-    """)
+    """
+    )
 
-    fun `test do not suggest from nested code`() = doUnavailableTest("""
+    fun `test do not suggest from nested code`() = doUnavailableTest(
+        """
         enum E { A, B, C }
         fn main() {
             let a = E::A;
@@ -65,5 +74,6 @@ class AddWildcardArmIntentionTest : RsIntentionTestBase(AddWildcardArmIntention:
                 E::A => { /*caret*/ }
             }
         }
-    """)
+    """
+    )
 }

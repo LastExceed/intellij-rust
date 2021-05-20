@@ -11,7 +11,8 @@ import org.rust.WithDependencyRustProjectDescriptor
 import org.rust.cargo.project.workspace.CargoWorkspace
 
 class RsStubOnlyCompletionTest : RsCompletionTestBase() {
-    fun `test function`() = doSingleCompletionByFileTree("""
+    fun `test function`() = doSingleCompletionByFileTree(
+        """
     //- foo.rs
         pub fn bar(a: i32, b: u8) {}
     //- main.rs
@@ -20,9 +21,11 @@ class RsStubOnlyCompletionTest : RsCompletionTestBase() {
     """, """
         mod foo;
         use foo::bar/*caret*/;
-    """)
+    """
+    )
 
-    fun `test constant`() = doSingleCompletionByFileTree("""
+    fun `test constant`() = doSingleCompletionByFileTree(
+        """
     //- foo.rs
         pub const CONST: i32 = 0;
     //- main.rs
@@ -31,9 +34,11 @@ class RsStubOnlyCompletionTest : RsCompletionTestBase() {
     """, """
         mod foo;
         use foo::CONST/*caret*/;
-    """)
+    """
+    )
 
-    fun `test tuple struct`() = doSingleCompletionByFileTree("""
+    fun `test tuple struct`() = doSingleCompletionByFileTree(
+        """
     //- foo.rs
         pub struct Struct(i32);
     //- main.rs
@@ -42,9 +47,11 @@ class RsStubOnlyCompletionTest : RsCompletionTestBase() {
     """, """
         mod foo;
         use foo::Struct/*caret*/;
-    """)
+    """
+    )
 
-    fun `test field`() = doSingleCompletionByFileTree("""
+    fun `test field`() = doSingleCompletionByFileTree(
+        """
     //- foo.rs
         pub struct S {
             pub field: i32
@@ -55,11 +62,13 @@ class RsStubOnlyCompletionTest : RsCompletionTestBase() {
     """, """
         mod foo;
         fn bar(s: foo::S) { s.field/*caret*/ }
-    """)
+    """
+    )
 
     @MockEdition(CargoWorkspace.Edition.EDITION_2015)
     @ProjectDescriptor(WithDependencyRustProjectDescriptor::class)
-    fun `test complete all in extern crate in 'use' in crate root`() = doSingleCompletionByFileTree("""
+    fun `test complete all in extern crate in 'use' in crate root`() = doSingleCompletionByFileTree(
+        """
     //- lib.rs
         pub fn foo() {}
     //- main.rs
@@ -68,5 +77,6 @@ class RsStubOnlyCompletionTest : RsCompletionTestBase() {
     """, """
         extern crate test_package;
         use test_package::foo/*caret*/;
-    """)
+    """
+    )
 }

@@ -43,10 +43,12 @@ class TomlLanguageCodeStyleSettingsProvider : LanguageCodeStyleSettingsProvider(
 
 private fun sample(@org.intellij.lang.annotations.Language("TOML") code: String) = code.trim()
 
-private val INDENT_SAMPLE = sample("""
+private val INDENT_SAMPLE = sample(
+    """
 [config]
 items = [
     "foo",
     "bar"
 ]
-""")
+"""
+)

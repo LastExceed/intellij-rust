@@ -18,7 +18,8 @@ class ConvertToTyUsingFromStrFixTest : RsInspectionsTestBase(RsTypeCheckInspecti
     fun `test A from &mut Str when impl FromStr for A is available`() = simpleTestWithStr("String::from(\"HelloWorld!\").as_mut_str()")
     fun `test A from &mut String when impl FromStr for A is available`() = simpleTestWithStr("&mut String::from(\"HelloWorld!\")", "(&mut String::from(\"HelloWorld!\"))")
 
-    fun `test A from str when impl FromStr for A is available and fn ret Result with Err match`() = checkFixByText("Convert to Aa using `FromStr` trait", """
+    fun `test A from str when impl FromStr for A is available and fn ret Result with Err match`() = checkFixByText(
+        "Convert to Aa using `FromStr` trait", """
         use std::str::FromStr;
 
         struct Aa;
@@ -42,9 +43,11 @@ class ConvertToTyUsingFromStrFixTest : RsInspectionsTestBase(RsTypeCheckInspecti
             let a: Aa = "Hello World!".parse()?;
             return Ok(a);
         }
-    """)
+    """
+    )
 
-    fun `test A from str when impl FromStr for A is available and fn ret Result with Err mismatch`() = checkFixByText("Convert to Aa using `FromStr` trait", """
+    fun `test A from str when impl FromStr for A is available and fn ret Result with Err mismatch`() = checkFixByText(
+        "Convert to Aa using `FromStr` trait", """
         use std::str::FromStr;
 
         struct Aa;
@@ -70,9 +73,11 @@ class ConvertToTyUsingFromStrFixTest : RsInspectionsTestBase(RsTypeCheckInspecti
             let a: Aa = "Hello World!".parse().unwrap();
             return Ok(a);
         }
-    """)
+    """
+    )
 
-    fun `test A from str when impl FromStr for A is available and fn ret Result with Err match through From trait`() = checkFixByText("Convert to Aa using `FromStr` trait", """
+    fun `test A from str when impl FromStr for A is available and fn ret Result with Err match through From trait`() = checkFixByText(
+        "Convert to Aa using `FromStr` trait", """
         use std::str::FromStr;
 
         struct Aa;
@@ -100,9 +105,11 @@ class ConvertToTyUsingFromStrFixTest : RsInspectionsTestBase(RsTypeCheckInspecti
             let a: Aa = "Hello World!".parse()?;
             return Ok(a);
         }
-    """)
+    """
+    )
 
-    fun `test A from str when impl FromStr for A is available and lambda ret Result with Err match`() = checkFixByText("Convert to Aa using `FromStr` trait", """
+    fun `test A from str when impl FromStr for A is available and lambda ret Result with Err match`() = checkFixByText(
+        "Convert to Aa using `FromStr` trait", """
         use std::str::FromStr;
 
         struct Aa;
@@ -126,9 +133,11 @@ class ConvertToTyUsingFromStrFixTest : RsInspectionsTestBase(RsTypeCheckInspecti
         fn main() {
             let f = || -> Result<Aa, Ee> { let a: Aa = "Hello World!".parse()?; return Ok(a);};
         }
-    """)
+    """
+    )
 
-    fun `test Result of A from str when impl FromStr for A is available`() = checkFixByText("Convert to Aa using `FromStr` trait", """
+    fun `test Result of A from str when impl FromStr for A is available`() = checkFixByText(
+        "Convert to Aa using `FromStr` trait", """
         use std::str::FromStr;
 
         struct Aa;
@@ -150,9 +159,11 @@ class ConvertToTyUsingFromStrFixTest : RsInspectionsTestBase(RsTypeCheckInspecti
         fn main () {
             let a: Result<Aa, Ee> = "Hello World!".parse();
         }
-    """)
+    """
+    )
 
-    fun `test no fix when impl FromStr for A has wrong Err type`() = checkFixIsUnavailable("Convert to Aa using `FromStr` trait", """
+    fun `test no fix when impl FromStr for A has wrong Err type`() = checkFixIsUnavailable(
+        "Convert to Aa using `FromStr` trait", """
         use std::str::FromStr;
 
         struct Aa;
@@ -164,9 +175,11 @@ class ConvertToTyUsingFromStrFixTest : RsInspectionsTestBase(RsTypeCheckInspecti
         fn main () {
             let a: Result<Aa, Ee2> = <error>"Hello World!"<caret></error>;
         }
-    """)
+    """
+    )
 
-    fun `test no fix when impl FromStr for A is not available`() = checkFixIsUnavailable("Convert to Aa using `FromStr` trait", """
+    fun `test no fix when impl FromStr for A is not available`() = checkFixIsUnavailable(
+        "Convert to Aa using `FromStr` trait", """
         use std::str::FromStr;
 
         struct Aa;
@@ -177,9 +190,11 @@ class ConvertToTyUsingFromStrFixTest : RsInspectionsTestBase(RsTypeCheckInspecti
         fn main () {
             let a: Aa = <error>"Hello World!"<caret></error>;
         }
-    """)
+    """
+    )
 
-    private fun simpleTestWithStr(str: String, expStr: String=str)  = checkFixByText("Convert to Aa using `FromStr` trait", """
+    private fun simpleTestWithStr(str: String, expStr: String = str) = checkFixByText(
+        "Convert to Aa using `FromStr` trait", """
         use std::str::FromStr;
 
         struct Aa;
@@ -201,5 +216,6 @@ class ConvertToTyUsingFromStrFixTest : RsInspectionsTestBase(RsTypeCheckInspecti
         fn main () {
             let a: Aa = $expStr.parse().unwrap();
         }
-    """)
+    """
+    )
 }

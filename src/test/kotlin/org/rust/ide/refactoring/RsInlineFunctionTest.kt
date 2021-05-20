@@ -9,7 +9,8 @@ import org.intellij.lang.annotations.Language
 import org.rust.RsTestBase
 
 class RsInlineFunctionTest : RsTestBase() {
-    fun `test inline function without parameters and a return value`() = doTest("""
+    fun `test inline function without parameters and a return value`() = doTest(
+        """
         fn main() {
             test();
         }
@@ -23,9 +24,11 @@ class RsInlineFunctionTest : RsTestBase() {
             println!("test2");
         }
 
-    """)
+    """
+    )
 
-    fun `test inline function with parameter and no return value`() = doTest("""
+    fun `test inline function with parameter and no return value`() = doTest(
+        """
         fn main() {
             let bar = 10i32;
             foo(bar);
@@ -39,9 +42,11 @@ class RsInlineFunctionTest : RsTestBase() {
             println!("{}", bar);
         }
 
-    """)
+    """
+    )
 
-    fun `test inline function with return value and no parameters`() = doTest("""
+    fun `test inline function with return value and no parameters`() = doTest(
+        """
         fn main() {
             let baz = foo();
         }
@@ -53,9 +58,11 @@ class RsInlineFunctionTest : RsTestBase() {
             let baz = 10i32;
         }
 
-    """)
+    """
+    )
 
-    fun `test inline function with return value and no parameters, with value assigned inside function`() = doTest("""
+    fun `test inline function with return value and no parameters, with value assigned inside function`() = doTest(
+        """
         fn main() {
             let baz = foo();
         }
@@ -69,9 +76,11 @@ class RsInlineFunctionTest : RsTestBase() {
             let baz = bar;
         }
 
-    """)
+    """
+    )
 
-    fun `test inline function with return value and no parameters, with range operator`() = doTest("""
+    fun `test inline function with return value and no parameters, with range operator`() = doTest(
+        """
         fn main() {
             for i in 0..foo() {}
         }
@@ -81,9 +90,11 @@ class RsInlineFunctionTest : RsTestBase() {
             for i in 0..42 {}
         }
 
-    """)
+    """
+    )
 
-    fun `test inline function with return value and no parameters, with range operator and assignment in function`() = doTest("""
+    fun `test inline function with return value and no parameters, with range operator and assignment in function`() = doTest(
+        """
         fn main() {
             for i in 0..foo() {}
         }
@@ -97,9 +108,11 @@ class RsInlineFunctionTest : RsTestBase() {
             for i in 0..bar {}
         }
 
-    """)
+    """
+    )
 
-    fun `test inline function with return value and no parameters, inside boolean expression`() = doTest("""
+    fun `test inline function with return value and no parameters, inside boolean expression`() = doTest(
+        """
         fn main() {
             if foo() > 5 {}
         }
@@ -109,9 +122,11 @@ class RsInlineFunctionTest : RsTestBase() {
             if 42 > 5 {}
         }
 
-    """)
+    """
+    )
 
-    fun `test inline input parameter with mutability`() = doTest("""
+    fun `test inline input parameter with mutability`() = doTest(
+        """
         fn main() {
             let mut vec = vec![1, 2, 3];
             foo(&mut vec);
@@ -126,9 +141,11 @@ class RsInlineFunctionTest : RsTestBase() {
             vec_argument.push(1);
         }
 
-    """)
+    """
+    )
 
-    fun `test inline function with 2 parameters and no return value`() = doTest("""
+    fun `test inline function with 2 parameters and no return value`() = doTest(
+        """
         fn main() {
             let bar = 10i32;
             let baz = 20i32;
@@ -144,9 +161,11 @@ class RsInlineFunctionTest : RsTestBase() {
             println!("{}, {}", bar, baz);
         }
 
-    """)
+    """
+    )
 
-    fun `test inline function with tuple return value`() = doTest("""
+    fun `test inline function with tuple return value`() = doTest(
+        """
         fn main() {
             let (barCopy, bazCopy) = foo();
             println!("{}", bar);
@@ -166,9 +185,11 @@ class RsInlineFunctionTest : RsTestBase() {
             println!("{}", baz);
         }
 
-    """)
+    """
+    )
 
-    fun `test inline function with expression return value`() = doTest("""
+    fun `test inline function with expression return value`() = doTest(
+        """
         fn bar() -> (i32, i32) {
             let baz = 20i32;
             foo(baz);
@@ -184,9 +205,11 @@ class RsInlineFunctionTest : RsTestBase() {
             (baz, qux)
         }
 
-    """)
+    """
+    )
 
-    fun `test inline public function`() = doTest("""
+    fun `test inline public function`() = doTest(
+        """
         fn main() {
             foo();
         }
@@ -200,9 +223,11 @@ class RsInlineFunctionTest : RsTestBase() {
             println!("test2");
         }
 
-    """)
+    """
+    )
 
-    fun `test inline method`() = doTest("""
+    fun `test inline method`() = doTest(
+        """
         struct S;
         impl S {
             fn foo() {
@@ -222,9 +247,11 @@ class RsInlineFunctionTest : RsTestBase() {
                 println!("test2");
             }
         }
-    """)
+    """
+    )
 
-    fun `test inline method with generics`() = doTest("""
+    fun `test inline method with generics`() = doTest(
+        """
         struct S<T>(T);
         impl<T> S<T> {
             fn foo() {
@@ -242,9 +269,11 @@ class RsInlineFunctionTest : RsTestBase() {
                 println!("Hello!");
             }
         }
-    """)
+    """
+    )
 
-    fun `test inline method with self parameter`() = doTest("""
+    fun `test inline method with self parameter`() = doTest(
+        """
         struct S;
         impl S {
             fn foo(self) {
@@ -274,9 +303,11 @@ class RsInlineFunctionTest : RsTestBase() {
                 println!("bla");
             }
         }
-    """)
+    """
+    )
 
-    fun `test inline method with ref self parameter`() = doTest("""
+    fun `test inline method with ref self parameter`() = doTest(
+        """
         struct S;
         impl S {
             fn foo(&self) {
@@ -306,9 +337,11 @@ class RsInlineFunctionTest : RsTestBase() {
                 println!("bla");
             }
         }
-    """)
+    """
+    )
 
-    fun `test inline method with ref mut self parameter`() = doTest("""
+    fun `test inline method with ref mut self parameter`() = doTest(
+        """
         struct S;
         impl S {
             fn foo(&mut self) {
@@ -338,9 +371,11 @@ class RsInlineFunctionTest : RsTestBase() {
                 println!("bla");
             }
         }
-    """)
+    """
+    )
 
-    fun `test inline method with self parameter and another parameter`() = doTest("""
+    fun `test inline method with self parameter and another parameter`() = doTest(
+        """
         struct S;
         impl S {
             fn foo(self) {
@@ -370,9 +405,11 @@ class RsInlineFunctionTest : RsTestBase() {
                 println!("bla");
             }
         }
-    """)
+    """
+    )
 
-    fun `test inline method with struct self parameter and another parameter`() = doTest("""
+    fun `test inline method with struct self parameter and another parameter`() = doTest(
+        """
         struct S { a: u32, b: u32 }
 
         impl S {
@@ -395,9 +432,11 @@ class RsInlineFunctionTest : RsTestBase() {
             let a = 1;
             println!("{} {} {}", &s.a, &s.b, a);
         }
-    """)
+    """
+    )
 
-    fun `test inline method with public visibility`() = doTest("""
+    fun `test inline method with public visibility`() = doTest(
+        """
         struct S;
         impl S {
             fn foo() {
@@ -417,9 +456,11 @@ class RsInlineFunctionTest : RsTestBase() {
                 println!("test2");
             }
         }
-    """)
+    """
+    )
 
-    fun `test inline trait method`() = doTest("""
+    fun `test inline trait method`() = doTest(
+        """
         struct S;
 
         trait Bar {
@@ -453,9 +494,11 @@ class RsInlineFunctionTest : RsTestBase() {
         }
 
         impl S {}
-    """)
+    """
+    )
 
-    fun `test inline method in a trait`() = doTest("""
+    fun `test inline method in a trait`() = doTest(
+        """
         trait Foo {
             fn foo(&self) {
                 let b = 1;
@@ -473,9 +516,11 @@ class RsInlineFunctionTest : RsTestBase() {
                 println!("{}", b);
             }
         }
-    """)
+    """
+    )
 
-    fun `test inline function with generic parameters`() = doTest("""
+    fun `test inline function with generic parameters`() = doTest(
+        """
         fn foo<A, B, C, D>(a: A, b: B, c: Option<C>, d: Option<D>) {
             bar(a, b, c, d)
         }
@@ -495,9 +540,11 @@ class RsInlineFunctionTest : RsTestBase() {
             println!("test")
         }
 
-    """)
+    """
+    )
 
-    fun `test inline function with generic parameters and return value`() = doTest("""
+    fun `test inline function with generic parameters and return value`() = doTest(
+        """
         fn foo<T: Default>() -> T {
             bar()
         }
@@ -509,9 +556,11 @@ class RsInlineFunctionTest : RsTestBase() {
             T::default()
         }
 
-    """)
+    """
+    )
 
-    fun `test inline function with generic parameters and return generic option value`() = doTest("""
+    fun `test inline function with generic parameters and return generic option value`() = doTest(
+        """
         fn foo<T: Default>() -> Option<T> {
             bar()
         }
@@ -523,9 +572,11 @@ class RsInlineFunctionTest : RsTestBase() {
             Some(T::default())
         }
 
-    """)
+    """
+    )
 
-    fun `test inline function with generic parameters and where clauses`() = doTest("""
+    fun `test inline function with generic parameters and where clauses`() = doTest(
+        """
         trait Trait1 {}
         trait Trait2 {}
         trait Trait3 {}
@@ -547,9 +598,11 @@ class RsInlineFunctionTest : RsTestBase() {
             println!("test")
         }
 
-    """)
+    """
+    )
 
-    fun `test inline function with bounded generic parameters`() = doTest("""
+    fun `test inline function with bounded generic parameters`() = doTest(
+        """
         trait Foo<T> {}
         trait Bar<T> {}
         trait Baz<T> {}
@@ -567,9 +620,11 @@ class RsInlineFunctionTest : RsTestBase() {
             b;
         }
 
-    """)
+    """
+    )
 
-    fun `test inline function with bounded generic parameters and where clauses`() = doTest("""
+    fun `test inline function with bounded generic parameters and where clauses`() = doTest(
+        """
         trait T1 {}
         trait T2 {}
         trait Foo<T> {}
@@ -593,9 +648,11 @@ class RsInlineFunctionTest : RsTestBase() {
             u;
         }
 
-    """)
+    """
+    )
 
-    fun `test inline function with passing primitive`() = doTest("""
+    fun `test inline function with passing primitive`() = doTest(
+        """
         fn foo() {
             let i = 1;
             let f = 1.1;
@@ -633,9 +690,11 @@ class RsInlineFunctionTest : RsTestBase() {
             println!("{}", c);
         }
 
-    """)
+    """
+    )
 
-    fun `test inline function with passing reference`() = doTest("""
+    fun `test inline function with passing reference`() = doTest(
+        """
         fn foo() {
             let s = "str";
             bar(s);
@@ -651,9 +710,11 @@ class RsInlineFunctionTest : RsTestBase() {
             println!("{}", s);
         }
 
-    """)
+    """
+    )
 
-    fun `test inline function with passing copy trait`() = doTest("""
+    fun `test inline function with passing copy trait`() = doTest(
+        """
         #[derive(Copy, Clone, Debug)]
         struct Copyable;
 
@@ -675,9 +736,11 @@ class RsInlineFunctionTest : RsTestBase() {
             println!("{:?}", copy);
         }
 
-    """)
+    """
+    )
 
-    fun `test inline function with passing by &`() = doTest("""
+    fun `test inline function with passing by &`() = doTest(
+        """
         fn f(_a: &Vec<i32>) {}
 
         fn main() {
@@ -711,9 +774,11 @@ class RsInlineFunctionTest : RsTestBase() {
             println!("{}", vec.len());
         }
 
-    """)
+    """
+    )
 
-    fun `test inline function with passing by &mut`() = doTest("""
+    fun `test inline function with passing by &mut`() = doTest(
+        """
         fn foo() {
             let mut vec = vec![1, 2, 3];
             let mut vec2 = vec![1, 2, 3];
@@ -739,9 +804,11 @@ class RsInlineFunctionTest : RsTestBase() {
             println!("{}", vec.len());
         }
 
-    """)
+    """
+    )
 
-    fun `test inline function with passing by mut`() = doTest("""
+    fun `test inline function with passing by mut`() = doTest(
+        """
         fn test(mut v: Vec<i32>) {}
         fn test2(v: &mut Vec<i32>) {}
 
@@ -768,9 +835,11 @@ class RsInlineFunctionTest : RsTestBase() {
             test2(&mut vec2_argument);
         }
 
-    """)
+    """
+    )
 
-    fun `test extract a complex function as example`() = doTest("""
+    fun `test extract a complex function as example`() = doTest(
+        """
         fn parse_test(call: Call) -> JsResult<JsValue> {
             let (test, callback, file) = foo(call);
 
@@ -832,9 +901,11 @@ class RsInlineFunctionTest : RsTestBase() {
             Ok(JsNull::new().upcast())
         }
 
-    """)
+    """
+    )
 
-    fun `test inline function with differently named function parameters`() = doTest("""
+    fun `test inline function with differently named function parameters`() = doTest(
+        """
         fn main() {
             let a = foo(bar());
         }
@@ -854,9 +925,11 @@ class RsInlineFunctionTest : RsTestBase() {
         fn bar() -> i32 {
             5
         }
-    """)
+    """
+    )
 
-    fun `test inline function with differently named function parameters with inlined references`() = doTest("""
+    fun `test inline function with differently named function parameters with inlined references`() = doTest(
+        """
         fn main() {
             let b = 6;
             let _a = foo(b);
@@ -878,9 +951,11 @@ class RsInlineFunctionTest : RsTestBase() {
         fn bar(i: &i32) -> &i32 {
             return i;
         }
-    """)
+    """
+    )
 
-    fun `test inline function with differently named reference and mutable function parameters`() = doTest("""
+    fun `test inline function with differently named reference and mutable function parameters`() = doTest(
+        """
         fn main() {
             let _a = foo(&bar(), &mut qux(), corge());
         }
@@ -925,9 +1000,11 @@ class RsInlineFunctionTest : RsTestBase() {
             let grault = 5;
             return grault;
         }
-    """)
+    """
+    )
 
-    fun `test inline function with differently named reference and function argument inlined into multiple places`() = doTest("""
+    fun `test inline function with differently named reference and function argument inlined into multiple places`() = doTest(
+        """
         fn main() {
             let mut foo = 1024;
             let a = divide(bar(&mut foo), bar(&mut foo));
@@ -954,9 +1031,11 @@ class RsInlineFunctionTest : RsTestBase() {
             let foo = foo / 2;
             return foo;
         }
-    """)
+    """
+    )
 
-    fun `test inline function with differently named parameters in a tuple deconstruction`() = doTest("""
+    fun `test inline function with differently named parameters in a tuple deconstruction`() = doTest(
+        """
         fn main() {
             let c = foo((bar(), bar()));
         }
@@ -976,9 +1055,11 @@ class RsInlineFunctionTest : RsTestBase() {
         fn bar() -> i32 {
             5
         }
-    """)
+    """
+    )
 
-    fun `test inline function with differently named tuple parameter`() = doTest("""
+    fun `test inline function with differently named tuple parameter`() = doTest(
+        """
         fn main() {
             let c = foo((bar(), bar()));
         }
@@ -998,9 +1079,11 @@ class RsInlineFunctionTest : RsTestBase() {
         fn bar() -> i32 {
             5
         }
-    """)
+    """
+    )
 
-    fun `test inline function with differently named struct parameter`() = doTest("""
+    fun `test inline function with differently named struct parameter`() = doTest(
+        """
         fn main() {
             let _c = foo(bar());
         }
@@ -1024,9 +1107,11 @@ class RsInlineFunctionTest : RsTestBase() {
         }
 
         struct S { a: i32, b: i32 }
-    """)
+    """
+    )
 
-    fun `test inline function with differently named struct deconstruction`() = doTest("""
+    fun `test inline function with differently named struct deconstruction`() = doTest(
+        """
         fn main() {
             let _c = foo(bar());
         }
@@ -1050,9 +1135,11 @@ class RsInlineFunctionTest : RsTestBase() {
         }
 
         struct S { a: i32, b: i32 }
-    """)
+    """
+    )
 
-    fun `test inline function with unary reference expression that can't be removed`() = doTest("""
+    fun `test inline function with unary reference expression that can't be removed`() = doTest(
+        """
         fn main() {
             let a = 5;
             foo(&a);
@@ -1069,9 +1156,11 @@ class RsInlineFunctionTest : RsTestBase() {
         }
 
 
-    """)
+    """
+    )
 
-    fun `test inline function from different module with two single use statements`() = doTest("""
+    fun `test inline function from different module with two single use statements`() = doTest(
+        """
         use foo::bar::test;
         use foo::bar::test2;
         fn main() {
@@ -1101,9 +1190,11 @@ class RsInlineFunctionTest : RsTestBase() {
                 }
             }
         }
-    """)
+    """
+    )
 
-    fun `test inline function from different module with group usage statements and different use orders inside`() = doTest("""
+    fun `test inline function from different module with group usage statements and different use orders inside`() = doTest(
+        """
         use foo::bar::{test};
         use foo::bar::{test, test2};
         use foo::bar::{test2, test};
@@ -1139,10 +1230,13 @@ class RsInlineFunctionTest : RsTestBase() {
                 }
             }
         }
-    """)
+    """
+    )
 
-    private fun doTest(@Language("Rust") before: String,
-                       @Language("Rust") after: String) {
+    private fun doTest(
+        @Language("Rust") before: String,
+        @Language("Rust") after: String
+    ) {
         checkByText(before.trimIndent(), after.trimIndent()) {
             myFixture.performEditorAction("Inline")
         }

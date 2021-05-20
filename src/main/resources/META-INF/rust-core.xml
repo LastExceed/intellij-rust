@@ -81,10 +81,12 @@
 
         <lang.refactoringSupport language="Rust"
                                  implementationClass="org.rust.ide.refactoring.RsRefactoringSupportProvider"/>
-        <suggestedRefactoringSupport language="Rust" implementationClass="org.rust.ide.refactoring.suggested.RsSuggestedRefactoringSupport"/>
+        <suggestedRefactoringSupport language="Rust"
+                                     implementationClass="org.rust.ide.refactoring.suggested.RsSuggestedRefactoringSupport"/>
 
-        <refactoring.changeSignatureUsageProcessor implementation="org.rust.ide.refactoring.changeSignature.RsChangeSignatureUsageProcessor"
-                                                   id="Rust"/>
+        <refactoring.changeSignatureUsageProcessor
+            implementation="org.rust.ide.refactoring.changeSignature.RsChangeSignatureUsageProcessor"
+            id="Rust"/>
 
         <!-- Commenter -->
 
@@ -163,13 +165,16 @@
         <!-- Hints -->
 
         <codeInsight.typeInfo language="Rust" implementationClass="org.rust.ide.hints.type.RsExpressionTypeProvider"/>
-        <codeInsight.parameterInfo language="Rust" implementationClass="org.rust.ide.hints.parameter.RsParameterInfoHandler"/>
+        <codeInsight.parameterInfo language="Rust"
+                                   implementationClass="org.rust.ide.hints.parameter.RsParameterInfoHandler"/>
         <codeInsight.parameterInfo language="Rust"
                                    implementationClass="org.rust.ide.hints.parameter.RsGenericParameterInfoHandler"/>
         <codeInsight.parameterNameHints language="Rust"
                                         implementationClass="org.rust.ide.hints.parameter.RsInlayParameterHintsProvider"/>
-        <codeInsight.inlayProvider language="Rust" implementationClass="org.rust.ide.hints.type.RsInlayTypeHintsProvider"/>
-        <codeInsight.inlayProvider language="Rust" implementationClass="org.rust.ide.hints.type.RsChainMethodTypeHintsProvider"/>
+        <codeInsight.inlayProvider language="Rust"
+                                   implementationClass="org.rust.ide.hints.type.RsInlayTypeHintsProvider"/>
+        <codeInsight.inlayProvider language="Rust"
+                                   implementationClass="org.rust.ide.hints.type.RsChainMethodTypeHintsProvider"/>
 
         <declarationRangeHandler key="org.rust.lang.core.psi.RsStructItem"
                                  implementationClass="org.rust.ide.hints.RsStructItemDeclarationRangeHandler"/>
@@ -293,7 +298,7 @@
         <!-- Code Style -->
 
         <langCodeStyleSettingsProvider
-                implementation="org.rust.ide.formatter.settings.RsLanguageCodeStyleSettingsProvider"/>
+            implementation="org.rust.ide.formatter.settings.RsLanguageCodeStyleSettingsProvider"/>
 
         <!-- Color Settings -->
 
@@ -906,7 +911,7 @@
         <configurationType implementation="org.rust.cargo.runconfig.wasmpack.WasmPackCommandConfigurationType"/>
 
         <runConfigurationProducer
-                implementation="org.rust.cargo.runconfig.command.CompositeCargoRunConfigurationProducer"/>
+            implementation="org.rust.cargo.runconfig.command.CompositeCargoRunConfigurationProducer"/>
         <!-- To register a new producer, add it to the `producers` list in the `CompositeCargoRunConfigurationProducer`
              producer instead of registering it here. -->
 
@@ -947,7 +952,7 @@
                     icon="/icons/tool-window.svg"/>
 
         <additionalLibraryRootsProvider
-                implementation="org.rust.cargo.project.workspace.RsAdditionalLibraryRootsProvider"/>
+            implementation="org.rust.cargo.project.workspace.RsAdditionalLibraryRootsProvider"/>
 
         <!-- Icon Provider -->
 
@@ -1055,7 +1060,8 @@
 
         <registryKey key="org.rust.lang.type.alias.threshold" defaultValue="10" restartRequired="false"
                      description="Maximum number of type aliases to take into account during `impl`s search (old resolve)"/>
-        <registryKey key="org.rust.lang.type.alias.threshold.new.resolve" defaultValue="2147483647" restartRequired="false"
+        <registryKey key="org.rust.lang.type.alias.threshold.new.resolve" defaultValue="2147483647"
+                     restartRequired="false"
                      description="Maximum number of type aliases to take into account during `impl`s search (new resolve)"/>
         <registryKey key="org.rust.lang.cfg.attributes" defaultValue="true" restartRequired="false"
                      description="Enable Rust cfg attributes support"/>
@@ -1090,7 +1096,9 @@
 
         <!--  Experimental features -->
         <experimentalFeature id="org.rust.cargo.features.settings.gutter" percentOfUsers="0">
-            <description>Show settings gutter icon near [features] section in `Cargo.toml` where you can enable or disable all features</description>
+            <description>Show settings gutter icon near [features] section in `Cargo.toml` where you can enable or
+                disable all features
+            </description>
         </experimentalFeature>
 
     </extensions>
@@ -1135,14 +1143,14 @@
 
     <applicationListeners>
         <listener class="org.rust.ide.navigation.goto.RsGoToDeclarationRunningService$Listener"
-                  topic="com.intellij.openapi.actionSystem.ex.AnActionListener" />
+                  topic="com.intellij.openapi.actionSystem.ex.AnActionListener"/>
         <listener class="org.rust.ide.dynamic.RsDynamicPluginListener"
-                  topic="com.intellij.ide.plugins.DynamicPluginListener" />
+                  topic="com.intellij.ide.plugins.DynamicPluginListener"/>
     </applicationListeners>
 
     <projectListeners>
         <listener class="org.rust.lang.core.macros.MacroExpansionManagerWaker"
-                  topic="org.rust.cargo.project.model.CargoProjectsService$CargoProjectsListener" />
+                  topic="org.rust.cargo.project.model.CargoProjectsService$CargoProjectsListener"/>
     </projectListeners>
 
     <actions>

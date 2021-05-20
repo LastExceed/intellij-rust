@@ -34,9 +34,10 @@ abstract class RsExternCrateItemImplMixin : RsStubbedNamedElementImpl<RsExternCr
 
     override fun getReference(): RsReference = RsExternCrateReferenceImpl(this)
 
-    override val referenceNameElement: PsiElement get() = checkNotNull(identifier ?: self) {
-        "Extern crate must contain identifier: $this $text at ${containingFile.virtualFile.path}"
-    }
+    override val referenceNameElement: PsiElement
+        get() = checkNotNull(identifier ?: self) {
+            "Extern crate must contain identifier: $this $text at ${containingFile.virtualFile.path}"
+        }
 
     override val referenceName: String get() = greenStub?.name ?: super.referenceName
 

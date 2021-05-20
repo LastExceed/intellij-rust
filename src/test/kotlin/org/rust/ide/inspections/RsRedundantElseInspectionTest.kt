@@ -10,7 +10,8 @@ package org.rust.ide.inspections
  */
 class RsRedundantElseInspectionTest : RsInspectionsTestBase(RsRedundantElseInspection::class) {
 
-    fun `test variable binding`() = checkFixByText("Remove `else`", """
+    fun `test variable binding`() = checkFixByText(
+        "Remove `else`", """
         fn main() {
             let a = 5;
             if let x = a {
@@ -23,9 +24,11 @@ class RsRedundantElseInspectionTest : RsInspectionsTestBase(RsRedundantElseInspe
             if let x = a {
             }
         }
-    """)
+    """
+    )
 
-    fun `test empty single variant enum`() = checkFixByText("Remove `else`", """
+    fun `test empty single variant enum`() = checkFixByText(
+        "Remove `else`", """
         enum E { V1 }
 
         fn main() {
@@ -42,9 +45,11 @@ class RsRedundantElseInspectionTest : RsInspectionsTestBase(RsRedundantElseInspe
             if let E::V1 = a {
             }
         }
-    """)
+    """
+    )
 
-    fun `test single field enum variant`() = checkFixByText("Remove `else`", """
+    fun `test single field enum variant`() = checkFixByText(
+        "Remove `else`", """
         enum E { V1(u32) }
 
         fn main() {
@@ -61,9 +66,11 @@ class RsRedundantElseInspectionTest : RsInspectionsTestBase(RsRedundantElseInspe
             if let E::V1(x) = a {
             }
         }
-    """)
+    """
+    )
 
-    fun `test else if`() = checkFixByText("Remove `else`", """
+    fun `test else if`() = checkFixByText(
+        "Remove `else`", """
         fn main() {
             let a = 5;
             if let x = a {
@@ -76,9 +83,11 @@ class RsRedundantElseInspectionTest : RsInspectionsTestBase(RsRedundantElseInspe
             if let x = a {
             }
         }
-    """)
+    """
+    )
 
-    fun `test first condition irrefutable`() = checkFixByText("Remove `else`", """
+    fun `test first condition irrefutable`() = checkFixByText(
+        "Remove `else`", """
         enum E { V1(u32), V2 }
 
         fn main() {
@@ -99,9 +108,11 @@ class RsRedundantElseInspectionTest : RsInspectionsTestBase(RsRedundantElseInspe
             } else if let E::V1(x) = b {
             }
         }
-    """)
+    """
+    )
 
-    fun `test intermediate condition irrefutable`() = checkFixByText("Remove `else`", """
+    fun `test intermediate condition irrefutable`() = checkFixByText(
+        "Remove `else`", """
         enum E { V1(u32), V2 }
 
         fn main() {
@@ -122,9 +133,11 @@ class RsRedundantElseInspectionTest : RsInspectionsTestBase(RsRedundantElseInspe
             } else if let x = a {
             }
         }
-    """)
+    """
+    )
 
-    fun `test slice 1`() = checkFixByText("Remove `else`", """
+    fun `test slice 1`() = checkFixByText(
+        "Remove `else`", """
         fn main() {
             let vec = &[1, 2][..];
             let single = if let &[..] = &vec {
@@ -140,9 +153,11 @@ class RsRedundantElseInspectionTest : RsInspectionsTestBase(RsRedundantElseInspe
                 Some(s)
             };
         }
-    """)
+    """
+    )
 
-    fun `test slice 2`() = checkFixByText("Remove `else`", """
+    fun `test slice 2`() = checkFixByText(
+        "Remove `else`", """
         fn main() {
             let vec = &[1, 2][..];
             let single = if let &[s @ ..] = &vec {
@@ -158,9 +173,11 @@ class RsRedundantElseInspectionTest : RsInspectionsTestBase(RsRedundantElseInspe
                 Some(s)
             };
         }
-    """)
+    """
+    )
 
-    fun `test irrefutable slice`() = checkByText("""
+    fun `test irrefutable slice`() = checkByText(
+        """
         fn main() {
             let vec = &[1, 2][..];
             let single = if let &[s] = &vec {
@@ -169,9 +186,11 @@ class RsRedundantElseInspectionTest : RsInspectionsTestBase(RsRedundantElseInspe
                 None
             };
         }
-    """)
+    """
+    )
 
-    fun `test nested condition`() = checkByText("""
+    fun `test nested condition`() = checkByText(
+        """
         enum E { V1(u32), V2 }
 
         fn main() {
@@ -184,14 +203,17 @@ class RsRedundantElseInspectionTest : RsInspectionsTestBase(RsRedundantElseInspe
                 }
             }
         }
-    """)
+    """
+    )
 
-    fun `test boolean constant`() = checkByText("""
+    fun `test boolean constant`() = checkByText(
+        """
         fn main() {
             if true {
             } <warning descr="Redundant `else`">else</warning> {
                 let a = 5;
             }
         }
-    """)
+    """
+    )
 }

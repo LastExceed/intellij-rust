@@ -28,7 +28,8 @@ class ImplementMembersHandlerTest : RsTestBase() {
     }
 
     private fun invokeVia(actionInvoker: () -> Unit) {
-        checkByText("""
+        checkByText(
+            """
             trait T { fn f1(); }
             struct S;
             impl T /*caret*/for S {}
@@ -40,7 +41,8 @@ class ImplementMembersHandlerTest : RsTestBase() {
                     todo!()
                 }
             }
-        """) {
+        """
+        ) {
             withMockTraitMemberChooser({ _, all, _ -> all }) {
                 actionInvoker()
             }
@@ -48,11 +50,13 @@ class ImplementMembersHandlerTest : RsTestBase() {
     }
 
     fun `test not available outside of impl`() {
-        InlineFile("""
+        InlineFile(
+            """
             trait T { fn f1(); }
             struct /*caret*/S;
             impl T for S {}
-        """)
+        """
+        )
         ImplementMembersMarks.noImplInHandler.checkHit {
             val presentation = myFixture.testAction(ActionManagerEx.getInstanceEx().getAction("ImplementMethods"))
             check(!presentation.isEnabled)
@@ -60,7 +64,8 @@ class ImplementMembersHandlerTest : RsTestBase() {
         check(myFixture.filterAvailableIntentions("Implement members").isEmpty())
     }
 
-    fun `test implement methods`() = doTest("""
+    fun `test implement methods`() = doTest(
+        """
         trait T {
             fn f1();
             fn f2();
@@ -91,9 +96,11 @@ class ImplementMembersHandlerTest : RsTestBase() {
                 todo!()
             }
         }
-    """)
+    """
+    )
 
-    fun `test import unresolved types`() = doTest("""
+    fun `test import unresolved types`() = doTest(
+        """
         use a::T;
         mod a {
             pub struct R;
@@ -119,9 +126,11 @@ class ImplementMembersHandlerTest : RsTestBase() {
                 <selection>todo!()</selection>
             }
         }
-    """)
+    """
+    )
 
-    fun `test import unresolved type aliases`() = doTest("""
+    fun `test import unresolved type aliases`() = doTest(
+        """
         use a::T;
         mod a {
             pub struct R;
@@ -149,9 +158,11 @@ class ImplementMembersHandlerTest : RsTestBase() {
                 <selection>todo!()</selection>
             }
         }
-    """)
+    """
+    )
 
-    fun `test don't import type alias inner type`() = doTest("""
+    fun `test don't import type alias inner type`() = doTest(
+        """
         use a::T;
         mod a {
             pub struct A;
@@ -183,9 +194,11 @@ class ImplementMembersHandlerTest : RsTestBase() {
                 <selection>todo!()</selection>
             }
         }
-    """)
+    """
+    )
 
-    fun `test support type aliases`() = doTest("""
+    fun `test support type aliases`() = doTest(
+        """
         pub struct R;
         pub type U = R;
         pub trait T {
@@ -207,9 +220,11 @@ class ImplementMembersHandlerTest : RsTestBase() {
                 <selection>todo!()</selection>
             }
         }
-    """)
+    """
+    )
 
-    fun `test support extern keyword`() = doTest("""
+    fun `test support extern keyword`() = doTest(
+        """
         trait T {
             fn call(handler: extern fn(flag: bool));
         }
@@ -227,9 +242,11 @@ class ImplementMembersHandlerTest : RsTestBase() {
                 <selection>todo!()</selection>
             }
         }
-    """)
+    """
+    )
 
-    fun `test support extern keyword 2`() = doTest("""
+    fun `test support extern keyword 2`() = doTest(
+        """
         trait T<X, Y, Z> {
             fn call(z: Z, x: X, y: Y);
         }
@@ -247,9 +264,11 @@ class ImplementMembersHandlerTest : RsTestBase() {
                 <selection>todo!()</selection>
             }
         }
-    """)
+    """
+    )
 
-    fun `test support extern keyword 3`() = doTest("""
+    fun `test support extern keyword 3`() = doTest(
+        """
         trait T<P = extern fn()> {
             fn call(handler: P);
         }
@@ -267,9 +286,11 @@ class ImplementMembersHandlerTest : RsTestBase() {
                 <selection>todo!()</selection>
             }
         }
-    """)
+    """
+    )
 
-    fun `test support extern keyword 4`() = doTest("""
+    fun `test support extern keyword 4`() = doTest(
+        """
         trait T<P = extern fn()> {
             fn call(handler: P);
         }
@@ -287,9 +308,11 @@ class ImplementMembersHandlerTest : RsTestBase() {
                 <selection>todo!()</selection>
             }
         }
-    """)
+    """
+    )
 
-    fun `test implement unsafe methods`() = doTest("""
+    fun `test implement unsafe methods`() = doTest(
+        """
         trait T {
             unsafe fn f1();
             unsafe fn f2();
@@ -320,9 +343,11 @@ class ImplementMembersHandlerTest : RsTestBase() {
                 todo!()
             }
         }
-    """)
+    """
+    )
 
-    fun `test implement async methods`() = doTest("""
+    fun `test implement async methods`() = doTest(
+        """
         trait T {
             async fn f1();
             async fn f2();
@@ -353,9 +378,11 @@ class ImplementMembersHandlerTest : RsTestBase() {
                 todo!()
             }
         }
-    """)
+    """
+    )
 
-    fun `test implement more methods`() = doTest("""
+    fun `test implement more methods`() = doTest(
+        """
         trait T {
             fn f1(a: i8, b: i16, c: i32, d: i64);
             fn f2(a: (i32, u32));
@@ -401,9 +428,11 @@ class ImplementMembersHandlerTest : RsTestBase() {
                 todo!()
             }
         }
-    """)
+    """
+    )
 
-    fun `test implement types`() = doTest("""
+    fun `test implement types`() = doTest(
+        """
         trait T {
             type T1;
             type T2;
@@ -429,9 +458,11 @@ class ImplementMembersHandlerTest : RsTestBase() {
             type T1 = <selection>()</selection>;
             type T4 = ();
         }
-    """)
+    """
+    )
 
-    fun `test implement constants`() = doTest("""
+    fun `test implement constants`() = doTest(
+        """
         trait T {
             const C1: i32;
             const C2: f64;
@@ -457,9 +488,11 @@ class ImplementMembersHandlerTest : RsTestBase() {
             const C1: i32 = <selection>0</selection>;
             const C4: &'static str = "";
         }
-    """)
+    """
+    )
 
-    fun `test implement all`() = doTest("""
+    fun `test implement all`() = doTest(
+        """
         trait T {
             fn f1();
             type T1;
@@ -495,9 +528,11 @@ class ImplementMembersHandlerTest : RsTestBase() {
             type T1 = ();
             const C1: i32 = 0;
         }
-    """)
+    """
+    )
 
-    fun `test implement generic trait`() = doTest("""
+    fun `test implement generic trait`() = doTest(
+        """
         trait T<A, B = i16, C = u32> {
             fn f1(_: A) -> A;
             const C1: A;
@@ -544,9 +579,11 @@ class ImplementMembersHandlerTest : RsTestBase() {
 
             const C3: u32 = 0;
         }
-    """)
+    """
+    )
 
-    fun `test implement generic trait with lifetimes`() = doTest("""
+    fun `test implement generic trait with lifetimes`() = doTest(
+        """
         struct S<'a> { x: &'a str }
         struct D<'a, T> { x: &'a T }
         type A<'a> = S<'a>;
@@ -644,9 +681,11 @@ class ImplementMembersHandlerTest : RsTestBase() {
             todo!()
         }
     }
-    """)
+    """
+    )
 
-    fun `test implement items with raw identifiers`() = doTest("""
+    fun `test implement items with raw identifiers`() = doTest(
+        """
         trait T {
             fn r#type();
             type r#const;
@@ -673,9 +712,11 @@ class ImplementMembersHandlerTest : RsTestBase() {
             type r#const = ();
             const r#pub: i32 = 0;
         }
-    """)
+    """
+    )
 
-    fun `test implement generic trait with consts 1`() = doTest("""
+    fun `test implement generic trait with consts 1`() = doTest(
+        """
         struct S<const N: usize>;
         trait T<const M: usize> {
             fn f1(_: S<{ M }>) -> S<{ M }>;
@@ -734,9 +775,11 @@ class ImplementMembersHandlerTest : RsTestBase() {
 
             const C4: [i32; {}] = [];
         }
-    """)
+    """
+    )
 
-    fun `test implement generic trait with consts 2`() = doTest("""
+    fun `test implement generic trait with consts 2`() = doTest(
+        """
         struct S<const N: usize>;
         trait T<const M: usize> {
             fn f1(_: S<{ M }>) -> S<{ M }>;
@@ -771,9 +814,11 @@ class ImplementMembersHandlerTest : RsTestBase() {
 
             const C2: [i32; K] = [];
         }
-    """)
+    """
+    )
 
-    fun `test do not implement methods already present`() = doTest("""
+    fun `test do not implement methods already present`() = doTest(
+        """
         trait T {
             fn f1();
             fn f2();
@@ -801,9 +846,11 @@ class ImplementMembersHandlerTest : RsTestBase() {
                 <selection>todo!()</selection>
             }
         }
-    """)
+    """
+    )
 
-    fun `test do not implement methods already present #2`() = doTest("""
+    fun `test do not implement methods already present #2`() = doTest(
+        """
         trait T {
             fn f1();
             fn f2();
@@ -830,9 +877,11 @@ class ImplementMembersHandlerTest : RsTestBase() {
 
             fn f2() { }
         }
-    """)
+    """
+    )
 
-    fun `test honours the order of members in the definition if it's already honoured`() = doTest("""
+    fun `test honours the order of members in the definition if it's already honoured`() = doTest(
+        """
         trait T {
             fn f1();
             type T1;
@@ -872,9 +921,11 @@ class ImplementMembersHandlerTest : RsTestBase() {
 
             type T2 = ();
         }
-    """)
+    """
+    )
 
-    fun `test appends new members at the end in the right order if the order isn't honoured`() = doTest("""
+    fun `test appends new members at the end in the right order if the order isn't honoured`() = doTest(
+        """
         trait T {
             fn f1();
             type T1;
@@ -913,9 +964,11 @@ class ImplementMembersHandlerTest : RsTestBase() {
             const C1: i32 = 0;
             type T2 = ();
         }
-    """)
+    """
+    )
 
-    fun `test works properly when a type alias shares the name with another member`() = doTest("""
+    fun `test works properly when a type alias shares the name with another member`() = doTest(
+        """
         trait T {
             fn x();
             type y;
@@ -950,9 +1003,11 @@ class ImplementMembersHandlerTest : RsTestBase() {
 
             fn y() {}
         }
-    """)
+    """
+    )
 
-    fun `test self associated type`() = doTest("""
+    fun `test self associated type`() = doTest(
+        """
         trait T {
             type Item;
             fn foo() -> Self::Item;
@@ -977,9 +1032,11 @@ class ImplementMembersHandlerTest : RsTestBase() {
                 todo!()
             }
         }
-    """)
+    """
+    )
 
-    fun `test with members defined by a macro`() = doTest("""
+    fun `test with members defined by a macro`() = doTest(
+        """
         macro_rules! foo {
             ($ i:ident, $ j:tt) => { fn $ i() $ j }
         }
@@ -1014,9 +1071,11 @@ class ImplementMembersHandlerTest : RsTestBase() {
 
             fn baz() {}
         }
-    """)
+    """
+    )
 
-    fun `test do not add lifetime in implementation`() = doTest("""
+    fun `test do not add lifetime in implementation`() = doTest(
+        """
         struct Foo;
         struct Bar;
         trait Baz {
@@ -1038,10 +1097,12 @@ class ImplementMembersHandlerTest : RsTestBase() {
                 <selection>todo!()</selection>
             }
         }
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test Box self type`() = doTest("""
+    fun `test Box self type`() = doTest(
+        """
         struct Foo;
         struct Bar;
         trait Baz {
@@ -1063,9 +1124,11 @@ class ImplementMembersHandlerTest : RsTestBase() {
                 <selection>todo!()</selection>
             }
         }
-    """)
+    """
+    )
 
-    fun `test trait object type`() = doTest("""
+    fun `test trait object type`() = doTest(
+        """
         struct Foo;
         trait A {}
         trait B {}
@@ -1089,10 +1152,12 @@ class ImplementMembersHandlerTest : RsTestBase() {
                 todo!()
             }
         }
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test Fn type`() = doTest("""
+    fun `test Fn type`() = doTest(
+        """
         struct Foo;
         struct Bar;
         trait Baz {
@@ -1114,9 +1179,11 @@ class ImplementMembersHandlerTest : RsTestBase() {
                 todo!()
             }
         }
-    """)
+    """
+    )
 
-    fun `test pointer self type`() = doTest("""
+    fun `test pointer self type`() = doTest(
+        """
         struct Foo;
         struct Bar;
         trait Baz {
@@ -1138,10 +1205,12 @@ class ImplementMembersHandlerTest : RsTestBase() {
                 <selection>todo!()</selection>
             }
         }
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test Pin self type`() = doTest("""
+    fun `test Pin self type`() = doTest(
+        """
         use std::pin::Pin;
         struct Foo;
         struct Bar;
@@ -1165,10 +1234,12 @@ class ImplementMembersHandlerTest : RsTestBase() {
                 <selection>todo!()</selection>
             }
         }
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test Pin self type with lifetime`() = doTest("""
+    fun `test Pin self type with lifetime`() = doTest(
+        """
         use std::pin::Pin;
         struct Foo;
         struct Bar;
@@ -1192,10 +1263,12 @@ class ImplementMembersHandlerTest : RsTestBase() {
                 <selection>todo!()</selection>
             }
         }
-    """)
+    """
+    )
 
     @MockAdditionalCfgOptions("intellij_rust")
-    fun `test do not offer cfg-disabled items`() = doTest("""
+    fun `test do not offer cfg-disabled items`() = doTest(
+        """
         trait Foo {
             #[cfg(intellij_rust)]
             fn foo(&self) {}
@@ -1232,9 +1305,11 @@ class ImplementMembersHandlerTest : RsTestBase() {
                 todo!()
             }
         }
-    """)
+    """
+    )
 
-    fun `test default type params 1`() = doTest("""
+    fun `test default type params 1`() = doTest(
+        """
         struct S<T = i32>(T);
         trait Foo {
             fn foo() -> S;
@@ -1256,9 +1331,11 @@ class ImplementMembersHandlerTest : RsTestBase() {
                 todo!()
             }
         }
-    """)
+    """
+    )
 
-    fun `test default type params 2`() = doTest("""
+    fun `test default type params 2`() = doTest(
+        """
         struct S<T = i32>(T);
         trait Foo {
             fn foo() -> S<u64>;
@@ -1280,9 +1357,11 @@ class ImplementMembersHandlerTest : RsTestBase() {
                 todo!()
             }
         }
-    """)
+    """
+    )
 
-    fun `test default type params 3`() = doTest("""
+    fun `test default type params 3`() = doTest(
+        """
         mod m {
             pub struct Q;
         }
@@ -1310,9 +1389,11 @@ class ImplementMembersHandlerTest : RsTestBase() {
                 todo!()
             }
         }
-    """)
+    """
+    )
 
-    fun `test default type params 4`() = doTest("""
+    fun `test default type params 4`() = doTest(
+        """
         struct S<T1 = i32, T2 = i32, T3 = i32>(T1, T2, T3);
         trait Foo {
             fn foo() -> S<i32, u32, i32>;
@@ -1334,9 +1415,11 @@ class ImplementMembersHandlerTest : RsTestBase() {
                 todo!()
             }
         }
-    """)
+    """
+    )
 
-    fun `test default type params for type alias`() = doTest("""
+    fun `test default type params for type alias`() = doTest(
+        """
         struct S<T = i32>(T);
         type A<T = u32> = S<T>;
         trait Foo {
@@ -1360,7 +1443,8 @@ class ImplementMembersHandlerTest : RsTestBase() {
                 todo!()
             }
         }
-    """)
+    """
+    )
 
     private data class ImplementMemberSelection(val member: String, val byDefault: Boolean, val isSelected: Boolean = byDefault)
 

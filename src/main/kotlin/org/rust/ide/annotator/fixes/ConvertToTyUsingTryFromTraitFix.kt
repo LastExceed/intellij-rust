@@ -82,8 +82,12 @@ abstract class ConvertToTyUsingTryTraitAndUnpackFix(
     private fun isFnRetTyResultAndMatchErrTy(element: RsExpr, fnRetTy: Ty): Boolean {
         val (lookup, items) = element.implLookupAndKnownItems
         return fnRetTy is TyAdt && fnRetTy.item == items.Result
-            && lookup.select(TraitRef(fnRetTy.typeArguments[1], (items.From
-            ?: return false).withSubst(errTy))).ok() != null
+            && lookup.select(
+            TraitRef(
+                fnRetTy.typeArguments[1], (items.From
+                ?: return false).withSubst(errTy)
+            )
+        ).ok() != null
     }
 }
 
@@ -111,7 +115,7 @@ private val PARSE_CALL_MAKER: ConvertToTyUsingTryTraitFix.(RsPsiFactory, RsExpr,
 /**
  * For the given `strExpr` converts it to the type `Result<ty, _>` with `strExpr.parse()`.
  */
-class ConvertToTyUsingFromStrFix(strExpr: RsExpr, ty: Ty):
+class ConvertToTyUsingFromStrFix(strExpr: RsExpr, ty: Ty) :
     ConvertToTyUsingTryTraitFix(strExpr, ty, FROM_STR_TRAIT, PARSE_CALL_MAKER)
 
 /**

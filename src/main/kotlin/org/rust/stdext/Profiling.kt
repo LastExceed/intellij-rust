@@ -20,14 +20,14 @@ class Timings(
     private val valuesTotal: LinkedHashMap<String, Long> = LinkedHashMap(),
     private val invokes: MutableMap<String, Long> = mutableMapOf()
 ) {
-    fun <T: Any> measure(name: String, f: () -> T): T {
+    fun <T : Any> measure(name: String, f: () -> T): T {
         check(name !in valuesTotal)
         return measureInternal(name, f)
     }
 
-    fun <T: Any> measureAverage(name: String, f: () -> T): T = measureInternal(name, f)
+    fun <T : Any> measureAverage(name: String, f: () -> T): T = measureInternal(name, f)
 
-    private fun <T: Any> measureInternal(name: String, f: () -> T): T {
+    private fun <T : Any> measureInternal(name: String, f: () -> T): T {
         val result: T
         val time = measureTimeMillis { result = f() }
         valuesTotal.merge(name, time, Long::plus)
@@ -35,7 +35,7 @@ class Timings(
         return result
     }
 
-    fun <T: Any> measureSum(name: String, f: () -> T): T {
+    fun <T : Any> measureSum(name: String, f: () -> T): T {
         val result: T
         val time = measureTimeMillis { result = f() }
         valuesTotal.merge(name, time, Long::plus)

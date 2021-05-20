@@ -9,7 +9,7 @@ import com.intellij.codeInsight.completion.PrefixMatcher
 import com.intellij.psi.codeStyle.MinusculeMatcher
 import com.intellij.psi.codeStyle.NameUtil
 
-class CargoDependenciesPrefixMatcher(prefix: String): PrefixMatcher(prefix) {
+class CargoDependenciesPrefixMatcher(prefix: String) : PrefixMatcher(prefix) {
     private val normalizedPrefix: String = normalize(prefix)
     private val minusculeMatcher: MinusculeMatcher =
         NameUtil.buildMatcher(normalizedPrefix).withSeparators("_").build()

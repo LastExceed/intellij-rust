@@ -15,16 +15,19 @@ import org.rust.lang.core.psi.ext.startOffset
 import org.rust.withTestDialog
 
 class RsFindUsagesTest : RsTestBase() {
-    fun `test variable usages`() = doTestByText("""
+    fun `test variable usages`() = doTestByText(
+        """
         fn foo(x: i32) -> i32 {
              //^
             let y = x * 2;// - expr
             let x = x * 3 + y;// - expr
             x
         }
-    """)
+    """
+    )
 
-    fun `test pattern binding usages 1`() = doTestByText("""
+    fun `test pattern binding usages 1`() = doTestByText(
+        """
         struct S{x:i32}
         fn foo() -> i32 {
             let S{x} = S{x:0};
@@ -33,9 +36,11 @@ class RsFindUsagesTest : RsTestBase() {
             let x = y;
             x
         }
-    """)
+    """
+    )
 
-    fun `test pattern binding usages 2`() = doTestByText("""
+    fun `test pattern binding usages 2`() = doTestByText(
+        """
         struct S{x:i32}
                //^
         fn foo() -> i32 {
@@ -43,10 +48,12 @@ class RsFindUsagesTest : RsTestBase() {
             let S{x} = y;// - variable binding
             x
         }
-    """)
+    """
+    )
 
 
-    fun `test function usages`() = doTestByText("""
+    fun `test function usages`() = doTestByText(
+        """
          fn foo() {}
            //^
 
@@ -62,9 +69,11 @@ class RsFindUsagesTest : RsTestBase() {
              fn foo() {}
              fn bar() { foo() }
          }
-    """)
+    """
+    )
 
-    fun `test mod usages`() = doTestByText("""
+    fun `test mod usages`() = doTestByText(
+        """
         mod b {
           //^
             fn bar() { foo() }
@@ -73,9 +82,11 @@ class RsFindUsagesTest : RsTestBase() {
         mod a {
             use super::b;// - use
         }
-    """)
+    """
+    )
 
-    fun `test struct usages`() = doTestByText("""
+    fun `test struct usages`() = doTestByText(
+        """
         struct B;
              //^
 
@@ -91,9 +102,11 @@ class RsFindUsagesTest : RsTestBase() {
         mod a {
             use super::B;// - use
         }
-    """)
+    """
+    )
 
-    fun `test struct with fields usages`() = doTestByText("""
+    fun `test struct with fields usages`() = doTestByText(
+        """
         struct B {
              //^
             test: u32
@@ -118,9 +131,11 @@ class RsFindUsagesTest : RsTestBase() {
         mod a {
             use super::B;// - use
         }
-    """)
+    """
+    )
 
-    fun `test trait usages`() = doTestByText("""
+    fun `test trait usages`() = doTestByText(
+        """
         trait B {}
             //^
         struct A;
@@ -131,9 +146,11 @@ class RsFindUsagesTest : RsTestBase() {
         mod a {
             use super::B;// - use
         }
-    """)
+    """
+    )
 
-    fun `test struct field usages`() = doTestByText("""
+    fun `test struct field usages`() = doTestByText(
+        """
         struct B {
             test: u32
             //^
@@ -152,9 +169,11 @@ class RsFindUsagesTest : RsTestBase() {
             println!("{}", b.test);// - field
             b.test = 10;// - field
         }
-    """)
+    """
+    )
 
-    fun `test variable 2 usages`() = doTestByText("""
+    fun `test variable 2 usages`() = doTestByText(
+        """
         struct B;
 
         impl B {
@@ -174,17 +193,21 @@ class RsFindUsagesTest : RsTestBase() {
             println!("{:?}", b);// - macro argument
             bar(b);// - argument
         }
-    """)
+    """
+    )
 
-    fun `test macro call`() = doTestByText("""
+    fun `test macro call`() = doTestByText(
+        """
         macro_rules! foo {
                    //^
             () => { }
         }
         foo!();// - macro call
-    """)
+    """
+    )
 
-    fun `test struct defined by macro`() = doTestByText("""
+    fun `test struct defined by macro`() = doTestByText(
+        """
         macro_rules! foo { ($($ i:item)*) => { $( $ i )* }; }
         foo! {
             struct X;
@@ -192,9 +215,11 @@ class RsFindUsagesTest : RsTestBase() {
             type T1 = X; // - type reference
         }
         type T2 = X; // - type reference
-    """)
+    """
+    )
 
-    fun `test method from trait`() = doTestByText("""
+    fun `test method from trait`() = doTestByText(
+        """
         struct B1; struct B2;
         trait A { fn foo(self, x: i32); }
                     //^
@@ -205,10 +230,12 @@ class RsFindUsagesTest : RsTestBase() {
             B2.foo(); // - method call
             s.foo();  // - method call
         }
-    """)
+    """
+    )
 
     fun `test method from impl (use base declaration)`() = withTestDialog(TestDialog.OK) {
-        doTestByText("""
+        doTestByText(
+            """
             struct B1;
             struct B2;
             trait A { fn foo(self, x: i32); }
@@ -220,11 +247,13 @@ class RsFindUsagesTest : RsTestBase() {
                 B2.foo(); // - method call
                 s.foo();  // - method call
             }
-        """)
+        """
+        )
     }
 
     fun `test method from impl (don't use base declaration)`() = withTestDialog(TestDialog.NO) {
-        doTestByText("""
+        doTestByText(
+            """
             struct B1; struct B2;
             trait A { fn foo(self, x: i32); }
             impl A for B1 { fn foo(self, x: i32) {} }
@@ -235,18 +264,21 @@ class RsFindUsagesTest : RsTestBase() {
                 B2.foo();
                 s.foo();
             }
-        """)
+        """
+        )
     }
 
     // https://github.com/intellij-rust/intellij-rust/issues/5265
-    fun `test issue 5265`() = doTestByText("""
+    fun `test issue 5265`() = doTestByText(
+        """
         mod foo {
             pub(crate) enum Foo { Bar { x: i32 } }
         }                       //^
         fn main() {
             let _ = foo::Foo::Bar { x: 123 }; // - init struct
         }
-    """)
+    """
+    )
 
     private fun doTestByText(@Language("Rust") code: String) {
         InlineFile(code)

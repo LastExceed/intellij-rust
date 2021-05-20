@@ -22,24 +22,30 @@ class RsShowMacroExpansionIntentionBaseTest : RsIntentionTestBase(RsShowMacroExp
         super.tearDown()
     }
 
-    fun `test availability range`() = checkAvailableInSelectionOnly("""
+    fun `test availability range`() = checkAvailableInSelectionOnly(
+        """
         <selection>foo!</selection> {
             bar baz
         }
-    """)
+    """
+    )
 
-    fun `test that intention is not available outside of the macros`() = doUnavailableTest("""
+    fun `test that intention is not available outside of the macros`() = doUnavailableTest(
+        """
         foo!();
         /*caret*/foo();
-    """)
+    """
+    )
 
-    fun `test that intention is available on the macros, but does not change it`() = doAvailableTest("""
+    fun `test that intention is available on the macros, but does not change it`() = doAvailableTest(
+        """
         /*caret*/foo!();
         foo();
     """, """
         foo!();
         foo();
-    """)
+    """
+    )
 }
 
 object RsShowMacroExpansionIntention : RsShowMacroExpansionIntentionBase(expandRecursively = true) {

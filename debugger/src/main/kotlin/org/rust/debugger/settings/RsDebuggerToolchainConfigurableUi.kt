@@ -39,7 +39,7 @@ class RsDebuggerToolchainConfigurableUi : ConfigurableUi<RsDebuggerSettings>, Di
 
     override fun isModified(settings: RsDebuggerSettings): Boolean {
         return settings.lldbPath != lldbPathField.text &&
-               settings.downloadAutomatically != downloadAutomaticallyCheckBox.isSelected
+            settings.downloadAutomatically != downloadAutomaticallyCheckBox.isSelected
     }
 
     override fun reset(settings: RsDebuggerSettings) {

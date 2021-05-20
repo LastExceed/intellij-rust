@@ -30,7 +30,8 @@ class SyntheticRsFmtBlock(
 
     private val textRange = TextRange(
         subBlocks.first().textRange.startOffset,
-        subBlocks.last().textRange.endOffset)
+        subBlocks.last().textRange.endOffset
+    )
 
     override fun getTextRange(): TextRange = textRange
 

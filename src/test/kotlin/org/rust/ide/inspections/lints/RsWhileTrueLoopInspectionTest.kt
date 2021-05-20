@@ -9,7 +9,8 @@ import org.intellij.lang.annotations.Language
 import org.rust.ide.inspections.RsInspectionsTestBase
 
 class RsWhileTrueLoopInspectionTest : RsInspectionsTestBase(RsWhileTrueLoopInspection::class) {
-    fun `test simple`() = checkFix("""
+    fun `test simple`() = checkFix(
+        """
         fn main() {
             <weak_warning descr="Denote infinite loops with `loop { ... }`">while/*caret*/ true</weak_warning> {
                 let a = 42;
@@ -23,9 +24,11 @@ class RsWhileTrueLoopInspectionTest : RsInspectionsTestBase(RsWhileTrueLoopInspe
                 println!("{}", a);
             }
         }
-    """)
+    """
+    )
 
-    fun `test with label`() = checkFix("""
+    fun `test with label`() = checkFix(
+        """
         fn main() {
             'outer: <weak_warning descr="Denote infinite loops with `loop { ... }`">while/*caret*/ true</weak_warning> {
                 let mut _a = 0;
@@ -49,9 +52,11 @@ class RsWhileTrueLoopInspectionTest : RsInspectionsTestBase(RsWhileTrueLoopInspe
                 }
             }
         }
-    """)
+    """
+    )
 
-    fun `test with unnecessary parentheses around while`() = checkFix("""
+    fun `test with unnecessary parentheses around while`() = checkFix(
+        """
         fn main() {
             <weak_warning descr="Denote infinite loops with `loop { ... }`">while/*caret*/ (true)</weak_warning> {
                 let a = 42;
@@ -65,14 +70,17 @@ class RsWhileTrueLoopInspectionTest : RsInspectionsTestBase(RsWhileTrueLoopInspe
                 println!("{}", a);
             }
         }
-    """)
+    """
+    )
 
-    fun `test allow while_true`() = checkWarnings("""
+    fun `test allow while_true`() = checkWarnings(
+        """
         #[allow(while_true)]
         fn main() {
             while true {}
         }
-    """)
+    """
+    )
 
     private fun checkFix(
         @Language("Rust") before: String,

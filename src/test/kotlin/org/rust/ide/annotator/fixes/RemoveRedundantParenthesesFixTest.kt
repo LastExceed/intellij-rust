@@ -9,19 +9,24 @@ import org.rust.ide.annotator.RsAnnotatorTestBase
 import org.rust.ide.annotator.RsExpressionAnnotator
 
 class RemoveRedundantParenthesesFixTest : RsAnnotatorTestBase(RsExpressionAnnotator::class) {
-    fun `test simple parentheses`() = checkFixIsUnavailable("Remove parentheses from expression", """
+    fun `test simple parentheses`() = checkFixIsUnavailable(
+        "Remove parentheses from expression", """
         fn test() {
             let i = (/*caret*/1 + 2);
         }
-    """)
+    """
+    )
 
-    fun `test receiver parentheses`() = checkFixIsUnavailable("Remove parentheses from expression", """
+    fun `test receiver parentheses`() = checkFixIsUnavailable(
+        "Remove parentheses from expression", """
         fn test() {
             (/*caret*/1..2).contains(&3);
         }
-    """)
+    """
+    )
 
-    fun `test nested parentheses`() = checkFixByText("Remove parentheses from expression", """
+    fun `test nested parentheses`() = checkFixByText(
+        "Remove parentheses from expression", """
         fn test() {
             let _ = ((4 + 3)/*caret*/);
         }
@@ -29,9 +34,11 @@ class RemoveRedundantParenthesesFixTest : RsAnnotatorTestBase(RsExpressionAnnota
         fn test() {
             let _ = (4 + 3);
         }
-    """)
+    """
+    )
 
-    fun `test nested parentheses on nested necessary parentheses`() = checkFixByText("Remove parentheses from expression", """
+    fun `test nested parentheses on nested necessary parentheses`() = checkFixByText(
+        "Remove parentheses from expression", """
         pub fn total() -> u64 {
             ((-1 + (2 +/*caret*/ 3).pow(64))) as u64
         }
@@ -39,9 +46,11 @@ class RemoveRedundantParenthesesFixTest : RsAnnotatorTestBase(RsExpressionAnnota
         pub fn total() -> u64 {
             (-1 + (2 + 3).pow(64)) as u64
         }
-    """)
+    """
+    )
 
-    fun `test predicate`() = checkFixByText("Remove parentheses from expression", """
+    fun `test predicate`() = checkFixByText(
+        "Remove parentheses from expression", """
         fn test() {
             if (1 < 2/*caret*/) {}
         }
@@ -49,9 +58,11 @@ class RemoveRedundantParenthesesFixTest : RsAnnotatorTestBase(RsExpressionAnnota
         fn test() {
             if 1 < 2 {}
         }
-    """)
+    """
+    )
 
-    fun `test return`() = checkFixByText("Remove parentheses from expression", """
+    fun `test return`() = checkFixByText(
+        "Remove parentheses from expression", """
         fn add(x: i32, y: i32) -> i32 {
             return (x + y/*caret*/);
         }
@@ -59,9 +70,11 @@ class RemoveRedundantParenthesesFixTest : RsAnnotatorTestBase(RsExpressionAnnota
         fn add(x: i32, y: i32) -> i32 {
             return x + y;
         }
-    """)
+    """
+    )
 
-    fun `test match`() = checkFixByText("Remove parentheses from expression", """
+    fun `test match`() = checkFixByText(
+        "Remove parentheses from expression", """
         fn test() {
             match (x/*caret*/) {
                 | 0
@@ -77,9 +90,11 @@ class RemoveRedundantParenthesesFixTest : RsAnnotatorTestBase(RsExpressionAnnota
                 | _ => 42,
             };
         }
-    """)
+    """
+    )
 
-    fun `test for`() = checkFixByText("Remove parentheses from expression", """
+    fun `test for`() = checkFixByText(
+        "Remove parentheses from expression", """
         fn test() {
             for i in (0..1/*caret*/) {
             }
@@ -89,9 +104,11 @@ class RemoveRedundantParenthesesFixTest : RsAnnotatorTestBase(RsExpressionAnnota
             for i in 0..1 {
             }
         }
-    """)
+    """
+    )
 
-    fun `test for with struct literal`() = checkFixIsUnavailable("Remove parentheses from expression", """
+    fun `test for with struct literal`() = checkFixIsUnavailable(
+        "Remove parentheses from expression", """
         struct SomeIter {
             foo: ()
         }
@@ -104,6 +121,7 @@ class RemoveRedundantParenthesesFixTest : RsAnnotatorTestBase(RsExpressionAnnota
         fn test() {
             for val in (SomeIter { foo: () }/*caret*/) {}
         }
-    """)
+    """
+    )
 }
 

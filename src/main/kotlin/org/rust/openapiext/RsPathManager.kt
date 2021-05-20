@@ -30,7 +30,8 @@ object RsPathManager {
             else -> return null
         }
 
-        val nativeHelperPath = pluginDir().resolve("bin/$os/$arch/$binaryName").takeIf { Files.exists(it) } ?: return null
+        val nativeHelperPath = pluginDir().resolve("bin/$os/$arch/$binaryName").takeIf { Files.exists(it) }
+            ?: return null
         return if (Files.isExecutable(nativeHelperPath) || nativeHelperPath.toFile().setExecutable(true)) {
             nativeHelperPath
         } else {

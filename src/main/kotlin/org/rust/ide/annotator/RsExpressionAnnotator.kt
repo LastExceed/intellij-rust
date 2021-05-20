@@ -42,7 +42,8 @@ class RsExpressionAnnotator : AnnotatorBase() {
                 field.reference.multiResolve().none { it is RsFieldDecl }
             }
             .forEach { field ->
-                val annotationBuilder = holder.newErrorAnnotation(field.referenceNameElement, "No such field") ?: return@forEach
+                val annotationBuilder = holder.newErrorAnnotation(field.referenceNameElement, "No such field")
+                    ?: return@forEach
 
                 CreateStructFieldFromConstructorFix.tryCreate(field)?.also { annotationBuilder.withFix(it) }
 

@@ -9,23 +9,28 @@ import org.rust.ide.inspections.RsInspectionsTestBase
 import org.rust.ide.inspections.lints.RsMethodNamingInspection
 
 class RsMethodNamingInspectionTest : RsInspectionsTestBase(RsMethodNamingInspection::class) {
-    fun `test methods`() = checkByText("""
+    fun `test methods`() = checkByText(
+        """
         struct Foo {}
         impl Foo {
             fn met_ok(&self) {}
             fn <warning descr="Method `MET_BAR` should have a snake case name such as `met_bar`">MET_BAR</warning>(&self) {}
         }
-    """)
+    """
+    )
 
-    fun `test methods suppression`() = checkByText("""
+    fun `test methods suppression`() = checkByText(
+        """
         #![allow(non_snake_case)]
         struct Foo {}
         impl Foo {
             fn MET_BAR(&self) {}
         }
-    """)
+    """
+    )
 
-    fun `test methods fix`() = checkFixByText("Rename to `met_bar`", """
+    fun `test methods fix`() = checkFixByText(
+        "Rename to `met_bar`", """
         struct Foo;
         impl Foo {
             fn <warning descr="Method `MetBar` should have a snake case name such as `met_bar`">MetB<caret>ar</warning>(&self) {}
@@ -43,21 +48,26 @@ class RsMethodNamingInspectionTest : RsInspectionsTestBase(RsMethodNamingInspect
             let f = Foo {};
             f.met_bar();
         }
-    """)
+    """
+    )
 
-    fun `test trait methods`() = checkByText("""
+    fun `test trait methods`() = checkByText(
+        """
         trait Foo {
             fn met_ok() {}
             fn <warning descr="Method `MET_BAR` should have a snake case name such as `met_bar`">MET_BAR</warning>() {}
         }
-    """)
+    """
+    )
 
-    fun `test trait methods suppression`() = checkByText("""
+    fun `test trait methods suppression`() = checkByText(
+        """
         trait Foo {
             #[allow(non_snake_case)]
             fn MET_BAR() {}
         }
-    """)
+    """
+    )
 
     // TODO: Uncomment when trait methods support renaming
     //
@@ -79,16 +89,20 @@ class RsMethodNamingInspectionTest : RsInspectionsTestBase(RsMethodNamingInspect
     //     }
     // """)
 
-    fun `test method not support case`() = checkByText("""
+    fun `test method not support case`() = checkByText(
+        """
         struct  Foo {}
         impl Foo {
             fn 测试函数(&self) { }
         }
-    """)
+    """
+    )
 
-    fun `test trait method not support case`() = checkByText("""
+    fun `test trait method not support case`() = checkByText(
+        """
         trait Foo {
             fn 特质函数(){ }
         }
-    """)
+    """
+    )
 }

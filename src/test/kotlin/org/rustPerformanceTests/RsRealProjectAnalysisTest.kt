@@ -120,6 +120,7 @@ open class RsRealProjectAnalysisTest : RsRealProjectTestBase() {
             override fun consumeAnnotation(annotation: Annotation) {
                 error(annotation.toString())
             }
+
             override fun finish() {}
         }
 

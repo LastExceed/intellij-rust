@@ -10,24 +10,30 @@ package org.rust.ide.inspections
  */
 class RsDoubleNegInspectionTest : RsInspectionsTestBase(RsDoubleNegInspection::class) {
 
-    fun testSimple() = checkByText("""
+    fun testSimple() = checkByText(
+        """
         fn main() {
             let a = 12;
             let b = <warning descr="--x could be misinterpreted as a pre-decrement, but effectively is a no-op">--a</warning>;
         }
-    """)
+    """
+    )
 
-    fun testWithSpaces() = checkByText("""
+    fun testWithSpaces() = checkByText(
+        """
         fn main() {
             let i = 10;
             while <warning descr="--x could be misinterpreted as a pre-decrement, but effectively is a no-op">- - i</warning> > 0 {}
         }
-    """)
+    """
+    )
 
-    fun testExpression() = checkByText("""
+    fun testExpression() = checkByText(
+        """
         fn main() {
             let a = 7;
             println!("{}",  <warning descr="--x could be misinterpreted as a pre-decrement, but effectively is a no-op">--(2*a + 1)</warning>);
         }
-    """)
+    """
+    )
 }

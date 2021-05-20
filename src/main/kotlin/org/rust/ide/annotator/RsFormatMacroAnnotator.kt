@@ -110,8 +110,7 @@ private sealed class FormatParameter(val matchInfo: ParameterMatchInfo, val look
     }
 
     // width or precision formatting specifier
-    class Specifier(matchInfo: ParameterMatchInfo, lookup: ParameterLookup, val specifier: String)
-        : FormatParameter(matchInfo, lookup)
+    class Specifier(matchInfo: ParameterMatchInfo, lookup: ParameterLookup, val specifier: String) : FormatParameter(matchInfo, lookup)
 }
 
 @Suppress("unused")
@@ -179,7 +178,8 @@ private val formatParser = Regex("""\{\{|}}|(\{([^}]*)}?)|(})""")
 
 @Language("Regexp")
 private const val argument = """([a-zA-Z_][\w+]*|\d+)"""
-private val formatParameterParser = Regex("""(?x) # enable comments
+private val formatParameterParser = Regex(
+    """(?x) # enable comments
 ^(?<id>$argument)?
 (:
     (.?[\^<>])?[+\-]?\#?
@@ -187,7 +187,8 @@ private val formatParameterParser = Regex("""(?x) # enable comments
     (?<width>$argument\$|\d+)?
     (\.(?<precision>$argument\$|\d+|\*))?
     (?<type>\w?\??)?
-)?\s*""")
+)?\s*"""
+)
 
 private fun parseParameters(formatStr: RsLitExpr): ParseContext? {
     val literalKind = (formatStr.kind as? RsLiteralKind.String) ?: return null
@@ -235,19 +236,23 @@ private fun checkSyntaxErrors(ctx: ParseContext): List<ErrorAnnotation> {
             val content = completeMatch.groups[1]
             if (content != null && !content.value.endsWith("}")) {
                 val possibleEnd = parameter.innerContentMatch.value.length - 1
-                errors.add(ErrorAnnotation(
-                    ctx.toSourceRange(possibleEnd..possibleEnd, innerContent.range.first),
-                    "Invalid format string: } expected.\nIf you intended to print `{` symbol, you can escape it using `{{`"
-                ))
+                errors.add(
+                    ErrorAnnotation(
+                        ctx.toSourceRange(possibleEnd..possibleEnd, innerContent.range.first),
+                        "Invalid format string: } expected.\nIf you intended to print `{` symbol, you can escape it using `{{`"
+                    )
+                )
                 continue
             }
 
             val validParsedEnd = parameter.innerContentMatch.range.last + 1
             if (validParsedEnd != innerContent.value.length) {
-                errors.add(ErrorAnnotation(
-                    ctx.toSourceRange(validParsedEnd until innerContent.value.length, innerContent.range.first),
-                    "Invalid format string"
-                ))
+                errors.add(
+                    ErrorAnnotation(
+                        ctx.toSourceRange(validParsedEnd until innerContent.value.length, innerContent.range.first),
+                        "Invalid format string"
+                    )
+                )
             }
         }
     }
@@ -338,25 +343,31 @@ private fun buildParameters(ctx: ParseContext): List<FormatParameter> {
             val group = match.groups[specifier] ?: continue
             val text = group.value
             if (!text.endsWith("$")) continue
-            parameters.add(FormatParameter.Specifier(
-                ParameterMatchInfo(ctx.toSourceRange(group.range, innerRange.first), text),
-                buildLookup(text.trimEnd('$')),
-                specifier
-            ))
+            parameters.add(
+                FormatParameter.Specifier(
+                    ParameterMatchInfo(ctx.toSourceRange(group.range, innerRange.first), text),
+                    buildLookup(text.trimEnd('$')),
+                    specifier
+                )
+            )
         }
 
         if (isPrecisionAsterisk) {
             if (isPrecisionValueFirst) {
-                parameters.add(FormatParameter.Specifier(
-                    ParameterMatchInfo(ctx.toSourceRange(precision!!.range, innerRange.first), precision.value),
-                    ParameterLookup.Positional(implicitPositionCounter++),
-                    "precision"
-                ))
+                parameters.add(
+                    FormatParameter.Specifier(
+                        ParameterMatchInfo(ctx.toSourceRange(precision!!.range, innerRange.first), precision.value),
+                        ParameterLookup.Positional(implicitPositionCounter++),
+                        "precision"
+                    )
+                )
             } else {
                 val matchInfo = ParameterMatchInfo(ctx.toSourceRange(param.range), param.completeMatch.value)
-                parameters.add(FormatParameter.Value(
-                    matchInfo, ParameterLookup.Positional(implicitPositionCounter++),
-                    typeStr, ctx.toSourceRange(typeRange, innerRange.first))
+                parameters.add(
+                    FormatParameter.Value(
+                        matchInfo, ParameterLookup.Positional(implicitPositionCounter++),
+                        typeStr, ctx.toSourceRange(typeRange, innerRange.first)
+                    )
                 )
             }
         }

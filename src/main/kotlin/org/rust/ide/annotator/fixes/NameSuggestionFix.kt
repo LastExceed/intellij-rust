@@ -18,7 +18,7 @@ class NameSuggestionFix<T : PsiElement>(
     element: T,
     private val newName: String,
     private val elementFactory: (name: String) -> T
-): LocalQuickFixOnPsiElement(element) {
+) : LocalQuickFixOnPsiElement(element) {
     override fun getFamilyName(): String = "Change name of element"
     override fun getText(): String = "Change to `$newName`"
 

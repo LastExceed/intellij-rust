@@ -10,7 +10,8 @@ import org.rust.ide.annotator.RsExpressionAnnotator
 
 class CreateStructFieldFromConstructorFixTest : RsAnnotatorTestBase(RsExpressionAnnotator::class) {
 
-    fun `test basic`() = checkFixByText("Create field", """
+    fun `test basic`() = checkFixByText(
+        "Create field", """
         struct S {
             foo: String
         }
@@ -35,9 +36,11 @@ class CreateStructFieldFromConstructorFixTest : RsAnnotatorTestBase(RsExpression
                 }
             }
         }
-    """)
+    """
+    )
 
-    fun `test basic 2`() = checkFixByText("Create field", """
+    fun `test basic 2`() = checkFixByText(
+        "Create field", """
         struct S {
             foo: String
         }
@@ -62,10 +65,12 @@ class CreateStructFieldFromConstructorFixTest : RsAnnotatorTestBase(RsExpression
                 }
             }
         }
-    """)
+    """
+    )
 
 
-    fun `test basic 3`() = checkFixByText("Create field", """
+    fun `test basic 3`() = checkFixByText(
+        "Create field", """
         struct S {
             foo: String,
             baz: i64
@@ -92,10 +97,12 @@ class CreateStructFieldFromConstructorFixTest : RsAnnotatorTestBase(RsExpression
                 }
             }
         }
-    """)
+    """
+    )
 
 
-    fun `test no block`() = checkFixByText("Create field", """
+    fun `test no block`() = checkFixByText(
+        "Create field", """
         struct S;
 
         impl S {
@@ -117,9 +124,11 @@ class CreateStructFieldFromConstructorFixTest : RsAnnotatorTestBase(RsExpression
                 }
             }
         }
-    """)
+    """
+    )
 
-    fun `test empty block`() = checkFixByText("Create field", """
+    fun `test empty block`() = checkFixByText(
+        "Create field", """
         struct S {
         }
 
@@ -142,9 +151,11 @@ class CreateStructFieldFromConstructorFixTest : RsAnnotatorTestBase(RsExpression
                 }
             }
         }
-    """)
+    """
+    )
 
-    fun `test let`() = checkFixByText("Create field", """
+    fun `test let`() = checkFixByText(
+        "Create field", """
         struct S {}
 
         impl S {
@@ -164,9 +175,11 @@ class CreateStructFieldFromConstructorFixTest : RsAnnotatorTestBase(RsExpression
                 S { foo/*caret*/ }
             }
         }
-    """)
+    """
+    )
 
-    fun `test filed has expression`() = checkFixByText("Create field", """
+    fun `test filed has expression`() = checkFixByText(
+        "Create field", """
         struct S {}
 
         impl S {
@@ -184,9 +197,11 @@ class CreateStructFieldFromConstructorFixTest : RsAnnotatorTestBase(RsExpression
                 S { foo/*caret*/: bar }
             }
         }
-    """)
+    """
+    )
 
-    fun `test pub`() = checkFixByText("Create field", """
+    fun `test pub`() = checkFixByText(
+        "Create field", """
         mod foo {
             pub struct S {
             }
@@ -213,9 +228,11 @@ class CreateStructFieldFromConstructorFixTest : RsAnnotatorTestBase(RsExpression
                 }
             }
         }
-    """)
+    """
+    )
 
-    fun `test pub2`() = checkFixByText("Create field", """
+    fun `test pub2`() = checkFixByText(
+        "Create field", """
         mod foo {
             pub struct S;
         }
@@ -241,9 +258,11 @@ class CreateStructFieldFromConstructorFixTest : RsAnnotatorTestBase(RsExpression
                 }
             }
         }
-    """)
+    """
+    )
 
-    fun `test tuple type`() = checkFixByText("Create field", """
+    fun `test tuple type`() = checkFixByText(
+        "Create field", """
         struct S;
 
         impl S {
@@ -265,9 +284,11 @@ class CreateStructFieldFromConstructorFixTest : RsAnnotatorTestBase(RsExpression
                 }
             }
         }
-    """)
+    """
+    )
 
-    fun `test type arguments`() = checkFixIsUnavailable("Create field", """
+    fun `test type arguments`() = checkFixIsUnavailable(
+        "Create field", """
         struct S;
 
         struct A<'a>(&'a str);
@@ -277,18 +298,22 @@ class CreateStructFieldFromConstructorFixTest : RsAnnotatorTestBase(RsExpression
                 S { <error descr="No such field">foo/*caret*/</error> }
             }
         }
-    """)
+    """
+    )
 
-    fun `test tuple`() = checkFixIsUnavailable("Create field", """
+    fun `test tuple`() = checkFixIsUnavailable(
+        "Create field", """
         struct S(i32);
 
         fn main() {
             let foo: i32 = 0;
             <error descr="Some fields are missing">S</error> { <error descr="No such field">foo/*caret*/</error> };
         }
-    """)
+    """
+    )
 
-    fun `test unavailable type`() = checkFixIsUnavailable("Create field", """
+    fun `test unavailable type`() = checkFixIsUnavailable(
+        "Create field", """
         struct St {}
         trait Tr {}
 
@@ -297,10 +322,12 @@ class CreateStructFieldFromConstructorFixTest : RsAnnotatorTestBase(RsExpression
                 St { <error descr="No such field">x/*caret*/</error> }
             }
         }
-    """)
+    """
+    )
 
 
-    fun `test unavailable type 2`() = checkFixIsUnavailable("Create field", """
+    fun `test unavailable type 2`() = checkFixIsUnavailable(
+        "Create field", """
         struct St {}
         trait Tr {}
 
@@ -309,10 +336,12 @@ class CreateStructFieldFromConstructorFixTest : RsAnnotatorTestBase(RsExpression
                 St { <error descr="No such field">t/*caret*/</error> }
             }
         }
-    """)
+    """
+    )
 
 
-    fun `test unavailable type 3`() = checkFixIsUnavailable("Create field", """
+    fun `test unavailable type 3`() = checkFixIsUnavailable(
+        "Create field", """
         struct St {}
         trait Tr {}
 
@@ -321,5 +350,6 @@ class CreateStructFieldFromConstructorFixTest : RsAnnotatorTestBase(RsExpression
                 St { <error descr="No such field">z/*caret*/</error> }
             }
         }
-    """)
+    """
+    )
 }

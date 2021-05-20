@@ -41,12 +41,13 @@ abstract class RsEnumItemImplMixin : RsStubbedNamedElementImpl<RsEnumItemStub>, 
     override fun getUseScope(): SearchScope = RsPsiImplUtil.getDeclarationUseScope(this) ?: super.getUseScope()
 }
 
-val RsEnumItem.isStdOptionOrResult: Boolean get() {
-    val knownItems = knownItems
-    val option = knownItems.Option
-    val result = knownItems.Result
-    return this == option || this == result
-}
+val RsEnumItem.isStdOptionOrResult: Boolean
+    get() {
+        val knownItems = knownItems
+        val option = knownItems.Option
+        val result = knownItems.Result
+        return this == option || this == result
+    }
 
 val RsEnumItem.variants: List<RsEnumVariant>
     get() = enumBody?.enumVariantList.orEmpty()

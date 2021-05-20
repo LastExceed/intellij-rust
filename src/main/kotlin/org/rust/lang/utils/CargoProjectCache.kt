@@ -19,16 +19,18 @@ import java.util.concurrent.ConcurrentMap
 /**
  * Similar to [org.rust.openapiext.ProjectCache], but based on [CargoProject]
  */
-class CargoProjectCache<in T: Any, R: Any>(
+class CargoProjectCache<in T : Any, R : Any>(
     cacheName: String,
     private val dependencyGetter: (CargoProject) -> Any = { it.project.rustStructureModificationTracker }
 ) {
     init {
         if (!registered.add(cacheName)) {
-            error("""
+            error(
+                """
                 CargoProjectCache `$cacheName` is already registered.
                 Make sure ProjectCache is static, that is, put it inside companion object.
-            """.trimIndent())
+            """.trimIndent()
+            )
         }
     }
 

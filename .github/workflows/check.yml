@@ -13,10 +13,10 @@ jobs:
     cancel-previous:
         runs-on: ubuntu-18.04
         steps:
-            - name: Cancel Previous Runs
-              uses: styfle/cancel-workflow-action@0.9.0
-              with:
-                  access_token: ${{ github.token }}
+            -   name: Cancel Previous Runs
+                uses: styfle/cancel-workflow-action@0.9.0
+                with:
+                    access_token: ${{ github.token }}
 
     calculate-git-info:
         needs: [ cancel-previous ]
@@ -26,36 +26,36 @@ jobs:
             is_master_branch: ${{ steps.calculate-git-info.outputs.is_master_branch }}
             checked: ${{ steps.calculate-git-info.outputs.checked }}
         steps:
-            - uses: actions/checkout@v2
-              with:
-                  fetch-depth: 0
+            -   uses: actions/checkout@v2
+                with:
+                    fetch-depth: 0
 
-            - name: Set up Python
-              uses: actions/setup-python@v1
-              with:
-                  python-version: 3.7
+            -   name: Set up Python
+                uses: actions/setup-python@v1
+                with:
+                    python-version: 3.7
 
-            - name: Calculate git info
-              id: calculate-git-info
-              run: |
-                  echo "::set-output name=is_bors_branch::${{ github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/trying' }}"
-                  echo "::set-output name=is_master_branch::${{ github.ref == 'refs/heads/master'}}"
-                  echo "::set-output name=checked::$(python scripts/has_successful_status.py --token ${{ github.token }} --ref ${{ github.sha }} --check_name check)"
+            -   name: Calculate git info
+                id: calculate-git-info
+                run: |
+                    echo "::set-output name=is_bors_branch::${{ github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/trying' }}"
+                    echo "::set-output name=is_master_branch::${{ github.ref == 'refs/heads/master'}}"
+                    echo "::set-output name=checked::$(python scripts/has_successful_status.py --token ${{ github.token }} --ref ${{ github.sha }} --check_name check)"
 
-            - name: Check git info
-              run: |
-                  echo "is_bors_branch: ${{ steps.calculate-git-info.outputs.is_bors_branch }}"
-                  echo "is_master_branch: ${{ steps.calculate-git-info.outputs.is_master_branch }}"
-                  echo "checked: ${{ steps.calculate-git-info.outputs.checked }}"
+            -   name: Check git info
+                run: |
+                    echo "is_bors_branch: ${{ steps.calculate-git-info.outputs.is_bors_branch }}"
+                    echo "is_master_branch: ${{ steps.calculate-git-info.outputs.is_master_branch }}"
+                    echo "checked: ${{ steps.calculate-git-info.outputs.checked }}"
 
     check-license:
         needs: [ cancel-previous ]
         runs-on: ubuntu-18.04
         steps:
-            - uses: actions/checkout@v2
+            -   uses: actions/checkout@v2
 
-            - name: Check license
-              run: ./check-license.sh
+            -   name: Check license
+                run: ./check-license.sh
 
     build-native-code:
         needs: [ cancel-previous, calculate-git-info ]
@@ -65,56 +65,56 @@ jobs:
             fail-fast: true
             matrix:
                 config:
-                    - name: linux
-                      arch: x86-64
-                      os: ubuntu-latest
-                      target: x86_64-unknown-linux-gnu
-                      artifact_path: native-helper/target/release/intellij-rust-native-helper
-                    - name: windows
-                      arch: x86-64
-                      os: windows-latest
-                      target: x86_64-pc-windows-msvc
-                      artifact_path: native-helper/target/release/intellij-rust-native-helper.exe
-                    - name: macos
-                      arch: x86-64
-                      os: macos-latest
-                      target: x86_64-apple-darwin
-                      artifact_path: native-helper/target/release/intellij-rust-native-helper
+                    -   name: linux
+                        arch: x86-64
+                        os: ubuntu-latest
+                        target: x86_64-unknown-linux-gnu
+                        artifact_path: native-helper/target/release/intellij-rust-native-helper
+                    -   name: windows
+                        arch: x86-64
+                        os: windows-latest
+                        target: x86_64-pc-windows-msvc
+                        artifact_path: native-helper/target/release/intellij-rust-native-helper.exe
+                    -   name: macos
+                        arch: x86-64
+                        os: macos-latest
+                        target: x86_64-apple-darwin
+                        artifact_path: native-helper/target/release/intellij-rust-native-helper
 
         name: ${{ matrix.config.name }}-${{ matrix.config.arch }}
         runs-on: ${{ matrix.config.os }}
         steps:
-            - name: Checkout
-              uses: actions/checkout@v2
+            -   name: Checkout
+                uses: actions/checkout@v2
 
-            - name: Set up Rust
-              uses: actions-rs/toolchain@v1
-              with:
-                  profile: minimal
-                  toolchain: stable
-                  target: ${{ matrix.config.target }}
-                  default: true
+            -   name: Set up Rust
+                uses: actions-rs/toolchain@v1
+                with:
+                    profile: minimal
+                    toolchain: stable
+                    target: ${{ matrix.config.target }}
+                    default: true
 
-            - name: Cache native code
-              uses: actions/cache@v2.1.4
-              with:
-                  path: |
-                      ~/.cargo/registry
-                      ~/.cargo/git
-                      native-helper/target
-                  key: ${{ runner.os }}-native-helper-${{ hashFiles('native-helper/Cargo.lock') }}
+            -   name: Cache native code
+                uses: actions/cache@v2.1.4
+                with:
+                    path: |
+                        ~/.cargo/registry
+                        ~/.cargo/git
+                        native-helper/target
+                    key: ${{ runner.os }}-native-helper-${{ hashFiles('native-helper/Cargo.lock') }}
 
-            - name: Build
-              uses: actions-rs/cargo@v1
-              with:
-                  command: build
-                  args: --manifest-path native-helper/Cargo.toml --release
+            -   name: Build
+                uses: actions-rs/cargo@v1
+                with:
+                    command: build
+                    args: --manifest-path native-helper/Cargo.toml --release
 
-            - name: Publish
-              uses: actions/upload-artifact@v2
-              with:
-                  name: ${{ matrix.config.name }}-${{ matrix.config.arch }}
-                  path: ${{ matrix.config.artifact_path }}
+            -   name: Publish
+                uses: actions/upload-artifact@v2
+                with:
+                    name: ${{ matrix.config.name }}-${{ matrix.config.arch }}
+                    path: ${{ matrix.config.artifact_path }}
 
     check-plugin:
         needs: [ cancel-previous, calculate-git-info, build-native-code ]
@@ -130,19 +130,19 @@ jobs:
                 # it's enough to verify plugin structure only once per platform version
                 verify-plugin: [ false ]
                 include:
-                    - os: ubuntu-18.04
-                      # Don't forget to update condition in `Set up additional env variables` step
-                      rust-version: 1.41.0
-                      base-ide: idea
-                      platform-version: 203
-                      resolve-engine: resolve-old
-                      verify-plugin: true
-                    - os: ubuntu-18.04
-                      rust-version: 1.52.1
-                      base-ide: idea
-                      platform-version: 211
-                      resolve-engine: resolve-old
-                      verify-plugin: true
+                    -   os: ubuntu-18.04
+                        # Don't forget to update condition in `Set up additional env variables` step
+                        rust-version: 1.41.0
+                        base-ide: idea
+                        platform-version: 203
+                        resolve-engine: resolve-old
+                        verify-plugin: true
+                    -   os: ubuntu-18.04
+                        rust-version: 1.52.1
+                        base-ide: idea
+                        platform-version: 211
+                        resolve-engine: resolve-old
+                        verify-plugin: true
 
         runs-on: ${{ matrix.os }}
         timeout-minutes: 120
@@ -152,137 +152,137 @@ jobs:
             ORG_GRADLE_PROJECT_compileNativeCode: false
 
         steps:
-            - uses: actions/checkout@v2
+            -   uses: actions/checkout@v2
 
-            - name: Set up JDK 11
-              uses: actions/setup-java@v1
-              with:
-                  java-version: 11
+            -   name: Set up JDK 11
+                uses: actions/setup-java@v1
+                with:
+                    java-version: 11
 
-            - name: Set up Rust
-              uses: actions-rs/toolchain@v1
-              with:
-                  profile: minimal
-                  toolchain: ${{ matrix.rust-version }}
-                  components: rust-src, rustfmt, clippy
-                  default: true
+            -   name: Set up Rust
+                uses: actions-rs/toolchain@v1
+                with:
+                    profile: minimal
+                    toolchain: ${{ matrix.rust-version }}
+                    components: rust-src, rustfmt, clippy
+                    default: true
 
             # Requires for tests with overridden toolchain
-            - name: Set up nightly Rust
-              uses: actions-rs/toolchain@v1
-              with:
-                  profile: minimal
-                  toolchain: nightly
-                  components: rust-src
-                  default: false
+            -   name: Set up nightly Rust
+                uses: actions-rs/toolchain@v1
+                with:
+                    profile: minimal
+                    toolchain: nightly
+                    components: rust-src
+                    default: false
 
-            - name: Cache evcxr
-              uses: actions/cache@v2
-              with:
-                  path: |
-                      ~/.cargo/bin/evcxr
-                      ~/.cargo/.crates.toml
-                      ~/.cargo/.crates2.json
-                  key: ${{ runner.os }}-cache-evcxr-${{ matrix.rust-version }}-${{ github.run_id }} # https://github.com/actions/cache/issues/342#issuecomment-673371329
-                  restore-keys: |
-                      ${{ runner.os }}-cache-evcxr-${{ matrix.rust-version }}-
+            -   name: Cache evcxr
+                uses: actions/cache@v2
+                with:
+                    path: |
+                        ~/.cargo/bin/evcxr
+                        ~/.cargo/.crates.toml
+                        ~/.cargo/.crates2.json
+                    key: ${{ runner.os }}-cache-evcxr-${{ matrix.rust-version }}-${{ github.run_id }} # https://github.com/actions/cache/issues/342#issuecomment-673371329
+                    restore-keys: |
+                        ${{ runner.os }}-cache-evcxr-${{ matrix.rust-version }}-
 
-            - name: Install evcxr
-              if: matrix.os != 'windows-latest' && matrix.rust-version >= '1.46.0' # BACKCOMPAT: Rust 1.45.0
-              uses: actions-rs/cargo@v1
-              with:
-                  command: install
-                  args: evcxr_repl
+            -   name: Install evcxr
+                if: matrix.os != 'windows-latest' && matrix.rust-version >= '1.46.0' # BACKCOMPAT: Rust 1.45.0
+                uses: actions-rs/cargo@v1
+                with:
+                    command: install
+                    args: evcxr_repl
 
-            - name: Check environment
-              run: |
-                  rustc --version
-                  rustup component list --installed
-                  cargo install --list
+            -   name: Check environment
+                run: |
+                    rustc --version
+                    rustup component list --installed
+                    cargo install --list
 
-            - name: Set up additional env variables
-              if: matrix.rust-version == '1.41.0'
-              # see https://help.github.com/en/actions/reference/workflow-commands-for-github-actions#setting-an-environment-variable
-              # BACKCOMPAT: 1.45.0. Don't redefine `compileNativeCode` property
-              run: |
-                  echo "ORG_GRADLE_PROJECT_ideaVersion=IU-2020.3.2" >> $GITHUB_ENV
-                  echo "ORG_GRADLE_PROJECT_clionVersion=CL-2020.3.2" >> $GITHUB_ENV
-                  echo "ORG_GRADLE_PROJECT_nativeDebugPluginVersion=203.7148.57" >> $GITHUB_ENV
-                  echo "ORG_GRADLE_PROJECT_graziePluginVersion=203.7148.20" >> $GITHUB_ENV
+            -   name: Set up additional env variables
+                if: matrix.rust-version == '1.41.0'
+                # see https://help.github.com/en/actions/reference/workflow-commands-for-github-actions#setting-an-environment-variable
+                # BACKCOMPAT: 1.45.0. Don't redefine `compileNativeCode` property
+                run: |
+                    echo "ORG_GRADLE_PROJECT_ideaVersion=IU-2020.3.2" >> $GITHUB_ENV
+                    echo "ORG_GRADLE_PROJECT_clionVersion=CL-2020.3.2" >> $GITHUB_ENV
+                    echo "ORG_GRADLE_PROJECT_nativeDebugPluginVersion=203.7148.57" >> $GITHUB_ENV
+                    echo "ORG_GRADLE_PROJECT_graziePluginVersion=203.7148.20" >> $GITHUB_ENV
 
-            - name: Set up env variable for old resolve
-              if: matrix.resolve-engine == 'resolve-old'
-              run: echo "INTELLIJ_RUST_FORCE_USE_OLD_RESOLVE=" >> $GITHUB_ENV
+            -   name: Set up env variable for old resolve
+                if: matrix.resolve-engine == 'resolve-old'
+                run: echo "INTELLIJ_RUST_FORCE_USE_OLD_RESOLVE=" >> $GITHUB_ENV
 
-            - name: Set up test env variables
-              run: echo "RUST_SRC_WITH_SYMLINK=$HOME/.rust-src" >> $GITHUB_ENV
+            -   name: Set up test env variables
+                run: echo "RUST_SRC_WITH_SYMLINK=$HOME/.rust-src" >> $GITHUB_ENV
 
-            - name: Create symlink for Rust stdlib Unix
-              if: matrix.os != 'windows-latest'
-              run: ln -s $(rustc --print sysroot)/lib/rustlib/src/rust $RUST_SRC_WITH_SYMLINK
+            -   name: Create symlink for Rust stdlib Unix
+                if: matrix.os != 'windows-latest'
+                run: ln -s $(rustc --print sysroot)/lib/rustlib/src/rust $RUST_SRC_WITH_SYMLINK
 
             # FIXME: find out why it doesn't work on CI
             # - name: Create symlink for Rust stdlib Windows
             #  if: matrix.os == 'windows-latest'
             #  run: New-Item -ItemType Junction -Path "$env:RUST_SRC_WITH_SYMLINK" -Target "$(rustc --print sysroot)/lib/rustlib/src/rust"
 
-            - name: Load linux binaries
-              uses: actions/download-artifact@v2
-              with:
-                  name: linux-x86-64
-                  path: bin/linux/x86-64
+            -   name: Load linux binaries
+                uses: actions/download-artifact@v2
+                with:
+                    name: linux-x86-64
+                    path: bin/linux/x86-64
 
-            - name: Load windows binaries
-              uses: actions/download-artifact@v2
-              with:
-                  name: windows-x86-64
-                  path: bin/windows/x86-64
+            -   name: Load windows binaries
+                uses: actions/download-artifact@v2
+                with:
+                    name: windows-x86-64
+                    path: bin/windows/x86-64
 
-            - name: Load macos binaries
-              uses: actions/download-artifact@v2
-              with:
-                  name: macos-x86-64
-                  path: bin/macos/x86-64
+            -   name: Load macos binaries
+                uses: actions/download-artifact@v2
+                with:
+                    name: macos-x86-64
+                    path: bin/macos/x86-64
 
-            - name: Download
-              uses: eskatos/gradle-command-action@v1
-              with:
-                  arguments: ":resolveDependencies -Pkotlin.incremental=false --no-daemon"
+            -   name: Download
+                uses: eskatos/gradle-command-action@v1
+                with:
+                    arguments: ":resolveDependencies -Pkotlin.incremental=false --no-daemon"
 
-            - name: Build
-              uses: eskatos/gradle-command-action@v1
-              with:
-                  arguments: "assemble testClasses -Pkotlin.incremental=false --no-daemon"
+            -   name: Build
+                uses: eskatos/gradle-command-action@v1
+                with:
+                    arguments: "assemble testClasses -Pkotlin.incremental=false --no-daemon"
 
-            - name: Check
-              uses: eskatos/gradle-command-action@v1
-              with:
-                  arguments: "check -PexcludeTests=org/rustPerformanceTests/** --continue -Pkotlin.incremental=false --no-daemon"
+            -   name: Check
+                uses: eskatos/gradle-command-action@v1
+                with:
+                    arguments: "check -PexcludeTests=org/rustPerformanceTests/** --continue -Pkotlin.incremental=false --no-daemon"
 
-            - name: Collect fail reports
-              if: failure()
-              uses: actions/upload-artifact@v2
-              with:
-                  name: tests-report-${{ matrix.os }}-${{ matrix.rust-version }}-${{ matrix.base-ide }}-${{ matrix.platform-version }}
-                  path: |
-                      build/reports/tests
-                      */build/reports/tests
+            -   name: Collect fail reports
+                if: failure()
+                uses: actions/upload-artifact@v2
+                with:
+                    name: tests-report-${{ matrix.os }}-${{ matrix.rust-version }}-${{ matrix.base-ide }}-${{ matrix.platform-version }}
+                    path: |
+                        build/reports/tests
+                        */build/reports/tests
 
-            - name: Verify plugin
-              if: matrix.verify-plugin
-              uses: eskatos/gradle-command-action@v1
-              with:
-                  arguments: ":plugin:verifyPlugin"
+            -   name: Verify plugin
+                if: matrix.verify-plugin
+                uses: eskatos/gradle-command-action@v1
+                with:
+                    arguments: ":plugin:verifyPlugin"
 
-            - name: Check bundled Rust formatters
-              if: matrix.os != 'windows-latest'
-              uses: eskatos/gradle-command-action@v1
-              with:
-                  arguments: "runPrettyPrintersTests --no-daemon"
+            -   name: Check bundled Rust formatters
+                if: matrix.os != 'windows-latest'
+                uses: eskatos/gradle-command-action@v1
+                with:
+                    arguments: "runPrettyPrintersTests --no-daemon"
 
     check:
         needs: [ check-license, check-plugin ]
         runs-on: ubuntu-18.04
         steps:
-            - name: Finish check
-              run: echo "Check finished successfully!"
+            -   name: Finish check
+                run: echo "Check finished successfully!"

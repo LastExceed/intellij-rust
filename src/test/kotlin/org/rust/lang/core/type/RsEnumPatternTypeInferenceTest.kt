@@ -6,7 +6,8 @@
 package org.rust.lang.core.type
 
 class RsEnumPatternTypeInferenceTest : RsTypificationTestBase() {
-    fun `test enum pattern`() = testExpr("""
+    fun `test enum pattern`() = testExpr(
+        """
         enum E {
             X
         }
@@ -15,9 +16,11 @@ class RsEnumPatternTypeInferenceTest : RsTypificationTestBase() {
             x;
           //^ E
         }
-    """)
+    """
+    )
 
-    fun `test enum pattern with unnamed args`() = testExpr("""
+    fun `test enum pattern with unnamed args`() = testExpr(
+        """
         enum E {
             X(i32, i16)
         }
@@ -28,9 +31,11 @@ class RsEnumPatternTypeInferenceTest : RsTypificationTestBase() {
             i;
           //^ i16
         }
-    """)
+    """
+    )
 
-    fun `test enum pattern with named args`() = testExpr("""
+    fun `test enum pattern with named args`() = testExpr(
+        """
         enum E {
             X { _1: i32, _2: i64 }
         }
@@ -41,9 +46,11 @@ class RsEnumPatternTypeInferenceTest : RsTypificationTestBase() {
             i;
           //^ <unknown>
         }
-    """)
+    """
+    )
 
-    fun `test enum tuple out of bounds`() = testExpr("""
+    fun `test enum tuple out of bounds`() = testExpr(
+        """
         enum E {
             V(i32, i32)
         }
@@ -53,9 +60,11 @@ class RsEnumPatternTypeInferenceTest : RsTypificationTestBase() {
             x
           //^ <unknown>
         }
-    """)
+    """
+    )
 
-    fun `test struct tuple`() = testExpr("""
+    fun `test struct tuple`() = testExpr(
+        """
         struct Centimeters(f64);
         struct Inches(i32);
 
@@ -67,9 +76,11 @@ class RsEnumPatternTypeInferenceTest : RsTypificationTestBase() {
               //^ i32
             }
         }
-    """)
+    """
+    )
 
-    fun `test binding with pat`() = testExpr("""
+    fun `test binding with pat`() = testExpr(
+        """
         struct S { x: i32, y: i32 }
 
         enum Result {
@@ -82,9 +93,11 @@ class RsEnumPatternTypeInferenceTest : RsTypificationTestBase() {
             s;
           //^ S
         }
-    """)
+    """
+    )
 
-    fun `test binding with pat failure 1`() = testExpr("""
+    fun `test binding with pat failure 1`() = testExpr(
+        """
         struct S { x: i32, y: i32 }
 
         enum Result {
@@ -97,9 +110,11 @@ class RsEnumPatternTypeInferenceTest : RsTypificationTestBase() {
             s;
           //^ S
         }
-    """)
+    """
+    )
 
-    fun `test binding with pat failure 2`() = testExpr("""
+    fun `test binding with pat failure 2`() = testExpr(
+        """
         struct S { x: i32, y: i32 }
 
         enum Result {
@@ -112,6 +127,7 @@ class RsEnumPatternTypeInferenceTest : RsTypificationTestBase() {
             s;
           //^ S
         }
-    """)
+    """
+    )
 }
 

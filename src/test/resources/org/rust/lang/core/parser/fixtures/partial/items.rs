@@ -1,4 +1,3 @@
-
 }
 
 fn foo() {} // Must be parsed correctly

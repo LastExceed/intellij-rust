@@ -54,11 +54,13 @@ class RsToolchainUsagesCollector : ProjectUsagesCollector() {
             }
         }
 
-        private val COMPILER_EVENT = GROUP.registerEvent("compiler",
+        private val COMPILER_EVENT = GROUP.registerEvent(
+            "compiler",
             // BACKCOMPAT: 2020.3. Use `EventFields.VersionByObject` instead and drop our copy
             VersionByObject,
             EventFields.Enum<RustChannel>("channel"),
-            EventFields.String("host_target", listOf(
+            EventFields.String(
+                "host_target", listOf(
                 "i686-pc-windows-gnu",
                 "i686-pc-windows-msvc",
                 "i686-unknown-linux-gnu",
@@ -69,7 +71,8 @@ class RsToolchainUsagesCollector : ProjectUsagesCollector() {
                 "aarch64-unknown-linux-gnu",
                 "aarch64-apple-darwin",
                 "aarch64-pc-windows-msvc"
-            ))
+            )
+            )
         )
 
         private val RUSTUP_EVENT = GROUP.registerEvent("rustup", EventFields.Boolean("used"))

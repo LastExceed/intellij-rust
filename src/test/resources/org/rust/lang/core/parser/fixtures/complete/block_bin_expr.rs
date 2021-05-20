@@ -18,7 +18,7 @@ pub fn foo(x: String) {
     &mut x;
 
     let foo = ();
-    {foo}
+    { foo }
     ();
 
     // These are binary expressions
@@ -28,5 +28,5 @@ pub fn foo(x: String) {
     2 & { 1 };
 
     fn bar() {}
-    let _ = {bar}();
+    let _ = { bar }();
 }

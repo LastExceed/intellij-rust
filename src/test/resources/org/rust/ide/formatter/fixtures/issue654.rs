@@ -1,1 +1,1 @@
-pub struct CodePageOffset    (usize);
+pub struct CodePageOffset(usize);

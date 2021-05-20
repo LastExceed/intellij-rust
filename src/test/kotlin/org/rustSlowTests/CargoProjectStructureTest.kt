@@ -18,7 +18,8 @@ import org.rust.fileTree
 
 class CargoProjectStructureTest : RsWithToolchainTestBase() {
 
-    fun `test targets`() = doTest("""
+    fun `test targets`() = doTest(
+        """
         Root
          Project
           Targets
@@ -27,13 +28,16 @@ class CargoProjectStructureTest : RsWithToolchainTestBase() {
            Target(foo[bin])
            Target(foo[lib])
            Target(test[test])
-    """) {
-        toml("Cargo.toml", """
+    """
+    ) {
+        toml(
+            "Cargo.toml", """
             [package]
             name = "foo"
             version = "0.1.0"
             authors = []
-        """)
+        """
+        )
 
         dir("src") {
             rust("main.rs", "")
@@ -50,7 +54,8 @@ class CargoProjectStructureTest : RsWithToolchainTestBase() {
         }
     }
 
-    fun `test workspace members`() = doTest("""
+    fun `test workspace members`() = doTest(
+        """
         Root
          Project
           Targets
@@ -58,8 +63,10 @@ class CargoProjectStructureTest : RsWithToolchainTestBase() {
           WorkspaceMember(bar)
            Targets
             Target(bar[bin])
-    """) {
-        toml("Cargo.toml", """
+    """
+    ) {
+        toml(
+            "Cargo.toml", """
             [package]
             name = "foo"
             version = "0.1.0"
@@ -69,18 +76,21 @@ class CargoProjectStructureTest : RsWithToolchainTestBase() {
             members = [
                 "inner-project"
             ]
-        """)
+        """
+        )
 
         dir("src") {
             rust("main.rs", "fn main() {}")
         }
         dir("inner-project") {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "bar"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
             dir("src") {
                 rust("main.rs", "fn main() {}")
             }

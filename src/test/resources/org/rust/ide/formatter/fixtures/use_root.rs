@@ -1,1 +1,1 @@
-use :: {foo,bar};
+use ::{foo, bar};

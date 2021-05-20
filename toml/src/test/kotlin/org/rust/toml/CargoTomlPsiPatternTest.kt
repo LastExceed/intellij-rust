@@ -26,202 +26,270 @@ import org.rust.toml.CargoTomlPsiPattern.workspacePath
 
 class CargoTomlPsiPatternTest : RsTestBase() {
 
-    fun `test inKey header 1`() = testPattern(inKey, """
+    fun `test inKey header 1`() = testPattern(
+        inKey, """
         [key]
         #^
-    """)
+    """
+    )
 
-    fun `test inKey header 2`() = testPattern(inKey, """
+    fun `test inKey header 2`() = testPattern(
+        inKey, """
         [key.key]
             #^
-    """)
+    """
+    )
 
-    fun `test inKey header in Xargo toml file`() = testPattern(inKey, """
+    fun `test inKey header in Xargo toml file`() = testPattern(
+        inKey, """
         [key.key]
             #^
-    """, fileName = "Xargo.toml")
+    """, fileName = "Xargo.toml"
+    )
 
-    fun `test inKey table keyValue`() = testPattern(inKey, """
+    fun `test inKey table keyValue`() = testPattern(
+        inKey, """
         [header]
         key = ""
         #^
-    """)
+    """
+    )
 
-    fun `test inKey inline table keyValue`() = testPattern(inKey, """
+    fun `test inKey inline table keyValue`() = testPattern(
+        inKey, """
         [header]
         key = { key = "" }
                #^
-    """)
+    """
+    )
 
-    fun `test onDependencyKey dependencies`() = testPattern(onDependencyKey, """
+    fun `test onDependencyKey dependencies`() = testPattern(
+        onDependencyKey, """
         [dependencies]
         key = ""
         #^
-    """)
+    """
+    )
 
-    fun `test onDependencyKey dev-dependencies`() = testPattern(onDependencyKey, """
+    fun `test onDependencyKey dev-dependencies`() = testPattern(
+        onDependencyKey, """
         [dev-dependencies]
         key = ""
         #^
-    """)
+    """
+    )
 
-    fun `test onDependencyKey build-dependencies`() = testPattern(onDependencyKey, """
+    fun `test onDependencyKey build-dependencies`() = testPattern(
+        onDependencyKey, """
         [build-dependencies]
         key = ""
         #^
-    """)
+    """
+    )
 
-    fun `test onDependencyKey target_'cfg(windows)'_dependencies`() = testPattern(onDependencyKey, """
+    fun `test onDependencyKey target_'cfg(windows)'_dependencies`() = testPattern(
+        onDependencyKey, """
         [target.'cfg(windows)'.dependencies]
         key = ""
         #^
-    """)
+    """
+    )
 
-    fun `test inDependencyKeyValue 1`() = testPattern(inDependencyKeyValue, """
+    fun `test inDependencyKeyValue 1`() = testPattern(
+        inDependencyKeyValue, """
         [dependencies]
         key = ""
            #^
-    """)
+    """
+    )
 
-    fun `test inDependencyKeyValue 2`() = testPattern(inDependencyKeyValue, """
+    fun `test inDependencyKeyValue 2`() = testPattern(
+        inDependencyKeyValue, """
         [dependencies]
         key = ""
              #^
-    """)
+    """
+    )
 
-    fun `test inDependencyKeyValue 3`() = testPattern(inDependencyKeyValue, """
+    fun `test inDependencyKeyValue 3`() = testPattern(
+        inDependencyKeyValue, """
         [dependencies]
         key = "" ""
                 #^
-    """)
+    """
+    )
 
-    fun `test inDependencyKeyValue 4`() = testPatternNegative(inDependencyKeyValue, """
+    fun `test inDependencyKeyValue 4`() = testPatternNegative(
+        inDependencyKeyValue, """
         [dependencies]
         key = { key = "" }
                 #^
-    """)
+    """
+    )
 
-    fun `test onSpecificDependencyHeaderKey 1`() = testPattern(onSpecificDependencyHeaderKey, """
+    fun `test onSpecificDependencyHeaderKey 1`() = testPattern(
+        onSpecificDependencyHeaderKey, """
         [dependencies.key]
                      #^
-    """)
+    """
+    )
 
-    fun `test onSpecificDependencyHeaderKey 2`() = testPatternNegative(onSpecificDependencyHeaderKey, """
+    fun `test onSpecificDependencyHeaderKey 2`() = testPatternNegative(
+        onSpecificDependencyHeaderKey, """
         [dependencies.key]
               #^
-    """)
+    """
+    )
 
-    fun `test inSpecificDependencyHeaderKey`() = testPattern(inSpecificDependencyHeaderKey, """
+    fun `test inSpecificDependencyHeaderKey`() = testPattern(
+        inSpecificDependencyHeaderKey, """
         [dependencies.key]
                      #^
-    """)
+    """
+    )
 
-    fun `test inSpecificDependencyKeyValue 1`() = testPattern(inSpecificDependencyKeyValue, """
+    fun `test inSpecificDependencyKeyValue 1`() = testPattern(
+        inSpecificDependencyKeyValue, """
         [dependencies.key]
         version = ""
         #^
-    """)
+    """
+    )
 
-    fun `test inSpecificDependencyKeyValue 2`() = testPattern(inSpecificDependencyKeyValue, """
+    fun `test inSpecificDependencyKeyValue 2`() = testPattern(
+        inSpecificDependencyKeyValue, """
         [dependencies.key]
         version = ""
                  #^
-    """)
+    """
+    )
 
-    fun `test inSpecificDependencyKeyValue 3`() = testPatternNegative(inSpecificDependencyKeyValue, """
+    fun `test inSpecificDependencyKeyValue 3`() = testPatternNegative(
+        inSpecificDependencyKeyValue, """
         [dependencies]
         version = ""
         #^
-    """)
+    """
+    )
 
-    fun `test workspace member path`() = testPattern(workspacePath, """
+    fun `test workspace member path`() = testPattern(
+        workspacePath, """
         [workspace]
         members = [ "path/to/crate" ]
                         #^
-    """)
+    """
+    )
 
-    fun `test workspace default member path`() = testPattern(workspacePath, """
+    fun `test workspace default member path`() = testPattern(
+        workspacePath, """
         [workspace]
         default-members = [ "path/to/crate" ]
                                  #^
-    """)
+    """
+    )
 
-    fun `test package workspace path`() = testPattern(packageWorkspacePath, """
+    fun `test package workspace path`() = testPattern(
+        packageWorkspacePath, """
         [package]
         workspace = "path/to/root/crate"
                          #^
-    """)
+    """
+    )
 
-    fun `test path`() = testPattern(path, """
+    fun `test path`() = testPattern(
+        path, """
         path = "path/to/crate"
                    #^
-    """)
+    """
+    )
 
-    fun `test path in inline table`() = testPattern(path, """
+    fun `test path in inline table`() = testPattern(
+        path, """
         crate_name = { path = "path/to/crate" }
                                    #^
-    """)
+    """
+    )
 
-    fun `test build path`() = testPattern(buildPath, """
+    fun `test build path`() = testPattern(
+        buildPath, """
         [package]
         build = "build.rs"
                   #^
-    """)
+    """
+    )
 
-    fun `test feature dependency`() = testPattern(onFeatureDependencyLiteral, """
+    fun `test feature dependency`() = testPattern(
+        onFeatureDependencyLiteral, """
         [features]
         bar = [ "foo" ]
                 #^
-    """)
+    """
+    )
 
-    fun `test dependency package feature`() = testPattern(onDependencyPackageFeature, """
+    fun `test dependency package feature`() = testPattern(
+        onDependencyPackageFeature, """
         [dependencies]
         foo = { version = "*", features = ["bar"] }
                                           #^
-    """)
+    """
+    )
 
-    fun `test specific dependency package feature`() = testPattern(onDependencyPackageFeature, """
+    fun `test specific dependency package feature`() = testPattern(
+        onDependencyPackageFeature, """
         [dependencies.foo]
         version = "*"
         features = ["bar"]
                     #^
-    """)
+    """
+    )
 
-    fun `test dependency key in inline table`() = testPattern(CargoTomlPsiPattern.dependencyProperty("features"), """
+    fun `test dependency key in inline table`() = testPattern(
+        CargoTomlPsiPattern.dependencyProperty("features"), """
         [dependencies]
         foo = { features = [] }
                         #^
-    """)
+    """
+    )
 
-    fun `test dependency key in specific dependency`() = testPattern(CargoTomlPsiPattern.dependencyProperty("features"), """
+    fun `test dependency key in specific dependency`() = testPattern(
+        CargoTomlPsiPattern.dependencyProperty("features"), """
         [dependencies.foo]
         features = []
                 #^
-    """)
+    """
+    )
 
-    fun `test dependency git url link`() = testPattern(dependencyGitUrl, """
+    fun `test dependency git url link`() = testPattern(
+        dependencyGitUrl, """
         [dependencies]
         foo = { git = "foo" }
                        #^
-    """)
+    """
+    )
 
-    fun `test package homepage url link`() = testPattern(packageUrl, """
+    fun `test package homepage url link`() = testPattern(
+        packageUrl, """
         [package]
         homepage = "foo"
                     #^
-    """)
+    """
+    )
 
-    fun `test package repository url link`() = testPattern(packageUrl, """
+    fun `test package repository url link`() = testPattern(
+        packageUrl, """
         [package]
         repository = "foo"
                       #^
-    """)
+    """
+    )
 
-    fun `test package documentation url link`() = testPattern(packageUrl, """
+    fun `test package documentation url link`() = testPattern(
+        packageUrl, """
         [package]
         documentation = "foo"
                          #^
-    """)
+    """
+    )
 
     private inline fun <reified T : PsiElement> testPattern(
         pattern: ElementPattern<T>,

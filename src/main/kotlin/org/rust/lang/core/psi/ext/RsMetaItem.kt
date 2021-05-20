@@ -20,11 +20,12 @@ import org.rust.lang.core.stubs.common.RsMetaItemPsiOrStub
  * Returns identifier name if path inside meta item consists only of this identifier.
  * Otherwise, returns `null`
  */
-val RsMetaItemPsiOrStub.name: String? get() {
-    val path = path ?: return null
-    if (path.hasColonColon) return null
-    return path.referenceName
-}
+val RsMetaItemPsiOrStub.name: String?
+    get() {
+        val path = path ?: return null
+        if (path.hasColonColon) return null
+        return path.referenceName
+    }
 
 val RsMetaItem.id: String?
     get() = generateSequence(path) { it.path }

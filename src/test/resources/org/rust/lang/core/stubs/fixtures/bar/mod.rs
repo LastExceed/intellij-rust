@@ -4,6 +4,6 @@ pub mod nested;
 
 
 fn foo() {
-    #[path="spam.rs"]
+    #[path = "spam.rs"]
     mod spam;
 }

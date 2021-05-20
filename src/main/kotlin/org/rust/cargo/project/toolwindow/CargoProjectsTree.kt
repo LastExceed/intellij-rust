@@ -20,12 +20,13 @@ import javax.swing.tree.TreeSelectionModel
 
 class CargoProjectsTree : SimpleTree() {
 
-    val selectedProject: CargoProject? get() {
-        val path = selectionPath ?: return null
-        if (path.pathCount < 2) return null
-        val treeNode = path.getPathComponent(1) as? DefaultMutableTreeNode ?: return null
-        return (treeNode.userObject as? CargoSimpleNode.Project)?.cargoProject
-    }
+    val selectedProject: CargoProject?
+        get() {
+            val path = selectionPath ?: return null
+            if (path.pathCount < 2) return null
+            val treeNode = path.getPathComponent(1) as? DefaultMutableTreeNode ?: return null
+            return (treeNode.userObject as? CargoSimpleNode.Project)?.cargoProject
+        }
 
     init {
         isRootVisible = false

@@ -72,10 +72,12 @@ import java.util.concurrent.CompletableFuture
 import java.util.concurrent.atomic.AtomicReference
 
 
-@State(name = "CargoProjects", storages = [
+@State(
+    name = "CargoProjects", storages = [
     Storage(StoragePathMacros.WORKSPACE_FILE),
     Storage("misc.xml", deprecated = true)
-])
+]
+)
 open class CargoProjectsServiceImpl(
     final override val project: Project
 ) : CargoProjectsService, PersistentStateComponent<Element> {

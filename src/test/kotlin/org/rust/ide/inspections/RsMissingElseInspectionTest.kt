@@ -10,42 +10,51 @@ package org.rust.ide.inspections
  */
 class RsMissingElseInspectionTest : RsInspectionsTestBase(RsMissingElseInspection::class) {
 
-    fun testSimple() = checkByText("""
+    fun testSimple() = checkByText(
+        """
         fn main() {
             if true {
             }<warning descr="Suspicious if. Did you mean `else if`?"> if </warning>true {
             }
         }
-    """)
+    """
+    )
 
-    fun testNoSpaces() = checkByText("""
+    fun testNoSpaces() = checkByText(
+        """
         fn main() {
             let a = 10;
             if true {
             }<warning descr="Suspicious if. Did you mean `else if`?">if</warning>(a > 10){
             }
         }
-    """)
+    """
+    )
 
-    fun testWideSpaces() = checkByText("""
+    fun testWideSpaces() = checkByText(
+        """
         fn main() {
             let a = 10;
             if true {
             }<warning descr="Suspicious if. Did you mean `else if`?">   if    </warning>(a > 10) {
             }
         }
-    """)
+    """
+    )
 
-    fun testComments() = checkByText("""
+    fun testComments() = checkByText(
+        """
         fn main() {
             let a = 10;
             if true {
             }<warning descr="Suspicious if. Did you mean `else if`?"> /* commented  */ /* else */ if </warning>a > 10 {
             }
         }
-    """)
+    """
+    )
 
-    fun testNotLastExpr() = checkByText("""
+    fun testNotLastExpr() = checkByText(
+        """
         fn main() {
             let a = 10;
             if a > 5 {
@@ -53,29 +62,37 @@ class RsMissingElseInspectionTest : RsInspectionsTestBase(RsMissingElseInspectio
             }
             let b = 20;
         }
-    """)
+    """
+    )
 
-    fun testHandlesBlocksWithNoSiblingsCorrectly() = checkByText("""
+    fun testHandlesBlocksWithNoSiblingsCorrectly() = checkByText(
+        """
         fn main() {if true {}}
-    """)
+    """
+    )
 
-    fun testNotAppliedWhenLineBreakExists() = checkByText("""
+    fun testNotAppliedWhenLineBreakExists() = checkByText(
+        """
         fn main() {
             if true {}
             if true {}
         }
-    """)
+    """
+    )
 
-    fun testNotAppliedWhenTheresNoSecondIf() = checkByText("""
+    fun testNotAppliedWhenTheresNoSecondIf() = checkByText(
+        """
         fn main() {
             if {
                 92;
             }
             {}
         }
-    """)
+    """
+    )
 
-    fun testFix() = checkFixByText("Change to `else if`", """
+    fun testFix() = checkFixByText(
+        "Change to `else if`", """
         fn main() {
             let a = 10;
             if a > 7 {
@@ -89,9 +106,11 @@ class RsMissingElseInspectionTest : RsInspectionsTestBase(RsMissingElseInspectio
             } else if a > 14 {
             }
         }
-    """)
+    """
+    )
 
-    fun testFixPreservesComments() = checkFixByText("Change to `else if`", """
+    fun testFixPreservesComments() = checkFixByText(
+        "Change to `else if`", """
         fn main() {
             let a = 10;
             if a > 7 {
@@ -105,5 +124,6 @@ class RsMissingElseInspectionTest : RsInspectionsTestBase(RsMissingElseInspectio
             } /* comment */ else if /* ! */ a > 14 {
             }
         }
-    """)
+    """
+    )
 }

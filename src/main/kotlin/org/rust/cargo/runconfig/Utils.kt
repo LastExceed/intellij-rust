@@ -135,6 +135,7 @@ sealed class BuildResult {
             "<html>The local debugger cannot be used with WSL.<br>" +
                 "Use the <a href='https://www.jetbrains.com/help/clion/how-to-use-wsl-development-environment-in-product.html'>instructions</a> to configure WSL toolchain.</html>"
         )
+
         object NonWSLWithWSL : ToolchainError("WSL debugger cannot be used with non-WSL Rust toolchain.")
 
         class Other(message: String) : ToolchainError(message)

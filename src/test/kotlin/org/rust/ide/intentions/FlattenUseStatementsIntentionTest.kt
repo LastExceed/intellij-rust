@@ -6,7 +6,8 @@
 package org.rust.ide.intentions
 
 class FlattenUseStatementsIntentionTest : RsIntentionTestBase(FlattenUseStatementsIntention::class) {
-    fun `test use statement with alias`() = doAvailableTest("""
+    fun `test use statement with alias`() = doAvailableTest(
+        """
         use std::collections::{
             /*caret*/HashMap as HM,
             HashSet as HS
@@ -15,9 +16,11 @@ class FlattenUseStatementsIntentionTest : RsIntentionTestBase(FlattenUseStatemen
     """, """
         use /*caret*/std::collections::HashMap as HM;
         use std::collections::HashSet as HS;
-    """)
+    """
+    )
 
-    fun `test attributes and visibility`() = doAvailableTest("""
+    fun `test attributes and visibility`() = doAvailableTest(
+        """
         #[cfg(foo)]
         pub use std::collections::{/*caret*/HashMap, HashSet};
     """, """
@@ -25,9 +28,11 @@ class FlattenUseStatementsIntentionTest : RsIntentionTestBase(FlattenUseStatemen
         pub use /*caret*/std::collections::HashMap;
         #[cfg(foo)]
         pub use std::collections::HashSet;
-    """)
+    """
+    )
 
-    fun `test multiple attributes`() = doAvailableTest("""
+    fun `test multiple attributes`() = doAvailableTest(
+        """
         #[a]
         #[b]
         #[c]
@@ -41,9 +46,11 @@ class FlattenUseStatementsIntentionTest : RsIntentionTestBase(FlattenUseStatemen
         #[b]
         #[c]
         use std::collections::HashSet;
-    """)
+    """
+    )
 
-    fun `test simple use statements`() = doAvailableTest("""
+    fun `test simple use statements`() = doAvailableTest(
+        """
         use std::{
             /*caret*/error,
             io
@@ -52,9 +59,11 @@ class FlattenUseStatementsIntentionTest : RsIntentionTestBase(FlattenUseStatemen
     """, """
         use /*caret*/std::error;
         use std::io;
-    """)
+    """
+    )
 
-    fun `test caret last path`() = doAvailableTest("""
+    fun `test caret last path`() = doAvailableTest(
+        """
         use std::{
             error,
             /*caret*/io
@@ -63,9 +72,11 @@ class FlattenUseStatementsIntentionTest : RsIntentionTestBase(FlattenUseStatemen
     """, """
         use /*caret*/std::error;
         use std::io;
-    """)
+    """
+    )
 
-    fun `test example use statements`() = doAvailableTest("""
+    fun `test example use statements`() = doAvailableTest(
+        """
         use std::{
             /*caret*/error::Error,
             io::Write,
@@ -76,9 +87,11 @@ class FlattenUseStatementsIntentionTest : RsIntentionTestBase(FlattenUseStatemen
         use /*caret*/std::error::Error;
         use std::io::Write;
         use std::path::PathBuf;
-    """)
+    """
+    )
 
-    fun `test nest statements which only be able to nested with selected one`() = doAvailableTest("""
+    fun `test nest statements which only be able to nested with selected one`() = doAvailableTest(
+        """
         use std::{
             /*caret*/error::Error,
             io::Write
@@ -90,9 +103,11 @@ class FlattenUseStatementsIntentionTest : RsIntentionTestBase(FlattenUseStatemen
         use std::io::Write;
         use quux::spam;
         use quux::eggs;
-    """)
+    """
+    )
 
-    fun `test inner path`() = doAvailableTest("""
+    fun `test inner path`() = doAvailableTest(
+        """
         use std::{
             sync::{
                 /*caret*/mpsc,
@@ -110,9 +125,11 @@ class FlattenUseStatementsIntentionTest : RsIntentionTestBase(FlattenUseStatemen
         use std::io::Write;
         use quux::spam;
         use quux::eggs;
-    """)
+    """
+    )
 
-    fun `test inner path without last comma`() = doAvailableTest("""
+    fun `test inner path without last comma`() = doAvailableTest(
+        """
         use std::{
             sync::{
                 /*caret*/mpsc,
@@ -130,9 +147,11 @@ class FlattenUseStatementsIntentionTest : RsIntentionTestBase(FlattenUseStatemen
         use std::io::Write;
         use quux::spam;
         use quux::eggs;
-    """)
+    """
+    )
 
-    fun `test inner path with last position of caret`() = doAvailableTest("""
+    fun `test inner path with last position of caret`() = doAvailableTest(
+        """
         use std::{
             sync::{
                 /*caret*/mpsc,
@@ -150,9 +169,11 @@ class FlattenUseStatementsIntentionTest : RsIntentionTestBase(FlattenUseStatemen
         use std::io::Write;
         use quux::spam;
         use quux::eggs;
-    """)
+    """
+    )
 
-    fun `test inner path with many useSpeck`() = doAvailableTest("""
+    fun `test inner path with many useSpeck`() = doAvailableTest(
+        """
         use std::{
             sync::{
                 /*caret*/mpsc,
@@ -182,9 +203,11 @@ class FlattenUseStatementsIntentionTest : RsIntentionTestBase(FlattenUseStatemen
         use std::io::Write;
         use quux::spam;
         use quux::eggs;
-    """)
+    """
+    )
 
-    fun `test very nested inner path`() = doAvailableTest("""
+    fun `test very nested inner path`() = doAvailableTest(
+        """
         use std::{
             b1::{
                 c1::{
@@ -220,9 +243,11 @@ class FlattenUseStatementsIntentionTest : RsIntentionTestBase(FlattenUseStatemen
         use std::io::Write;
         use quux::spam;
         use quux::eggs;
-    """)
+    """
+    )
 
-    fun `test very nested inner path but caret is middle of it`() = doAvailableTest("""
+    fun `test very nested inner path but caret is middle of it`() = doAvailableTest(
+        """
         use std::{
             b1::{
                 c1::{
@@ -258,14 +283,18 @@ class FlattenUseStatementsIntentionTest : RsIntentionTestBase(FlattenUseStatemen
         use std::io::Write;
         use quux::spam;
         use quux::eggs;
-    """)
+    """
+    )
 
-    fun `test cannot nest if non common base path exist`() = doUnavailableTest("""
+    fun `test cannot nest if non common base path exist`() = doUnavailableTest(
+        """
         use a1::/*caret*/b::c;
         use a2::b::c;
-    """)
+    """
+    )
 
-    fun `test starts with colon colon`() = doAvailableTest("""
+    fun `test starts with colon colon`() = doAvailableTest(
+        """
         use ::a1::{
             /*caret*/b1::c,
             b2::c
@@ -274,14 +303,18 @@ class FlattenUseStatementsIntentionTest : RsIntentionTestBase(FlattenUseStatemen
     """, """
         use /*caret*/::a1::b1::c;
         use ::a1::b2::c;
-    """)
+    """
+    )
 
-    fun `test starts with colon colon with no colon colon`() = doUnavailableTest("""
+    fun `test starts with colon colon with no colon colon`() = doUnavailableTest(
+        """
         use ::a1/*caret*/::b::c;
         use a1::b::c;
-    """)
+    """
+    )
 
-    fun `test converts self to module`() = doAvailableTest("""
+    fun `test converts self to module`() = doAvailableTest(
+        """
         use foo::{
             /*caret*/self,
             foo,
@@ -292,9 +325,11 @@ class FlattenUseStatementsIntentionTest : RsIntentionTestBase(FlattenUseStatemen
         use foo;
         use foo::foo;
         use foo::bar;
-    """)
+    """
+    )
 
-    fun `test flatten simple statements and nested statements`() = doAvailableTest("""
+    fun `test flatten simple statements and nested statements`() = doAvailableTest(
+        """
         use std::{
             /*caret*/a,
             b::b1,
@@ -312,5 +347,6 @@ class FlattenUseStatementsIntentionTest : RsIntentionTestBase(FlattenUseStatemen
         use std::d::d1;
         use std::d::d2::d21;
         use std::d::d2::d22;
-    """)
+    """
+    )
 }

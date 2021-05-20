@@ -15,7 +15,8 @@ class RsFormatterLineBreaksTest : RsFormatterTestBase() {
     fun `test all`() = doTest()
     fun `test traits`() = doTest()
 
-    fun `test line breaks between top-level items`() = doTextTest("""
+    fun `test line breaks between top-level items`() = doTextTest(
+        """
         struct Foo { }
         enum Moo { }
         mod Bar { }
@@ -47,9 +48,11 @@ class RsFormatterLineBreaksTest : RsFormatterTestBase() {
         // count
         // As part of an item
         struct B;
-    """)
+    """
+    )
 
-    fun `test line breaks between attributes`() = doTextTest("""
+    fun `test line breaks between attributes`() = doTextTest(
+        """
         #![allow(dead_code)]    #![cfg(test)]
         #![foo]
 
@@ -80,9 +83,11 @@ class RsFormatterLineBreaksTest : RsFormatterTestBase() {
 
         #[cfg(test)]
         fn foo() {}
-    """)
+    """
+    )
 
-    fun `test line breaks between enum variants`() = doTextTest("""
+    fun `test line breaks between enum variants`() = doTextTest(
+        """
         enum Person {
 
 
@@ -127,9 +132,11 @@ class RsFormatterLineBreaksTest : RsFormatterTestBase() {
                 height: i32,
             },
         }
-    """)
+    """
+    )
 
-    fun `test line breaks between struct fields`() = doTextTest("""
+    fun `test line breaks between struct fields`() = doTextTest(
+        """
         struct Rectangle {
 
 
@@ -155,9 +162,11 @@ class RsFormatterLineBreaksTest : RsFormatterTestBase() {
             p6: Point,
             p7: Point,
         }
-    """)
+    """
+    )
 
-    fun `test line breaks between items in function`() = doTextTest("""
+    fun `test line breaks between items in function`() = doTextTest(
+        """
         fn test1() {
             use mod1; use mod2; const C: i32 = 1; let foo = 1;
         }
@@ -184,9 +193,11 @@ class RsFormatterLineBreaksTest : RsFormatterTestBase() {
             const C1: i32 = 1;  // c1
             const C2: i32 = 1;  // c2
         }
-    """)
+    """
+    )
 
-    fun `test blocks`() = doTextTest("""
+    fun `test blocks`() = doTextTest(
+        """
         fn main() {
             let foo = { foo(123, 456,
                             789) };
@@ -198,15 +209,19 @@ class RsFormatterLineBreaksTest : RsFormatterTestBase() {
                     789)
             };
         }
-    """)
+    """
+    )
 
-    fun `test blocks 2`() = checkNotChanged("""
+    fun `test blocks 2`() = checkNotChanged(
+        """
         fn main() {
             let foo = { foo(123, 456, 789) };
         }
-    """)
+    """
+    )
 
-    fun `test keeps comment after block`() = doTextTest("""
+    fun `test keeps comment after block`() = doTextTest(
+        """
         fn main() {
             let bum = || { // does stuff
         };
@@ -216,9 +231,11 @@ class RsFormatterLineBreaksTest : RsFormatterTestBase() {
             let bum = || { // does stuff
             };
         }
-    """)
+    """
+    )
 
-    fun `test multiline blocks`() = doTextTest("""
+    fun `test multiline blocks`() = doTextTest(
+        """
         struct S1 { f: i32 }
         struct S2 {
         f: i32}
@@ -276,9 +293,11 @@ class RsFormatterLineBreaksTest : RsFormatterTestBase() {
                 92
             };
         }
-""")
+"""
+    )
 
-    fun `test if-expressions`() = doTextTest("""
+    fun `test if-expressions`() = doTextTest(
+        """
         fn main() {
             let _ =
                 if (true) { true }
@@ -306,5 +325,6 @@ class RsFormatterLineBreaksTest : RsFormatterTestBase() {
                 // comment 3
                 else { true };
         }
-""")
+"""
+    )
 }

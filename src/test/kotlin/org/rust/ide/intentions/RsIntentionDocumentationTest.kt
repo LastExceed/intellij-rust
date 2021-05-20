@@ -20,8 +20,10 @@ class RsIntentionDocumentationTest : RsTestBase() {
                 val files = listOf("before.rs.template", "after.rs.template", "description.html")
                 for (file in files) {
                     val text = getResourceAsString("$directory/$file")
-                        ?: fail("No inspection description for ${it.className}.\n" +
-                            "Add ${files.joinToString()} to src/main/resources/$directory")
+                        ?: fail(
+                            "No inspection description for ${it.className}.\n" +
+                                "Add ${files.joinToString()} to src/main/resources/$directory"
+                        )
 
                     if (file.endsWith(".html")) {
                         checkHtmlStyle(text)

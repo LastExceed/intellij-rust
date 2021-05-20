@@ -20,39 +20,48 @@ import org.rust.lang.core.psi.ext.descendantOfTypeStrict
  * Tests for Test Function Line Marker.
  */
 class CargoTestRunLineMarkerContributorTest : RsLineMarkerProviderTestBase() {
-    fun `test simple function`() = doTestByText("""
+    fun `test simple function`() = doTestByText(
+        """
         #[test]
         fn has_icon() { assert(true) } // - Test has_icon
         fn no_icon() { assert(true) }
-    """)
+    """
+    )
 
-    fun `test function in a module`() = doTestByText("""
+    fun `test function in a module`() = doTestByText(
+        """
         mod module { // - Test module
             #[test]
             fn has_icon() { assert(true) } // - Test module::has_icon
             fn no_icon() { assert(true) }
         }
-    """)
+    """
+    )
 
-    fun `test function in a test module`() = doTestByText("""
+    fun `test function in a test module`() = doTestByText(
+        """
         #[cfg(test)]
         mod test { // - Test lib::test
             #[test]
             fn has_icon() { assert(true) } // - Test test::has_icon
             fn no_icon() { assert(true) }
         }
-    """)
+    """
+    )
 
-    fun `test function in a tests module`() = doTestByText("""
+    fun `test function in a tests module`() = doTestByText(
+        """
         #[cfg(test)]
         mod tests { // - Test lib::tests
             #[test]
             fn has_icon() { assert(true) } // - Test tests::has_icon
             fn no_icon() { assert(true) }
         }
-    """)
+    """
+    )
 
-    fun `test function in a nested tests module`() = doTestByText("""
+    fun `test function in a nested tests module`() = doTestByText(
+        """
         #[cfg(test)]
         mod tests { // - Test lib::tests
             #[cfg(test)]
@@ -62,92 +71,119 @@ class CargoTestRunLineMarkerContributorTest : RsLineMarkerProviderTestBase() {
                 fn no_icon() { assert(true) }
             }
         }
-    """)
+    """
+    )
 
     fun `test mod decl`() = doTestFromFile(
         "lib.rs",
         fileTree {
-            rust("tests.rs", """
+            rust(
+                "tests.rs", """
                 #[test]
                 fn test() {}
-            """)
+            """
+            )
 
             rust("no_tests.rs", "")
 
-            rust("lib.rs", """
+            rust(
+                "lib.rs", """
                 mod tests; // - Test lib::tests
                 mod no_tests;
-            """)
+            """
+            )
         }
     )
 
-    fun `test show a test mark as default for test function`() = checkElement<RsFunction>("""
+    fun `test show a test mark as default for test function`() = checkElement<RsFunction>(
+        """
         #[test]
         fn test() {}
-    """) {
+    """
+    ) {
         val icon = CargoTestRunLineMarkerContributor.getTestStateIcon(it)
         assertEquals(CargoIcons.TEST, icon)
     }
 
-    fun `test show a test mark as default for mod`() = checkElement<RsMod>("""
+    fun `test show a test mark as default for mod`() = checkElement<RsMod>(
+        """
         mod tests {
             #[test]
             fn test() {}
         }
-    """) {
+    """
+    ) {
         val icon = CargoTestRunLineMarkerContributor.getTestStateIcon(it)
         assertEquals(CargoIcons.TEST, icon)
     }
 
     /** Issue [3386](https://github.com/intellij-rust/intellij-rust/issues/3386) */
-    fun `test no extra markers next to syntax error elements`() = doTestByText("""
+    fun `test no extra markers next to syntax error elements`() = doTestByText(
+        """
         fn foo bar<T>(t: T) {}
         #[test]
         fn has_icon() { assert(true) } // - Test has_icon
-    """)
+    """
+    )
 
-    fun `test quickcheck`() = doTestByText("""
+    fun `test quickcheck`() = doTestByText(
+        """
         #[quickcheck]
         fn has_icon() { assert(true) } // - Test has_icon
-    """)
+    """
+    )
 
-    fun `test simple custom test attribute`() = doTestByText("""
+    fun `test simple custom test attribute`() = doTestByText(
+        """
         #[custom_test]
         fn has_icon() { assert(true) } // - Test has_icon
-    """)
+    """
+    )
 
-    fun `test custom test attribute with path`() = doTestByText("""
+    fun `test custom test attribute with path`() = doTestByText(
+        """
         #[tokio::test]
         fn has_icon() { assert(true) } // - Test has_icon
-    """)
+    """
+    )
 
-    fun `test custom test attribute with parameters`() = doTestByText("""
+    fun `test custom test attribute with parameters`() = doTestByText(
+        """
         #[tokio::test(threaded_scheduler)]
         fn has_icon() { assert(true) } // - Test has_icon
-    """)
+    """
+    )
 
-    fun `test custom test attribute with underscore`() = doTestByText("""
+    fun `test custom test attribute with underscore`() = doTestByText(
+        """
         #[my_tokio::test(threaded_scheduler)]
         fn has_icon() { assert(true) } // - Test has_icon
-    """)
+    """
+    )
 
-    fun `test ignore attributes with irrelevant test 1`() = doTestByText("""
+    fun `test ignore attributes with irrelevant test 1`() = doTestByText(
+        """
         #[cfg(test)]
         fn has_icon() { assert(true) }
-    """)
+    """
+    )
 
-    fun `test ignore attributes with irrelevant test 2`() = doTestByText("""
+    fun `test ignore attributes with irrelevant test 2`() = doTestByText(
+        """
         #[cfg(not(test))]
         fn has_icon() { assert(true) }
-    """)
+    """
+    )
 
     @MockAdditionalCfgOptions("intellij_rust")
-    fun `test attribute under cfg_attr`() = doTestByText("""
+    fun `test attribute under cfg_attr`() = doTestByText(
+        """
         #[cfg_attr(intellij_rust, test)]
         fn has_icon() { assert(true) } // - Test has_icon
         #[cfg_attr(not(intellij_rust), test)]
         fn no_icon() { assert(true) }
-    """)
+    """
+    )
 
     private inline fun <reified E : RsElement> checkElement(@Language("Rust") code: String, callback: (E) -> Unit) {
         val element = PsiFileFactory.getInstance(project)

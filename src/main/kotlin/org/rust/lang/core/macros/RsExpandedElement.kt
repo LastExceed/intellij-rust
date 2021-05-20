@@ -169,7 +169,8 @@ private fun PsiElement.findElementExpandedFromUnchecked(): PsiElement? {
 
 private fun findMacroCallAndOffsetExpandedFromUnchecked(anchor: PsiElement, startOffset: Int): MacroCallAndOffset? {
     val mappedElement = findMacroCallAndOffsetExpandedFromNonRecursive(anchor, startOffset) ?: return null
-    return findMacroCallAndOffsetExpandedFromUnchecked(mappedElement.call, mappedElement.absoluteOffset) ?: mappedElement
+    return findMacroCallAndOffsetExpandedFromUnchecked(mappedElement.call, mappedElement.absoluteOffset)
+        ?: mappedElement
 }
 
 private fun findMacroCallAndOffsetExpandedFromNonRecursive(anchor: PsiElement, startOffset: Int): MacroCallAndOffset? {

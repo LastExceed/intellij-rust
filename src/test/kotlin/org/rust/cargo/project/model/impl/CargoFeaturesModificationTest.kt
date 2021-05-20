@@ -19,80 +19,119 @@ import org.rust.workspaceOrFail
  * [org.rust.cargo.project.workspace.WorkspaceImpl.inferFeatureState]
  */
 class CargoFeaturesModificationTest : RsWithToolchainTestBase() {
-    fun `test independent features`() = doTest("""
+    fun `test independent features`() = doTest(
+        """
         foo = [] # [x]
         bar = [] # [x]
-    """, disable("foo", """
+    """, disable(
+        "foo", """
         foo = [] # [ ]
         bar = [] # [x]
-    """), disable("bar", """
+    """
+    ), disable(
+        "bar", """
         foo = [] # [ ]
         bar = [] # [ ]
-    """), enable("foo", """
+    """
+    ), enable(
+        "foo", """
         foo = [] # [x]
         bar = [] # [ ]
-    """), enable("bar", """
+    """
+    ), enable(
+        "bar", """
         foo = [] # [x]
         bar = [] # [x]
-    """))
+    """
+    )
+    )
 
-    fun `test 2 dependent features`() = doTest("""
+    fun `test 2 dependent features`() = doTest(
+        """
         foo = ["dep"] # [x]
         dep = []      # [x]
-    """, disable("dep", """
+    """, disable(
+        "dep", """
         foo = ["dep"] # [ ]
         dep = []      # [ ]
-    """), enable("foo", """
+    """
+    ), enable(
+        "foo", """
         foo = ["dep"] # [x]
         dep = []      # [x]
-    """), disable("foo", """
+    """
+    ), disable(
+        "foo", """
         foo = ["dep"] # [ ]
         dep = []      # [x]
-    """), disable("dep", """
+    """
+    ), disable(
+        "dep", """
         foo = ["dep"] # [ ]
         dep = []      # [ ]
-    """), enable("dep", """
+    """
+    ), enable(
+        "dep", """
         foo = ["dep"] # [ ]
         dep = []      # [x]
-    """))
+    """
+    )
+    )
 
-    fun `test 3 dependent features`() = doTest("""
+    fun `test 3 dependent features`() = doTest(
+        """
         foo = ["dep"] # [x]
         bar = ["dep"] # [x]
         dep = []      # [x]
-    """, disable("dep", """
+    """, disable(
+        "dep", """
         foo = ["dep"] # [ ]
         bar = ["dep"] # [ ]
         dep = []      # [ ]
-    """), enable("foo", """
+    """
+    ), enable(
+        "foo", """
         foo = ["dep"] # [x]
         bar = ["dep"] # [ ]
         dep = []      # [x]
-    """), enable("bar", """
+    """
+    ), enable(
+        "bar", """
         foo = ["dep"] # [x]
         bar = ["dep"] # [x]
         dep = []      # [x]
-    """), disable("foo", """
+    """
+    ), disable(
+        "foo", """
         foo = ["dep"] # [ ]
         bar = ["dep"] # [x]
         dep = []      # [x]
-    """), disable("bar", """
+    """
+    ), disable(
+        "bar", """
         foo = ["dep"] # [ ]
         bar = ["dep"] # [ ]
         dep = []      # [x]
-    """), disable("dep", """
+    """
+    ), disable(
+        "dep", """
         foo = ["dep"] # [ ]
         bar = ["dep"] # [ ]
         dep = []      # [ ]
-    """), enable("dep", """
+    """
+    ), enable(
+        "dep", """
         foo = ["dep"] # [ ]
         bar = ["dep"] # [ ]
         dep = []      # [x]
-    """))
+    """
+    )
+    )
 
     private fun doTest(@Language("TOML") toml: String, vararg checkingSteps: CheckingStep) {
         buildProject {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "intellij-rust-test"
                 version = "0.1.0"
@@ -100,7 +139,8 @@ class CargoFeaturesModificationTest : RsWithToolchainTestBase() {
 
                 [features]
                 $toml
-            """)
+            """
+            )
             dir("src") {
                 rust("lib.rs", "")
             }
@@ -124,7 +164,8 @@ class CargoFeaturesModificationTest : RsWithToolchainTestBase() {
             cargoProject = project.cargoProjects.singleProject()
             pkg = cargoProject.workspaceOrFail().packages.find { it.rootDirectory == pkg.rootDirectory }!!
 
-            assertEquals("${i + 1}th iteration, just ${action.action.toString().toLowerCase()} `${action.feature}` ",
+            assertEquals(
+                "${i + 1}th iteration, just ${action.action.toString().toLowerCase()} `${action.feature}` ",
                 action.result.trimIndent(),
                 baseFeatures.withState(pkg.featureState)
             )

@@ -136,9 +136,11 @@ class DefMapsBuilder(
             .joinToString { (crate, time) -> "$crate ${time}ms" }
         val multithread = pool !is SameThreadExecutor
         if (multithread) {
-            RESOLVE_LOG.debug("wallTime: $wallTime, totalTime: $totalTime, " +
-                "parallelism coefficient: ${"%.2f".format((totalTime.toDouble() / wallTime))}.    " +
-                "Top 5 crates: $top5crates")
+            RESOLVE_LOG.debug(
+                "wallTime: $wallTime, totalTime: $totalTime, " +
+                    "parallelism coefficient: ${"%.2f".format((totalTime.toDouble() / wallTime))}.    " +
+                    "Top 5 crates: $top5crates"
+            )
         } else {
             RESOLVE_LOG.debug("wallTime: $wallTime.    Top 5 crates: $top5crates")
         }

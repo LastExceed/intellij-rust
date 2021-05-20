@@ -133,11 +133,13 @@ fun MutableList<MappedTextRange>.mergeAdd(range: MappedTextRange) {
     val last = lastOrNull()
 
     if (last?.srcEndOffset == range.srcOffset && last.dstEndOffset == range.dstOffset) {
-        set(size - 1, MappedTextRange(
+        set(
+            size - 1, MappedTextRange(
             last.srcOffset,
             last.dstOffset,
             last.length + range.length
-        ))
+        )
+        )
     } else {
         add(range)
     }

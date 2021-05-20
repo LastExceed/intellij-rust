@@ -13,7 +13,7 @@ import org.toml.lang.psi.ext.TomlLiteralKind
 import org.toml.lang.psi.ext.kind
 import org.toml.lang.psi.ext.name
 
-abstract class CargoDependencyCrateVisitor: TomlVisitor() {
+abstract class CargoDependencyCrateVisitor : TomlVisitor() {
     abstract fun visitDependency(dependency: DependencyCrate)
 
     override fun visitKeyValue(element: TomlKeyValue) {

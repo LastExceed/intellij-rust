@@ -2,11 +2,17 @@
 // no type parameters at all
 
 struct S<>;
+
 trait T<> {}
+
 enum E<> { V }
+
 impl<> T<> for S<> {}
+
 impl T for E {}
+
 fn foo<>() {}
+
 fn bar() {}
 
 fn main() {

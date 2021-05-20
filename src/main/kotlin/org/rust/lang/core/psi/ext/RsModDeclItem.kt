@@ -36,10 +36,11 @@ private val RsModDeclItem.suggestChildFileName: String?
     get() = implicitPaths.firstOrNull()
 
 
-private val RsModDeclItem.implicitPaths: List<String> get() {
-    val name = name ?: return emptyList()
-    return if (isLocal) emptyList() else listOf("$name.rs", "$name/mod.rs")
-}
+private val RsModDeclItem.implicitPaths: List<String>
+    get() {
+        val name = name ?: return emptyList()
+        return if (isLocal) emptyList() else listOf("$name.rs", "$name/mod.rs")
+    }
 
 val RsModDeclItem.pathAttribute: String? get() = queryAttributes.lookupStringValueForKey("path")
 

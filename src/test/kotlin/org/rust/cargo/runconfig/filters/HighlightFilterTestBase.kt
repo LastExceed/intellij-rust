@@ -18,8 +18,9 @@ import java.util.*
  * Base class for tests of output highlighting filters.
  */
 abstract class HighlightFilterTestBase : RsTestBase() {
-    val projectDir: VirtualFile get() = myFixture.tempDirFixture.getFile("")
-        ?: error("Can't get temp directory for console filter tests")
+    val projectDir: VirtualFile
+        get() = myFixture.tempDirFixture.getFile("")
+            ?: error("Can't get temp directory for console filter tests")
 
     override fun setUp() {
         super.setUp()

@@ -6,9 +6,11 @@
 package org.rust.ide.inspections
 
 class RsSimplifyBooleanExpressionInspectionTest : RsInspectionsTestBase(RsSimplifyBooleanExpressionInspection::class) {
-    fun `test subexpression`() = checkByText("""
+    fun `test subexpression`() = checkByText(
+        """
             fn main() {
                 let _ = <warning><warning>true && foo</warning> && bar</warning>;
             }
-        """)
+        """
+    )
 }

@@ -8,13 +8,14 @@ package org.rust.ide.formatter
 class RsStatementSemicolonFormatProcessorTest : RsFormatterTestBase() {
     // https://internals.rust-lang.org/t/syntax-of-block-like-expressions-in-match-arms/5025
     fun `test adds semicolon after return statement`() {
-        doTextTest("""
+        doTextTest(
+            """
             fn main() {
-                return
+                return;
             }
 
             fn foo() {
-                return /* comment */
+                return; /* comment */
             }
 
             fn bar() {
@@ -38,14 +39,16 @@ class RsStatementSemicolonFormatProcessorTest : RsFormatterTestBase() {
                     Some(element) => {}
                 };
             }
-        """)
+        """
+        )
     }
 
     fun `test adds semicolon after return statement with value`() {
-        doTextTest("""
+        doTextTest(
+            """
             fn foo() -> i32 {
                 if true {
-                    return 92
+                    return 92;
                 }
                 62
             }
@@ -56,11 +59,13 @@ class RsStatementSemicolonFormatProcessorTest : RsFormatterTestBase() {
                 }
                 62
             }
-        """)
+        """
+        )
     }
 
     fun `test adds semicolon after break`() {
-        doTextTest("""
+        doTextTest(
+            """
             fn foo(cond: bool) {
                 loop {
                     if cond {
@@ -96,11 +101,13 @@ class RsStatementSemicolonFormatProcessorTest : RsFormatterTestBase() {
                     }
                 }
             }
-        """)
+        """
+        )
     }
 
     fun `test adds semicolon after continue`() {
-        doTextTest("""
+        doTextTest(
+            """
             fn foo(cond: bool) {
                 loop {
                     if cond {
@@ -136,7 +143,8 @@ class RsStatementSemicolonFormatProcessorTest : RsFormatterTestBase() {
                     }
                 }
             }
-        """)
+        """
+        )
     }
 
     fun `test does not add redundant semicolon`() {

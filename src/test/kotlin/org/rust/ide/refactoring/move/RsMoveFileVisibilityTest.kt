@@ -34,7 +34,8 @@ class RsMoveFileVisibilityTest : RsMoveFileTestBase() {
             }
         //- mod1/bar.rs
             pub fn bar_func() {}
-        """)
+        """
+        )
     }
 
     fun `test outside reference to item which has pub(in old_parent_mod) visibility`() = expectConflicts {
@@ -55,7 +56,8 @@ class RsMoveFileVisibilityTest : RsMoveFileTestBase() {
             }
         //- mod1/bar.rs
             pub(super) fn bar_func() {}  // private for mod2
-        """)
+        """
+        )
     }
 
     fun `test outside reference to item in parent module, when parent module is private`() = expectConflicts {
@@ -77,7 +79,8 @@ class RsMoveFileVisibilityTest : RsMoveFileTestBase() {
             pub fn func() {
                 mod1_inner_func();
             }
-        """)
+        """
+        )
     }
 
     fun `test outside reference to item in parent module, when grandparent module is private`() = expectConflicts {
@@ -99,7 +102,8 @@ class RsMoveFileVisibilityTest : RsMoveFileTestBase() {
             pub fn func() {
                 super::mod1_func();
             }
-        """)
+        """
+        )
     }
 
     fun `test outside reference to item in grandparent module, when parent module is private`() = doTest(
@@ -135,7 +139,8 @@ class RsMoveFileVisibilityTest : RsMoveFileTestBase() {
         fn func() {
             mod1::mod1_func();
         }
-    """)
+    """
+    )
 
     fun `test access private field of struct in old parent module`() = expectConflicts {
         doTestExpectError(
@@ -152,7 +157,8 @@ class RsMoveFileVisibilityTest : RsMoveFileTestBase() {
             pub fn func(a: crate::mod1::A) {
                 a.field;
             }
-        """)
+        """
+        )
     }
 
     fun `test construct struct with private field from old parent module`() = expectConflicts {
@@ -170,7 +176,8 @@ class RsMoveFileVisibilityTest : RsMoveFileTestBase() {
             pub fn func() {
                 let _ = crate::mod1::A { field: 0 };
             }
-        """)
+        """
+        )
     }
 
     fun `test construct struct with private field from old parent module using shorthand`() = expectConflicts {
@@ -189,7 +196,8 @@ class RsMoveFileVisibilityTest : RsMoveFileTestBase() {
                 let field = 1;
                 let _ = crate::mod1::A { field };
             }
-        """)
+        """
+        )
     }
 
     fun `test construct struct with public field from old parent module using shorthand`() = doTest(
@@ -218,7 +226,8 @@ class RsMoveFileVisibilityTest : RsMoveFileTestBase() {
             let field = 1;
             let _ = crate::mod1::A { field };
         }
-    """)
+    """
+    )
 
     fun `test construct struct with private field from old parent module using type alias`() = expectConflicts {
         doTestExpectError(
@@ -236,7 +245,8 @@ class RsMoveFileVisibilityTest : RsMoveFileTestBase() {
             pub fn func() {
                 let _ = crate::mod1::BarAlias { field: 0 };
             }
-        """)
+        """
+        )
     }
 
     fun `test destructuring struct with private field 1`() = expectConflicts {
@@ -254,7 +264,8 @@ class RsMoveFileVisibilityTest : RsMoveFileTestBase() {
             pub fn func(foo: crate::mod1::Foo) {
                 let crate::mod1::Foo { x } = foo;
             }
-        """)
+        """
+        )
     }
 
     fun `test destructuring struct with private field 2`() = doTest(
@@ -290,7 +301,8 @@ class RsMoveFileVisibilityTest : RsMoveFileTestBase() {
         pub fn func(foo: crate::mod1::Foo) {
             let crate::mod1::Foo { field1, .. } = foo;
         }
-    """)
+    """
+    )
 
     fun `test destructuring struct with private field using type alias`() = expectConflicts {
         doTestExpectError(
@@ -308,7 +320,8 @@ class RsMoveFileVisibilityTest : RsMoveFileTestBase() {
             pub fn func(foo: crate::mod1::Bar) {
                 let crate::mod1::Bar { x } = foo;
             }
-        """)
+        """
+        )
     }
 
     fun `test destructuring tuple struct with private field`() = expectConflicts {
@@ -326,7 +339,8 @@ class RsMoveFileVisibilityTest : RsMoveFileTestBase() {
             pub fn func(foo: crate::mod1::Foo) {
                 let crate::mod1::Foo(x) = foo;
             }
-        """)
+        """
+        )
     }
 
     @MockEdition(CargoWorkspace.Edition.EDITION_2018)
@@ -346,7 +360,8 @@ class RsMoveFileVisibilityTest : RsMoveFileTestBase() {
         //- mod2/mod2_inner/mod.rs
         //- mod1/foo.rs
             pub fn func() {}
-        """)
+        """
+        )
     }
 
     fun `test add pub to moved file mod-declaration if necessary 1`() = doTest(
@@ -376,7 +391,8 @@ class RsMoveFileVisibilityTest : RsMoveFileTestBase() {
         pub mod foo;
     //- mod2/foo.rs
         fn func() {}
-    """)
+    """
+    )
 
     fun `test add pub to moved file mod-declaration if necessary 2`() = doTest(
         "mod1/foo.rs",
@@ -401,7 +417,8 @@ class RsMoveFileVisibilityTest : RsMoveFileTestBase() {
         }
     //- foo.rs
         fn func() {}
-    """)
+    """
+    )
 
     fun `test change scope for pub(in) visibility`() = doTest(
         "inner1/inner2/inner3/mod1/foo.rs",
@@ -444,7 +461,8 @@ class RsMoveFileVisibilityTest : RsMoveFileTestBase() {
         pub(in crate::inner1::inner2) fn func3() {}
         pub(in crate::inner1::inner2) fn func4() {}
         pub(in crate::inner1) fn func5() {}
-    """)
+    """
+    )
 
     fun `test no visibility conflicts when move to inner directory`() = doTest(
         "foo.rs",
@@ -473,7 +491,8 @@ class RsMoveFileVisibilityTest : RsMoveFileTestBase() {
             let a = A { field: 1 };
             let x = a.field;
         }
-    """)
+    """
+    )
 
     fun `test no visibility conflicts when moved file use self items`() = doTest(
         "mod1/foo.rs",
@@ -516,5 +535,6 @@ class RsMoveFileVisibilityTest : RsMoveFileTestBase() {
             let foo2 = Foo2 { field: 0 };
             let Foo2 { field } = foo2;
         }
-    """)
+    """
+    )
 }

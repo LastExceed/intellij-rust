@@ -12,39 +12,48 @@ import org.rust.fileTree
  * Tests for Bench Function Line Marker.
  */
 class CargoBenchRunLineMarkerContributorTest : RsLineMarkerProviderTestBase() {
-    fun `test simple function`() = doTestByText("""
+    fun `test simple function`() = doTestByText(
+        """
         #[bench]
         fn has_icon() { assert(true) } // - Bench has_icon
         fn no_icon() { assert(true) }
-    """)
+    """
+    )
 
-    fun `test function in a module`() = doTestByText("""
+    fun `test function in a module`() = doTestByText(
+        """
         mod module { // - Bench module
             #[bench]
             fn has_icon() { assert(true) } // - Bench module::has_icon
             fn no_icon() { assert(true) }
         }
-    """)
+    """
+    )
 
-    fun `test function in a test module`() = doTestByText("""
+    fun `test function in a test module`() = doTestByText(
+        """
         #[cfg(test)]
         mod test { // - Bench lib::test
             #[bench]
             fn has_icon() { assert(true) } // - Bench test::has_icon
             fn no_icon() { assert(true) }
         }
-    """)
+    """
+    )
 
-    fun `test function in a tests module`() = doTestByText("""
+    fun `test function in a tests module`() = doTestByText(
+        """
         #[cfg(test)]
         mod tests { // - Bench lib::tests
             #[bench]
             fn has_icon() { assert(true) } // - Bench tests::has_icon
             fn no_icon() { assert(true) }
         }
-    """)
+    """
+    )
 
-    fun `test function in a nested tests module`() = doTestByText("""
+    fun `test function in a nested tests module`() = doTestByText(
+        """
         #[cfg(test)]
         mod tests { // - Bench lib::tests
             #[cfg(test)]
@@ -54,26 +63,32 @@ class CargoBenchRunLineMarkerContributorTest : RsLineMarkerProviderTestBase() {
                 fn no_icon() { assert(true) }
             }
         }
-    """)
+    """
+    )
 
     fun `test mod decl`() = doTestFromFile(
         "lib.rs",
         fileTree {
-            rust("tests.rs", """
+            rust(
+                "tests.rs", """
                 #[bench]
                 fn bench() {}
-            """)
+            """
+            )
 
             rust("no_tests.rs", "")
 
-            rust("lib.rs", """
+            rust(
+                "lib.rs", """
                 mod tests; // - Bench lib::tests
                 mod no_tests;
-            """)
+            """
+            )
         }
     )
 
-    fun `test function in a module with test function`() = doTestByText("""
+    fun `test function in a module with test function`() = doTestByText(
+        """
         #[cfg(test)]
         mod module { // - Test module
             #[bench]
@@ -82,13 +97,16 @@ class CargoBenchRunLineMarkerContributorTest : RsLineMarkerProviderTestBase() {
             fn has_test_icon() { assert(true) } // - Test module::has_test_icon
             fn no_icon() { assert(true) }
         }
-    """)
+    """
+    )
 
     @MockAdditionalCfgOptions("intellij_rust")
-    fun `test attribute under cfg_attr`() = doTestByText("""
+    fun `test attribute under cfg_attr`() = doTestByText(
+        """
         #[cfg_attr(intellij_rust, bench)]
         fn has_icon() { assert(true) } // - Bench has_icon
         #[cfg_attr(not(intellij_rust), bench)]
         fn no_icon() { assert(true) }
-    """)
+    """
+    )
 }

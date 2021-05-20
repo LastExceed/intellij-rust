@@ -8,15 +8,18 @@ package org.rust.ide.formatter
 import org.rust.ide.typing.RsTypingTestBase
 
 class RsAutoIndentTest : RsTypingTestBase() {
-    fun `test fn`() = doTestByText("""
+    fun `test fn`() = doTestByText(
+        """
         fn main() {/*caret*/
     """, """
         fn main() {
             /*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test if`() = doTestByText("""
+    fun `test if`() = doTestByText(
+        """
         fn main() {
             if (true) {/*caret*/
         }
@@ -26,41 +29,51 @@ class RsAutoIndentTest : RsTypingTestBase() {
                 /*caret*/
             }
         }
-    """)
+    """
+    )
 
-    fun `test mod item`() = doTestByText("""
+    fun `test mod item`() = doTestByText(
+        """
         mod foo {/*caret*/
     """, """
         mod foo {
             /*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test mod item 2`() = doTestByText("""
+    fun `test mod item 2`() = doTestByText(
+        """
         mod/*caret*/
         foo {}
     """, """
         mod
         /*caret*/
         foo {}
-    """)
+    """
+    )
 
-    fun `test foreign mod item`() = doTestByText("""
+    fun `test foreign mod item`() = doTestByText(
+        """
         extern {/*caret*/
     """, """
         extern {
             /*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test foreign mod item 2`() = doTestByText("""
+    fun `test foreign mod item 2`() = doTestByText(
+        """
         extern/*caret*/ {}
     """, """
         extern
         /*caret*/{}
-    """)
+    """
+    )
 
-    fun `test pat`() = doTestByText("""
+    fun `test pat`() = doTestByText(
+        """
         fn main() {
             match 1 {
                 Foo {/*caret*/
@@ -74,9 +87,11 @@ class RsAutoIndentTest : RsTypingTestBase() {
                 }
             }
         }
-    """)
+    """
+    )
 
-    fun `test chain call`() = doTestByText("""
+    fun `test chain call`() = doTestByText(
+        """
         fn main() {
             let moo = foo().bar().baz()/*caret*/
         }
@@ -85,9 +100,11 @@ class RsAutoIndentTest : RsTypingTestBase() {
             let moo = foo().bar().baz()
             /*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test chain call 2`() = doTestByText("""
+    fun `test chain call 2`() = doTestByText(
+        """
         fn main() {
             let moo = foo().bar()/*caret*/.baz()
         }
@@ -96,9 +113,11 @@ class RsAutoIndentTest : RsTypingTestBase() {
             let moo = foo().bar()
                 /*caret*/.baz()
         }
-    """)
+    """
+    )
 
-    fun `test chain call 3`() = doTestByText("""
+    fun `test chain call 3`() = doTestByText(
+        """
         fn main() {
             let moo = foo().bar().baz()
                            .moo()/*caret*/
@@ -109,9 +128,11 @@ class RsAutoIndentTest : RsTypingTestBase() {
                            .moo()
             /*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test chain call 4`() = doTestByText("""
+    fun `test chain call 4`() = doTestByText(
+        """
         fn main() {
             let moo = foo().bar().baz()
                            .moo()/*caret*/;
@@ -122,9 +143,11 @@ class RsAutoIndentTest : RsTypingTestBase() {
                            .moo()
                 /*caret*/;
         }
-    """)
+    """
+    )
 
-    fun `test chain call 5`() = doTestByText("""
+    fun `test chain call 5`() = doTestByText(
+        """
         fn main() {
             moo()/*caret*/
                 .boo()
@@ -137,9 +160,11 @@ class RsAutoIndentTest : RsTypingTestBase() {
                 .boo()
                 .goo()
         }
-    """)
+    """
+    )
 
-    fun `test expr`() = doTestByText("""
+    fun `test expr`() = doTestByText(
+        """
         fn main() {
             if foo && bar/*caret*/
                 && foo {}
@@ -150,9 +175,11 @@ class RsAutoIndentTest : RsTypingTestBase() {
                 /*caret*/
                 && foo {}
         }
-    """)
+    """
+    )
 
-    fun `test expr 2`() = doTestByText("""
+    fun `test expr 2`() = doTestByText(
+        """
         fn main() {
             foo && bar/*caret*/
                 || boo
@@ -163,9 +190,11 @@ class RsAutoIndentTest : RsTypingTestBase() {
                 /*caret*/
                 || boo
         }
-    """)
+    """
+    )
 
-    fun `test expr 3`() = doTestByText("""
+    fun `test expr 3`() = doTestByText(
+        """
         fn main() {
             foo && bar ||/*caret*/
         }
@@ -174,10 +203,12 @@ class RsAutoIndentTest : RsTypingTestBase() {
             foo && bar ||
                 /*caret*/
         }
-    """)
+    """
+    )
 
     // https://github.com/intellij-rust/intellij-rust/issues/475
-    fun `test issue 475`() = doTestByText("""
+    fun `test issue 475`() = doTestByText(
+        """
         fn foobar(n: u64) -> String {
             match (n % 3, n % 5) {
                 /*caret*/
@@ -189,26 +220,32 @@ class RsAutoIndentTest : RsTypingTestBase() {
                 (/*caret*/)
             }
         }
-    """, '(')
+    """, '('
+    )
 
-    fun `test function parameter`() = doTestByText("""
+    fun `test function parameter`() = doTestByText(
+        """
         fn foo(xs: i32,/*caret*/
                ys: i32) {}
     """, """
         fn foo(xs: i32,
                /*caret*/
                ys: i32) {}
-    """)
+    """
+    )
 
-    fun `test first function parameter`() = doTestByText("""
+    fun `test first function parameter`() = doTestByText(
+        """
         fn foo(/*caret*/) {}
     """, """
         fn foo(
             /*caret*/
         ) {}
-    """)
+    """
+    )
 
-    fun `test first call last argument without comma`() = doTestByText("""
+    fun `test first call last argument without comma`() = doTestByText(
+        """
         fn main() {
             frobnicate(
                 xs/*caret*/)
@@ -219,7 +256,8 @@ class RsAutoIndentTest : RsTypingTestBase() {
                 xs
             /*caret*/)
         }
-    """)
+    """
+    )
 
     // FIXME
     // Ideally, we want to indent this because of the trailing comma.
@@ -227,7 +265,8 @@ class RsAutoIndentTest : RsTypingTestBase() {
     // if there's non-ws after the caret (`)` in this case), autoindent
     // skips [org.rust.ide.formatter.blocks.RsFmtBlock.getChildAttributes]
     // and just reformats everything.
-    fun `test first call last argument with comma`() = doTestByText("""
+    fun `test first call last argument with comma`() = doTestByText(
+        """
         fn main() {
             frobnicate(
                 xs,/*caret*/)
@@ -238,9 +277,11 @@ class RsAutoIndentTest : RsTypingTestBase() {
                 xs,
             /*caret*/)
         }
-    """)
+    """
+    )
 
-    fun `test new struct field`() = doTestByText("""
+    fun `test new struct field`() = doTestByText(
+        """
         struct ManifestWarning {
             message: String,/*caret*/
         }
@@ -249,19 +290,23 @@ class RsAutoIndentTest : RsTypingTestBase() {
             message: String,
             /*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test first struct field`() = doTestByText("""
+    fun `test first struct field`() = doTestByText(
+        """
         struct ManifestWarning {/*caret*/
         }
     """, """
         struct ManifestWarning {
             /*caret*/
         }
-    """)
+    """
+    )
 
     // A test for `enterBetweenBracesDelegate` extension point
-    fun `test array literal`() = doTestByText("""
+    fun `test array literal`() = doTestByText(
+        """
         fn main() {
             let _ = [/*caret*/];
         }
@@ -271,5 +316,6 @@ class RsAutoIndentTest : RsTypingTestBase() {
                 /*caret*/
             ];
         }
-    """)
+    """
+    )
 }

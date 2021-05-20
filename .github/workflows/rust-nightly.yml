@@ -3,7 +3,7 @@ name: rust nightly
 on:
     workflow_dispatch:
     schedule:
-        - cron: '0 2 * * *'
+        -   cron: '0 2 * * *'
 
 jobs:
     generate-build-number:
@@ -11,12 +11,12 @@ jobs:
         outputs:
             build_number: ${{ steps.buildnumber.outputs.build_number }}
         steps:
-            - name: Generate build number
-              uses: einaregilsson/build-number@v3
-              id: buildnumber
-              with:
-                  token: ${{ secrets.github_token }}
-                  prefix: rust
+            -   name: Generate build number
+                uses: einaregilsson/build-number@v3
+                id: buildnumber
+                with:
+                    token: ${{ secrets.github_token }}
+                    prefix: rust
 
     fetch-latest-changes:
         runs-on: ubuntu-18.04
@@ -26,30 +26,30 @@ jobs:
             toml-commit: ${{ steps.fetch-commits.outputs.toml-commit }}
             toml-nightly: ${{ steps.fetch-commits.outputs.toml-nightly }}
         steps:
-            - name: Checkout
-              uses: actions/checkout@v2
-              with:
-                  fetch-depth: 0
+            -   name: Checkout
+                uses: actions/checkout@v2
+                with:
+                    fetch-depth: 0
 
-            - name: Set up Python
-              uses: actions/setup-python@v1
-              with:
-                  python-version: 3.7
+            -   name: Set up Python
+                uses: actions/setup-python@v1
+                with:
+                    python-version: 3.7
 
-            - name: Fetch latest commits
-              id: fetch-commits
-              run: |
-                  echo "::set-output name=rust-commit::$(git log -n 1 --format=format:%H)"
-                  echo "::set-output name=rust-nightly::$(python scripts/get_tag_commit.py --tag "rust-nightly")"
-                  echo "::set-output name=toml-commit::$(git log -n 1 --format=format:%H intellij-toml *gradle*)"
-                  echo "::set-output name=toml-nightly::$(python scripts/get_tag_commit.py --tag "toml-nightly")"
+            -   name: Fetch latest commits
+                id: fetch-commits
+                run: |
+                    echo "::set-output name=rust-commit::$(git log -n 1 --format=format:%H)"
+                    echo "::set-output name=rust-nightly::$(python scripts/get_tag_commit.py --tag "rust-nightly")"
+                    echo "::set-output name=toml-commit::$(git log -n 1 --format=format:%H intellij-toml *gradle*)"
+                    echo "::set-output name=toml-nightly::$(python scripts/get_tag_commit.py --tag "toml-nightly")"
 
-            - name: Show commits
-              run: |
-                  echo "rust-commit: ${{ steps.fetch-commits.outputs.rust-commit }}"
-                  echo "rust-nightly: ${{ steps.fetch-commits.outputs.rust-nightly }}"
-                  echo "toml-commit: ${{ steps.fetch-commits.outputs.toml-commit }}"
-                  echo "toml-nightly: ${{ steps.fetch-commits.outputs.toml-nightly }}"
+            -   name: Show commits
+                run: |
+                    echo "rust-commit: ${{ steps.fetch-commits.outputs.rust-commit }}"
+                    echo "rust-nightly: ${{ steps.fetch-commits.outputs.rust-nightly }}"
+                    echo "toml-commit: ${{ steps.fetch-commits.outputs.toml-commit }}"
+                    echo "toml-nightly: ${{ steps.fetch-commits.outputs.toml-nightly }}"
 
 
     build-native-code:
@@ -59,47 +59,47 @@ jobs:
             fail-fast: true
             matrix:
                 config:
-                    - name: linux
-                      arch: x86-64
-                      os: ubuntu-18.04
-                      target: x86_64-unknown-linux-gnu
-                      artifact_path: native-helper/target/release/intellij-rust-native-helper
-                    - name: windows
-                      arch: x86-64
-                      os: windows-latest
-                      target: x86_64-pc-windows-msvc
-                      artifact_path: native-helper/target/release/intellij-rust-native-helper.exe
-                    - name: macos
-                      arch: x86-64
-                      os: macos-latest
-                      target: x86_64-apple-darwin
-                      artifact_path: native-helper/target/release/intellij-rust-native-helper
+                    -   name: linux
+                        arch: x86-64
+                        os: ubuntu-18.04
+                        target: x86_64-unknown-linux-gnu
+                        artifact_path: native-helper/target/release/intellij-rust-native-helper
+                    -   name: windows
+                        arch: x86-64
+                        os: windows-latest
+                        target: x86_64-pc-windows-msvc
+                        artifact_path: native-helper/target/release/intellij-rust-native-helper.exe
+                    -   name: macos
+                        arch: x86-64
+                        os: macos-latest
+                        target: x86_64-apple-darwin
+                        artifact_path: native-helper/target/release/intellij-rust-native-helper
 
         name: ${{ matrix.config.name }}-${{ matrix.config.arch }}
         runs-on: ${{ matrix.config.os }}
         steps:
-            - name: Checkout
-              uses: actions/checkout@v2
+            -   name: Checkout
+                uses: actions/checkout@v2
 
-            - name: Set up Rust
-              uses: actions-rs/toolchain@v1
-              with:
-                  profile: minimal
-                  toolchain: stable
-                  target: ${{ matrix.config.target }}
-                  default: true
+            -   name: Set up Rust
+                uses: actions-rs/toolchain@v1
+                with:
+                    profile: minimal
+                    toolchain: stable
+                    target: ${{ matrix.config.target }}
+                    default: true
 
-            - name: Build
-              uses: actions-rs/cargo@v1
-              with:
-                  command: build
-                  args: --manifest-path native-helper/Cargo.toml --release
+            -   name: Build
+                uses: actions-rs/cargo@v1
+                with:
+                    command: build
+                    args: --manifest-path native-helper/Cargo.toml --release
 
-            - name: Publish
-              uses: actions/upload-artifact@v2
-              with:
-                  name: ${{ matrix.config.name }}-${{ matrix.config.arch }}
-                  path: ${{ matrix.config.artifact_path }}
+            -   name: Publish
+                uses: actions/upload-artifact@v2
+                with:
+                    name: ${{ matrix.config.name }}-${{ matrix.config.arch }}
+                    path: ${{ matrix.config.artifact_path }}
 
     build:
         if: needs.fetch-latest-changes.outputs.rust-commit != needs.fetch-latest-changes.outputs.rust-nightly
@@ -118,58 +118,58 @@ jobs:
             ORG_GRADLE_PROJECT_compileNativeCode: false
 
         steps:
-            - name: Checkout
-              uses: actions/checkout@v2
+            -   name: Checkout
+                uses: actions/checkout@v2
 
-            - name: Set up JDK 11
-              uses: actions/setup-java@v1
-              with:
-                  java-version: 11
+            -   name: Set up JDK 11
+                uses: actions/setup-java@v1
+                with:
+                    java-version: 11
 
-            - name: Load linux binaries
-              uses: actions/download-artifact@v2
-              with:
-                  name: linux-x86-64
-                  path: bin/linux/x86-64
+            -   name: Load linux binaries
+                uses: actions/download-artifact@v2
+                with:
+                    name: linux-x86-64
+                    path: bin/linux/x86-64
 
-            - name: Load windows binaries
-              uses: actions/download-artifact@v2
-              with:
-                  name: windows-x86-64
-                  path: bin/windows/x86-64
+            -   name: Load windows binaries
+                uses: actions/download-artifact@v2
+                with:
+                    name: windows-x86-64
+                    path: bin/windows/x86-64
 
-            - name: Load macos binaries
-              uses: actions/download-artifact@v2
-              with:
-                  name: macos-x86-64
-                  path: bin/macos/x86-64
+            -   name: Load macos binaries
+                uses: actions/download-artifact@v2
+                with:
+                    name: macos-x86-64
+                    path: bin/macos/x86-64
 
-            - name: Publish toml plugin
-              if: needs.fetch-latest-changes.outputs.toml-commit != needs.fetch-latest-changes.outputs.toml-nightly
-              uses: eskatos/gradle-command-action@v1
-              with:
-                  arguments: ":intellij-toml:publishPlugin"
+            -   name: Publish toml plugin
+                if: needs.fetch-latest-changes.outputs.toml-commit != needs.fetch-latest-changes.outputs.toml-nightly
+                uses: eskatos/gradle-command-action@v1
+                with:
+                    arguments: ":intellij-toml:publishPlugin"
 
-            - name: Publish rust plugin
-              uses: eskatos/gradle-command-action@v1
-              with:
-                  arguments: ":plugin:publishPlugin"
+            -   name: Publish rust plugin
+                uses: eskatos/gradle-command-action@v1
+                with:
+                    arguments: ":plugin:publishPlugin"
 
     save-commit:
         needs: [ build, fetch-latest-changes ]
         runs-on: ubuntu-18.04
         steps:
-            - name: Checkout
-              uses: actions/checkout@v2
-              with:
-                  fetch-depth: 0
+            -   name: Checkout
+                uses: actions/checkout@v2
+                with:
+                    fetch-depth: 0
 
-            - name: Set up Python
-              uses: actions/setup-python@v1
-              with:
-                  python-version: 3.7
+            -   name: Set up Python
+                uses: actions/setup-python@v1
+                with:
+                    python-version: 3.7
 
-            - name: Save commits
-              run: |
-                  python scripts/save_tag.py --token ${{ secrets.WORKFLOW_GITHUB_TOKEN }} --tag rust-nightly --commit ${{ needs.fetch-latest-changes.outputs.rust-commit }}
-                  python scripts/save_tag.py --token ${{ secrets.WORKFLOW_GITHUB_TOKEN }} --tag toml-nightly --commit ${{ needs.fetch-latest-changes.outputs.toml-commit }}
+            -   name: Save commits
+                run: |
+                    python scripts/save_tag.py --token ${{ secrets.WORKFLOW_GITHUB_TOKEN }} --tag rust-nightly --commit ${{ needs.fetch-latest-changes.outputs.rust-commit }}
+                    python scripts/save_tag.py --token ${{ secrets.WORKFLOW_GITHUB_TOKEN }} --tag toml-nightly --commit ${{ needs.fetch-latest-changes.outputs.toml-commit }}

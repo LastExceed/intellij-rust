@@ -11,7 +11,8 @@ class RsJoinLinesHandlerTest : RsJoinLinesHandlerTestBase() {
     fun `test blank file1`() = doTestRaw("/*caret*/\n\n", "/*caret*/\n")
     fun `test blank file2`() = doTestRaw("\n/*caret*/\n", "\n/*caret*/")
 
-    fun `test no escape`() = doTest("""
+    fun `test no escape`() = doTest(
+        """
         fn main() {
             "Hello<caret>,
              World"
@@ -20,9 +21,11 @@ class RsJoinLinesHandlerTest : RsJoinLinesHandlerTestBase() {
         fn main() {
             "Hello,<caret> World"
         }
-    """)
+    """
+    )
 
-    fun `test newline escape`() = doTest("""
+    fun `test newline escape`() = doTest(
+        """
         fn main() {
             "He<caret>llo, \
              World"
@@ -31,9 +34,11 @@ class RsJoinLinesHandlerTest : RsJoinLinesHandlerTestBase() {
         fn main() {
             "Hello,<caret> World"
         }
-    """)
+    """
+    )
 
-    fun `test escaped newline escape`() = doTest("""
+    fun `test escaped newline escape`() = doTest(
+        """
         fn main() {
             "He<caret>llo, \\
              World"
@@ -42,9 +47,11 @@ class RsJoinLinesHandlerTest : RsJoinLinesHandlerTestBase() {
         fn main() {
             "Hello, \\<caret> World"
         }
-    """)
+    """
+    )
 
-    fun `test escaped but not escaped in fact newline escape`() = doTest("""
+    fun `test escaped but not escaped in fact newline escape`() = doTest(
+        """
         fn main() {
             "He<caret>llo, \\\
              World"
@@ -53,9 +60,11 @@ class RsJoinLinesHandlerTest : RsJoinLinesHandlerTestBase() {
         fn main() {
             "Hello, \\<caret> World"
         }
-    """)
+    """
+    )
 
-    fun `test two escaped backslashes`() = doTest("""
+    fun `test two escaped backslashes`() = doTest(
+        """
         fn main() {
             "He<caret>llo, \\\\
              World"
@@ -64,9 +73,11 @@ class RsJoinLinesHandlerTest : RsJoinLinesHandlerTestBase() {
         fn main() {
             "Hello, \\\\<caret> World"
         }
-    """)
+    """
+    )
 
-    fun `test no indent`() = doTest("""
+    fun `test no indent`() = doTest(
+        """
         fn main() {
             "Hel<caret>lo,
         World"
@@ -75,9 +86,11 @@ class RsJoinLinesHandlerTest : RsJoinLinesHandlerTestBase() {
         fn main() {
             "Hello,<caret> World"
         }
-    """)
+    """
+    )
 
-    fun `test only newline escape`() = doTest("""
+    fun `test only newline escape`() = doTest(
+        """
         fn main() {
             "<caret>\
             "
@@ -86,33 +99,41 @@ class RsJoinLinesHandlerTest : RsJoinLinesHandlerTestBase() {
         fn main() {
             "<caret> "
         }
-    """)
+    """
+    )
 
-    fun `test outer doc comment`() = doTest("""
+    fun `test outer doc comment`() = doTest(
+        """
         /// Hello<caret>
         /// Docs
         fn foo() {}
     """, """
         /// Hello<caret> Docs
         fn foo() {}
-    """)
+    """
+    )
 
-    fun `test inner doc comment`() = doTest("""
+    fun `test inner doc comment`() = doTest(
+        """
         //! Hello<caret>
         //! Docs
     """, """
         //! Hello<caret> Docs
-    """)
+    """
+    )
 
-    fun `test outer doc comment not comment`() = doTest("""
+    fun `test outer doc comment not comment`() = doTest(
+        """
         /// Hello<caret>
         fn foo() {}
     """, """
         /// Hello<caret> fn foo() {}
-    """)
+    """
+    )
 
     fun `test join struct selection`() =
-        doTest("""
+        doTest(
+            """
             struct S { foo: i32, bar: i32 }
             fn main() {
                 let _ = S <selection>{
@@ -125,9 +146,11 @@ class RsJoinLinesHandlerTest : RsJoinLinesHandlerTestBase() {
             fn main() {
                 let _ = S { foo: 42, bar: 42 };
             }
-        """)
+        """
+        )
 
-    fun `test join struct`() = doTest("""
+    fun `test join struct`() = doTest(
+        """
         struct S { foo: i32 }
         fn main() {
             let _ = S {/*caret*/
@@ -140,9 +163,11 @@ class RsJoinLinesHandlerTest : RsJoinLinesHandlerTestBase() {
             let _ = S {/*caret*/ foo: 42,
             };
         }
-    """)
+    """
+    )
 
-    fun `test remove comma struct literal 1`() = doTest("""
+    fun `test remove comma struct literal 1`() = doTest(
+        """
         struct S { foo: i32 }
         fn main() {
             let _ = S { foo: 42,/*caret*/
@@ -153,9 +178,11 @@ class RsJoinLinesHandlerTest : RsJoinLinesHandlerTestBase() {
         fn main() {
             let _ = S { foo: 42/*caret*/ };
         }
-    """)
+    """
+    )
 
-    fun `test remove comma struct literal 2`() = doTest("""
+    fun `test remove comma struct literal 2`() = doTest(
+        """
         struct S { foo: i32, bar: i32 }
         fn main() {
             let _ = S {
@@ -170,30 +197,38 @@ class RsJoinLinesHandlerTest : RsJoinLinesHandlerTestBase() {
                 foo: 42,
                 bar: 42/*caret*/ };
         }
-    """)
+    """
+    )
 
-    fun `test remove comma struct definition`() = doTest("""
+    fun `test remove comma struct definition`() = doTest(
+        """
         /*caret*/struct S { foo: i32,
         }
     """, """
         struct S { foo: i32/*caret*/ }
-    """)
+    """
+    )
 
-    fun `test remove comma tuple struct definition`() = doTest("""
+    fun `test remove comma tuple struct definition`() = doTest(
+        """
         /*caret*/struct S(i32,
         );
     """, """
         struct S(i32/*caret*/);
-    """)
+    """
+    )
 
-    fun `test remove comma function parameter`() = doTest("""
+    fun `test remove comma function parameter`() = doTest(
+        """
         /*caret*/fn foo (foo: i32,
         ) {}
     """, """
         fn foo (foo: i32/*caret*/) {}
-    """)
+    """
+    )
 
-    fun `test remove comma function call`() = doTest("""
+    fun `test remove comma function call`() = doTest(
+        """
         fn main() {
             foo(1,/*caret*/
             )
@@ -202,9 +237,11 @@ class RsJoinLinesHandlerTest : RsJoinLinesHandlerTestBase() {
         fn main() {
             foo(1/*caret*/)
         }
-    """)
+    """
+    )
 
-    fun `test don't remove comma from tuple`() = doTest("""
+    fun `test don't remove comma from tuple`() = doTest(
+        """
         fn main() {
             /*caret*/let _ = (1,
             );
@@ -213,23 +250,29 @@ class RsJoinLinesHandlerTest : RsJoinLinesHandlerTestBase() {
         fn main() {
             let _ = (1,/*caret*/ );
         }
-    """)
+    """
+    )
 
-    fun `test remove comma from enum definition`() = doTest("""
+    fun `test remove comma from enum definition`() = doTest(
+        """
         enum E { X,/*caret*/ Y,
         }
     """, """
         enum E { X, Y/*caret*/ }
-    """)
+    """
+    )
 
-    fun `test remove comma from use glob`() = doTest("""
+    fun `test remove comma from use glob`() = doTest(
+        """
         use foo::{bar,/*caret*/ baz,
         };
     """, """
         use foo::{bar, baz/*caret*/};
-    """)
+    """
+    )
 
-    fun `test join unsafe expression block`() = doTest("""
+    fun `test join unsafe expression block`() = doTest(
+        """
         fn test() {
             /*caret*/let a = unsafe {
                 foo()
@@ -240,5 +283,6 @@ class RsJoinLinesHandlerTest : RsJoinLinesHandlerTestBase() {
             let a = unsafe {/*caret*/ foo()
             };
         }
-    """)
+    """
+    )
 }

@@ -16,19 +16,22 @@ class CargoProjectServiceTest : RsWithToolchainTestBase() {
     fun `test finds project for file`() {
         val testProject = fileTree {
             dir("a") {
-                toml("Cargo.toml", """
+                toml(
+                    "Cargo.toml", """
                     [package]
                     name = "a"
                     version = "0.1.0"
                     authors = []
-                """)
+                """
+                )
                 dir("src") {
                     rust("lib.rs", "")
                 }
             }
 
             dir("b") {
-                toml("Cargo.toml", """
+                toml(
+                    "Cargo.toml", """
                     [package]
                     name = "b"
                     version = "0.1.0"
@@ -40,33 +43,38 @@ class CargoProjectServiceTest : RsWithToolchainTestBase() {
                     [dependencies]
                     a = { path = "../a" }
                     d = { path = "../d" }
-                """)
+                """
+                )
                 dir("src") {
                     rust("lib.rs", "")
                 }
             }
 
             dir("c") {
-                toml("Cargo.toml", """
+                toml(
+                    "Cargo.toml", """
                     [package]
                     name = "c"
                     version = "0.1.0"
                     authors = []
                     workspace = "../b"
 
-                """)
+                """
+                )
                 dir("src") {
                     rust("lib.rs", "")
                 }
             }
 
             dir("d") {
-                toml("Cargo.toml", """
+                toml(
+                    "Cargo.toml", """
                     [package]
                     name = "d"
                     version = "0.1.0"
                     authors = []
-                """)
+                """
+                )
                 dir("src") {
                     rust("lib.rs", "")
                 }

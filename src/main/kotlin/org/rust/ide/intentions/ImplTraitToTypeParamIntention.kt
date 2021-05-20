@@ -41,7 +41,8 @@ class ImplTraitToTypeParamIntention : RsElementBaseIntentionAction<ImplTraitToTy
             HintManager.getInstance().showErrorHint(
                 editor,
                 "Please convert innermost `impl Trait` first",
-                HintManager.UNDER)
+                HintManager.UNDER
+            )
             return
         }
 
@@ -62,7 +63,8 @@ class ImplTraitToTypeParamIntention : RsElementBaseIntentionAction<ImplTraitToTy
 
         typeParameter = typeParameterList.addBefore(
             typeParameter,
-            typeParameterList.gt)
+            typeParameterList.gt
+        )
             as RsTypeParameter
         val newArgType = argType.replace(psiFactory.createType(typeParameterName))
 

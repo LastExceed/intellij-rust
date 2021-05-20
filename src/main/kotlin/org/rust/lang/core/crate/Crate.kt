@@ -90,7 +90,8 @@ interface Crate {
     val normName: String
 
     @JvmDefault
-    val project: Project get() = cargoProject.project
+    val project: Project
+        get() = cargoProject.project
 
     /**
      * A procedural macro compiler artifact (compiled binary).

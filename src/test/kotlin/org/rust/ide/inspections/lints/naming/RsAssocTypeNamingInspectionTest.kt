@@ -9,21 +9,26 @@ import org.rust.ide.inspections.RsInspectionsTestBase
 import org.rust.ide.inspections.lints.RsAssocTypeNamingInspection
 
 class RsAssocTypeNamingInspectionTest : RsInspectionsTestBase(RsAssocTypeNamingInspection::class) {
-    fun `test associated types`() = checkByText("""
+    fun `test associated types`() = checkByText(
+        """
         trait Foo {
             type AssocTypeOk;
             type <warning descr="Type `assoc_foo` should have a camel case name such as `AssocFoo`">assoc_foo</warning>;
         }
-    """)
+    """
+    )
 
-    fun `test associated types suppression`() = checkByText("""
+    fun `test associated types suppression`() = checkByText(
+        """
         #[allow(non_camel_case_types)]
         trait Foo {
             type assoc_foo;
         }
-    """)
+    """
+    )
 
-    fun `test associated types fix`() = checkFixByText("Rename to `AssocFoo`", """
+    fun `test associated types fix`() = checkFixByText(
+        "Rename to `AssocFoo`", """
         trait Foo {
             type <warning descr="Type `assoc_foo` should have a camel case name such as `AssocFoo`">ass<caret>oc_foo</warning>;
             fn bar(foo: &Self::assoc_foo) {}
@@ -33,11 +38,14 @@ class RsAssocTypeNamingInspectionTest : RsInspectionsTestBase(RsAssocTypeNamingI
             type AssocFoo;
             fn bar(foo: &Self::AssocFoo) {}
         }
-    """)
+    """
+    )
 
-    fun `test associated type not support case`() = checkByText("""
+    fun `test associated type not support case`() = checkByText(
+        """
         trait Foo {
             type 类型;
         }
-    """)
+    """
+    )
 }

@@ -17,25 +17,35 @@ import org.intellij.plugins.intelliLang.inject.InjectedLanguage
 import org.rust.lang.core.psi.ext.ancestorOrSelf
 
 class InjectLanguageIntentionTest : RsIntentionTestBase(InjectLanguageAction::class) {
-    fun `test available inside string`() = checkAvailable("""
+    fun `test available inside string`() = checkAvailable(
+        """
         const C: &str = "/*caret*/";
-    """)
+    """
+    )
 
-    fun `test available before string`() = checkAvailable("""
+    fun `test available before string`() = checkAvailable(
+        """
         const C: &str = /*caret*/"123";
-    """)
+    """
+    )
 
-    fun `test unavailable inside number`() = doUnavailableTest("""
+    fun `test unavailable inside number`() = doUnavailableTest(
+        """
         const C: i32 = /*caret*/123;
-    """)
+    """
+    )
 
-    fun `test available in macro call bodies`() = checkAvailable("""
+    fun `test available in macro call bodies`() = checkAvailable(
+        """
         foobar!(/*caret*/"abc(def)");
-    """)
+    """
+    )
 
-    fun `test inject RegExp`() = doTest("RegExp", """
+    fun `test inject RegExp`() = doTest(
+        "RegExp", """
         const C: &str = /*caret*/"abc(def)";
-    """)
+    """
+    )
 
     private fun checkAvailable(@Language("Rust") code: String) {
         InlineFile(code.trimIndent()).withCaret()

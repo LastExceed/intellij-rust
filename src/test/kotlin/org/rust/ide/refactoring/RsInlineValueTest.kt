@@ -11,19 +11,24 @@ import org.rust.ide.refactoring.inlineValue.InlineValueMode
 import org.rust.ide.refactoring.inlineValue.withMockInlineValueMode
 
 class RsInlineValueTest : RsTestBase() {
-    fun `test cannot inline decl without expression`() = checkError("""
+    fun `test cannot inline decl without expression`() = checkError(
+        """
         fn foo() {
             let a/*caret*/;
         }
-    """, "cannot inline variable without an expression")
+    """, "cannot inline variable without an expression"
+    )
 
-    fun `test cannot inline const without expression`() = checkError("""
+    fun `test cannot inline const without expression`() = checkError(
+        """
         fn foo() {
             const /*caret*/a: u32;
         }
-    """, "cannot inline constant without an expression")
+    """, "cannot inline constant without an expression"
+    )
 
-    fun `test inline variable`() = doTest("""
+    fun `test inline variable`() = doTest(
+        """
         fn foo() {
             let /*caret*/a = 5;
             let b = a;
@@ -32,9 +37,11 @@ class RsInlineValueTest : RsTestBase() {
         fn foo() {
             let b = 5;
         }
-    """)
+    """
+    )
 
-    fun `test inline constant`() = doTest("""
+    fun `test inline constant`() = doTest(
+        """
         const /*caret*/CONST: u32 = 5;
 
         fn foo() {
@@ -44,9 +51,11 @@ class RsInlineValueTest : RsTestBase() {
         fn foo() {
             let a = 5;
         }
-    """)
+    """
+    )
 
-    fun `test inline all usages`() = doTest("""
+    fun `test inline all usages`() = doTest(
+        """
         fn foo() {
             let /*caret*/a = 5;
             let b = a;
@@ -57,9 +66,11 @@ class RsInlineValueTest : RsTestBase() {
             let b = 5;
             let c = 5;
         }
-    """)
+    """
+    )
 
-    fun `test inline all usages from reference`() = doTest("""
+    fun `test inline all usages from reference`() = doTest(
+        """
         fn foo() {
             let a = 5;
             let b = /*caret*/a;
@@ -70,9 +81,11 @@ class RsInlineValueTest : RsTestBase() {
             let b = 5;
             let c = 5;
         }
-    """)
+    """
+    )
 
-    fun `test inline single usage only`() = doTest("""
+    fun `test inline single usage only`() = doTest(
+        """
         fn foo() {
             let a = 5;
             let b = a/*caret*/;
@@ -84,9 +97,11 @@ class RsInlineValueTest : RsTestBase() {
             let b = 5;
             let c = a;
         }
-    """, mode = InlineValueMode.InlineThisOnly)
+    """, mode = InlineValueMode.InlineThisOnly
+    )
 
-    fun `test inline and keep original`() = doTest("""
+    fun `test inline and keep original`() = doTest(
+        """
         fn foo() {
             let /*caret*/a = 5;
             let b = a;
@@ -98,9 +113,11 @@ class RsInlineValueTest : RsTestBase() {
             let b = 5;
             let c = 5;
         }
-    """, mode = InlineValueMode.InlineAllAndKeepOriginal)
+    """, mode = InlineValueMode.InlineAllAndKeepOriginal
+    )
 
-    fun `test inline usage inside expression`() = doTest("""
+    fun `test inline usage inside expression`() = doTest(
+        """
         fn foo() {
             let /*caret*/a = 5;
             let b = 2 * a + 1 + a;
@@ -109,9 +126,11 @@ class RsInlineValueTest : RsTestBase() {
         fn foo() {
             let b = 2 * 5 + 1 + 5;
         }
-    """)
+    """
+    )
 
-    fun `test inline function call`() = doTest("""
+    fun `test inline function call`() = doTest(
+        """
         fn bar() -> u32 { 0 }
 
         fn foo() {
@@ -124,9 +143,11 @@ class RsInlineValueTest : RsTestBase() {
         fn foo() {
             let b = bar() + bar();
         }
-    """)
+    """
+    )
 
-    fun `test inline struct literal`() = doTest("""
+    fun `test inline struct literal`() = doTest(
+        """
         struct S {
             a: u32,
             b: u64
@@ -145,9 +166,11 @@ class RsInlineValueTest : RsTestBase() {
         fn foo() {
             let b = S { a: 0, b: 0 };
         }
-    """)
+    """
+    )
 
-    fun `test inline method call`() = doTest("""
+    fun `test inline method call`() = doTest(
+        """
         struct S {
             a: u32,
             b: u64
@@ -174,9 +197,11 @@ class RsInlineValueTest : RsTestBase() {
         fn foo() {
             let b = S { a: 0, b: 0 }.foo();
         }
-    """)
+    """
+    )
 
-    fun `test inline into field init`() = doTest("""
+    fun `test inline into field init`() = doTest(
+        """
         struct S {
             a: u32,
         }
@@ -193,9 +218,11 @@ class RsInlineValueTest : RsTestBase() {
         fn foo() {
             S { a: 10 };
         }
-    """)
+    """
+    )
 
-    fun `test inline into field shorthand init`() = doTest("""
+    fun `test inline into field shorthand init`() = doTest(
+        """
         struct S {
             a: u32,
         }
@@ -212,9 +239,11 @@ class RsInlineValueTest : RsTestBase() {
         fn foo() {
             S { a: 10 };
         }
-    """)
+    """
+    )
 
-    fun `test inline into tuple struct init`() = doTest("""
+    fun `test inline into tuple struct init`() = doTest(
+        """
         struct S(u32);
 
         fn foo() {
@@ -227,10 +256,13 @@ class RsInlineValueTest : RsTestBase() {
         fn foo() {
             S { 0: 10 };
         }
-    """)
+    """
+    )
 
-    private fun doTest(@Language("Rust") before: String, @Language("Rust") after: String,
-                       mode: InlineValueMode = InlineValueMode.InlineAllAndRemoveOriginal) {
+    private fun doTest(
+        @Language("Rust") before: String, @Language("Rust") after: String,
+        mode: InlineValueMode = InlineValueMode.InlineAllAndRemoveOriginal
+    ) {
         withMockInlineValueMode(mode) {
             checkEditorAction(before, after, "Inline")
         }

@@ -24,11 +24,11 @@ type AssocType = Box<Iterator<Item=(Idx, T)> + 'a>;
 
 type GenericAssoc = Foo<T, U=i32>;
 
-type Trailing1 = Box<TypeA<'static,>>;
+type Trailing1 = Box<TypeA<'static, >>;
 
-type Trailing2<'a> = MyType<'a, (),>;
+type Trailing2<'a> = MyType<'a, (), >;
 
-type TrailingCommaInFn = unsafe extern "system" fn(x: i32,) -> ();
+type TrailingCommaInFn = unsafe extern "system" fn(x: i32) -> ();
 
 fn foo<T>(xs: Vec<T>) -> impl Iterator<Item=impl FnOnce() -> T> + Clone {
     xs.into_iter().map(|x| || x)
@@ -41,4 +41,7 @@ struct S<F>
 
 struct EmptyWhere where {}
 
-fn bar() -> foo!() { let a: foo!() = 0 as foo!(); a }
+fn bar() -> foo!() {
+    let a: foo!() = 0 as foo!();
+    a
+}

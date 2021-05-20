@@ -13,23 +13,28 @@ import org.rust.fileTreeFromText
 
 class RsStubTest : RsTestBase() {
 
-    fun `test literal is not stubbed inside statement`() = doTest("""
+    fun `test literal is not stubbed inside statement`() = doTest(
+        """
         fn foo() { 0; }
     """, """
         RsFileStub
           FUNCTION:RsFunctionStub
             VALUE_PARAMETER_LIST:RsPlaceholderStub
-    """)
+    """
+    )
 
-    fun `test expression is not stubbed inside statement`() = doTest("""
+    fun `test expression is not stubbed inside statement`() = doTest(
+        """
         fn foo() { 2 + 2; }
     """, """
         RsFileStub
           FUNCTION:RsFunctionStub
             VALUE_PARAMETER_LIST:RsPlaceholderStub
-    """)
+    """
+    )
 
-    fun `test literal is not stubbed inside function tail expr`() = doTest("""
+    fun `test literal is not stubbed inside function tail expr`() = doTest(
+        """
         fn foo() -> i32 { 0 }
     """, """
         RsFileStub
@@ -38,9 +43,11 @@ class RsStubTest : RsTestBase() {
             RET_TYPE:RsPlaceholderStub
               BASE_TYPE:RsBaseTypeStub
                 PATH:RsPathStub
-    """)
+    """
+    )
 
-    fun `test expression is not stubbed inside function tail expr`() = doTest("""
+    fun `test expression is not stubbed inside function tail expr`() = doTest(
+        """
         fn foo() -> i32 { 2 + 2 }
     """, """
         RsFileStub
@@ -49,9 +56,11 @@ class RsStubTest : RsTestBase() {
             RET_TYPE:RsPlaceholderStub
               BASE_TYPE:RsBaseTypeStub
                 PATH:RsPathStub
-    """)
+    """
+    )
 
-    fun `test lifetime is stubbed inside function signature`() = doTest("""
+    fun `test lifetime is stubbed inside function signature`() = doTest(
+        """
         fn foo<'a>(x: &'a str) -> i32 { 32 }
     """, """
         RsFileStub
@@ -67,9 +76,11 @@ class RsStubTest : RsTestBase() {
             RET_TYPE:RsPlaceholderStub
               BASE_TYPE:RsBaseTypeStub
                 PATH:RsPathStub
-    """)
+    """
+    )
 
-    fun `test literal is not stubbed inside closure tail expr`() = doTest("""
+    fun `test literal is not stubbed inside closure tail expr`() = doTest(
+        """
         fn foo() {
             || -> i32 { 0 };
         }
@@ -77,9 +88,11 @@ class RsStubTest : RsTestBase() {
         RsFileStub
           FUNCTION:RsFunctionStub
             VALUE_PARAMETER_LIST:RsPlaceholderStub
-    """)
+    """
+    )
 
-    fun `test expression is not stubbed inside closure tail expr`() = doTest("""
+    fun `test expression is not stubbed inside closure tail expr`() = doTest(
+        """
         fn foo() {
             || -> i32 { 2 + 2 };
         }
@@ -87,9 +100,11 @@ class RsStubTest : RsTestBase() {
         RsFileStub
           FUNCTION:RsFunctionStub
             VALUE_PARAMETER_LIST:RsPlaceholderStub
-    """)
+    """
+    )
 
-    fun `test literal is stubbed inside const body`() = doTest("""
+    fun `test literal is stubbed inside const body`() = doTest(
+        """
         const C: i32 = 0;
     """, """
         RsFileStub
@@ -97,9 +112,11 @@ class RsStubTest : RsTestBase() {
             BASE_TYPE:RsBaseTypeStub
               PATH:RsPathStub
             LIT_EXPR:RsLitExprStub
-    """)
+    """
+    )
 
-    fun `test expression is stubbed inside const body`() = doTest("""
+    fun `test expression is stubbed inside const body`() = doTest(
+        """
         const C: i32 = 2 + 2;
     """, """
         RsFileStub
@@ -110,9 +127,11 @@ class RsStubTest : RsTestBase() {
               LIT_EXPR:RsLitExprStub
               BINARY_OP:RsBinaryOpStub
               LIT_EXPR:RsLitExprStub
-    """)
+    """
+    )
 
-    fun `test literal is stubbed inside array type`() = doTest("""
+    fun `test literal is stubbed inside array type`() = doTest(
+        """
         type T = [u8; 1];
     """, """
         RsFileStub
@@ -121,9 +140,11 @@ class RsStubTest : RsTestBase() {
               BASE_TYPE:RsBaseTypeStub
                 PATH:RsPathStub
               LIT_EXPR:RsLitExprStub
-    """)
+    """
+    )
 
-    fun `test expression is stubbed inside array type`() = doTest("""
+    fun `test expression is stubbed inside array type`() = doTest(
+        """
         type T = [u8; 2 + 2];
     """, """
         RsFileStub
@@ -135,9 +156,11 @@ class RsStubTest : RsTestBase() {
                 LIT_EXPR:RsLitExprStub
                 BINARY_OP:RsBinaryOpStub
                 LIT_EXPR:RsLitExprStub
-    """)
+    """
+    )
 
-    fun `test function block is stubbed if contains item`() = doTest("""
+    fun `test function block is stubbed if contains item`() = doTest(
+        """
         fn foo() {
             struct S;
         }
@@ -147,9 +170,11 @@ class RsStubTest : RsTestBase() {
             VALUE_PARAMETER_LIST:RsPlaceholderStub
             BLOCK:RsPlaceholderStub
               STRUCT_ITEM:RsStructItemStub
-    """)
+    """
+    )
 
-    fun `test function block is stubbed if contains union`() = doTest("""
+    fun `test function block is stubbed if contains union`() = doTest(
+        """
         fn foo() {
             union Foo {}
         }
@@ -160,9 +185,11 @@ class RsStubTest : RsTestBase() {
             BLOCK:RsPlaceholderStub
               STRUCT_ITEM:RsStructItemStub
                 BLOCK_FIELDS:RsPlaceholderStub
-    """)
+    """
+    )
 
-    fun `test function block is stubbed if contains inner attrs`() = doTest("""
+    fun `test function block is stubbed if contains inner attrs`() = doTest(
+        """
         fn foo() {
             #![foo]
         }
@@ -174,9 +201,11 @@ class RsStubTest : RsTestBase() {
               INNER_ATTR:RsInnerAttrStub
                 META_ITEM:RsMetaItemStub
                   PATH:RsPathStub
-    """)
+    """
+    )
 
-    fun `test nested block is stubbed if contains items`() = doTest("""
+    fun `test nested block is stubbed if contains items`() = doTest(
+        """
         fn foo() {
             if true {
                 struct S;
@@ -191,9 +220,11 @@ class RsStubTest : RsTestBase() {
             BLOCK:RsPlaceholderStub
               BLOCK:RsPlaceholderStub
                 STRUCT_ITEM:RsStructItemStub
-    """)
+    """
+    )
 
-    fun `test literal is not stubbed inside nested block tail expr`() = doTest("""
+    fun `test literal is not stubbed inside nested block tail expr`() = doTest(
+        """
         fn foo() {
             if true {
                 struct S;
@@ -209,9 +240,11 @@ class RsStubTest : RsTestBase() {
             BLOCK:RsPlaceholderStub
               BLOCK:RsPlaceholderStub
                 STRUCT_ITEM:RsStructItemStub
-    """)
+    """
+    )
 
-    fun `test expression is not stubbed inside nested block tail expr`() = doTest("""
+    fun `test expression is not stubbed inside nested block tail expr`() = doTest(
+        """
         fn foo() {
             if true {
                 struct S;
@@ -232,9 +265,11 @@ class RsStubTest : RsTestBase() {
                 STRUCT_ITEM:RsStructItemStub
               BLOCK:RsPlaceholderStub
                 STRUCT_ITEM:RsStructItemStub
-    """)
+    """
+    )
 
-    fun `test expressions are stubbed inside function local module`() = doTest("""
+    fun `test expressions are stubbed inside function local module`() = doTest(
+        """
         fn foo() {
             mod bar {
                 include!("a.rs");
@@ -250,9 +285,11 @@ class RsStubTest : RsTestBase() {
                   PATH:RsPathStub
                   INCLUDE_MACRO_ARGUMENT:RsPlaceholderStub
                     LIT_EXPR:RsLitExprStub
-    """)
+    """
+    )
 
-    fun `test expressions are stubs inside file`() = doTest("""
+    fun `test expressions are stubs inside file`() = doTest(
+        """
         include!("foo.rs");
     """, """
         RsFileStub
@@ -260,9 +297,11 @@ class RsStubTest : RsTestBase() {
             PATH:RsPathStub
             INCLUDE_MACRO_ARGUMENT:RsPlaceholderStub
               LIT_EXPR:RsLitExprStub
-    """)
+    """
+    )
 
-    fun `test incomplete paths`() = doTest("""
+    fun `test incomplete paths`() = doTest(
+        """
         use foo::;
         use foo::::bar;
     """, """
@@ -276,7 +315,8 @@ class RsStubTest : RsTestBase() {
               PATH:RsPathStub
                 PATH:RsPathStub
                   PATH:RsPathStub
-    """)
+    """
+    )
 
     private fun doTest(@Language("Rust") code: String, expectedStubText: String) {
         val fileName = "main.rs"

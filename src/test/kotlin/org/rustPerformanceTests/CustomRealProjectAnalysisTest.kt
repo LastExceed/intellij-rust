@@ -41,7 +41,7 @@ class CustomRealProjectAnalysisTest(
         }
     }
 
-    private class JsonConsumer(private val info: RealProjectInfo): AnnotationConsumer {
+    private class JsonConsumer(private val info: RealProjectInfo) : AnnotationConsumer {
 
         private val annotations = mutableListOf<Annotation>()
 
@@ -55,11 +55,13 @@ class CustomRealProjectAnalysisTest(
             testDir.mkdirs()
             val resultSuffix = System.getenv("RESULT_SUFFIX").orEmpty()
             JsonMapper().writerWithDefaultPrettyPrinter()
-                .writeValue(File(testDir, "${info.name}$resultSuffix.json"), annotations.sortedWith(
+                .writeValue(
+                    File(testDir, "${info.name}$resultSuffix.json"), annotations.sortedWith(
                     Comparator.comparing(Annotation::filePath)
                         .thenComparingInt(Annotation::line)
                         .thenComparingInt(Annotation::column)
-                ))
+                )
+                )
         }
     }
 }

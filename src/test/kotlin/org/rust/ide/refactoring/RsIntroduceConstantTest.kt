@@ -16,7 +16,8 @@ import org.rust.lang.core.psi.RsExpr
 
 class RsIntroduceConstantTest : RsTestBase() {
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test insertion binary expression`() = doTest("""
+    fun `test insertion binary expression`() = doTest(
+        """
         fn foo() {
             let x = /*caret*/5 + 5;
         }
@@ -25,9 +26,11 @@ class RsIntroduceConstantTest : RsTestBase() {
             const I: i32 = 5 + 5;
             let x = I;
         }
-    """, expression = "5 + 5")
+    """, expression = "5 + 5"
+    )
 
-    fun `test replace all`() = doTest("""
+    fun `test replace all`() = doTest(
+        """
         fn foo() {
             let x = /*caret*/5;
             let y = 5;
@@ -38,9 +41,11 @@ class RsIntroduceConstantTest : RsTestBase() {
             let x = I;
             let y = I;
         }
-    """, replaceAll = true)
+    """, replaceAll = true
+    )
 
-    fun `test insertion nested fn`() = doTest("""
+    fun `test insertion nested fn`() = doTest(
+        """
         fn foo() {
             fn foo2() {
                 let x = /*caret*/5;
@@ -53,9 +58,11 @@ class RsIntroduceConstantTest : RsTestBase() {
                 let x = I;
             }
         }
-    """)
+    """
+    )
 
-    fun `test insertion local`() = doTest("""
+    fun `test insertion local`() = doTest(
+        """
         fn foo() {
             let x = /*caret*/5;
         }
@@ -64,9 +71,11 @@ class RsIntroduceConstantTest : RsTestBase() {
             const I: i32 = 5;
             let x = I;
         }
-    """)
+    """
+    )
 
-    fun `test import`() = doTest("""
+    fun `test import`() = doTest(
+        """
         mod a {
             fn foo() {
                 let x = /*caret*/5;
@@ -82,9 +91,11 @@ class RsIntroduceConstantTest : RsTestBase() {
                 let x = I;
             }
         }
-    """)
+    """
+    )
 
-    fun `test do not import at file scope`() = doTest("""
+    fun `test do not import at file scope`() = doTest(
+        """
         fn foo() {
             let x = /*caret*/5;
         }
@@ -94,9 +105,11 @@ class RsIntroduceConstantTest : RsTestBase() {
         fn foo() {
             let x = I;
         }
-    """)
+    """
+    )
 
-    fun `test module inside a function`() = doTest("""
+    fun `test module inside a function`() = doTest(
+        """
         fn foo() {
             mod bar {
                 fn baz() {
@@ -116,24 +129,30 @@ class RsIntroduceConstantTest : RsTestBase() {
                 }
             }
         }
-    """)
+    """
+    )
 
-    fun `test constant at file scope`() = doTest("""
+    fun `test constant at file scope`() = doTest(
+        """
         const BUFFER: [u8; /*caret*/1000] = [1000; 1000];
     """, listOf("file"), 0, """
         const I: usize = 1000;
         const BUFFER: [u8; I] = [I; I];
-    """, replaceAll = true)
+    """, replaceAll = true
+    )
 
-    fun `test type alias at file scope`() = doTest("""
+    fun `test type alias at file scope`() = doTest(
+        """
         type ARRAY = [u8; /*caret*/1000];
     """, listOf("file"), 0, """
         const I: usize = 1000;
 
         type ARRAY = [u8; I];
-    """)
+    """
+    )
 
-    fun `test type inside a struct`() = doTest("""
+    fun `test type inside a struct`() = doTest(
+        """
         struct S {
             a: [u8; /*caret*/1000],
             b: [u8; 1000]
@@ -145,7 +164,8 @@ class RsIntroduceConstantTest : RsTestBase() {
             a: [u8; I],
             b: [u8; I]
         }
-    """, replaceAll = true)
+    """, replaceAll = true
+    )
 
     private fun doTest(
         @Language("Rust") before: String,

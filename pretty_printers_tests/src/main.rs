@@ -6,7 +6,6 @@ extern crate toml;
 use std::fs;
 use std::fs::read_dir;
 use std::path::Path;
-
 use test_runner::{Config, TestResult};
 use test_runner::create_test_runner;
 use test_runner::Debugger;
@@ -30,7 +29,7 @@ struct Settings {
     lldb_batchmode: String,
     lldb_lookup: String,
     python: String,
-    gdb_lookup: String
+    gdb_lookup: String,
 }
 
 /// Expects "lldb" or "gdb as the first argument
@@ -93,16 +92,16 @@ fn test(debugger: Debugger, path: String) -> Result<(), ()> {
         match result {
             TestResult::Ok => {
                 println!("{}: passed", path_string);
-            },
+            }
             TestResult::Skipped(reason) => {
                 println!("{}: skipped", path_string);
                 println!("{}", reason);
-            },
+            }
             TestResult::Err(reason) => {
                 println!("{}: failed", path_string);
                 println!("{}", reason);
                 status = Err(());
-            },
+            }
         }
     }
 

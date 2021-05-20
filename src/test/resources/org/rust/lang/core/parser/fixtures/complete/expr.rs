@@ -1,10 +1,9 @@
 fn f() -> i32 {}
 
 fn test() -> u32 {
-
-    x :: y;         /* path-expr */
-    :: x :: y;
-    self :: x :: y;
+    x::y;         /* path-expr */
+    ::x::y;
+    self::x::y;
 
     x + y - z * 0;  /* binary */
 
@@ -31,13 +30,13 @@ fn test() -> u32 {
 
     t = ();         /* unit */
 
-    [   0,          /* array */
+    [0, /* array */
         1,
         2,
-        [ 0 ; 1 ] ];
+        [0; 1]];
     [];
-    [1,];
-    [1;2];
+    [1, ];
+    [1; 2];
 
     || {};          /* lambda */
     |x| x;
@@ -50,12 +49,12 @@ fn test() -> u32 {
 
     |x: &mut i32| x = 92;
 
-    { }             /* block */
+    {}             /* block */
 
     unsafe { 92 }
 
     {
-        {92}.to_string()
+        { 92 }.to_string()
     }
 
     box 92;
@@ -68,10 +67,13 @@ fn test() -> u32 {
     let _ = 1: u32 + TEN;
     let _ = 1 as (i32);
 
-    || { 0; yield 0; };
+    || {
+        0;
+        yield 0;
+    };
 
     foo(bar, true, "", 1, 1.1);
 
     return (x = y)  /* return */
-            + 1
+        + 1;
 }

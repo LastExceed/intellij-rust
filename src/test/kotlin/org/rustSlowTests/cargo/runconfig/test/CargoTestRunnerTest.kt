@@ -17,15 +17,18 @@ class CargoTestRunnerTest : CargoTestRunnerTestBase() {
 
     fun `test test statuses`() {
         buildProject {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "sandbox"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
 
             dir("src") {
-                rust("lib.rs", """
+                rust(
+                    "lib.rs", """
                     #[test]
                     fn test_should_pass() {}
 
@@ -37,30 +40,36 @@ class CargoTestRunnerTest : CargoTestRunnerTestBase() {
                     #[test]
                     #[ignore]
                     fn test_ignored() {}
-                """)
+                """
+                )
             }
         }
         val sourceElement = cargoProjectDirectory.toPsiDirectory(project)!!
 
-        checkTestTree("""
+        checkTestTree(
+            """
             [root](-)
             .sandbox(-)
             ..test_ignored(~)
             ..test_should_fail(-)
             ..test_should_pass(+)
-        """, sourceElement)
+        """, sourceElement
+        )
     }
 
     fun `test doctests statuses`() {
         buildProject {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "sandbox"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
             dir("src") {
-                rust("lib.rs", """
+                rust(
+                    "lib.rs", """
                     /// ```
                     /// true;
                     /// ```
@@ -110,12 +119,14 @@ class CargoTestRunnerTest : CargoTestRunnerTestBase() {
                         /// ```
                         pub fn doctest_should_fail() {}
                     }
-                """)
+                """
+                )
             }
         }
         val sourceElement = cargoProjectDirectory.toPsiDirectory(project)!!
 
-        checkTestTree("""
+        checkTestTree(
+            """
             [root](-)
             .sandbox (doc-tests)(-)
             ..doctest_should_fail (line 5)(-)
@@ -132,20 +143,24 @@ class CargoTestRunnerTest : CargoTestRunnerTestBase() {
             ...doctest_should_pass (line 28)(+)
             ..non_fn_doctest_should_fail (line 20)(-)
             ..non_fn_doctest_should_pass (line 16)(+)
-        """, sourceElement)
+        """, sourceElement
+        )
     }
 
     fun `test not executed tests are not shown`() {
         val testProject = buildProject {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "sandbox"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
 
             dir("src") {
-                rust("lib.rs", """
+                rust(
+                    "lib.rs", """
                     #[test]
                     fn test_should_pass() {}
 
@@ -163,29 +178,35 @@ class CargoTestRunnerTest : CargoTestRunnerTestBase() {
                     /// true;
                     /// ```
                     pub fn doctest_should_pass() {}
-                """)
+                """
+                )
             }
         }
         myFixture.configureFromTempProjectFile(testProject.fileWithCaret)
 
-        checkTestTree("""
+        checkTestTree(
+            """
             [root](-)
             .sandbox(-)
             ..test_should_fail(-)
-        """)
+        """
+        )
     }
 
     fun `test regular tests and doc tests`() {
         buildProject {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "sandbox"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
 
             dir("src") {
-                rust("lib.rs", """
+                rust(
+                    "lib.rs", """
                     #[test]
                     fn test_should_pass() {}
 
@@ -198,17 +219,19 @@ class CargoTestRunnerTest : CargoTestRunnerTestBase() {
                     /// true;
                     /// ```
                     pub fn doctest_should_pass() {}
-                    
+
                     /// ```
                     /// assert_eq!(1, 2);
                     /// ```
                     pub fn doctest_should_fail() {}
-                """)
+                """
+                )
             }
         }
         val sourceElement = cargoProjectDirectory.toPsiDirectory(project)!!
 
-        checkTestTree("""
+        checkTestTree(
+            """
             [root](-)
             .sandbox(-)
             ..test_should_fail(-)
@@ -216,20 +239,24 @@ class CargoTestRunnerTest : CargoTestRunnerTestBase() {
             .sandbox (doc-tests)(-)
             ..doctest_should_fail (line 14)(-)
             ..doctest_should_pass (line 9)(+)
-        """, sourceElement)
+        """, sourceElement
+        )
     }
 
     fun `test doctests only`() {
         buildProject {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "sandbox"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
 
             dir("src") {
-                rust("lib.rs", """
+                rust(
+                    "lib.rs", """
                     #[test]
                     fn test_should_pass() {}
 
@@ -242,35 +269,41 @@ class CargoTestRunnerTest : CargoTestRunnerTestBase() {
                     /// true;
                     /// ```
                     pub fn doctest_should_pass() {}
-                    
+
                     /// ```
                     /// assert_eq!(1, 2);
                     /// ```
                     pub fn doctest_should_fail() {}
-                """)
+                """
+                )
             }
         }
         val sourceElement = cargoProjectDirectory.toPsiDirectory(project)!!
 
-        checkTestTree("""
+        checkTestTree(
+            """
             [root](-)
             .sandbox (doc-tests)(-)
             ..doctest_should_fail (line 14)(-)
             ..doctest_should_pass (line 9)(+)
-        """, sourceElement, onlyDoctests = true)
+        """, sourceElement, onlyDoctests = true
+        )
     }
 
     fun `test multiple failed tests`() {
         buildProject {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "sandbox"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
 
             dir("src") {
-                rust("lib.rs", """
+                rust(
+                    "lib.rs", """
                     #[test]
                     fn test_should_fail_1() {
                         assert_eq!(1, 2)
@@ -280,30 +313,36 @@ class CargoTestRunnerTest : CargoTestRunnerTestBase() {
                     fn test_should_fail_2() {
                         assert_eq!(2, 3)
                     }
-                """)
+                """
+                )
             }
         }
         val sourceElement = cargoProjectDirectory.toPsiDirectory(project)!!
 
-        checkTestTree("""
+        checkTestTree(
+            """
             [root](-)
             .sandbox(-)
             ..test_should_fail_1(-)
             ..test_should_fail_2(-)
-        """, sourceElement)
+        """, sourceElement
+        )
     }
 
     fun `test tests in submodules`() {
         val testProject = buildProject {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "sandbox"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
 
             dir("src") {
-                rust("lib.rs", """
+                rust(
+                    "lib.rs", """
                     #[cfg(test)]
                     mod /*caret*/suite_should_fail {
                         #[test]
@@ -322,12 +361,14 @@ class CargoTestRunnerTest : CargoTestRunnerTestBase() {
                             fn test_should_pass() {}
                         }
                     }
-                """)
+                """
+                )
             }
         }
         myFixture.configureFromTempProjectFile(testProject.fileWithCaret)
 
-        checkTestTree("""
+        checkTestTree(
+            """
             [root](-)
             .sandbox(-)
             ..suite_should_fail(-)
@@ -337,43 +378,53 @@ class CargoTestRunnerTest : CargoTestRunnerTestBase() {
             ...nested_suite_should_pass(+)
             ....test_should_pass(+)
             ...test_should_pass(+)
-        """)
+        """
+        )
     }
 
     fun `test tests in mod decl`() {
         val testProject = buildProject {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "sandbox"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
 
             dir("src") {
-                rust("lib.rs", """
+                rust(
+                    "lib.rs", """
                     mod tests/*caret*/;
                     #[test]
                     fn test_should_pass() {}
-                """)
-                rust("tests.rs", """
+                """
+                )
+                rust(
+                    "tests.rs", """
                     #[test]
                     fn test_should_pass() {}
-                """)
+                """
+                )
             }
         }
         myFixture.configureFromTempProjectFile(testProject.fileWithCaret)
 
-        checkTestTree("""
+        checkTestTree(
+            """
             [root](+)
             .sandbox(+)
             ..tests(+)
             ...test_should_pass(+)
-        """)
+        """
+        )
     }
 
     fun `test test in custom bin target`() {
         val testProject = buildProject {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "sandbox"
                 version = "0.1.0"
@@ -382,29 +433,35 @@ class CargoTestRunnerTest : CargoTestRunnerTestBase() {
                 [[bin]]
                 name = "main"
                 path = "src/main.rs"
-            """)
+            """
+            )
 
             dir("src") {
-                rust("main.rs", """
+                rust(
+                    "main.rs", """
                     fn main() {}
 
                     #[test]
                     fn test_should_pass() { /*caret*/ }
-                """)
+                """
+                )
             }
         }
         myFixture.configureFromTempProjectFile(testProject.fileWithCaret)
 
-        checkTestTree("""
+        checkTestTree(
+            """
             [root](+)
             .main(+)
             ..test_should_pass(+)
-        """)
+        """
+        )
     }
 
     fun `test test in custom test target`() {
         val testProject = buildProject {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "sandbox"
                 version = "0.1.0"
@@ -413,97 +470,121 @@ class CargoTestRunnerTest : CargoTestRunnerTestBase() {
                 [[test]]
                 name = "tests"
                 path = "tests/tests.rs"
-            """)
+            """
+            )
 
             dir("tests") {
-                rust("tests.rs", """
+                rust(
+                    "tests.rs", """
                     #[test]
                     fn test_should_pass() { /*caret*/ }
-                """)
+                """
+                )
             }
         }
         myFixture.configureFromTempProjectFile(testProject.fileWithCaret)
 
-        checkTestTree("""
+        checkTestTree(
+            """
             [root](+)
             .tests(+)
             ..test_should_pass(+)
-        """)
+        """
+        )
     }
 
     fun `test tests in project`() {
         buildProject {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [workspace]
                 members = [
                     "package1",
                     "package2",
                 ]
-            """)
+            """
+            )
 
             dir("package1") {
-                toml("Cargo.toml", """
+                toml(
+                    "Cargo.toml", """
                     [package]
                     name = "package1"
                     version = "0.1.0"
                     authors = []
-                """)
+                """
+                )
 
                 dir("src") {
-                    rust("lib.rs", """
+                    rust(
+                        "lib.rs", """
                         #[test]
                         fn test() {}
-                    """)
+                    """
+                    )
 
-                    rust("main.rs", """
+                    rust(
+                        "main.rs", """
                         fn main() {}
 
                         #[test]
                         fn test() {}
-                    """)
+                    """
+                    )
                 }
 
                 dir("tests") {
-                    rust("package1.rs", """
+                    rust(
+                        "package1.rs", """
                         #[test]
                         fn test() {}
-                    """)
+                    """
+                    )
                 }
             }
 
             dir("package2") {
-                toml("Cargo.toml", """
+                toml(
+                    "Cargo.toml", """
                     [package]
                     name = "package2"
                     version = "0.1.0"
                     authors = []
-                """)
+                """
+                )
 
                 dir("src") {
-                    rust("lib.rs", """
+                    rust(
+                        "lib.rs", """
                         #[test]
                         fn test() {}
-                    """)
+                    """
+                    )
 
-                    rust("main.rs", """
+                    rust(
+                        "main.rs", """
                         fn main() {}
 
                         #[test]
                         fn test() {}
-                    """)
+                    """
+                    )
                 }
 
                 dir("tests") {
-                    rust("package2.rs", """
+                    rust(
+                        "package2.rs", """
                         #[test]
                         fn test() {}
-                    """)
+                    """
+                    )
                 }
             }
         }
         val sourceElement = cargoProjectDirectory.toPsiDirectory(project)!!
 
-        checkTestTree("""
+        checkTestTree(
+            """
             [root](+)
             .package1(+)
             ..test(+)
@@ -517,68 +598,84 @@ class CargoTestRunnerTest : CargoTestRunnerTestBase() {
             ..test(+)
             .package2(+)
             ..test(+)
-        """, sourceElement)
+        """, sourceElement
+        )
     }
 
     fun `test tests in package`() {
         buildProject {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [workspace]
                 members = [
                     "package1",
                     "package2",
                 ]
-            """)
+            """
+            )
 
             dir("package1") {
-                toml("Cargo.toml", """
+                toml(
+                    "Cargo.toml", """
                     [package]
                     name = "package1"
                     version = "0.1.0"
                     authors = []
-                """)
+                """
+                )
 
                 dir("src") {
-                    rust("lib.rs", """
+                    rust(
+                        "lib.rs", """
                         #[test]
                         fn test() {}
-                    """)
+                    """
+                    )
 
-                    rust("main.rs", """
+                    rust(
+                        "main.rs", """
                         fn main() {}
 
                         #[test]
                         fn test() {}
-                    """)
+                    """
+                    )
                 }
 
                 dir("tests") {
-                    rust("package1.rs", """
+                    rust(
+                        "package1.rs", """
                         #[test]
                         fn test() {}
-                    """)
+                    """
+                    )
                 }
             }
 
             dir("package2") {
-                toml("Cargo.toml", """
+                toml(
+                    "Cargo.toml", """
                     [package]
                     name = "package2"
                     version = "0.1.0"
                     authors = []
-                """)
+                """
+                )
 
                 dir("src") {
-                    rust("lib.rs", """
+                    rust(
+                        "lib.rs", """
                         #[test]
                         fn test() {}
-                    """)
+                    """
+                    )
                 }
             }
         }
         val sourceElement = cargoProjectDirectory.findFileByRelativePath("package1")?.toPsiDirectory(project)!!
 
-        checkTestTree("""
+        checkTestTree(
+            """
             [root](+)
             .package1(+)
             ..test(+)
@@ -586,51 +683,63 @@ class CargoTestRunnerTest : CargoTestRunnerTestBase() {
             ..test(+)
             .package1(+)
             ..test(+)
-        """, sourceElement)
+        """, sourceElement
+        )
     }
 
     fun `test tests in tests source root`() {
         buildProject {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "package"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
 
             dir("src") {
-                rust("lib.rs", """
+                rust(
+                    "lib.rs", """
                     #[test]
                     fn test() {}
-                """)
+                """
+                )
             }
 
             dir("tests") {
-                rust("tests1.rs", """
+                rust(
+                    "tests1.rs", """
                     #[test]
                     fn test() {}
-                """)
+                """
+                )
 
-                rust("tests2.rs", """
+                rust(
+                    "tests2.rs", """
                     #[test]
                     fn test() {}
-                """)
+                """
+                )
             }
         }
         val sourceElement = cargoProjectDirectory.findFileByRelativePath("tests")?.toPsiDirectory(project)!!
 
-        checkTestTree("""
+        checkTestTree(
+            """
             [root](+)
             .tests1(+)
             ..test(+)
             .tests2(+)
             ..test(+)
-        """, sourceElement)
+        """, sourceElement
+        )
     }
 
     fun `test tests in directory under tests source root`() {
         buildProject {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "package"
                 version = "0.1.0"
@@ -643,46 +752,57 @@ class CargoTestRunnerTest : CargoTestRunnerTestBase() {
                 [[test]]
                 name = "tests2"
                 path = "tests/subdir/tests2.rs"
-            """)
+            """
+            )
 
 
             dir("tests") {
-                rust("tests1.rs", """
+                rust(
+                    "tests1.rs", """
                     #[test]
                     fn test() {}
-                """)
+                """
+                )
 
                 dir("subdir") {
-                    rust("tests2.rs", """
+                    rust(
+                        "tests2.rs", """
                         #[test]
                         fn test() {}
-                    """)
+                    """
+                    )
                 }
             }
         }
         val sourceElement = cargoProjectDirectory.findFileByRelativePath("tests/subdir")?.toPsiDirectory(project)!!
 
-        checkTestTree("""
+        checkTestTree(
+            """
             [root](+)
             .tests2(+)
             ..test(+)
-        """, sourceElement)
+        """, sourceElement
+        )
     }
 
     fun `test test location`() {
         val testProject = buildProject {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "sandbox"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
 
             dir("src") {
-                rust("lib.rs", """
+                rust(
+                    "lib.rs", """
                     #[test]
                     fn /*caret*/test() {}
-                """)
+                """
+                )
             }
         }
         checkTestLocation("sandbox::test", testProject)
@@ -690,21 +810,25 @@ class CargoTestRunnerTest : CargoTestRunnerTestBase() {
 
     fun `test test mod location`() {
         val testProject = buildProject {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "sandbox"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
 
             dir("src") {
-                rust("lib.rs", """
+                rust(
+                    "lib.rs", """
                     #[cfg(test)]
                     mod /*caret*/test_mod {
                         #[test]
                         fn test() {}
                     }
-                """)
+                """
+                )
             }
         }
         checkTestLocation("sandbox::test_mod", testProject)
@@ -712,15 +836,18 @@ class CargoTestRunnerTest : CargoTestRunnerTestBase() {
 
     fun `test nested test location`() {
         val testProject = buildProject {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "sandbox"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
 
             dir("src") {
-                rust("lib.rs", """
+                rust(
+                    "lib.rs", """
                     #[cfg(test)]
                     mod test_mod {
                         #[test]
@@ -729,7 +856,8 @@ class CargoTestRunnerTest : CargoTestRunnerTestBase() {
 
                     #[test]
                     fn test() {}
-                """)
+                """
+                )
             }
         }
         checkTestLocation("sandbox::test_mod::test", testProject)
@@ -737,15 +865,18 @@ class CargoTestRunnerTest : CargoTestRunnerTestBase() {
 
     fun `test doctest location 1`() {
         val testProject = buildProject {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "sandbox"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
 
             dir("src") {
-                rust("lib.rs", """
+                rust(
+                    "lib.rs", """
                     /*caret*//// ```
                     /// 1;
                     /// ```
@@ -753,7 +884,8 @@ class CargoTestRunnerTest : CargoTestRunnerTestBase() {
                     /// 2;
                     /// ```
                     pub fn doctest() {}
-                """)
+                """
+                )
             }
         }
         checkTestLocation("sandbox (doc-tests)::doctest (line 1)", testProject)
@@ -761,15 +893,18 @@ class CargoTestRunnerTest : CargoTestRunnerTestBase() {
 
     fun `test doctest location 2`() {
         val testProject = buildProject {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "sandbox"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
 
             dir("src") {
-                rust("lib.rs", """
+                rust(
+                    "lib.rs", """
                     /// ```
                     /// 1;
                     /// ```
@@ -777,7 +912,8 @@ class CargoTestRunnerTest : CargoTestRunnerTestBase() {
                     /// 2;
                     /// ```
                     pub fn doctest() {}
-                """)
+                """
+                )
             }
         }
         checkTestLocation("sandbox (doc-tests)::doctest (line 4)", testProject)
@@ -785,15 +921,18 @@ class CargoTestRunnerTest : CargoTestRunnerTestBase() {
 
     fun `test test duration`() {
         buildProject {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "sandbox"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
 
             dir("src") {
-                rust("lib.rs", """
+                rust(
+                    "lib.rs", """
                     use std::thread;
 
                     #[test]
@@ -803,7 +942,8 @@ class CargoTestRunnerTest : CargoTestRunnerTestBase() {
 
                     #[test]
                     fn test2() {}
-                """)
+                """
+                )
             }
         }
         val sourceElement = cargoProjectDirectory.toPsiDirectory(project)!!

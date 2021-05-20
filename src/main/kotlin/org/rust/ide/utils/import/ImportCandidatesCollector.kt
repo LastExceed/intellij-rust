@@ -186,8 +186,10 @@ object ImportCandidatesCollector {
                 Triple(externCrateItem.nameWithAlias, false, depth)
             }
 
-            val importInfo = ImportInfo.ExternCrateImportInfo(ourCrate, externCrateName,
-                needInsertExternCrateItem, depth, crateRelativePath)
+            val importInfo = ImportInfo.ExternCrateImportInfo(
+                ourCrate, externCrateName,
+                needInsertExternCrateItem, depth, crateRelativePath
+            )
             ourSuperMods to importInfo
         } else {
             val targetMod = superMods.first()

@@ -10,7 +10,8 @@ import org.rust.ProjectDescriptor
 import org.rust.WithStdlibRustProjectDescriptor
 
 class RsPartialMacroArgumentCompletionTest : RsCompletionTestBase() {
-    fun `test expr 1`() = doTest("""
+    fun `test expr 1`() = doTest(
+        """
         macro_rules! my_macro {
             ($ e:expr, foo) => (1);
             ($ e:expr, bar) => (1);
@@ -20,9 +21,11 @@ class RsPartialMacroArgumentCompletionTest : RsCompletionTestBase() {
             let iii = 1;
             my_macro!(i/*caret*/);
         }
-    """, setOf("iii"))
+    """, setOf("iii")
+    )
 
-    fun `test expr 2`() = doTest("""
+    fun `test expr 2`() = doTest(
+        """
         macro_rules! my_macro {
             ($ e:expr, foo) => (1);
             (foo $ t:ty) => (1);
@@ -32,9 +35,11 @@ class RsPartialMacroArgumentCompletionTest : RsCompletionTestBase() {
             let iii = 1;
             my_macro!(i/*caret*/);
         }
-    """, setOf("iii"), setOf("i32"))
+    """, setOf("iii"), setOf("i32")
+    )
 
-    fun `test expr complex`() = doTest("""
+    fun `test expr complex`() = doTest(
+        """
         macro_rules! my_macro {
             ($ e:expr, foo) => (1);
             ($ e:expr, bar) => (1);
@@ -47,9 +52,11 @@ class RsPartialMacroArgumentCompletionTest : RsCompletionTestBase() {
             let s = S { ii: 42 };
             my_macro!(foo.bar(a * s./*caret*/) + baz);
         }
-    """, setOf("ii"), setOf("iii", "i32"))
+    """, setOf("ii"), setOf("iii", "i32")
+    )
 
-    fun `test expr repeated`() = doTest("""
+    fun `test expr repeated`() = doTest(
+        """
         macro_rules! my_macro {
             ($ ($ e:expr),+ =>) => (1);
         }
@@ -58,9 +65,11 @@ class RsPartialMacroArgumentCompletionTest : RsCompletionTestBase() {
             let iii = 1;
             my_macro!(a, b, i/*caret*/, d);
         }
-    """, setOf("iii"))
+    """, setOf("iii")
+    )
 
-    fun `test type 1`() = doTest("""
+    fun `test type 1`() = doTest(
+        """
         macro_rules! my_macro {
             (bar $ e:expr) => (1);
             ($ t:ty, foo) => (1);
@@ -70,9 +79,11 @@ class RsPartialMacroArgumentCompletionTest : RsCompletionTestBase() {
             let iii = 1;
             my_macro!(i/*caret*/);
         }
-    """, setOf("i32"), setOf("iii"))
+    """, setOf("i32"), setOf("iii")
+    )
 
-    fun `test expr and ty`() = doTest("""
+    fun `test expr and ty`() = doTest(
+        """
         macro_rules! my_macro {
             ($ i:ident $ e:expr, foo) => (1);
             ($ i:ident $ t:ty, bar) => (1);
@@ -82,10 +93,12 @@ class RsPartialMacroArgumentCompletionTest : RsCompletionTestBase() {
             let iii = 1;
             my_macro!(foo i/*caret*/);
         }
-    """, setOf("iii", "i32"))
+    """, setOf("iii", "i32")
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test no completion from index`() = doTest("""
+    fun `test no completion from index`() = doTest(
+        """
         macro_rules! my_macro {
             ($ e:expr, foo) => (1);
             ($ e:expr, bar) => (1);
@@ -94,19 +107,22 @@ class RsPartialMacroArgumentCompletionTest : RsCompletionTestBase() {
         fn main() {
             my_macro!(Hash/*caret*/);
         }
-    """, setOf(), setOf("HashMap"))
+    """, setOf(), setOf("HashMap")
+    )
 
-    fun `test different fragment offsets`() = doTest("""
+    fun `test different fragment offsets`() = doTest(
+        """
         macro_rules! my_macro {
             (foo * $ e:ty, b) => (1);
             ($ e:expr, a) => (1);
         }
-        
+
         fn main() {
             let iii = 1;
             my_macro!(foo * i/*caret*/);
         }
-    """, setOf("iii", "i32"))
+    """, setOf("iii", "i32")
+    )
 
     private fun doTest(@Language("Rust") code: String, contains: Set<String>, notContains: Set<String> = emptySet()) {
         RsPartialMacroArgumentCompletionProvider.Testmarks.touched.checkHit {

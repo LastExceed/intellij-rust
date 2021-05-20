@@ -13,7 +13,8 @@ import org.rust.cargo.project.workspace.CargoWorkspace
 
 class RsIncludeMacroResolveTest : RsResolveTestBase() {
 
-    fun `test resolve struct to included file`() = checkResolve("""
+    fun `test resolve struct to included file`() = checkResolve(
+        """
     //- main.rs
         include!("foo.rs");
         fn main() {
@@ -23,9 +24,11 @@ class RsIncludeMacroResolveTest : RsResolveTestBase() {
     //- foo.rs
         #[derive(Debug)]
         struct Foo;
-    """)
+    """
+    )
 
-    fun `test resolve method to included file`() = checkResolve("""
+    fun `test resolve method to included file`() = checkResolve(
+        """
     //- main.rs
         include!("foo.rs");
         fn main() {
@@ -37,9 +40,11 @@ class RsIncludeMacroResolveTest : RsResolveTestBase() {
         impl Foo {
             fn foo(&self) {}
         }
-    """)
+    """
+    )
 
-    fun `test resolve function from included file`() = checkResolve("""
+    fun `test resolve function from included file`() = checkResolve(
+        """
     //- lib.rs
         include!("foo.rs");
         fn bar() {}
@@ -48,9 +53,11 @@ class RsIncludeMacroResolveTest : RsResolveTestBase() {
             bar();
            //^ lib.rs
         }
-    """)
+    """
+    )
 
-    fun `test resolve method from included file`() = checkResolve("""
+    fun `test resolve method from included file`() = checkResolve(
+        """
     //- lib.rs
         include!("foo.rs");
         struct Bar;
@@ -62,9 +69,11 @@ class RsIncludeMacroResolveTest : RsResolveTestBase() {
             Bar.bar();
                //^ lib.rs
         }
-    """)
+    """
+    )
 
-    fun `test resolve to correct included file`() = checkResolve("""
+    fun `test resolve to correct included file`() = checkResolve(
+        """
     //- main.rs
         include!("foo/baz.rs");
 
@@ -76,9 +85,11 @@ class RsIncludeMacroResolveTest : RsResolveTestBase() {
         struct Foo;
     //- bar/baz.rs
         struct Foo;
-    """)
+    """
+    )
 
-    fun `test include in inline module 1`() = checkResolve("""
+    fun `test include in inline module 1`() = checkResolve(
+        """
     //- lib.rs
         mod foo {
             include!("bar.rs");
@@ -89,9 +100,11 @@ class RsIncludeMacroResolveTest : RsResolveTestBase() {
         pub struct Foo;
     //- bar.rs
         pub struct Foo;
-    """)
+    """
+    )
 
-    fun `test include in inline module 2`() = checkResolve("""
+    fun `test include in inline module 2`() = checkResolve(
+        """
     //- lib.rs
         mod foo {
             struct Foo;
@@ -100,9 +113,11 @@ class RsIncludeMacroResolveTest : RsResolveTestBase() {
     //- bar.rs
         fn bar(x: Foo) {}
                   //^ lib.rs
-    """)
+    """
+    )
 
-    fun `test include in function local module`() = checkResolve("""
+    fun `test include in function local module`() = checkResolve(
+        """
     //- lib.rs
         fn foo() {
             mod foo {
@@ -113,9 +128,11 @@ class RsIncludeMacroResolveTest : RsResolveTestBase() {
         }
     //- bar.rs
         struct Foo;
-    """)
+    """
+    )
 
-    fun `test include file in included file 1`() = checkResolve("""
+    fun `test include file in included file 1`() = checkResolve(
+        """
     //- lib.rs
         include!("foo.rs");
         fn foo(x: Foo) {}
@@ -124,9 +141,11 @@ class RsIncludeMacroResolveTest : RsResolveTestBase() {
         include!("bar.rs");
     //- bar.rs
         struct Foo;
-    """)
+    """
+    )
 
-    fun `test include file in included file 2`() = checkResolve("""
+    fun `test include file in included file 2`() = checkResolve(
+        """
     //- lib.rs
         include!("foo.rs");
         struct Foo;
@@ -135,10 +154,12 @@ class RsIncludeMacroResolveTest : RsResolveTestBase() {
     //- bar.rs
         fn foo(x: Foo) {}
                 //^ lib.rs
-    """)
+    """
+    )
 
     @ExpandMacros
-    fun `test include macro in macro 1`() = checkResolve("""
+    fun `test include macro in macro 1`() = checkResolve(
+        """
     //- lib.rs
         macro_rules! generate_include {
             ($ package: tt) => {
@@ -150,9 +171,11 @@ class RsIncludeMacroResolveTest : RsResolveTestBase() {
     //- bar.rs
         pub fn foo(x: Foo) {}
                     //^ lib.rs
-    """)
+    """
+    )
 
-    fun `test include macro in macro 2`() = checkResolve("""
+    fun `test include macro in macro 2`() = checkResolve(
+        """
     //- lib.rs
         macro_rules! generate_include {
             ($ package: tt) => {
@@ -164,10 +187,12 @@ class RsIncludeMacroResolveTest : RsResolveTestBase() {
                      //^ bar.rs
     //- bar.rs
         pub struct Foo;
-    """)
+    """
+    )
 
     @ExpandMacros
-    fun `test include macro in macro 3`() = checkResolve("""
+    fun `test include macro in macro 3`() = checkResolve(
+        """
     //- lib.rs
         macro_rules! generate_include {
             ($ package: tt) => {
@@ -186,12 +211,14 @@ class RsIncludeMacroResolveTest : RsResolveTestBase() {
                           //^ bar.rs
     //- bar.rs
         pub struct Foo;
-    """)
+    """
+    )
 
     @UseNewResolve
     @ExpandMacros
     @MockEdition(CargoWorkspace.Edition.EDITION_2018)
-    fun `test macro call in included file 1`() = checkResolve("""
+    fun `test macro call in included file 1`() = checkResolve(
+        """
     //- main.rs
         macro_rules! foo {
             () => {};
@@ -200,12 +227,14 @@ class RsIncludeMacroResolveTest : RsResolveTestBase() {
     //- foo.rs
         foo!();
         //^ main.rs
-    """)
+    """
+    )
 
     @UseNewResolve
     @ExpandMacros
     @MockEdition(CargoWorkspace.Edition.EDITION_2018)
-    fun `test macro call in included file 2`() = checkResolve("""
+    fun `test macro call in included file 2`() = checkResolve(
+        """
     //- main.rs
         macro_rules! gen_use {
             () => { use inner::func; };
@@ -221,9 +250,11 @@ class RsIncludeMacroResolveTest : RsResolveTestBase() {
         } //^ main.rs
     //- foo.rs
         gen_use!();
-    """)
+    """
+    )
 
-    fun `test concat in include 1`() = checkResolve("""
+    fun `test concat in include 1`() = checkResolve(
+        """
         //- main.rs
             include!(concat!("foo.rs"));
             fn main() {
@@ -235,9 +266,11 @@ class RsIncludeMacroResolveTest : RsResolveTestBase() {
             impl Foo {
                 fn foo(&self) {}
             }
-    """)
+    """
+    )
 
-    fun `test concat in include 2`() = checkResolve("""
+    fun `test concat in include 2`() = checkResolve(
+        """
         //- lib.rs
             include!(concat!("bar/foo.rs"));
             fn bar() {}
@@ -245,9 +278,11 @@ class RsIncludeMacroResolveTest : RsResolveTestBase() {
             fn foo() {
                 bar();
             }  //^ lib.rs
-    """)
+    """
+    )
 
-    fun `test concat in include 3`() = checkResolve("""
+    fun `test concat in include 3`() = checkResolve(
+        """
         //- main.rs
             include!(concat!("bar", "/foo.rs"));
             fn main() {
@@ -259,9 +294,11 @@ class RsIncludeMacroResolveTest : RsResolveTestBase() {
             impl Foo {
                 fn foo(&self) {}
             }
-    """)
+    """
+    )
 
-    fun `test recursive concat in include`() = checkResolve("""
+    fun `test recursive concat in include`() = checkResolve(
+        """
         //- lib.rs
             include!(concat!(concat!("bar"), "/foo.rs"));
             fn bar() {}
@@ -269,9 +306,11 @@ class RsIncludeMacroResolveTest : RsResolveTestBase() {
             fn foo() {
                 bar();
             }  //^ lib.rs
-    """)
+    """
+    )
 
-    fun `test fqn include`() = checkResolve("""
+    fun `test fqn include`() = checkResolve(
+        """
     //- main.rs
         std::include!("foo.rs");
         fn main() {
@@ -281,9 +320,11 @@ class RsIncludeMacroResolveTest : RsResolveTestBase() {
     //- foo.rs
         #[derive(Debug)]
         struct Foo;
-    """)
+    """
+    )
 
-    fun `test fqn include and concat`() = checkResolve("""
+    fun `test fqn include and concat`() = checkResolve(
+        """
     //- main.rs
         std::include!(std::concat!("bar", "/foo.rs"));
         fn main() {
@@ -293,7 +334,8 @@ class RsIncludeMacroResolveTest : RsResolveTestBase() {
     //- bar/foo.rs
         #[derive(Debug)]
         struct Foo;
-    """)
+    """
+    )
 
     private fun checkResolve(@Language("Rust") code: String) {
         stubOnlyResolve(code) { element -> element.containingFile.virtualFile }

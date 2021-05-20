@@ -26,8 +26,7 @@ class RsMemberSelectionPanel(
     AbstractMemberSelectionTable<RsItemElement, RsMemberInfo>
     >(title, RsMemberSelectionTable(memberInfo))
 
-class RsMemberSelectionTable(memberInfo: List<RsMemberInfo>)
-    : AbstractMemberSelectionTable<RsItemElement, RsMemberInfo>(memberInfo, null, null) {
+class RsMemberSelectionTable(memberInfo: List<RsMemberInfo>) : AbstractMemberSelectionTable<RsItemElement, RsMemberInfo>(memberInfo, null, null) {
 
     init {
         setTableHeader(null)

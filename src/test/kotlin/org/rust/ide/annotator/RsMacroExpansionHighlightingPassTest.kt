@@ -15,30 +15,36 @@ import org.rust.ide.colors.RsColor
 @ExpandMacros
 class RsMacroExpansionHighlightingPassTest : RsAnnotationTestBase() {
 
-    fun `test attributes inside macro call`() = checkHighlightingInsideMacro("""
+    fun `test attributes inside macro call`() = checkHighlightingInsideMacro(
+        """
         <ATTRIBUTE>#</ATTRIBUTE><ATTRIBUTE>[foo(foo)]</ATTRIBUTE>
         fn <FUNCTION>main</FUNCTION>() {
             <ATTRIBUTE>#![crate_type = <STRING>"lib"</STRING>]</ATTRIBUTE>
         }
-    """)
+    """
+    )
 
     @MockAdditionalCfgOptions("intellij_rust")
-    fun `test disabled function`() = checkHighlightingInsideMacro("""
+    fun `test disabled function`() = checkHighlightingInsideMacro(
+        """
         <CFG_DISABLED_CODE>#</CFG_DISABLED_CODE><CFG_DISABLED_CODE>[cfg(not(intellij_rust))]
         fn foo</CFG_DISABLED_CODE><CFG_DISABLED_CODE>() {
             let x = 1;
         }</CFG_DISABLED_CODE>
-    """)
+    """
+    )
 
     private fun checkHighlightingInsideMacro(@Language("Rust") text: String) {
-        checkHighlighting("""
+        checkHighlighting(
+            """
             macro_rules! as_is {
                 ($($ t:tt)*) => {$($ t)*};
             }
             as_is! {
                 $text
             }
-        """)
+        """
+        )
     }
 
     override fun setUp() {

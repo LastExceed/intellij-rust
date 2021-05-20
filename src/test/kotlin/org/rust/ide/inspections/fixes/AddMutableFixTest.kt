@@ -18,7 +18,8 @@ class AddMutableFixTest : RsMultipleInspectionsTestBase(
     RsAssignToImmutableInspection::class,
     RsReassignImmutableInspection::class
 ) {
-    fun `test fix E0596 method call`() = checkFixByText("Make `self` mutable", """
+    fun `test fix E0596 method call`() = checkFixByText(
+        "Make `self` mutable", """
         struct A {}
         impl A {
             fn foo(&mut self) {}
@@ -34,9 +35,11 @@ class AddMutableFixTest : RsMultipleInspectionsTestBase(
                 self.foo();
             }
         }
-    """)
+    """
+    )
 
-    fun `test fix E0596 field method call`() = checkFixByText("Make `self` mutable", """
+    fun `test fix E0596 field method call`() = checkFixByText(
+        "Make `self` mutable", """
         struct A {}
         impl A {
             fn foo(&mut self) {}
@@ -58,9 +61,11 @@ class AddMutableFixTest : RsMultipleInspectionsTestBase(
                 self.a.foo()
             }
         }
-    """)
+    """
+    )
 
-    fun `test fix E0596 let at method call`() = checkFixByText("Make `test` mutable", """
+    fun `test fix E0596 let at method call`() = checkFixByText(
+        "Make `test` mutable", """
         struct S;
         impl S {
             fn test(&mut self) {}
@@ -78,9 +83,11 @@ class AddMutableFixTest : RsMultipleInspectionsTestBase(
             let mut test = S;
             test.test();
         }
-    """)
+    """
+    )
 
-    fun `test fix E0596 let at arg method call`() = checkFixByText("Make `test` mutable", """
+    fun `test fix E0596 let at arg method call`() = checkFixByText(
+        "Make `test` mutable", """
         struct S;
         impl S {
             fn test(&self, test: &mut S) {}
@@ -100,9 +107,11 @@ class AddMutableFixTest : RsMultipleInspectionsTestBase(
             let mut test = S;
             s.test(&mut test);
         }
-    """)
+    """
+    )
 
-    fun `test fix E0596 let at func call`() = checkFixByText("Make `test` mutable", """
+    fun `test fix E0596 let at func call`() = checkFixByText(
+        "Make `test` mutable", """
         struct S;
         fn foo(test: &mut S) {}
         fn main() {
@@ -116,9 +125,11 @@ class AddMutableFixTest : RsMultipleInspectionsTestBase(
             let mut test = S;
             foo(&mut test);
         }
-    """)
+    """
+    )
 
-    fun `test E0384 fix let at reassign`() = checkFixByText("Make `test` mutable", """
+    fun `test E0384 fix let at reassign`() = checkFixByText(
+        "Make `test` mutable", """
         fn main() {
             let test = 10;
             <error>test/*caret*/ = 5</error>;
@@ -128,9 +139,11 @@ class AddMutableFixTest : RsMultipleInspectionsTestBase(
             let mut test = 10;
             test = 5;
         }
-    """)
+    """
+    )
 
-    fun `test fix E0384 let pattern at reassign`() = checkFixByText("Make `test` mutable", """
+    fun `test fix E0384 let pattern at reassign`() = checkFixByText(
+        "Make `test` mutable", """
         fn main() {
             let (test, test2) = (10, 20);
             <error>test/*caret*/ = 5</error>;
@@ -140,9 +153,11 @@ class AddMutableFixTest : RsMultipleInspectionsTestBase(
             let (mut test, test2) = (10, 20);
             test = 5;
         }
-    """)
+    """
+    )
 
-    fun `test fix E0384 let pattern at reassign 2`() = checkFixByText("Make `test2` mutable", """
+    fun `test fix E0384 let pattern at reassign 2`() = checkFixByText(
+        "Make `test2` mutable", """
         fn main() {
             let (test, test2) = (10, 20);
             <error>test2/*caret*/ = 5</error>;
@@ -152,9 +167,11 @@ class AddMutableFixTest : RsMultipleInspectionsTestBase(
             let (test, mut test2) = (10, 20);
             test2 = 5;
         }
-    """)
+    """
+    )
 
-    fun `test fix E0384 function parameter`() = checkFixByText("Make `test` mutable", """
+    fun `test fix E0384 function parameter`() = checkFixByText(
+        "Make `test` mutable", """
         fn test(test: i32) {
             <error>test/*caret*/ = 32</error>;
         }
@@ -162,10 +179,12 @@ class AddMutableFixTest : RsMultipleInspectionsTestBase(
         fn test(mut test: i32) {
             test = 32;
         }
-    """)
+    """
+    )
 
     /** Issue [3417](https://github.com/intellij-rust/intellij-rust/issues/3417) */
-    fun `test fix E0384 tuple function parameter`() = checkFixByText("Make `test` mutable", """
+    fun `test fix E0384 tuple function parameter`() = checkFixByText(
+        "Make `test` mutable", """
         fn test((test, test2): (i32, i32)) {
             <error>test/*caret*/ = 32</error>;
         }
@@ -173,9 +192,11 @@ class AddMutableFixTest : RsMultipleInspectionsTestBase(
         fn test((mut test, test2): (i32, i32)) {
             test = 32;
         }
-    """)
+    """
+    )
 
-    fun `test fix E0594 assign to field`() = checkFixByText("Make `foo` mutable", """
+    fun `test fix E0594 assign to field`() = checkFixByText(
+        "Make `foo` mutable", """
         struct Foo { a: i32 }
         fn main() {
             let foo = Foo { a: 1 };
@@ -187,19 +208,23 @@ class AddMutableFixTest : RsMultipleInspectionsTestBase(
             let mut foo = Foo { a: 1 };
             foo.a = 2;
         }
-    """)
+    """
+    )
 
-    fun `test fix E0594 assign to borrowed field`() = checkFixIsUnavailable("Make `bar` mutable", """
+    fun `test fix E0594 assign to borrowed field`() = checkFixIsUnavailable(
+        "Make `bar` mutable", """
         struct Foo { a: i32 }
         fn main() {
             let mut foo = Foo { a: 1 };
             let bar = &foo;
             <error>bar.a/*caret*/ = 2</error>;
         }
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test fix E0594 assign to array element`() = checkFixByText("Make `arr` mutable", """
+    fun `test fix E0594 assign to array element`() = checkFixByText(
+        "Make `arr` mutable", """
         fn main() {
             let arr = [0; 3];
             <error>arr[0]/*caret*/ = 1</error>;
@@ -209,18 +234,22 @@ class AddMutableFixTest : RsMultipleInspectionsTestBase(
             let mut arr = [0; 3];
             arr[0] = 1;
         }
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test fix E0594 assign to borrowed array element`() = checkFixIsUnavailable("Make `arr2` mutable", """
+    fun `test fix E0594 assign to borrowed array element`() = checkFixIsUnavailable(
+        "Make `arr2` mutable", """
         fn main() {
             let arr = [0; 3];
             let arr2 = &arr;
             <error>arr2[0]/*caret*/ = 1</error>;
         }
-    """)
+    """
+    )
 
-    fun `test fix E0594 assign to immutable reference`() = checkFixByText("Make `s` mutable", """
+    fun `test fix E0594 assign to immutable reference`() = checkFixByText(
+        "Make `s` mutable", """
         struct S { a: i32 }
         fn foo(s: &S) {
             <error>s.a/*caret*/ = 42</error>;
@@ -230,17 +259,21 @@ class AddMutableFixTest : RsMultipleInspectionsTestBase(
         fn foo(s: &mut S) {
             s.a = 42;
         }
-    """)
+    """
+    )
 
-    fun `test fix E0594 assign to immutable reference with ref keyword`() = checkFixIsUnavailable("Make `s` mutable", """
+    fun `test fix E0594 assign to immutable reference with ref keyword`() = checkFixIsUnavailable(
+        "Make `s` mutable", """
         struct S { a: i32 }
 
         fn foo(ref s: &S) {
             <error>s.a/*caret*/ = 42</error>;
         }
-    """)
+    """
+    )
 
-    fun `test add mutable fix to parameter with lifetime`() = checkFixByText("Make `obj` mutable", """
+    fun `test add mutable fix to parameter with lifetime`() = checkFixByText(
+        "Make `obj` mutable", """
         struct A {}
 
         impl A {
@@ -260,9 +293,11 @@ class AddMutableFixTest : RsMultipleInspectionsTestBase(
                 obj.foo()
             }
         }
-    """)
+    """
+    )
 
-    fun `test fix E0594 assign to field of immutable binding`() = checkFixByText("Make `self` mutable", """
+    fun `test fix E0594 assign to field of immutable binding`() = checkFixByText(
+        "Make `self` mutable", """
         struct A {
             x: i32
         }
@@ -282,9 +317,11 @@ class AddMutableFixTest : RsMultipleInspectionsTestBase(
                 self.x = 4;
             }
         }
-    """)
+    """
+    )
 
-    fun `test fix E0596 borrow self as mutable`() = checkFixByText("Make `self` mutable", """
+    fun `test fix E0596 borrow self as mutable`() = checkFixByText(
+        "Make `self` mutable", """
         struct A {}
 
         impl A {
@@ -304,5 +341,6 @@ class AddMutableFixTest : RsMultipleInspectionsTestBase(
 
             fn bar(&mut self){}
         }
-    """)
+    """
+    )
 }

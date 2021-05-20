@@ -17,7 +17,8 @@ class RsFormatterTest : RsFormatterTestBase() {
     fun `test tuple alignment`() = doTest()
     fun `test chain call indent`() = doTest()
 
-    fun `test chain call alignment`() = doTextTest(common()::ALIGN_MULTILINE_CHAINED_METHODS, """
+    fun `test chain call alignment`() = doTextTest(
+        common()::ALIGN_MULTILINE_CHAINED_METHODS, """
         fn main() {
             let foo = moo.boo().goo()
              .foo().bar()
@@ -44,9 +45,11 @@ class RsFormatterTest : RsFormatterTestBase() {
                     .bar().baz())
                 .baz().moo();
         }
-    """)
+    """
+    )
 
-    fun `test pub`() = doTextTest("""
+    fun `test pub`() = doTextTest(
+        """
         pub ( crate ) struct S1;
 
         pub ( super ) struct S2;
@@ -66,9 +69,11 @@ class RsFormatterTest : RsFormatterTestBase() {
         struct S4(pub (i32, i32));
 
         struct Foo<'a>(pub(crate) &'a i32);
-    """)
+    """
+    )
 
-    fun `test align incomplete chain`() = doTextTest("""
+    fun `test align incomplete chain`() = doTextTest(
+        """
         fn main() {
             frobnicate()
                 .foo()
@@ -80,9 +85,11 @@ class RsFormatterTest : RsFormatterTestBase() {
                 .foo()
                 .
         }
-    """)
+    """
+    )
 
-    fun `test align params`() = doTextTest(common()::ALIGN_MULTILINE_PARAMETERS, """
+    fun `test align params`() = doTextTest(
+        common()::ALIGN_MULTILINE_PARAMETERS, """
         fn foo(x: i32,
         y: i32,
                     z: i32) {
@@ -153,9 +160,11 @@ class RsFormatterTest : RsFormatterTestBase() {
                 ...)
                 -> i32;
         }
-    """)
+    """
+    )
 
-    fun `test align params in calls`() = doTextTest(common()::ALIGN_MULTILINE_PARAMETERS_IN_CALLS, """
+    fun `test align params in calls`() = doTextTest(
+        common()::ALIGN_MULTILINE_PARAMETERS_IN_CALLS, """
         fn main() {
             foooo(123,
                   456,
@@ -195,9 +204,11 @@ class RsFormatterTest : RsFormatterTestBase() {
                     91011, "foobar") => 10
             }
         }
-    """)
+    """
+    )
 
-    fun `test align return type`() = doTextTest(custom()::ALIGN_RET_TYPE, """
+    fun `test align return type`() = doTextTest(
+        custom()::ALIGN_RET_TYPE, """
         fn foo1(x: i32, y: String)
             -> String {}
 
@@ -260,9 +271,11 @@ class RsFormatterTest : RsFormatterTestBase() {
         fn foo5<T>(t: T)
             -> T
             where T: Clone {}
-    """)
+    """
+    )
 
-    fun `test align where`() = doTextTest(custom()::ALIGN_WHERE_CLAUSE, """
+    fun `test align where`() = doTextTest(
+        custom()::ALIGN_WHERE_CLAUSE, """
         fn fooooooooo(a: i32,
                       b: i32,
                       c: i32)
@@ -272,9 +285,11 @@ class RsFormatterTest : RsFormatterTestBase() {
                       b: i32,
                       c: i32)
                       where T: 'static {}
-    """)
+    """
+    )
 
-    fun `test align where bounds`() = doTextTest(custom()::ALIGN_WHERE_BOUNDS, """
+    fun `test align where bounds`() = doTextTest(
+        custom()::ALIGN_WHERE_BOUNDS, """
         impl moo {
             pub fn with_bindings<R, F, I>(&mut self, bindings: I, f: F) -> R
                 where F: FnOnce(&mut TypeContext<'a>) -> R,
@@ -292,9 +307,11 @@ class RsFormatterTest : RsFormatterTestBase() {
                 where F: FnOnce(&mut TypeContext<'a>) -> R,
                     I: IntoIterator<Item=(&'a Ident, Type)> {}
         }
-    """)
+    """
+    )
 
-    fun `test indent where clause`() = doTextTest(custom()::INDENT_WHERE_CLAUSE, """
+    fun `test indent where clause`() = doTextTest(
+        custom()::INDENT_WHERE_CLAUSE, """
         pub fn do_stuff<T>(&self, item: &T)
                     where T: ToString {}
     """, """
@@ -303,9 +320,11 @@ class RsFormatterTest : RsFormatterTestBase() {
     """, """
         pub fn do_stuff<T>(&self, item: &T)
         where T: ToString {}
-    """)
+    """
+    )
 
-    fun `test align type params`() = doTextTest(custom()::ALIGN_TYPE_PARAMS, """
+    fun `test align type params`() = doTextTest(
+        custom()::ALIGN_TYPE_PARAMS, """
         struct Foo<T: A + B + 'c,
             K: X + Y + 'z> {}
 
@@ -338,14 +357,16 @@ class RsFormatterTest : RsFormatterTestBase() {
             'b> Fn(i32) -> () {
             a: T,
         }
-    """)
+    """
+    )
 
     fun `test min number of blank lines`() {
         custom().MIN_NUMBER_OF_BLANKS_BETWEEN_ITEMS = 2
         doTest()
     }
 
-    fun `test one line match`() = doTextTest(custom()::ALLOW_ONE_LINE_MATCH, """
+    fun `test one line match`() = doTextTest(
+        custom()::ALLOW_ONE_LINE_MATCH, """
         fn main() {
             let x = match func() { Ok(v) => v.unwrap_or(0), Err(_) => ()};
         }
@@ -360,7 +381,8 @@ class RsFormatterTest : RsFormatterTestBase() {
                 Err(_) => ()
             };
         }
-    """)
+    """
+    )
 
     fun `test macro use`() = doTest()
     fun `test attributes`() = doTest()
@@ -373,20 +395,25 @@ class RsFormatterTest : RsFormatterTestBase() {
     fun `test issue569`() = doTest()   // https://github.com/intellij-rust/intellij-rust/issues/569
 
     // https://github.com/intellij-rust/intellij-rust/issues/543
-    fun `test issue543a`() = checkNotChanged("""
+    fun `test issue543a`() = checkNotChanged(
+        """
         pub type TeraResult<T> = Result<T, TeraError>;
-    """)
+    """
+    )
 
-    fun `test issue543b`() = checkNotChanged("""
+    fun `test issue543b`() = checkNotChanged(
+        """
         impl_rdp! {
             grammar! {
                 expression = _{ paren ~ expression? }
                 paren      =  { ["("] ~ expression? ~ [")"] }
             }
         }
-    """)
+    """
+    )
 
-    fun `test issue543c`() = checkNotChanged("""
+    fun `test issue543c`() = checkNotChanged(
+        """
         fn main() {
             if previous_end < token.start {
                 space_tokens.push((
@@ -395,7 +422,8 @@ class RsFormatterTest : RsFormatterTestBase() {
                 ));
             }
         }
-    """)
+    """
+    )
 
     fun `test else`() = doTest()
 
@@ -403,7 +431,8 @@ class RsFormatterTest : RsFormatterTestBase() {
 
     fun `test use root`() = doTest() // https://github.com/intellij-rust/intellij-rust/issues/746
 
-    fun `test special macros`() = doTextTest("""
+    fun `test special macros`() = doTextTest(
+        """
         fn main() {
             try !  (foo());
             format  ! ("Hello {}", 92);
@@ -481,17 +510,21 @@ class RsFormatterTest : RsFormatterTestBase() {
                 "foo/bar.txt"
             );
         }
-    """)
+    """
+    )
 
-    fun `test import glob alignment`() = doTextTest("""
+    fun `test import glob alignment`() = doTextTest(
+        """
         use piston_window::{Button,
         Transformed};
     """, """
         use piston_window::{Button,
                             Transformed};
-    """)
+    """
+    )
 
-    fun `test string literals are left intact`() = doTextTest("""
+    fun `test string literals are left intact`() = doTextTest(
+        """
         fn main() {
         (
         r"
@@ -513,9 +546,11 @@ class RsFormatterTest : RsFormatterTestBase() {
                 "Hello
                 World";
         }
-    """)
+    """
+    )
 
-    fun `test string literals are left intact in macro`() = doTextTest("""
+    fun `test string literals are left intact in macro`() = doTextTest(
+        """
         fn а() {
             println!("{}",
         r##"Some string
@@ -531,9 +566,11 @@ class RsFormatterTest : RsFormatterTestBase() {
         and also on this one
         "##);
         }
-    """)
+    """
+    )
 
-    fun `test macro with two idents`() = doTextTest("""
+    fun `test macro with two idents`() = doTextTest(
+        """
         fn а() {
             foo!bar();
         }
@@ -541,9 +578,11 @@ class RsFormatterTest : RsFormatterTestBase() {
         fn а() {
             foo! bar();
         }
-    """)
+    """
+    )
 
-    fun `test indent initializer expression`() = doTextTest("""
+    fun `test indent initializer expression`() = doTextTest(
+        """
         const C: () =
         ();
 
@@ -559,15 +598,19 @@ class RsFormatterTest : RsFormatterTestBase() {
             let _ =
                 92;
         }
-    """)
+    """
+    )
 
-    fun `test associated types`() = doTextTest("""
+    fun `test associated types`() = doTextTest(
+        """
         fn fut() -> impl Future<Item = (),Error = ()> {}
     """, """
         fn fut() -> impl Future<Item=(), Error=()> {}
-    """)
+    """
+    )
 
-    fun `test where is indented in impls`() = doTextTest("""
+    fun `test where is indented in impls`() = doTextTest(
+        """
         impl<T> Foo<T>
         where T: bar
         {
@@ -579,9 +622,11 @@ class RsFormatterTest : RsFormatterTestBase() {
         {
             fn foo() {}
         }
-    """)
+    """
+    )
 
-    fun `test negative trait bound`() = doTextTest("""
+    fun `test negative trait bound`() = doTextTest(
+        """
         struct Foo<T:  ?  Sized> {
             a: T,
         }
@@ -605,9 +650,11 @@ class RsFormatterTest : RsFormatterTestBase() {
 
         impl<T: ?Sized> Foo<T>
         {}
-    """)
+    """
+    )
 
-    fun `test spaces in reverse turbofish paths`() = doTextTest("""
+    fun `test spaces in reverse turbofish paths`() = doTextTest(
+        """
         enum E<T> {
             X(< T :: BindTransport  as  IntoFuture > :: Future),
         }
@@ -615,9 +662,11 @@ class RsFormatterTest : RsFormatterTestBase() {
         enum E<T> {
             X(<T::BindTransport as IntoFuture>::Future),
         }
-    """)
+    """
+    )
 
-    fun `test unary minus in range patterns`() = doTextTest("""
+    fun `test unary minus in range patterns`() = doTextTest(
+        """
         fn main() {
             if let - 10 .. - 1 = - 8 {}
             if let - 10 ... - 1 = - 8 {}
@@ -629,9 +678,11 @@ class RsFormatterTest : RsFormatterTestBase() {
             if let -10...-1 = -8 {}
             if let -10..=-1 = -8 {}
         }
-    """)
+    """
+    )
 
-    fun `test ranges`() = doTextTest("""
+    fun `test ranges`() = doTextTest(
+        """
         fn main() {
             let r =  ..  ;
             let r =  ..  1;
@@ -657,7 +708,8 @@ class RsFormatterTest : RsFormatterTestBase() {
             let r = ..=1;
             let r = 0..=1;
         }
-    """)
+    """
+    )
 
     fun `test preserve punctuation settings`() {
         custom().PRESERVE_PUNCTUATION = true
@@ -684,7 +736,8 @@ class RsFormatterTest : RsFormatterTestBase() {
         checkNotChanged(code)
     }
 
-    fun `test extern block`() = doTextTest("""
+    fun `test extern block`() = doTextTest(
+        """
         extern    {
             fn  foo (name   : *   const    libc   ::   c_uchar   )   ;
             fn  bar (a   :  i32,         ...        )       ->      i32     ;
@@ -696,9 +749,11 @@ class RsFormatterTest : RsFormatterTestBase() {
             fn bar(a: i32, ...) -> i32;
             fn baz(b: i64);
         }
-    """)
+    """
+    )
 
-    fun `test keep comments on the first line`() = doTextTest("""
+    fun `test keep comments on the first line`() = doTextTest(
+        """
         fn main() {
             match x {
         // should be kept on the first column
@@ -720,18 +775,22 @@ class RsFormatterTest : RsFormatterTestBase() {
                 3 => (),
             }
         }
-    """)
+    """
+    )
 
-    fun `test space around assoc type binding`() = doTextTest(custom()::SPACE_AROUND_ASSOC_TYPE_BINDING, """
+    fun `test space around assoc type binding`() = doTextTest(
+        custom()::SPACE_AROUND_ASSOC_TYPE_BINDING, """
         fn foo<T, C>(value: T) where T: Trait<Output    =   C> {}
     """, """
         fn foo<T, C>(value: T) where T: Trait<Output = C> {}
     """, """
         fn foo<T, C>(value: T) where T: Trait<Output=C> {}
-    """)
+    """
+    )
 
     // https://github.com/intellij-rust/intellij-rust/issues/907
-    fun `test issue 907`() = checkNotChanged("""
+    fun `test issue 907`() = checkNotChanged(
+        """
         struct TestStruct
         {
             a: i32,
@@ -780,7 +839,8 @@ class RsFormatterTest : RsFormatterTestBase() {
                 _ => None,
             }
         }
-    """)
+    """
+    )
 
     private fun common() = getSettings(RsLanguage)
     private fun custom() = settings.rust

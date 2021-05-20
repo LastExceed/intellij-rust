@@ -9,7 +9,8 @@ import com.intellij.psi.PsiDocumentManager
 import org.intellij.lang.annotations.Language
 
 class RsResolveCacheCompletionTest : RsCompletionTestBase() {
-    fun test() = doTest("""
+    fun test() = doTest(
+        """
         pub mod l1 {
             pub mod l2 {
                 pub fn foo() {}
@@ -27,7 +28,8 @@ class RsResolveCacheCompletionTest : RsCompletionTestBase() {
         fn main() {
             l1::l2::foo()/*caret*/
         }
-    """, "::", "::")
+    """, "::", "::"
+    )
 
     private fun doTest(@Language("Rust") before: String, @Language("Rust") after: String, vararg toType: String) {
         InlineFile(before).withCaret()

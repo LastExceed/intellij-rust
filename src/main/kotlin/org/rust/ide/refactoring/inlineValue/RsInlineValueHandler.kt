@@ -127,15 +127,13 @@ private fun getVariableDeclContext(
 sealed class InlineValueContext(val element: RsNameIdentifierOwner, val expr: RsExpr, val reference: RsReference?) {
     abstract fun delete()
 
-    class Constant(constant: RsConstant, expr: RsExpr, reference: RsReference? = null)
-        : InlineValueContext(constant, expr, reference) {
+    class Constant(constant: RsConstant, expr: RsExpr, reference: RsReference? = null) : InlineValueContext(constant, expr, reference) {
         override fun delete() {
             element.delete()
         }
     }
 
-    class Variable(variable: RsPatBinding, private val decl: RsLetDecl, expr: RsExpr, reference: RsReference? = null)
-        : InlineValueContext(variable, expr, reference) {
+    class Variable(variable: RsPatBinding, private val decl: RsLetDecl, expr: RsExpr, reference: RsReference? = null) : InlineValueContext(variable, expr, reference) {
         override fun delete() {
             decl.delete()
         }

@@ -12,534 +12,708 @@ import org.rust.RsTestBase
 import org.rust.lang.core.RsPsiPattern
 
 class RsPsiPatternTest : RsTestBase() {
-    fun `test on struct attr`() = testAttributePattern("""
+    fun `test on struct attr`() = testAttributePattern(
+        """
         #[foo]
         //^
         struct Bar;
-    """, RsPsiPattern.onStruct)
+    """, RsPsiPattern.onStruct
+    )
 
-    fun `test on trait attr 1`() = testAttributePattern("""
+    fun `test on trait attr 1`() = testAttributePattern(
+        """
         #[foo]
         //^
         trait Foo {}
-    """, RsPsiPattern.onTrait)
+    """, RsPsiPattern.onTrait
+    )
 
-    fun `test on trait attr 2`() = testAttributePattern("""
+    fun `test on trait attr 2`() = testAttributePattern(
+        """
         trait Foo {
             #![foo]
              //^
         }
-    """, RsPsiPattern.onTrait)
+    """, RsPsiPattern.onTrait
+    )
 
-    fun `test on fn attr 1`() = testAttributePattern("""
+    fun `test on fn attr 1`() = testAttributePattern(
+        """
         #[foo]
         //^
         fn bar() {
         }
-    """, RsPsiPattern.onFn)
+    """, RsPsiPattern.onFn
+    )
 
-    fun `test on fn attr 2`() = testAttributePattern("""
+    fun `test on fn attr 2`() = testAttributePattern(
+        """
         fn bar() {
             #![foo]
              //^
         }
-    """, RsPsiPattern.onFn)
+    """, RsPsiPattern.onFn
+    )
 
-    fun `test on tuple struct attr`() = testAttributePattern("""
+    fun `test on tuple struct attr`() = testAttributePattern(
+        """
         #[foo]
         //^
         struct Bar(u8, u8);
-    """, RsPsiPattern.onTupleStruct)
+    """, RsPsiPattern.onTupleStruct
+    )
 
-    fun `test on any item struct attr`() = testAttributePattern("""
+    fun `test on any item struct attr`() = testAttributePattern(
+        """
         #[foo]
         //^
         struct Bar {
             baz: u8
         }
-    """, RsPsiPattern.onAnyItem)
+    """, RsPsiPattern.onAnyItem
+    )
 
-    fun `test on any item static attr`() = testAttributePattern("""
+    fun `test on any item static attr`() = testAttributePattern(
+        """
         #[foo]
         //^
         static BAR: u8 = 1;
-    """, RsPsiPattern.onAnyItem)
+    """, RsPsiPattern.onAnyItem
+    )
 
-    fun `test on any item enum attr`() = testAttributePattern("""
+    fun `test on any item enum attr`() = testAttributePattern(
+        """
         #[foo]
         //^
         enum Bar {
             Baz,
             Bat
         }
-    """, RsPsiPattern.onAnyItem)
+    """, RsPsiPattern.onAnyItem
+    )
 
-    fun `test on any item fn attr`() = testAttributePattern("""
+    fun `test on any item fn attr`() = testAttributePattern(
+        """
         #[foo]
         //^
         fn bar() {
         }
-    """, RsPsiPattern.onAnyItem)
+    """, RsPsiPattern.onAnyItem
+    )
 
-    fun `test on any item mod attr`() = testAttributePattern("""
+    fun `test on any item mod attr`() = testAttributePattern(
+        """
         #[foo]
         //^
         mod bar {
         }
-    """, RsPsiPattern.onAnyItem)
+    """, RsPsiPattern.onAnyItem
+    )
 
-    fun `test on any item trait attr`() = testAttributePattern("""
+    fun `test on any item trait attr`() = testAttributePattern(
+        """
         #[foo]
         //^
         trait Bar {
         }
-    """, RsPsiPattern.onAnyItem)
+    """, RsPsiPattern.onAnyItem
+    )
 
-    fun `test on any item crate attr`() = testAttributePattern("""
+    fun `test on any item crate attr`() = testAttributePattern(
+        """
         #![foo]
          //^
-    """, RsPsiPattern.onAnyItem)
+    """, RsPsiPattern.onAnyItem
+    )
 
-    fun `test on crate attr`() = testAttributePattern("""
+    fun `test on crate attr`() = testAttributePattern(
+        """
         #![foo]
          //^
         struct Foo(u8, u8);
-    """, RsPsiPattern.onCrate)
+    """, RsPsiPattern.onCrate
+    )
 
-    fun `test on enum attr`() = testAttributePattern("""
+    fun `test on enum attr`() = testAttributePattern(
+        """
         #[foo]
         //^
         enum Foo {
             Bar,
             Baz
         }
-    """, RsPsiPattern.onEnum)
+    """, RsPsiPattern.onEnum
+    )
 
-    fun `test on enum variant attr`() = testAttributePattern("""
+    fun `test on enum variant attr`() = testAttributePattern(
+        """
         enum Foo {
             #[foo]
             //^
             Bar,
             Baz
         }
-    """, RsPsiPattern.onEnumVariant)
+    """, RsPsiPattern.onEnumVariant
+    )
 
-    fun `test on struct-like unit struct`() = testAttributePattern("""
+    fun `test on struct-like unit struct`() = testAttributePattern(
+        """
         #[foo]
         //^
         struct S;
-    """, RsPsiPattern.onStructLike)
+    """, RsPsiPattern.onStructLike
+    )
 
-    fun `test on struct-like tuple struct`() = testAttributePattern("""
+    fun `test on struct-like tuple struct`() = testAttributePattern(
+        """
         #[foo]
         //^
         struct S(u32);
-    """, RsPsiPattern.onStructLike)
+    """, RsPsiPattern.onStructLike
+    )
 
-    fun `test on struct-like struct`() = testAttributePattern("""
+    fun `test on struct-like struct`() = testAttributePattern(
+        """
         #[foo]
         //^
         struct S { a: u32 }
-    """, RsPsiPattern.onStructLike)
+    """, RsPsiPattern.onStructLike
+    )
 
-    fun `test on struct-like enum`() = testAttributePattern("""
+    fun `test on struct-like enum`() = testAttributePattern(
+        """
         #[foo]
         //^
         enum Foo {
             A
         }
-    """, RsPsiPattern.onStructLike)
+    """, RsPsiPattern.onStructLike
+    )
 
-    fun `test on struct-like enum variant`() = testAttributePattern("""
+    fun `test on struct-like enum variant`() = testAttributePattern(
+        """
         enum Foo {
             #[foo]
             //^
             A
         }
-    """, RsPsiPattern.onStructLike)
+    """, RsPsiPattern.onStructLike
+    )
 
-    fun `test on extern block attr`() = testAttributePattern("""
+    fun `test on extern block attr`() = testAttributePattern(
+        """
         #[foo]
         //^
         extern {
             fn bar(baz: size_t) -> size_t;
         }
-    """, RsPsiPattern.onExternBlock)
+    """, RsPsiPattern.onExternBlock
+    )
 
-    fun `test on extern block decl attr`() = testAttributePattern("""
+    fun `test on extern block decl attr`() = testAttributePattern(
+        """
         extern {
             #[foo]
             //^
             fn bar(baz: size_t) -> size_t;
         }
-    """, RsPsiPattern.onExternBlockDecl)
+    """, RsPsiPattern.onExternBlockDecl
+    )
 
-    fun `test on extern crate attr`() = testAttributePattern("""
+    fun `test on extern crate attr`() = testAttributePattern(
+        """
         #[foo]
         //^
         extern crate bar;
-    """, RsPsiPattern.onExternCrate)
+    """, RsPsiPattern.onExternCrate
+    )
 
-    fun `test on macro definition`() = testAttributePattern("""
+    fun `test on macro definition`() = testAttributePattern(
+        """
         #[foo]
         //^
         macro_rules! bar {
         }
-    """, RsPsiPattern.onMacro)
+    """, RsPsiPattern.onMacro
+    )
 
-    fun `test on mod attr`() = testAttributePattern("""
+    fun `test on mod attr`() = testAttributePattern(
+        """
         #[foo]
         //^
         mod bar {
         }
-    """, RsPsiPattern.onMod)
+    """, RsPsiPattern.onMod
+    )
 
-    fun `test on mod attr 2`() = testAttributePattern("""
+    fun `test on mod attr 2`() = testAttributePattern(
+        """
         mod bar {
             #![foo]
              //^
         }
-    """, RsPsiPattern.onMod)
+    """, RsPsiPattern.onMod
+    )
 
-    fun `test on mod attr 3`() = testAttributePattern("""
+    fun `test on mod attr 3`() = testAttributePattern(
+        """
         #[foo]
         //^
         mod bar;
-    """, RsPsiPattern.onMod)
+    """, RsPsiPattern.onMod
+    )
 
-    fun `test on static attr`() = testAttributePattern("""
+    fun `test on static attr`() = testAttributePattern(
+        """
         #[foo]
         //^
         static BAR: u8 = 5;
-    """, RsPsiPattern.onStatic)
+    """, RsPsiPattern.onStatic
+    )
 
-    fun `test on static mut attr`() = testAttributePattern("""
+    fun `test on static mut attr`() = testAttributePattern(
+        """
         #[foo]
         //^
         static mut BAR: u8 = 5;
-    """, RsPsiPattern.onStaticMut)
+    """, RsPsiPattern.onStaticMut
+    )
 
-    fun `test on test fn attr`() = testAttributePattern("""
+    fun `test on test fn attr`() = testAttributePattern(
+        """
         #[test]
         #[foo]
         //^
         fn test_bar() {
 
         }
-    """, RsPsiPattern.onTestFn)
+    """, RsPsiPattern.onTestFn
+    )
 
-    fun `test on stmt beginning`() = testPattern("""
+    fun `test on stmt beginning`() = testPattern(
+        """
         //^
-    """, RsPsiPattern.onStatementBeginning)
+    """, RsPsiPattern.onStatementBeginning
+    )
 
-    fun `test on stmt beginning within mod`() = testPattern("""
+    fun `test on stmt beginning within mod`() = testPattern(
+        """
         mod foo {    }
                 //^
-    """, RsPsiPattern.onStatementBeginning)
+    """, RsPsiPattern.onStatementBeginning
+    )
 
-    fun `test on stmt beginning after other stmt`() = testPattern("""
+    fun `test on stmt beginning after other stmt`() = testPattern(
+        """
         extern crate foo;
                        //^
-    """, RsPsiPattern.onStatementBeginning)
+    """, RsPsiPattern.onStatementBeginning
+    )
 
-    fun `test on stmt beginning after block`() = testPattern("""
+    fun `test on stmt beginning after block`() = testPattern(
+        """
         mod foo {}
                 //^
-    """, RsPsiPattern.onStatementBeginning)
+    """, RsPsiPattern.onStatementBeginning
+    )
 
-    fun `test on stmt beginning ignores comments`() = testPattern("""
+    fun `test on stmt beginning ignores comments`() = testPattern(
+        """
         const A: u8 = 3; /* three */    /* it's greater than two */
                                     //^
-    """, RsPsiPattern.onStatementBeginning)
+    """, RsPsiPattern.onStatementBeginning
+    )
 
-    fun `test on stmt beginning negative when follows visible`() = testPatternNegative("""
+    fun `test on stmt beginning negative when follows visible`() = testPatternNegative(
+        """
         abc
           //^
-    """, RsPsiPattern.onStatementBeginning)
+    """, RsPsiPattern.onStatementBeginning
+    )
 
-    fun `test on stmt beginning negative in middle of other stmt`() = testPatternNegative("""
+    fun `test on stmt beginning negative in middle of other stmt`() = testPatternNegative(
+        """
         mod abc {}
              //^
-    """, RsPsiPattern.onStatementBeginning)
+    """, RsPsiPattern.onStatementBeginning
+    )
 
-    fun `test on stmt beginning with words`() = testPattern("""
+    fun `test on stmt beginning with words`() = testPattern(
+        """
         word2
             //^
-    """, RsPsiPattern.onStatementBeginning("word1", "word2"))
+    """, RsPsiPattern.onStatementBeginning("word1", "word2")
+    )
 
-    fun `test on stmt beginning with words negative when word doesnt fit`() = testPatternNegative("""
+    fun `test on stmt beginning with words negative when word doesnt fit`() = testPatternNegative(
+        """
         word3
             //^
-    """, RsPsiPattern.onStatementBeginning("word1", "word2"))
+    """, RsPsiPattern.onStatementBeginning("word1", "word2")
+    )
 
     fun `test on stmt beginning with words negative at very beginning`() = testPatternNegative("   \n//^", RsPsiPattern.onStatementBeginning("word1"))
 
-    fun `test in any loop within for`() = testPattern("""
+    fun `test in any loop within for`() = testPattern(
+        """
         fn foo() {
             for _ in 1..5 { }
                          //^
         }
-    """, RsPsiPattern.inAnyLoop)
+    """, RsPsiPattern.inAnyLoop
+    )
 
-    fun `test in any loop within while`() = testPattern("""
+    fun `test in any loop within while`() = testPattern(
+        """
         fn foo() {
             while true { }
                       //^
         }
-    """, RsPsiPattern.inAnyLoop)
+    """, RsPsiPattern.inAnyLoop
+    )
 
-    fun `test in any loop within loop`() = testPattern("""
+    fun `test in any loop within loop`() = testPattern(
+        """
         fn foo() {
             loop { }
                 //^
         }
-    """, RsPsiPattern.inAnyLoop)
+    """, RsPsiPattern.inAnyLoop
+    )
 
-    fun `test in any loop within for nested block`() = testPattern("""
+    fun `test in any loop within for nested block`() = testPattern(
+        """
         fn foo() {
             for _ in 1..5 {{ }}
                           //^
         }
-    """, RsPsiPattern.inAnyLoop)
+    """, RsPsiPattern.inAnyLoop
+    )
 
-    fun `test in any loop negative before block`() = testPatternNegative("""
+    fun `test in any loop negative before block`() = testPatternNegative(
+        """
         fn foo() {
             for _ in 1..5 {}
                      //^
         }
-    """, RsPsiPattern.inAnyLoop)
+    """, RsPsiPattern.inAnyLoop
+    )
 
-    fun `test in any loop negative after block`() = testPatternNegative("""
+    fun `test in any loop negative after block`() = testPatternNegative(
+        """
         fn foo() {
             while true {}   // Infinite loop
                        //^
         }
-    """, RsPsiPattern.inAnyLoop)
+    """, RsPsiPattern.inAnyLoop
+    )
 
-    fun `test in any loop negative inside closure`() = testPatternNegative("""
+    fun `test in any loop negative inside closure`() = testPatternNegative(
+        """
         fn foo() {
             while true { let _ = |x| { x + 1 }; }   // Infinite loop
                                        //^
         }
-    """, RsPsiPattern.inAnyLoop)
+    """, RsPsiPattern.inAnyLoop
+    )
 
-    fun `test derived trait meta item`() = testPattern("""
+    fun `test derived trait meta item`() = testPattern(
+        """
         #[derive(Debug)]
                  //^
         struct Foo(i32);
-    """, RsPsiPattern.derivedTraitMetaItem)
+    """, RsPsiPattern.derivedTraitMetaItem
+    )
 
-    fun `test derived trait meta item in cfg_attr`() = testPattern("""
+    fun `test derived trait meta item in cfg_attr`() = testPattern(
+        """
         #[cfg_attr(unix, derive(Debug))]
                                 //^
         struct Foo(i32);
-    """, RsPsiPattern.derivedTraitMetaItem)
+    """, RsPsiPattern.derivedTraitMetaItem
+    )
 
-    fun `test non std attribute`() = testPattern("""
+    fun `test non std attribute`() = testPattern(
+        """
         #[example_proc_macro]
                  //^
         struct S;
-    """, RsPsiPattern.nonStdOuterAttributeMetaItem)
+    """, RsPsiPattern.nonStdOuterAttributeMetaItem
+    )
 
-    fun `test non std attribute under cfg_attr`() = testPattern("""
+    fun `test non std attribute under cfg_attr`() = testPattern(
+        """
         #[cfg_attr(unix, example_proc_macro)]
                                 //^
         struct S;
-    """, RsPsiPattern.nonStdOuterAttributeMetaItem)
+    """, RsPsiPattern.nonStdOuterAttributeMetaItem
+    )
 
-    fun `test literal in include macro`() = testPattern("""
+    fun `test literal in include macro`() = testPattern(
+        """
         include!("foo.rs");
                   //^
-    """, RsPsiPattern.includeMacroLiteral)
+    """, RsPsiPattern.includeMacroLiteral
+    )
 
-    fun `test literal in path attr on mod decl`() = testPattern("""
+    fun `test literal in path attr on mod decl`() = testPattern(
+        """
         #[path="bar.rs"]
                 //^
         mod foo;
-    """, RsPsiPattern.pathAttrLiteral)
+    """, RsPsiPattern.pathAttrLiteral
+    )
 
-    fun `test literal in path attr on mod`() = testPattern("""
+    fun `test literal in path attr on mod`() = testPattern(
+        """
         #[path="bar.rs"]
                 //^
         mod foo {}
-    """, RsPsiPattern.pathAttrLiteral)
+    """, RsPsiPattern.pathAttrLiteral
+    )
 
-    fun `test literal in path attr on mod under cfg_attr`() = testPattern("""
+    fun `test literal in path attr on mod under cfg_attr`() = testPattern(
+        """
         #[cfg_attr(unix, path="bar.rs")]
                              //^
         mod foo {}
-    """, RsPsiPattern.pathAttrLiteral)
+    """, RsPsiPattern.pathAttrLiteral
+    )
 
-    fun `test a root meta item 1`() = testPattern("""
+    fun `test a root meta item 1`() = testPattern(
+        """
         #[foo]
         //^
         fn foo() {}
-    """, RsPsiPattern.rootMetaItem)
+    """, RsPsiPattern.rootMetaItem
+    )
 
-    fun `test a root meta item 2`() = testPattern("""
+    fun `test a root meta item 2`() = testPattern(
+        """
         #![foo]
          //^
-    """, RsPsiPattern.rootMetaItem)
+    """, RsPsiPattern.rootMetaItem
+    )
 
-    fun `test a root meta item 3`() = testPattern("""
+    fun `test a root meta item 3`() = testPattern(
+        """
         #[cfg_attr(foo, bar)]
         fn foo() {}   //^
-    """, RsPsiPattern.rootMetaItem)
+    """, RsPsiPattern.rootMetaItem
+    )
 
-    fun `test a root meta item 4`() = testPattern("""
+    fun `test a root meta item 4`() = testPattern(
+        """
         #[cfg_attr(foo, bar, baz)]
         fn foo() {}        //^
-    """, RsPsiPattern.rootMetaItem)
+    """, RsPsiPattern.rootMetaItem
+    )
 
-    fun `test a root meta item 5`() = testPattern("""
+    fun `test a root meta item 5`() = testPattern(
+        """
         #[cfg_attr(foo, cfg_attr(bar, baz))]
         fn foo() {}                  //^
-    """, RsPsiPattern.rootMetaItem)
+    """, RsPsiPattern.rootMetaItem
+    )
 
-    fun `test not a root meta item 1`() = testPatternNegative("""
+    fun `test not a root meta item 1`() = testPatternNegative(
+        """
         #[cfg_attr(foo, bar)]
         fn foo() {}//^
-    """, RsPsiPattern.rootMetaItem)
+    """, RsPsiPattern.rootMetaItem
+    )
 
-    fun `test not a root meta item 2`() = testPatternNegative("""
+    fun `test not a root meta item 2`() = testPatternNegative(
+        """
         #[cfg_attr(foo, cfg_attr(bar, baz))]
         fn foo() {}            //^
-    """, RsPsiPattern.rootMetaItem)
+    """, RsPsiPattern.rootMetaItem
+    )
 
-    fun `test not a root meta item 3`() = testPatternNegative("""
+    fun `test not a root meta item 3`() = testPatternNegative(
+        """
         #[foo(bar())]
              //^
         fn foo() {}
-    """, RsPsiPattern.rootMetaItem)
+    """, RsPsiPattern.rootMetaItem
+    )
 
-    fun `test cfg condition in cfg`() = testPattern("""
+    fun `test cfg condition in cfg`() = testPattern(
+        """
         #[cfg(foo)]
             //^
         fn foo() {}
-    """, RsPsiPattern.anyCfgCondition)
+    """, RsPsiPattern.anyCfgCondition
+    )
 
-    fun `test cfg condition in cfg_attr`() = testPattern("""
+    fun `test cfg condition in cfg_attr`() = testPattern(
+        """
         #[cfg_attr(foo)]
                  //^
         fn foo() {}
-    """, RsPsiPattern.anyCfgCondition)
+    """, RsPsiPattern.anyCfgCondition
+    )
 
-    fun `test cfg condition in doc cfg`() = testPattern("""
+    fun `test cfg condition in doc cfg`() = testPattern(
+        """
         #[doc(cfg(foo))]
                 //^
         fn foo() {}
-    """, RsPsiPattern.anyCfgCondition)
+    """, RsPsiPattern.anyCfgCondition
+    )
 
-    fun `test cfg condition in cfg in cfg_attr`() = testPattern("""
+    fun `test cfg condition in cfg in cfg_attr`() = testPattern(
+        """
         #[cfg_attr(windows, cfg(foo))]
                               //^
         fn foo() {}
-    """, RsPsiPattern.anyCfgCondition)
+    """, RsPsiPattern.anyCfgCondition
+    )
 
-    fun `test not cfg condition 1`() = testPatternNegative("""
+    fun `test not cfg condition 1`() = testPatternNegative(
+        """
         #[cfg(foo)]
           //^
         fn foo() {}
-    """, RsPsiPattern.anyCfgCondition)
+    """, RsPsiPattern.anyCfgCondition
+    )
 
-    fun `test not cfg condition 2`() = testPatternNegative("""
+    fun `test not cfg condition 2`() = testPatternNegative(
+        """
         #[cfg_attr(foo)]
           //^
         fn foo() {}
-    """, RsPsiPattern.anyCfgCondition)
+    """, RsPsiPattern.anyCfgCondition
+    )
 
-    fun `test not cfg condition 3`() = testPatternNegative("""
+    fun `test not cfg condition 3`() = testPatternNegative(
+        """
         #[doc(cfg(foo))]
              //^
         fn foo() {}
-    """, RsPsiPattern.anyCfgCondition)
+    """, RsPsiPattern.anyCfgCondition
+    )
 
-    fun `test not cfg condition 4`() = testPatternNegative("""
+    fun `test not cfg condition 4`() = testPatternNegative(
+        """
         #[cfg_attr(foo, bar)]
                        //^
         fn foo() {}
-    """, RsPsiPattern.anyCfgCondition)
+    """, RsPsiPattern.anyCfgCondition
+    )
 
-    fun `test cfg feature`() = testPattern("""
+    fun `test cfg feature`() = testPattern(
+        """
         #[cfg(feature = "foo")]
         fn foo() {}   //^
-    """, RsPsiPattern.anyCfgFeature)
+    """, RsPsiPattern.anyCfgFeature
+    )
 
-    fun `test inner attribute cfg feature`() = testPattern("""
+    fun `test inner attribute cfg feature`() = testPattern(
+        """
         fn foo() {
             #![cfg(feature = "foo")]
         }                   //^
-    """, RsPsiPattern.anyCfgFeature)
+    """, RsPsiPattern.anyCfgFeature
+    )
 
-    fun `test nested cfg feature`() = testPattern("""
+    fun `test nested cfg feature`() = testPattern(
+        """
         #[cfg(not(feature = "foo"))]
         fn foo() {}        //^
-    """, RsPsiPattern.anyCfgFeature)
+    """, RsPsiPattern.anyCfgFeature
+    )
 
-    fun `test not a cfg feature`() = testPatternNegative("""
+    fun `test not a cfg feature`() = testPatternNegative(
+        """
         #[zfg(feature = "foo")]
         fn foo() {}    //^
-    """, RsPsiPattern.anyCfgFeature)
+    """, RsPsiPattern.anyCfgFeature
+    )
 
-    fun `test cfg not a feature`() = testPatternNegative("""
+    fun `test cfg not a feature`() = testPatternNegative(
+        """
         #[cfg(not_a_feature = "foo")]
         fn foo() {}          //^
-    """, RsPsiPattern.anyCfgFeature)
+    """, RsPsiPattern.anyCfgFeature
+    )
 
-    fun `test cfg_attr feature`() = testPattern("""
+    fun `test cfg_attr feature`() = testPattern(
+        """
         #[cfg_attr(feature = "foo", allow(all))]
         fn foo() {}          //^
-    """, RsPsiPattern.anyCfgFeature)
+    """, RsPsiPattern.anyCfgFeature
+    )
 
-    fun `test not right part of cfg_attr 1`() = testPatternNegative("""
+    fun `test not right part of cfg_attr 1`() = testPatternNegative(
+        """
         #[cfg_attr(windows, foo(feature = "foo"))]
         fn foo() {}                      //^
-    """, RsPsiPattern.anyCfgFeature)
+    """, RsPsiPattern.anyCfgFeature
+    )
 
-    fun `test not right part of cfg_attr 2`() = testPatternNegative("""
+    fun `test not right part of cfg_attr 2`() = testPatternNegative(
+        """
         #[cfg_attr(windows, foo(cfg(feature = "foo")))]
         fn foo() {}                          //^
-    """, RsPsiPattern.anyCfgFeature)
+    """, RsPsiPattern.anyCfgFeature
+    )
 
-    fun `test cfg at right part of cfg_attr`() = testPattern("""
+    fun `test cfg at right part of cfg_attr`() = testPattern(
+        """
         #[cfg_attr(windows, cfg(feature = "foo"))]
         fn foo() {}                      //^
-    """, RsPsiPattern.anyCfgFeature)
+    """, RsPsiPattern.anyCfgFeature
+    )
 
-    fun `test nested cfg_attr feature`() = testPattern("""
+    fun `test nested cfg_attr feature`() = testPattern(
+        """
         #[cfg_attr(windows, cfg_attr(feature = "foo", allow(all)))]
         fn foo() {}                           //^
-    """, RsPsiPattern.anyCfgFeature)
+    """, RsPsiPattern.anyCfgFeature
+    )
 
-    fun `test nested cfg_attr cfg feature`() = testPattern("""
+    fun `test nested cfg_attr cfg feature`() = testPattern(
+        """
         #[cfg_attr(windows, cfg_attr(foobar, cfg(feature = "foo")))]
         fn foo() {}                                       //^
-    """, RsPsiPattern.anyCfgFeature)
+    """, RsPsiPattern.anyCfgFeature
+    )
 
-    fun `test doc cfg`() = testPattern("""
+    fun `test doc cfg`() = testPattern(
+        """
         #[doc(cfg(feature = "foo"))]
         fn foo() {}        //^
-    """, RsPsiPattern.anyCfgFeature)
+    """, RsPsiPattern.anyCfgFeature
+    )
 
-    fun `test doc cfg at right part of cfg_attr`() = testPattern("""
+    fun `test doc cfg at right part of cfg_attr`() = testPattern(
+        """
         #[cfg_attr(windows, doc(cfg(feature = "foo")))]
         fn foo() {}                          //^
-    """, RsPsiPattern.anyCfgFeature)
+    """, RsPsiPattern.anyCfgFeature
+    )
 
-    fun `test in cfg feature`() = testPattern("""
+    fun `test in cfg feature`() = testPattern(
+        """
         #[cfg(feature = "foo")]
         fn foo() {}    //^
-    """, RsPsiPattern.insideAnyCfgFeature)
+    """, RsPsiPattern.insideAnyCfgFeature
+    )
 
-    fun `test in cfg feature without literal`() = testPattern("""
+    fun `test in cfg feature without literal`() = testPattern(
+        """
         #[cfg(feature = foo)]
         fn foo() {}    //^
-    """, RsPsiPattern.insideAnyCfgFeature)
+    """, RsPsiPattern.insideAnyCfgFeature
+    )
 
-    fun `test not in cfg feature without literal`() = testPatternNegative("""
+    fun `test not in cfg feature without literal`() = testPatternNegative(
+        """
         #[cfg( f = foo)]
         fn foo() {}//^
-    """, RsPsiPattern.insideAnyCfgFeature)
+    """, RsPsiPattern.insideAnyCfgFeature
+    )
 
     private inline fun <reified T : PsiElement> testPattern(@Language("Rust") code: String, pattern: ElementPattern<T>) {
         InlineFile(code)

@@ -71,6 +71,7 @@ interface ExtractExpressionUi {
 }
 
 var MOCK: ExtractExpressionUi? = null
+
 @TestOnly
 fun withMockTargetExpressionChooser(mock: ExtractExpressionUi, f: () -> Unit) {
     MOCK = mock

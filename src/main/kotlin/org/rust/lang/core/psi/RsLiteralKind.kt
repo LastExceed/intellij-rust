@@ -38,36 +38,38 @@ sealed class RsLiteralKind(val node: ASTNode) {
 
         override val offsets: LiteralOffsets by lazy { offsetsForNumber(node) }
 
-        val value: Long? get() {
-            val textValue = offsets.value?.substring(node.text) ?: return null
-            val (start, radix) = when (textValue.take(2)) {
-                "0x" -> 2 to 16
-                "0o" -> 2 to 8
-                "0b" -> 2 to 2
-                else -> 0 to 10
+        val value: Long?
+            get() {
+                val textValue = offsets.value?.substring(node.text) ?: return null
+                val (start, radix) = when (textValue.take(2)) {
+                    "0x" -> 2 to 16
+                    "0o" -> 2 to 8
+                    "0b" -> 2 to 2
+                    else -> 0 to 10
+                }
+                val cleanTextValue = textValue.substring(start).filter { it != '_' }
+                return try {
+                    java.lang.Long.parseLong(cleanTextValue, radix)
+                } catch (e: NumberFormatException) {
+                    null
+                }
             }
-            val cleanTextValue = textValue.substring(start).filter { it != '_' }
-            return try {
-                java.lang.Long.parseLong(cleanTextValue, radix)
-            } catch (e: NumberFormatException) {
-                null
-            }
-        }
     }
 
     class Float(node: ASTNode) : RsLiteralKind(node), RsLiteralWithSuffix {
         override val validSuffixes: List<kotlin.String>
             get() = listOf("f32", "f64")
 
-        val value: Double? get() = offsets.value?.substring(node.text)
-            ?.filter { it != '_' }
-            ?.let {
-                try {
-                    it.toDouble()
-                } catch(e: NumberFormatException) {
-                    null
+        val value: Double?
+            get() = offsets.value?.substring(node.text)
+                ?.filter { it != '_' }
+                ?.let {
+                    try {
+                        it.toDouble()
+                    } catch (e: NumberFormatException) {
+                        null
+                    }
                 }
-            }
 
 
         override val offsets: LiteralOffsets by lazy { offsetsForNumber(node) }
@@ -81,12 +83,13 @@ sealed class RsLiteralKind(val node: ASTNode) {
         override val hasUnpairedQuotes: kotlin.Boolean
             get() = offsets.openDelim == null || offsets.closeDelim == null
 
-        override val value: kotlin.String? get() {
-            return if (node.elementType in RS_RAW_LITERALS)
-                rawValue
-            else
-                rawValue?.unescapeRust(RsEscapesLexer.of(node.elementType))
-        }
+        override val value: kotlin.String?
+            get() {
+                return if (node.elementType in RS_RAW_LITERALS)
+                    rawValue
+                else
+                    rawValue?.unescapeRust(RsEscapesLexer.of(node.elementType))
+            }
 
         val rawValue: kotlin.String?
             get() = offsets.value?.substring(node.text)
@@ -122,11 +125,12 @@ sealed class RsLiteralKind(val node: ASTNode) {
 
 }
 
-val RsLitExpr.kind: RsLiteralKind? get() {
-    val literalAstNode = this.node.findChildByType(RS_LITERALS) ?: return null
-    return RsLiteralKind.fromAstNode(literalAstNode)
-        ?: error("Unknown literal: $literalAstNode (`$text`)")
-}
+val RsLitExpr.kind: RsLiteralKind?
+    get() {
+        val literalAstNode = this.node.findChildByType(RS_LITERALS) ?: return null
+        return RsLiteralKind.fromAstNode(literalAstNode)
+            ?: error("Unknown literal: $literalAstNode (`$text`)")
+    }
 
 fun offsetsForNumber(node: ASTNode): LiteralOffsets {
     val (start, digits) = when (node.text.take(2)) {
@@ -143,7 +147,8 @@ fun offsetsForNumber(node: ASTNode): LiteralOffsets {
         } else if (ch !in digits && ch !in "+-_.") {
             return LiteralOffsets(
                 value = TextRange.create(0, i + start),
-                suffix = TextRange(i + start, node.textLength))
+                suffix = TextRange(i + start, node.textLength)
+            )
         }
     }
 

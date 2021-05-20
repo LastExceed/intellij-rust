@@ -40,7 +40,8 @@ class RsDropRefInspection : RsLocalInspectionTool() {
             holder.registerProblem(
                 expr,
                 "Call to std::mem::drop with a reference argument. Dropping a reference does nothing",
-                *fixes)
+                *fixes
+            )
         }
     }
 }

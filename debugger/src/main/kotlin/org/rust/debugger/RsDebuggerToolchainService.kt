@@ -84,20 +84,24 @@ class RsDebuggerToolchainService {
 
         when (result) {
             is DownloadResult.Ok -> {
-                Notifications.Bus.notify(Notification(
-                    RUST_DEBUGGER_GROUP_ID,
-                    "Debugger",
-                    "Debugger successfully downloaded",
-                    NotificationType.INFORMATION
-                ))
+                Notifications.Bus.notify(
+                    Notification(
+                        RUST_DEBUGGER_GROUP_ID,
+                        "Debugger",
+                        "Debugger successfully downloaded",
+                        NotificationType.INFORMATION
+                    )
+                )
             }
             is DownloadResult.Failed -> {
-                Notifications.Bus.notify(Notification(
-                    RUST_DEBUGGER_GROUP_ID,
-                    "Debugger",
-                    "Debugger downloading failed",
-                    NotificationType.ERROR
-                ))
+                Notifications.Bus.notify(
+                    Notification(
+                        RUST_DEBUGGER_GROUP_ID,
+                        "Debugger",
+                        "Debugger downloading failed",
+                        NotificationType.ERROR
+                    )
+                )
             }
         }
 

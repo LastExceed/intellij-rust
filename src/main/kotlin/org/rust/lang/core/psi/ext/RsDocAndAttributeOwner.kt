@@ -227,6 +227,7 @@ fun <T : RsMetaItemPsiOrStub> Sequence<T>.withFlattenCfgAttrsAttributes(withCfgA
     flatMap {
         if (it.name == "cfg_attr") {
             val metaItems = it.metaItemArgsList
+
             @Suppress("UNCHECKED_CAST")
             val nested = metaItems.asSequence().drop(1) as Sequence<T>
             if (withCfgAttrAttribute) {
@@ -285,7 +286,7 @@ class StubbedAttributeProperty<P, S>(
  *
  * **Do not instantiate directly**, use [RsDocAndAttributeOwner.queryAttributes] instead.
  */
-class QueryAttributes<out T: RsMetaItemPsiOrStub>(
+class QueryAttributes<out T : RsMetaItemPsiOrStub>(
     val metaItems: Sequence<T>
 ) {
     // #[doc(hidden)]
@@ -373,13 +374,15 @@ class QueryAttributes<out T: RsMetaItemPsiOrStub>(
     fun attrsByName(name: String): Sequence<T> = metaItems.filter { it.name == name }
 
     override fun toString(): String =
-        "QueryAttributes(${metaItems.joinToString {
-            when (it) {
-                is RsMetaItem -> it.text
-                is RsMetaItemStub -> it.psi.text
-                else -> error("unreachable")
+        "QueryAttributes(${
+            metaItems.joinToString {
+                when (it) {
+                    is RsMetaItem -> it.text
+                    is RsMetaItemStub -> it.psi.text
+                    else -> error("unreachable")
+                }
             }
-        }})"
+        })"
 
     companion object {
         private val EMPTY: QueryAttributes<*> = QueryAttributes(emptySequence())

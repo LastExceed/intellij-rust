@@ -19,8 +19,8 @@ class TokenMap(val map: List<TokenMetadata>) {
 }
 
 sealed class TokenMetadata {
-    data class Token(val startOffset: Int, val rightTrivia: CharSequence): TokenMetadata()
-    data class Delimiter(val open: Token, val close: Token?): TokenMetadata()
+    data class Token(val startOffset: Int, val rightTrivia: CharSequence) : TokenMetadata()
+    data class Delimiter(val open: Token, val close: Token?) : TokenMetadata()
 }
 
 fun MappedSubtree.toMappedText(): Pair<CharSequence, RangeMap> {

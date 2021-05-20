@@ -6,7 +6,8 @@
 package org.rust.lang.core.completion
 
 class RsModCompletionTest : RsCompletionTestBase() {
-    fun `test mod completion same directory`() = doSingleCompletionByFileTree("""
+    fun `test mod completion same directory`() = doSingleCompletionByFileTree(
+        """
     //- main.rs
         mod my_m/*caret*/
 
@@ -14,9 +15,11 @@ class RsModCompletionTest : RsCompletionTestBase() {
         pub fn test() {}
     """, """
         mod my_mod/*caret*/
-    """)
+    """
+    )
 
-    fun `test mod completion subdirectory`() = doSingleCompletionByFileTree("""
+    fun `test mod completion subdirectory`() = doSingleCompletionByFileTree(
+        """
     //- main.rs
         mod my_m/*caret*/;
 
@@ -24,9 +27,11 @@ class RsModCompletionTest : RsCompletionTestBase() {
         pub fn test() {}
     """, """
         mod my_mod/*caret*/;
-    """)
+    """
+    )
 
-    fun `test mod completion same directory no mod rs`() = checkNoCompletionByFileTree("""
+    fun `test mod completion same directory no mod rs`() = checkNoCompletionByFileTree(
+        """
     //- function.rs
         mod mo/*caret*/;
 
@@ -34,12 +39,15 @@ class RsModCompletionTest : RsCompletionTestBase() {
 
     //- mod.rs
         pub fn test() {}
-    """)
+    """
+    )
 
-    fun `test mod completion same directory no main rs`() = checkNoCompletionByFileTree("""
+    fun `test mod completion same directory no main rs`() = checkNoCompletionByFileTree(
+        """
     //- main.rs
         mod m/*caret*/;
 
         fn main() {}
-    """)
+    """
+    )
 }

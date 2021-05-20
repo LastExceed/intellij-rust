@@ -7,7 +7,8 @@ package org.rust.ide.search
 
 class RsUsageViewTreeTest : RsUsageViewTreeTestBase() {
 
-    fun `test grouping function usages`() = doTestByText("""
+    fun `test grouping function usages`() = doTestByText(
+        """
         fn foo() {}
           //^
 
@@ -27,9 +28,11 @@ class RsUsageViewTreeTest : RsUsageViewTreeTestBase() {
            main.rs (2)
             6foo();
             10foo();
-    """)
+    """
+    )
 
-    fun `test grouping struct usages`() = doTestByText("""
+    fun `test grouping struct usages`() = doTestByText(
+        """
         struct S {
              //^
             a: usize,
@@ -61,5 +64,6 @@ class RsUsageViewTreeTest : RsUsageViewTreeTestBase() {
           type reference (1)
            main.rs (1)
             10fn foo(s1: &S) {}
-    """)
+    """
+    )
 }

@@ -17,7 +17,8 @@ import org.rust.lang.core.psi.RS_KEYWORDS
 
 @Suppress("UnstableApiUsage")
 class RsElementFeatureProviderTest : RsTestBase() {
-    fun `test top level keyword kind features`() = doTest("ml_rust_kind", """
+    fun `test top level keyword kind features`() = doTest(
+        "ml_rust_kind", """
         /*caret*/
         fn main() {}
     """, mapOf(
@@ -31,9 +32,11 @@ class RsElementFeatureProviderTest : RsTestBase() {
         "type" to RsKeywordMLKind.Type.name,
         "use" to RsKeywordMLKind.Use.name,
         "static" to RsKeywordMLKind.Static.name,
-    ))
+    )
+    )
 
-    fun `test body keyword kind features`() = doTest("ml_rust_kind", """
+    fun `test body keyword kind features`() = doTest(
+        "ml_rust_kind", """
         fn main() {
             /*caret*/
         }
@@ -45,9 +48,11 @@ class RsElementFeatureProviderTest : RsTestBase() {
         "match" to RsKeywordMLKind.Match.name,
         "return" to RsKeywordMLKind.Return.name,
         "crate" to RsKeywordMLKind.Crate.name,
-    ))
+    )
+    )
 
-    fun `test named elements kind features`() = doTest("ml_rust_kind", """
+    fun `test named elements kind features`() = doTest(
+        "ml_rust_kind", """
         fn foo_func() {}
         fn main() {
             let foo_var = 42;
@@ -56,9 +61,11 @@ class RsElementFeatureProviderTest : RsTestBase() {
     """, mapOf(
         "foo_var" to RsPsiElementMLKind.PatBinding.name,
         "foo_func" to RsPsiElementMLKind.Function.name,
-    ))
+    )
+    )
 
-    fun `test struct field method kind feature`() = doTest("ml_rust_kind", """
+    fun `test struct field method kind feature`() = doTest(
+        "ml_rust_kind", """
         struct S { field1: i32, field2: i32 }
         impl S {
             fn foo(&self) {}
@@ -69,10 +76,12 @@ class RsElementFeatureProviderTest : RsTestBase() {
     """, mapOf(
         "field1" to RsPsiElementMLKind.NamedFieldDecl.name,
         "foo" to RsPsiElementMLKind.Function.name,
-    ))
+    )
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test is_from_stdlib feature`() = doTest("ml_rust_is_from_stdlib", """
+    fun `test is_from_stdlib feature`() = doTest(
+        "ml_rust_is_from_stdlib", """
         fn my_print() {}
         fn main() {
             prin/*caret*/
@@ -80,7 +89,8 @@ class RsElementFeatureProviderTest : RsTestBase() {
     """, mapOf(
         "println" to "1",
         "my_print" to "0",
-    ))
+    )
+    )
 
     fun `test all keywords are covered`() {
         val kindsKeywords = RsKeywordMLKind.values().map {

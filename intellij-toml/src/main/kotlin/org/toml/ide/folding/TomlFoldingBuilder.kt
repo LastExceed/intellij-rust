@@ -36,7 +36,7 @@ class TomlFoldingBuilder : CustomFoldingBuilder(), DumbAware {
     override fun isRegionCollapsedByDefault(node: ASTNode): Boolean = false
 }
 
-private class TomlFoldingVisitor(private val descriptors: MutableList<FoldingDescriptor>): TomlRecursiveVisitor() {
+private class TomlFoldingVisitor(private val descriptors: MutableList<FoldingDescriptor>) : TomlRecursiveVisitor() {
     override fun visitTable(element: TomlTable) {
         if (element.entries.isNotEmpty()) {
             foldChildren(element, element.header.nextSibling, element.lastChild)

@@ -32,62 +32,77 @@ class SyncToolWindowTest : RsWithToolchainTestBase() {
 
     fun `test single project`() {
         val project = buildProject {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "hello"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
 
             dir("src") {
-                rust("main.rs", """
+                rust(
+                    "main.rs", """
                     fn main() {}
-                """)
+                """
+                )
             }
         }
-        checkSyncViewTree("""
+        checkSyncViewTree(
+            """
             -
              -finished
               -Sync ${project.root.name} project
                Getting toolchain version
                Updating workspace info
                Getting Rust stdlib
-        """)
+        """
+        )
     }
 
     fun `test several cargo projects 1`() {
         val project = buildProject {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "crate1"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
 
             dir("src") {
-                rust("main.rs", """
+                rust(
+                    "main.rs", """
                     fn main() {}
-                """)
+                """
+                )
             }
             dir("crate2") {
-                toml("Cargo.toml", """
+                toml(
+                    "Cargo.toml", """
                     [package]
                     name = "crate2"
                     version = "0.1.0"
                     authors = []
-                """)
+                """
+                )
 
                 dir("src") {
-                    rust("main.rs", """
+                    rust(
+                        "main.rs", """
                         fn main() {}
-                    """)
+                    """
+                    )
                 }
             }
         }
 
         attachCargoProject(project.file("crate2"))
 
-        checkSyncViewTree("""
+        checkSyncViewTree(
+            """
             -
              -finished
               -Sync crate1 project
@@ -98,44 +113,54 @@ class SyncToolWindowTest : RsWithToolchainTestBase() {
                Getting toolchain version
                Updating workspace info
                Getting Rust stdlib
-        """)
+        """
+        )
     }
 
     fun `test several cargo projects 2`() {
         val project = buildProject {
             dir("crate1") {
-                toml("Cargo.toml", """
+                toml(
+                    "Cargo.toml", """
                     [package]
                     name = "crate1"
                     version = "0.1.0"
                     authors = []
-                """)
+                """
+                )
 
                 dir("src") {
-                    rust("main.rs", """
+                    rust(
+                        "main.rs", """
                         fn main() {}
-                    """)
+                    """
+                    )
                 }
             }
             dir("crate2") {
-                toml("Cargo.toml", """
+                toml(
+                    "Cargo.toml", """
                     [package]
                     name = "crate2"
                     version = "0.1.0"
                     authors = []
-                """)
+                """
+                )
 
                 dir("src") {
-                    rust("main.rs", """
+                    rust(
+                        "main.rs", """
                         fn main() {}
-                    """)
+                    """
+                    )
                 }
             }
         }
         attachCargoProject(project.file("crate1"))
         attachCargoProject(project.file("crate2"))
 
-        checkSyncViewTree("""
+        checkSyncViewTree(
+            """
             -
              -finished
               -Sync crate1 project
@@ -146,25 +171,31 @@ class SyncToolWindowTest : RsWithToolchainTestBase() {
                Getting toolchain version
                Updating workspace info
                Getting Rust stdlib
-        """)
+        """
+        )
     }
 
     fun `test with error in manifest`() {
         val project = buildProject {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "hello
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
 
             dir("src") {
-                rust("main.rs", """
+                rust(
+                    "main.rs", """
                     fn main() {}
-                """)
+                """
+                )
             }
         }
-        checkSyncViewTree("""
+        checkSyncViewTree(
+            """
             -
              -failed
               -Sync ${project.root.name} project
@@ -172,23 +203,28 @@ class SyncToolWindowTest : RsWithToolchainTestBase() {
                -Updating workspace info
                 Failed to run Cargo
                Getting Rust stdlib
-        """)
+        """
+        )
     }
 
     fun `test no projects`() {
         val testProject = fileTree {
             dir("crate") {
-                toml("Cargo.toml", """
+                toml(
+                    "Cargo.toml", """
                     [package]
                     name = "crate"
                     version = "0.1.0"
                     authors = []
-                """)
+                """
+                )
 
                 dir("src") {
-                    rust("main.rs", """
+                    rust(
+                        "main.rs", """
                         fn main() {}
-                    """)
+                    """
+                    )
                 }
             }
         }.create(project, cargoProjectDirectory)
@@ -200,14 +236,16 @@ class SyncToolWindowTest : RsWithToolchainTestBase() {
         // This refresh shouldn't change Sync view since there isn't any Cargo project
         project.testCargoProjects.refreshAllProjectsSync()
 
-        checkSyncViewTree("""
+        checkSyncViewTree(
+            """
             -
              -finished
               -Sync crate project
                Getting toolchain version
                Updating workspace info
                Getting Rust stdlib
-        """)
+        """
+        )
     }
 
     private fun attachCargoProject(cargoProjectRoot: VirtualFile) {

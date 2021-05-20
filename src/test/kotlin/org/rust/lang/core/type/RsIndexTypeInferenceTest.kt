@@ -9,7 +9,8 @@ import org.intellij.lang.annotations.Language
 
 class RsIndexTypeInferenceTest : RsTypificationTestBase() {
 
-    fun `test index`() = doTest("""
+    fun `test index`() = doTest(
+        """
         struct S;
 
         impl Index<i32> for S {
@@ -24,9 +25,11 @@ class RsIndexTypeInferenceTest : RsTypificationTestBase() {
             x;
           //^ i32
         }
-    """)
+    """
+    )
 
-    fun `test generic output`() = doTest("""
+    fun `test generic output`() = doTest(
+        """
         struct S<T>(T);
 
         impl<T> Index<i32> for S<T> {
@@ -41,9 +44,11 @@ class RsIndexTypeInferenceTest : RsTypificationTestBase() {
             x;
           //^ i64
         }
-    """)
+    """
+    )
 
-    fun `test generic index and output`() = doTest("""
+    fun `test generic index and output`() = doTest(
+        """
         struct Key<K>(K);
         struct S<K, V>(Key<K>, V);
 
@@ -59,9 +64,11 @@ class RsIndexTypeInferenceTest : RsTypificationTestBase() {
             x;
           //^ f64
         }
-    """)
+    """
+    )
 
-    fun `test multiple implementation`() = doTest("""
+    fun `test multiple implementation`() = doTest(
+        """
         struct S;
 
         impl Index<f64> for S {
@@ -83,9 +90,11 @@ class RsIndexTypeInferenceTest : RsTypificationTestBase() {
             x;
           //^ i32
         }
-    """)
+    """
+    )
 
-    fun `test implicit usize`() = doTest("""
+    fun `test implicit usize`() = doTest(
+        """
         struct Vec<T>;
 
         impl<T> Index<usize> for Vec<T> {
@@ -100,9 +109,11 @@ class RsIndexTypeInferenceTest : RsTypificationTestBase() {
             x;
           //^ i32
         }
-    """)
+    """
+    )
 
-    fun `test dereference`() = doTest("""
+    fun `test dereference`() = doTest(
+        """
         struct Vec<T>;
 
         impl<T> Index<usize> for Vec<T> {
@@ -116,9 +127,11 @@ class RsIndexTypeInferenceTest : RsTypificationTestBase() {
             m;
           //^ u32
         }
-    """)
+    """
+    )
 
-    fun `test transitive coercion`() = doTest("""
+    fun `test transitive coercion`() = doTest(
+        """
         #[lang = "deref"]
         pub trait Deref {
             type Target: ?Sized;
@@ -145,7 +158,8 @@ class RsIndexTypeInferenceTest : RsTypificationTestBase() {
             v;
           //^ i32
         }
-    """)
+    """
+    )
 
     private fun doTest(@Language("Rust") code: String) {
         val indexLangItem = """

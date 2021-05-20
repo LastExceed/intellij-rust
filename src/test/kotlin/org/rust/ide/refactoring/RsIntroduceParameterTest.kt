@@ -11,7 +11,8 @@ import org.rust.lang.core.psi.RsExpr
 import org.rust.lang.core.psi.RsFunction
 
 class RsIntroduceParameterTest : RsTestBase() {
-    fun `test method no params`() = doTest("""
+    fun `test method no params`() = doTest(
+        """
         fn hello() {
             foo(5 + /*caret*/10);
         }
@@ -19,9 +20,11 @@ class RsIntroduceParameterTest : RsTestBase() {
         fn hello(/*caret*/i: i32) {
             foo(5 + i);
         }
-    """)
+    """
+    )
 
-    fun `test method with params`() = doTest("""
+    fun `test method with params`() = doTest(
+        """
         fn hello(param: i32) {
             let result = param + /*caret*/10;
         }
@@ -29,10 +32,12 @@ class RsIntroduceParameterTest : RsTestBase() {
         fn hello(param: i32, /*caret*/i: i32) {
             let result = param + i;
         }
-    """)
+    """
+    )
 
     @MockAdditionalCfgOptions("intellij_rust")
-    fun `test function with a cfg disabled params`() = doTest("""
+    fun `test function with a cfg disabled params`() = doTest(
+        """
         fn hello(#[cfg(not(intellij_rust))] param: i32) {
             foo(5 + /*caret*/10);
         }
@@ -40,9 +45,11 @@ class RsIntroduceParameterTest : RsTestBase() {
         fn hello(#[cfg(not(intellij_rust))] param: i32, /*caret*/i: i32) {
             foo(5 + i);
         }
-    """)
+    """
+    )
 
-    fun `test inner method chosen`() = doTest("""
+    fun `test inner method chosen`() = doTest(
+        """
         fn outer() {
             fn inner() {
                 let k = /*caret*/5.0 + 2.5;
@@ -54,9 +61,11 @@ class RsIntroduceParameterTest : RsTestBase() {
                 let k = x + 2.5;
             }
         }
-    """)
+    """
+    )
 
-    fun `test outer method chosen`() = doTest("""
+    fun `test outer method chosen`() = doTest(
+        """
         fn outer() {
             fn inner() {
                 let k = 5.0 + /*caret*/2.5;
@@ -68,9 +77,11 @@ class RsIntroduceParameterTest : RsTestBase() {
                 let k = 5.0 + x;
             }
         }
-    """)
+    """
+    )
 
-    fun `test replace all occurrences`() = doTest("""
+    fun `test replace all occurrences`() = doTest(
+        """
         fn hello() {
             let a = /*caret*/5 + 10;
             let b = 5 + 5 + 5;
@@ -80,9 +91,11 @@ class RsIntroduceParameterTest : RsTestBase() {
             let a = i + 10;
             let b = i + i + i;
         }
-    """, replaceAll = true)
+    """, replaceAll = true
+    )
 
-    fun `test replace current occurrence only`() = doTest("""
+    fun `test replace current occurrence only`() = doTest(
+        """
         fn hello() {
             let a = 5 + 10;
             let b = 5 + /*caret*/5 + 5;
@@ -92,9 +105,11 @@ class RsIntroduceParameterTest : RsTestBase() {
             let a = 5 + 10;
             let b = 5 + i + 5;
         }
-    """, replaceAll = false)
+    """, replaceAll = false
+    )
 
-    fun `test method usages modified`() = doTest("""
+    fun `test method usages modified`() = doTest(
+        """
         fn test() {
             fn hello() {
                 5 + /*caret*/10;
@@ -108,9 +123,11 @@ class RsIntroduceParameterTest : RsTestBase() {
             }
             hello(10);
         }
-    """)
+    """
+    )
 
-    fun `test method usages modified when complicated call`() = doTest("""
+    fun `test method usages modified when complicated call`() = doTest(
+        """
         fn test() {
             fn hello(a: i32) {
                 5 + /*caret*/10;
@@ -124,9 +141,11 @@ class RsIntroduceParameterTest : RsTestBase() {
             }
             (hello)(5, 10);
         }
-    """)
+    """
+    )
 
-    fun `test method usages modified for method params`() = doTest("""
+    fun `test method usages modified for method params`() = doTest(
+        """
         fn test() {
             fn hello(k: i32) {
                 k + /*caret*/10;
@@ -140,9 +159,11 @@ class RsIntroduceParameterTest : RsTestBase() {
             }
             hello(42, 10);
         }
-    """)
+    """
+    )
 
-    fun `test call method with self`() = doTest("""
+    fun `test call method with self`() = doTest(
+        """
         struct Camel { name: &'static str }
          impl Camel {
             fn drink(&self) {
@@ -162,9 +183,11 @@ class RsIntroduceParameterTest : RsTestBase() {
                 self.drink(2);
             }
         }
-    """)
+    """
+    )
 
-    fun `test change signature of trait impl`() = doTest("""
+    fun `test change signature of trait impl`() = doTest(
+        """
         struct Camel { name: &'static str }
          trait Animal {
             fn run(&self);
@@ -184,9 +207,11 @@ class RsIntroduceParameterTest : RsTestBase() {
                 let c = i + 6;
             }
         }
-    """)
+    """
+    )
 
-    fun `test change signature of trait with two impls`() = doTest("""
+    fun `test change signature of trait with two impls`() = doTest(
+        """
         struct Camel { name: &'static str }
         struct Hare { name: &'static str }
         trait Animal {
@@ -214,9 +239,11 @@ class RsIntroduceParameterTest : RsTestBase() {
         impl Animal for Hare {
             fn run(&self, i: i32) { }
         }
-    """)
+    """
+    )
 
-    fun `test usages change when change signature of trait`() = doTest("""
+    fun `test usages change when change signature of trait`() = doTest(
+        """
         struct Camel { name: &'static str }
          trait Animal {
             fn run(&self);
@@ -244,9 +271,11 @@ class RsIntroduceParameterTest : RsTestBase() {
                 self.run(5);
             }
         }
-    """)
+    """
+    )
 
-    fun `test change trait method`() = doTest("""
+    fun `test change trait method`() = doTest(
+        """
         struct Camel { name: &'static str }
          trait Animal {
             fn run(&self) {
@@ -270,7 +299,8 @@ class RsIntroduceParameterTest : RsTestBase() {
                 let c = 12;
             }
         }
-    """)
+    """
+    )
 
     private fun doTest(
         @Language("Rust") before: String,

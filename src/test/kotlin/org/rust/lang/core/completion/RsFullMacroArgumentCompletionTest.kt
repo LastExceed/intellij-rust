@@ -6,7 +6,8 @@
 package org.rust.lang.core.completion
 
 class RsFullMacroArgumentCompletionTest : RsCompletionTestBase() {
-    fun `test simple`() = doSingleCompletion("""
+    fun `test simple`() = doSingleCompletion(
+        """
         macro_rules! foo {
             ($($ i:item)*) => { $($ i)* };
         }
@@ -26,9 +27,11 @@ class RsFullMacroArgumentCompletionTest : RsCompletionTestBase() {
                 FooBar/*caret*/
             }
         }
-    """)
+    """
+    )
 
-    fun `test complete struct from the same macro`() = doSingleCompletion("""
+    fun `test complete struct from the same macro`() = doSingleCompletion(
+        """
         macro_rules! foo {
             ($($ i:item)*) => { $($ i)* };
         }
@@ -48,9 +51,11 @@ class RsFullMacroArgumentCompletionTest : RsCompletionTestBase() {
                 FooBar/*caret*/
             }
         }
-    """)
+    """
+    )
 
-    fun `test nested macro`() = doSingleCompletion("""
+    fun `test nested macro`() = doSingleCompletion(
+        """
         macro_rules! foo {
             ($ i:item $($ rest:tt)*) => { $ i foo!($($ rest)*); };
             () => {}
@@ -72,10 +77,12 @@ class RsFullMacroArgumentCompletionTest : RsCompletionTestBase() {
                 FooBar/*caret*/
             }
         }
-    """)
+    """
+    )
 
     // TODO extra `()`
-    fun `test method`() = doSingleCompletion("""
+    fun `test method`() = doSingleCompletion(
+        """
         macro_rules! foo {
             ($ e:expr, $ i:ident) => { fn foo() { $ e.$ i(); } };
         }
@@ -89,5 +96,6 @@ class RsFullMacroArgumentCompletionTest : RsCompletionTestBase() {
         struct Foo;
         impl Foo { fn bar(&self) {} }
         foo!(Foo, bar(/*caret*/));
-    """)
+    """
+    )
 }

@@ -7,9 +7,11 @@ package org.toml.ide.annotator
 
 class TomlAnnotatorTest : TomlAnnotatorTestBase(TomlAnnotator::class) {
 
-    fun `test inline tables`() = checkByText("""
+    fun `test inline tables`() = checkByText(
+        """
         a = {something = "", another = ""}
         a = <error>{something = "",
             another = ""}</error>
-    """)
+    """
+    )
 }

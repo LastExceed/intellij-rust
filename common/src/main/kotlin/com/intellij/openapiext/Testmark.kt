@@ -51,9 +51,10 @@ import org.jetbrains.annotations.TestOnly
  * not in "test" code, it's useless, but we can't
  * provide a runtime assertion for this case.
  */
-class Testmark(val name: String): TestmarkPred {
+class Testmark(val name: String) : TestmarkPred {
     @Volatile
     private var state = TestmarkState.NEW
+
     @Volatile
     private var hitAt: Throwable? = null
 

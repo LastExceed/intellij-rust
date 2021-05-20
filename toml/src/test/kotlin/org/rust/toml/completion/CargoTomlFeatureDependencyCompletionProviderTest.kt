@@ -10,7 +10,8 @@ import org.rust.WithDependencyRustProjectDescriptor
 import org.rust.fileTree
 
 class CargoTomlFeatureDependencyCompletionProviderTest : CargoTomlCompletionTestBase() {
-    fun `test feature completion (in literal)`() = doSingleCompletion("""
+    fun `test feature completion (in literal)`() = doSingleCompletion(
+        """
         [features]
         foo = []
         bar = ["f<caret>"]
@@ -18,9 +19,11 @@ class CargoTomlFeatureDependencyCompletionProviderTest : CargoTomlCompletionTest
         [features]
         foo = []
         bar = ["foo<caret>"]
-    """)
+    """
+    )
 
-    fun `test feature completion (without literal) 1`() = doSingleCompletion("""
+    fun `test feature completion (without literal) 1`() = doSingleCompletion(
+        """
         [features]
         foo = []
         bar = [f<caret>]
@@ -28,9 +31,11 @@ class CargoTomlFeatureDependencyCompletionProviderTest : CargoTomlCompletionTest
         [features]
         foo = []
         bar = ["foo<caret>"]
-    """)
+    """
+    )
 
-    fun `test feature completion (without literal) 2`() = doSingleCompletion("""
+    fun `test feature completion (without literal) 2`() = doSingleCompletion(
+        """
         [features]
         foo = []
         bar = []
@@ -40,9 +45,11 @@ class CargoTomlFeatureDependencyCompletionProviderTest : CargoTomlCompletionTest
         foo = []
         bar = []
         baz = ["bar", "foo<caret>"]
-    """)
+    """
+    )
 
-    fun `test feature single completion without itself`() = doSingleCompletion("""
+    fun `test feature single completion without itself`() = doSingleCompletion(
+        """
         [features]
         foo = []
         bar = [<caret>]
@@ -50,59 +57,72 @@ class CargoTomlFeatureDependencyCompletionProviderTest : CargoTomlCompletionTest
         [features]
         foo = []
         bar = ["foo<caret>"]
-    """)
+    """
+    )
 
     // TODO the test should fail because of AST loading
     @ProjectDescriptor(WithDependencyRustProjectDescriptor::class)
     fun `test feature in another package`() {
         val fileTree = fileTree {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [features]
                 foo = [ "dep<caret>" ]
 
                 [dependencies]
                 dep-lib = "0.1.0"
-            """)
+            """
+            )
             dir("dep-lib") {
-                toml("Cargo.toml", """
+                toml(
+                    "Cargo.toml", """
                     [features]
                     feature_foo = []
-                """)
+                """
+                )
             }
         }
-        doSingleCompletionByFileTree(fileTree, """
+        doSingleCompletionByFileTree(
+            fileTree, """
             [features]
             foo = [ "dep-lib/feature_foo<caret>" ]
 
             [dependencies]
             dep-lib = "0.1.0"
-        """)
+        """
+        )
     }
 
     // TODO the test should fail because of AST loading
     @ProjectDescriptor(WithDependencyRustProjectDescriptor::class)
     fun `test feature in another package (without literal)`() {
         val fileTree = fileTree {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [features]
                 foo = [ dep<caret> ]
 
                 [dependencies]
                 dep-lib = "0.1.0"
-            """)
+            """
+            )
             dir("dep-lib") {
-                toml("Cargo.toml", """
+                toml(
+                    "Cargo.toml", """
                     [features]
                     feature_foo = []
-                """)
+                """
+                )
             }
         }
-        doSingleCompletionByFileTree(fileTree, """
+        doSingleCompletionByFileTree(
+            fileTree, """
             [features]
             foo = [ "dep-lib/feature_foo<caret>" ]
 
             [dependencies]
             dep-lib = "0.1.0"
-        """)
+        """
+        )
     }
 }

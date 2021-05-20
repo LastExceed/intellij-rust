@@ -159,7 +159,7 @@ fun Block.computeSpacing(child1: Block?, child2: Block, ctx: RsFmtContext): Spac
             elementType2 == RustParserDefinition.EOL_COMMENT ->
                 return createKeepingFirstColumnSpacing(1, Int.MAX_VALUE, true, ctx.commonSettings.KEEP_BLANK_LINES_IN_CODE)
 
-        // struct S {\n a: u32...
+            // struct S {\n a: u32...
             elementType1 == LBRACE &&
                 child2.node?.treeParent?.elementType == BLOCK_FIELDS &&
                 psi2.parent?.parent is RsStructItem &&
@@ -167,11 +167,11 @@ fun Block.computeSpacing(child1: Block?, child2: Block, ctx: RsFmtContext): Spac
                 return createSpacing(1, 1, 1, true, 0)
             }
 
-        // #[attr]\n<comment>\n => #[attr] <comment>\n etc.
+            // #[attr]\n<comment>\n => #[attr] <comment>\n etc.
             psi1 is RsOuterAttr && psi2 is PsiComment
             -> return createSpacing(1, 1, 0, true, 0)
 
-        // Determine spacing between macro invocation and it's arguments
+            // Determine spacing between macro invocation and it's arguments
             parentPsi is RsMacroCall && elementType1 == EXCL
             -> return if (node2.chars.first() == '{' || elementType2 == IDENTIFIER) {
                 createSpacing(1, 1, 0, false, 0)
@@ -179,24 +179,26 @@ fun Block.computeSpacing(child1: Block?, child2: Block, ctx: RsFmtContext): Spac
                 createSpacing(0, 0, 0, false, 0)
             }
 
-        // Ensure that each attribute is in separate line; comment aware
+            // Ensure that each attribute is in separate line; comment aware
             psi1 is RsOuterAttr && (psi2 is RsOuterAttr || psi1.parent is RsItemElement)
                 || psi1 is PsiComment && (psi2 is RsOuterAttr || psi1.getPrevNonCommentSibling() is RsOuterAttr)
             -> return lineBreak(keepBlankLines = 0)
 
-        // Format blank lines between statements (or return expression)
+            // Format blank lines between statements (or return expression)
             ncPsi1.isStmtOrMacro && ncPsi2.isStmtOrExpr
             -> return lineBreak(
                 keepLineBreaks = ctx.commonSettings.KEEP_LINE_BREAKS,
-                keepBlankLines = ctx.commonSettings.KEEP_BLANK_LINES_IN_CODE)
+                keepBlankLines = ctx.commonSettings.KEEP_BLANK_LINES_IN_CODE
+            )
 
-        // Format blank lines between impl & trait members
+            // Format blank lines between impl & trait members
             parentPsi is RsMembers && ncPsi1 is RsNamedElement && ncPsi2 is RsNamedElement
             -> return lineBreak(
                 keepLineBreaks = ctx.commonSettings.KEEP_LINE_BREAKS,
-                keepBlankLines = ctx.commonSettings.KEEP_BLANK_LINES_IN_DECLARATIONS)
+                keepBlankLines = ctx.commonSettings.KEEP_BLANK_LINES_IN_DECLARATIONS
+            )
 
-        // Format blank lines between top level items
+            // Format blank lines between top level items
             ncPsi1.isTopLevelItem && ncPsi2.isTopLevelItem
             -> return lineBreak(
                 minLineFeeds = 1 +
@@ -204,9 +206,10 @@ fun Block.computeSpacing(child1: Block?, child2: Block, ctx: RsFmtContext): Spac
                     else ctx.rustSettings.MIN_NUMBER_OF_BLANKS_BETWEEN_ITEMS,
 
                 keepLineBreaks = ctx.commonSettings.KEEP_LINE_BREAKS,
-                keepBlankLines = ctx.commonSettings.KEEP_BLANK_LINES_IN_DECLARATIONS)
+                keepBlankLines = ctx.commonSettings.KEEP_BLANK_LINES_IN_DECLARATIONS
+            )
 
-        // Format blank lines between items (e.g. inside function)
+            // Format blank lines between items (e.g. inside function)
             ncPsi1 is RsItemElement
                 && (ncPsi2 is RsItemElement || ncPsi2.isStmtOrExpr)
                 && node2.firstChildNode !is PsiComment
@@ -216,17 +219,19 @@ fun Block.computeSpacing(child1: Block?, child2: Block, ctx: RsFmtContext): Spac
     return ctx.spacingBuilder.getSpacing(this, child1, child2)
 }
 
-private data class SpacingContext(val node1: ASTNode,
-                                  val node2: ASTNode,
-                                  val psi1: PsiElement,
-                                  val psi2: PsiElement,
-                                  val elementType1: IElementType,
-                                  val elementType2: IElementType,
-                                  val parentType: IElementType?,
-                                  val parentPsi: PsiElement?,
-                                  val ncPsi1: PsiElement,
-                                  val ncPsi2: PsiElement,
-                                  val ctx: RsFmtContext) {
+private data class SpacingContext(
+    val node1: ASTNode,
+    val node2: ASTNode,
+    val psi1: PsiElement,
+    val psi2: PsiElement,
+    val elementType1: IElementType,
+    val elementType2: IElementType,
+    val parentType: IElementType?,
+    val parentPsi: PsiElement?,
+    val ncPsi1: PsiElement,
+    val ncPsi2: PsiElement,
+    val ctx: RsFmtContext
+) {
     companion object {
         fun create(child1: ASTBlock, child2: ASTBlock, ctx: RsFmtContext): SpacingContext? {
             val node1 = child1.node ?: return null
@@ -238,15 +243,19 @@ private data class SpacingContext(val node1: ASTNode,
             val parentType = node1.treeParent.elementType
             val parentPsi = psi1.parent
             val (ncPsi1, ncPsi2) = omitCommentBlocks(node1, psi1, node2, psi2)
-            return SpacingContext(node1, node2, psi1, psi2, elementType1, elementType2,
-                parentType, parentPsi, ncPsi1, ncPsi2, ctx)
+            return SpacingContext(
+                node1, node2, psi1, psi2, elementType1, elementType2,
+                parentType, parentPsi, ncPsi1, ncPsi2, ctx
+            )
         }
 
         /**
          * Handle blocks of comments to get proper spacing between items and statements
          */
-        private fun omitCommentBlocks(node1: ASTNode, psi1: PsiElement,
-                                      node2: ASTNode, psi2: PsiElement): Pair<PsiElement, PsiElement> =
+        private fun omitCommentBlocks(
+            node1: ASTNode, psi1: PsiElement,
+            node2: ASTNode, psi2: PsiElement
+        ): Pair<PsiElement, PsiElement> =
             Pair(
                 if (psi1 is PsiComment && node1.hasLineBreakAfterInSameParent()) {
                     psi1.getPrevNonCommentSibling() ?: psi1
@@ -263,7 +272,8 @@ private data class SpacingContext(val node1: ASTNode,
 }
 
 private inline fun SpacingBuilder.applyForEach(
-    tokenSet: TokenSet, block: SpacingBuilder.(IElementType) -> SpacingBuilder): SpacingBuilder {
+    tokenSet: TokenSet, block: SpacingBuilder.(IElementType) -> SpacingBuilder
+): SpacingBuilder {
     var self = this
     for (tt in tokenSet.types) {
         self = block(this, tt)
@@ -271,9 +281,11 @@ private inline fun SpacingBuilder.applyForEach(
     return self
 }
 
-private fun lineBreak(minLineFeeds: Int = 1,
-                      keepLineBreaks: Boolean = true,
-                      keepBlankLines: Int = 1): Spacing =
+private fun lineBreak(
+    minLineFeeds: Int = 1,
+    keepLineBreaks: Boolean = true,
+    keepBlankLines: Int = 1
+): Spacing =
     createSpacing(0, Int.MAX_VALUE, minLineFeeds, keepLineBreaks, keepBlankLines)
 
 private fun ASTNode.hasLineBreakAfterInSameParent(): Boolean =

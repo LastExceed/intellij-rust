@@ -6,28 +6,35 @@
 package org.rust.ide.intentions
 
 class ChopParameterListIntentionTest : RsIntentionTestBase(ChopParameterListIntention::class) {
-    fun `test one parameter`() = doUnavailableTest("""
+    fun `test one parameter`() = doUnavailableTest(
+        """
         fn foo(/*caret*/p1: i32) {}
-    """)
+    """
+    )
 
-    fun `test two parameter`() = doAvailableTest("""
+    fun `test two parameter`() = doAvailableTest(
+        """
         fn foo(/*caret*/p1: i32, p2: i32) {}
     """, """
         fn foo(
             p1: i32,
             p2: i32
         ) {}
-    """)
+    """
+    )
 
-    fun `test has all line breaks`() = doUnavailableTest("""
+    fun `test has all line breaks`() = doUnavailableTest(
+        """
         fn foo(
             /*caret*/p1: i32,
             p2: i32,
             p3: i32
         ) {}
-    """)
+    """
+    )
 
-    fun `test has some line breaks`() = doAvailableTest("""
+    fun `test has some line breaks`() = doAvailableTest(
+        """
         fn foo(p1: i32, /*caret*/p2: i32,
                p3: i32
         ) {}
@@ -37,9 +44,11 @@ class ChopParameterListIntentionTest : RsIntentionTestBase(ChopParameterListInte
             p2: i32,
             p3: i32
         ) {}
-    """)
+    """
+    )
 
-    fun `test has some line breaks 2`() = doAvailableTest("""
+    fun `test has some line breaks 2`() = doAvailableTest(
+        """
         fn foo(
             p1: i32, p2: i32, p3: i32/*caret*/
         ) {}
@@ -49,17 +58,21 @@ class ChopParameterListIntentionTest : RsIntentionTestBase(ChopParameterListInte
             p2: i32,
             p3: i32
         ) {}
-    """)
+    """
+    )
 
-    fun `test has comment`() = doUnavailableTest("""
+    fun `test has comment`() = doUnavailableTest(
+        """
         fn foo(
             /*caret*/p1: i32, /* comment */
             p2: i32,
             p3: i32
         ) {}
-    """)
+    """
+    )
 
-    fun `test has comment 2`() = doAvailableTest("""
+    fun `test has comment 2`() = doAvailableTest(
+        """
         fn foo(
             /*caret*/p1: i32, /*
                 comment
@@ -74,9 +87,11 @@ class ChopParameterListIntentionTest : RsIntentionTestBase(ChopParameterListInte
             p2: i32,
             p3: i32
         ) {}
-    """)
+    """
+    )
 
-    fun `test has single line comment`() = doAvailableTest("""
+    fun `test has single line comment`() = doAvailableTest(
+        """
         fn foo(/*caret*/p1: i32, // comment p1
                p2: i32, p3: i32 // comment p3
         ) {}
@@ -86,9 +101,11 @@ class ChopParameterListIntentionTest : RsIntentionTestBase(ChopParameterListInte
             p2: i32,
             p3: i32 // comment p3
         ) {}
-    """)
+    """
+    )
 
-    fun `test trailing comma`() = doAvailableTest("""
+    fun `test trailing comma`() = doAvailableTest(
+        """
         fn foo(/*caret*/p1: i32, p2: i32, p3: i32,) {}
     """, """
         fn foo(
@@ -96,9 +113,11 @@ class ChopParameterListIntentionTest : RsIntentionTestBase(ChopParameterListInte
             p2: i32,
             p3: i32,
         ) {}
-    """)
+    """
+    )
 
-    fun `test trailing comma with comments`() = doAvailableTest("""
+    fun `test trailing comma with comments`() = doAvailableTest(
+        """
         fn foo(/*caret*/p1: i32 /* comment 1 */, p2: i32, p3: i32 /* comment 2 */,) {}
     """, """
         fn foo(
@@ -106,5 +125,6 @@ class ChopParameterListIntentionTest : RsIntentionTestBase(ChopParameterListInte
             p2: i32,
             p3: i32 /* comment 2 */,
         ) {}
-    """)
+    """
+    )
 }

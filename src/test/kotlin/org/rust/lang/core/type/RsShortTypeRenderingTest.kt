@@ -12,16 +12,19 @@ import org.rust.lang.core.psi.RsExpr
 import org.rust.lang.core.types.type
 
 class RsShortTypeRenderingTest : RsTestBase() {
-    fun `test ignore ref for levels`() = testShortTypeExpr("""
+    fun `test ignore ref for levels`() = testShortTypeExpr(
+        """
         struct S;
         fn main() {
             let s = &&&&S;
             s;
           //^ &&&&S
         }
-    """)
+    """
+    )
 
-    fun `test basic test`() = testShortTypeExpr("""
+    fun `test basic test`() = testShortTypeExpr(
+        """
         struct S<T, U>;
 
         impl<T, U> S<T, U> {
@@ -40,9 +43,11 @@ class RsShortTypeRenderingTest : RsTestBase() {
             foo;
             //^ S<fn(i32) -> i32, S<fn(i32) -> i32, S<…, …>>>
         }
-    """)
+    """
+    )
 
-    fun `test long 2-level type`() = testShortTypeExpr("""
+    fun `test long 2-level type`() = testShortTypeExpr(
+        """
         struct S<A, B, C, D>;
         struct SomeLongNamedType;
 
@@ -50,25 +55,30 @@ class RsShortTypeRenderingTest : RsTestBase() {
             let s: S<SomeLongNamedType, SomeLongNamedType, SomeLongNamedType, SomeLongNamedType> = unimplemented!();
             s;
         } //^ S<…, …, …, …>
-    """)
+    """
+    )
 
     // TODO write more simple tests
 
-    fun `test unknown type`() = testShortTypeExpr("""
+    fun `test unknown type`() = testShortTypeExpr(
+        """
         struct S<T>(T);
         fn main() {
             let s = S(UnknownType);
             s;
         } //^ S<?>
-    """)
+    """
+    )
 
-    fun `test aliased type`() = testShortTypeExpr("""
+    fun `test aliased type`() = testShortTypeExpr(
+        """
         struct S<A, B>(A, B);
         type Foo<T> = S<T, u8>;
         fn foo(s: Foo<i32>) {
             s;
         } //^ Foo<i32>
-    """)
+    """
+    )
 
     private fun testShortTypeExpr(@Language("Rust") code: String) {
         InlineFile(code)

@@ -17,7 +17,8 @@ abstract class ConvertToTyUsingTraitMethodFixTestBase(
     private val ref = if (isExpectedMut) "&mut " else "&"
     private val fixName = "Convert to ${ref}A using `$trait` trait"
 
-    fun `test Trait with A subs is impl for B`() = checkFixByText(fixName, """
+    fun `test Trait with A subs is impl for B`() = checkFixByText(
+        fixName, """
         $imports
 
         struct A;
@@ -39,9 +40,11 @@ abstract class ConvertToTyUsingTraitMethodFixTestBase(
         fn main () {
             let a: ${ref}A = B.$method();
         }
-    """)
+    """
+    )
 
-    fun `test Trait with C subs is impl for B`() = checkFixIsUnavailable(fixName, """
+    fun `test Trait with C subs is impl for B`() = checkFixIsUnavailable(
+        fixName, """
         $imports
 
         struct A;
@@ -53,14 +56,17 @@ abstract class ConvertToTyUsingTraitMethodFixTestBase(
         fn main () {
             let a: ${ref}A = <error>B<caret></error>;
         }
-    """)
+    """
+    )
 
-    fun `test Trait is not impl for B`() = checkFixIsUnavailable(fixName, """
+    fun `test Trait is not impl for B`() = checkFixIsUnavailable(
+        fixName, """
         struct A;
         struct B;
 
         fn main () {
             let a: ${ref}A = <error>B<caret></error>;
         }
-    """)
+    """
+    )
 }

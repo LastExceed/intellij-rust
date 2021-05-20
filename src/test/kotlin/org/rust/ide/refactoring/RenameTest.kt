@@ -15,7 +15,8 @@ import org.rust.lang.core.psi.ext.descendantsOfType
 import org.rust.openapiext.toPsiDirectory
 
 class RenameTest : RsTestBase() {
-    fun `test function`() = doTest("spam", """
+    fun `test function`() = doTest(
+        "spam", """
         mod a {
             pub mod b {
                 pub fn /*caret*/foo() {}
@@ -59,15 +60,19 @@ class RenameTest : RsTestBase() {
         fn bar() {
             foo()
         }
-    """)
+    """
+    )
 
-    fun `test function with quote`() = doTest("'bar", """
+    fun `test function with quote`() = doTest(
+        "'bar", """
         fn fo/*caret*/o() { foo(); }
     """, """
         fn bar() { bar(); }
-    """)
+    """
+    )
 
-    fun `test field`() = doTest("spam", """
+    fun `test field`() = doTest(
+        "spam", """
         struct S { /*caret*/foo: i32 }
 
         fn main() {
@@ -87,9 +92,11 @@ class RenameTest : RsTestBase() {
             let foo = 62;
             S { spam: foo };
         }
-    """)
+    """
+    )
 
-    fun `test pat binding in let`() = doTest("spam", """
+    fun `test pat binding in let`() = doTest(
+        "spam", """
         struct S { foo: i32 }
         fn main() {
             let S { ref foo } = S { foo: 92 };
@@ -101,9 +108,11 @@ class RenameTest : RsTestBase() {
             let S { foo: ref spam } = S { foo: 92 };
             let x = spam;
         }
-    """)
+    """
+    )
 
-    fun `test pat binding in fn`() = doTest("spam", """
+    fun `test pat binding in fn`() = doTest(
+        "spam", """
         struct S { foo: i32 }
         fn test(S { foo }:S) {
             let x = foo/*caret*/;
@@ -113,9 +122,11 @@ class RenameTest : RsTestBase() {
         fn test(S { foo: spam }:S) {
             let x = spam;
         }
-    """)
+    """
+    )
 
-    fun `test field initialization shorthand`() = doTest("spam", """
+    fun `test field initialization shorthand`() = doTest(
+        "spam", """
         struct S { foo: i32 }
 
         fn main() {
@@ -131,31 +142,39 @@ class RenameTest : RsTestBase() {
             let x = S { foo: spam };
             println!("{}", x.foo);
         }
-    """)
+    """
+    )
 
-    fun `test rename lifetime`() = doTest("'bar", """
+    fun `test rename lifetime`() = doTest(
+        "'bar", """
         fn foo<'foo>(a: &/*caret*/'foo u32) {}
     """, """
         fn foo<'bar>(a: &'bar u32) {}
-    """)
+    """
+    )
 
-    fun `test rename lifetime without quote`() = doTest("baz", """
+    fun `test rename lifetime without quote`() = doTest(
+        "baz", """
         fn foo<'foo>(a: &/*caret*/'foo u32) {}
     """, """
         fn foo<'baz>(a: &'baz u32) {}
-    """)
+    """
+    )
 
-    fun `test rename loop label`() = doTest("'bar", """
+    fun `test rename loop label`() = doTest(
+        "'bar", """
         fn foo() {
-            /*caret*/'foo: loop { break 'foo }
+            /*caret*/'foo: loop { break 'foo; }
         }
     """, """
         fn foo() {
             'bar: loop { break 'bar }
         }
-    """)
+    """
+    )
 
-    fun `test rename file`() = checkByDirectory("""
+    fun `test rename file`() = checkByDirectory(
+        """
     //- main.rs
         use foo::Spam;
         mod foo;
@@ -171,12 +190,14 @@ class RenameTest : RsTestBase() {
         fn main() { let _ = Spam::Quux; }
     //- bar.rs
         pub enum Spam { Quux, Eggs }
-    """) {
+    """
+    ) {
         val file = myFixture.configureFromTempProjectFile("foo.rs")
         myFixture.renameElement(file, "bar.rs")
     }
 
-    fun `test rename mod declaration`() = checkByDirectory("""
+    fun `test rename mod declaration`() = checkByDirectory(
+        """
     //- main.rs
         use foo::Spam;
         mod foo;
@@ -192,14 +213,16 @@ class RenameTest : RsTestBase() {
         fn main() { let _ = Spam::Quux; }
     //- bar.rs
         pub enum Spam { Quux, Eggs }
-    """) {
+    """
+    ) {
         val mod = myFixture.configureFromTempProjectFile("main.rs").descendantsOfType<RsModDeclItem>().single()
         check(mod.name == "foo")
         val file = mod.reference.resolve()!!
         myFixture.renameElement(file, "bar")
     }
 
-    fun `test rename file to mod_rs`() = checkByDirectory("""
+    fun `test rename file to mod_rs`() = checkByDirectory(
+        """
     //- main.rs
         use foo::Spam;
         mod foo;
@@ -215,12 +238,14 @@ class RenameTest : RsTestBase() {
         fn main() { let _ = Spam::Quux; }
     //- mod.rs
         pub enum Spam { Quux, Eggs }
-    """) {
+    """
+    ) {
         val file = myFixture.configureFromTempProjectFile("foo.rs")
         myFixture.renameElement(file, "mod.rs")
     }
 
-    fun `test rename mod declaration for dir module`() = checkByDirectory("""
+    fun `test rename mod declaration for dir module`() = checkByDirectory(
+        """
     //- main.rs
         use foo::Spam;
         mod foo;
@@ -236,14 +261,16 @@ class RenameTest : RsTestBase() {
         fn main() { let _ = Spam::Quux; }
     //- bar/mod.rs
         pub enum Spam { Quux, Eggs }
-    """) {
+    """
+    ) {
         val mod = myFixture.configureFromTempProjectFile("main.rs").descendantsOfType<RsModDeclItem>().single()
         check(mod.name == "foo")
         val file = mod.reference.resolve()!!
         myFixture.renameElement(file, "bar")
     }
 
-    fun `test rename dir for dir module`() = checkByDirectory("""
+    fun `test rename dir for dir module`() = checkByDirectory(
+        """
     //- main.rs
         use foo::Spam;
         mod foo;
@@ -259,7 +286,8 @@ class RenameTest : RsTestBase() {
         fn main() { let _ = Spam::Quux; }
     //- bar/mod.rs
         pub enum Spam { Quux, Eggs }
-    """) {
+    """
+    ) {
         val mod = myFixture.configureFromTempProjectFile("main.rs").descendantsOfType<RsModDeclItem>().single()
         check(mod.name == "foo")
         val file = myFixture.configureFromTempProjectFile("foo/mod.rs")
@@ -274,7 +302,8 @@ class RenameTest : RsTestBase() {
         }
     }
 
-    fun `test rename file to keyword`() = checkByDirectory("""
+    fun `test rename file to keyword`() = checkByDirectory(
+        """
     //- main.rs
         mod foo;
         use foo::bar;
@@ -294,12 +323,14 @@ class RenameTest : RsTestBase() {
         }
     //- match.rs
         pub fn bar() { println!("Bar"); }
-    """) {
+    """
+    ) {
         val file = myFixture.configureFromTempProjectFile("foo.rs")
         myFixture.renameElement(file, "match")
     }
 
-    fun `test does not rename lambda parameter shadowed in an outer comment`() = doTest("new_name", """
+    fun `test does not rename lambda parameter shadowed in an outer comment`() = doTest(
+        "new_name", """
         fn test() {
             let param = 123;
             vec!["abc"].iter().inspect(|param/*caret*/| {
@@ -317,9 +348,11 @@ class RenameTest : RsTestBase() {
             });
             // `param` printed out.
         }
-    """)
+    """
+    )
 
-    fun `test rename raw identifier 1`() = doTest("bar", """
+    fun `test rename raw identifier 1`() = doTest(
+        "bar", """
         fn foo() {}
         fn main() {
             r#foo/*caret*/();
@@ -329,9 +362,11 @@ class RenameTest : RsTestBase() {
         fn main() {
             bar();
         }
-    """)
+    """
+    )
 
-    fun `test rename raw identifier 2`() = doTest("match", """
+    fun `test rename raw identifier 2`() = doTest(
+        "match", """
         fn foo() {}
         fn main() {
             foo/*caret*/();
@@ -341,9 +376,11 @@ class RenameTest : RsTestBase() {
         fn main() {
             r#match();
         }
-    """)
+    """
+    )
 
-    fun `test handle file references in include macro`() = checkByDirectory("""
+    fun `test handle file references in include macro`() = checkByDirectory(
+        """
         //- main.rs
             include!("foo.rs");
         //- foo.rs
@@ -353,12 +390,14 @@ class RenameTest : RsTestBase() {
             include!("bar.rs");
         //- bar.rs
             fn foo() {}
-    """) {
+    """
+    ) {
         val file = myFixture.configureFromTempProjectFile("foo.rs")
         myFixture.renameElement(file, "bar.rs")
     }
 
-    fun `test handle file references in path attribute`() = checkByDirectory("""
+    fun `test handle file references in path attribute`() = checkByDirectory(
+        """
         //- main.rs
             #[path = "foo.rs"]
             mod baz;
@@ -370,12 +409,14 @@ class RenameTest : RsTestBase() {
             mod baz;
         //- bar.rs
             fn foo() {}
-    """) {
+    """
+    ) {
         val file = myFixture.configureFromTempProjectFile("foo.rs")
         myFixture.renameElement(file, "bar.rs")
     }
 
-    fun `test base function`() = doTest("spam", """
+    fun `test base function`() = doTest(
+        "spam", """
         struct S;
         trait T {
             fn foo/*caret*/();
@@ -391,9 +432,11 @@ class RenameTest : RsTestBase() {
         impl T for S {
             fn spam() {}
         }
-    """)
+    """
+    )
 
-    fun `test base const`() = doTest("SPAM", """
+    fun `test base const`() = doTest(
+        "SPAM", """
         struct S;
         trait T {
             const A/*caret*/: i32;
@@ -409,9 +452,11 @@ class RenameTest : RsTestBase() {
         impl T for S {
             const SPAM: i32 = 42;
         }
-    """)
+    """
+    )
 
-    fun `test base type alias`() = doTest("SPAM", """
+    fun `test base type alias`() = doTest(
+        "SPAM", """
         struct S;
         trait T {
             type A/*caret*/;
@@ -427,9 +472,11 @@ class RenameTest : RsTestBase() {
         impl T for S {
             type SPAM = ();
         }
-    """)
+    """
+    )
 
-    fun `test function implementation`() = doTest("spam", """
+    fun `test function implementation`() = doTest(
+        "spam", """
         struct S1;
         struct S2;
         trait T {
@@ -453,9 +500,11 @@ class RenameTest : RsTestBase() {
         impl T for S {
             fn spam() {}
         }
-    """)
+    """
+    )
 
-    fun `test const implementation`() = doTest("SPAM", """
+    fun `test const implementation`() = doTest(
+        "SPAM", """
         struct S1;
         struct S2;
         trait T {
@@ -479,9 +528,11 @@ class RenameTest : RsTestBase() {
         impl T for S2 {
             const SPAM: i32 = 42;
         }
-    """)
+    """
+    )
 
-    fun `test type alias implementation`() = doTest("SPAM", """
+    fun `test type alias implementation`() = doTest(
+        "SPAM", """
         struct S1;
         struct S2;
         trait T {
@@ -505,21 +556,25 @@ class RenameTest : RsTestBase() {
         impl T for S2 {
             type SPAM = ();
         }
-    """)
+    """
+    )
 
     // https://github.com/intellij-rust/intellij-rust/issues/3483
-    fun `test change file type`() = checkByDirectory("""
+    fun `test change file type`() = checkByDirectory(
+        """
     //- foo.txt
         fn foo() {}
     """, """
     //- foo.rs
         fn foo() {}
-    """) {
+    """
+    ) {
         val file = myFixture.configureFromTempProjectFile("foo.txt")
         myFixture.renameElement(file, "foo.rs")
     }
 
-    fun `test rename reference inside a macro call`() = doTest("Spam", """
+    fun `test rename reference inside a macro call`() = doTest(
+        "Spam", """
         macro_rules! foo { ($ i:item) => { $ i }; }
         struct Foo;
         foo! { type T = /*caret*/Foo; }
@@ -527,9 +582,11 @@ class RenameTest : RsTestBase() {
         macro_rules! foo { ($ i:item) => { $ i }; }
         struct Spam;
         foo! { type T = Spam; }
-    """)
+    """
+    )
 
-    fun `test use initialization shorthand after rename`() = doTest("value", """
+    fun `test use initialization shorthand after rename`() = doTest(
+        "value", """
         struct Foo {
             value: u32
         }
@@ -547,9 +604,11 @@ class RenameTest : RsTestBase() {
                 value
             }
         }
-    """)
+    """
+    )
 
-    fun `test use initialization shorthand after rename with comment`() = doTest("value", """
+    fun `test use initialization shorthand after rename with comment`() = doTest(
+        "value", """
         struct Foo {
             value: u32
         }
@@ -567,9 +626,11 @@ class RenameTest : RsTestBase() {
                 value /* comment */
             }
         }
-    """)
+    """
+    )
 
-    fun `test can't use initialization shorthand after rename`() = doTest("bar", """
+    fun `test can't use initialization shorthand after rename`() = doTest(
+        "bar", """
         struct Foo {
             value: u32
         }
@@ -587,9 +648,11 @@ class RenameTest : RsTestBase() {
                 value: bar
             }
         }
-    """)
+    """
+    )
 
-    fun `test can't use initialization shorthand after rename 2`() = doTest("value", """
+    fun `test can't use initialization shorthand after rename 2`() = doTest(
+        "value", """
         struct Foo {
             value: u32,
         }
@@ -611,44 +674,56 @@ class RenameTest : RsTestBase() {
             }
         }
         fn foo(value: u32) -> u32 { unimplemented!() }
-    """)
+    """
+    )
 
-    fun `test rename variable with variable conflict`() = doTestWithConflicts("a", """
+    fun `test rename variable with variable conflict`() = doTestWithConflicts(
+        "a", """
         fn test() {
             let a = 1;
             let b/*caret*/ = 1;
         }
-    """, setOf("Variable `a` is already declared in function `test`"))
+    """, setOf("Variable `a` is already declared in function `test`")
+    )
 
-    fun `test rename variable with parameter conflict`() = doTestWithConflicts("a", """
+    fun `test rename variable with parameter conflict`() = doTestWithConflicts(
+        "a", """
         fn test(a: u32) {
             let b/*caret*/ = 1;
         }
-    """, setOf("Parameter `a` is already declared in function `test`"))
+    """, setOf("Parameter `a` is already declared in function `test`")
+    )
 
-    fun `test rename variable with binding conflict`() = doTestWithConflicts("a", """
+    fun `test rename variable with binding conflict`() = doTestWithConflicts(
+        "a", """
         struct S { a: i32 }
         fn test(S { a }: S) {
             let b/*caret*/ = 1;
         }
-    """, setOf("Binding `a` is already declared in function `test`"))
+    """, setOf("Binding `a` is already declared in function `test`")
+    )
 
-    fun `test rename variable multiple conflicts`() = doTestWithConflicts("a", """
+    fun `test rename variable multiple conflicts`() = doTestWithConflicts(
+        "a", """
         struct S { a: i32 }
         fn test(S { a }: S) {
             let a = 1;
             let b/*caret*/ = 1;
         }
-    """, setOf("Binding `a` is already declared in function `test`", "Variable `a` is already declared in function `test`"))
+    """, setOf("Binding `a` is already declared in function `test`", "Variable `a` is already declared in function `test`")
+    )
 
-    fun `test rename parameter with variable conflict`() = doTestWithConflicts("a", """
+    fun `test rename parameter with variable conflict`() = doTestWithConflicts(
+        "a", """
         fn test(b/*caret*/: u32) {
             let a = 1;
             let c = 1;
         }
-    """, setOf("Variable `a` is already declared in function `test`"))
+    """, setOf("Variable `a` is already declared in function `test`")
+    )
 
-    fun `test rename variable nested function`() = doTest("a", """
+    fun `test rename variable nested function`() = doTest(
+        "a", """
         fn test() {
             let a = 1;
             fn foo() {
@@ -662,7 +737,8 @@ class RenameTest : RsTestBase() {
                 let a = 1;
             }
         }
-    """)
+    """
+    )
 
     private fun doTest(
         newName: String,
@@ -683,8 +759,7 @@ class RenameTest : RsTestBase() {
         try {
             doTest(newName, code, code)
             error("Conflicts $conflicts missing")
-        }
-        catch (e: BaseRefactoringProcessor.ConflictsInTestsException) {
+        } catch (e: BaseRefactoringProcessor.ConflictsInTestsException) {
             assertEquals(e.messages.toSet(), conflicts)
         }
     }

@@ -39,144 +39,202 @@ class RsRustStructureModificationTrackerTest : RsTestBase() {
 
     private fun doTest(op: TestAction, @Language("Rust") code: String, text: String = "a") {
         checkModCount(op, code, text)
-        checkModCount(op, """
+        checkModCount(
+            op, """
             fn wrapped() {
                 $code
             }
-        """, text)
+        """, text
+        )
     }
 
-    fun `test comment`() = doTest(NOT_INC, """
+    fun `test comment`() = doTest(
+        NOT_INC, """
         // /*caret*/
-    """)
+    """
+    )
 
     //
 
-    fun `test fn`() = doTest(INC, """
+    fun `test fn`() = doTest(
+        INC, """
         /*caret*/
-    """, "fn foo() {}")
+    """, "fn foo() {}"
+    )
 
-    fun `test fn vis`() = doTest(INC, """
+    fun `test fn vis`() = doTest(
+        INC, """
         /*caret*/fn foo() {}
-    """, "pub ")
+    """, "pub "
+    )
 
-    fun `test fn name`() = doTest(INC, """
+    fun `test fn name`() = doTest(
+        INC, """
         fn foo/*caret*/() {}
-    """)
+    """
+    )
 
-    fun `test fn params`() = doTest(INC, """
+    fun `test fn params`() = doTest(
+        INC, """
         fn foo(/*caret*/) {}
-    """)
+    """
+    )
 
     //TODO really should not inc
-    fun `test fn param name`() = doTest(INC, """
+    fun `test fn param name`() = doTest(
+        INC, """
         fn foo(a/*caret*/: i32) {}
-    """)
+    """
+    )
 
-    fun `test fn param type`() = doTest(INC, """
+    fun `test fn param type`() = doTest(
+        INC, """
         fn foo(a: i32/*caret*/) {}
-    """)
+    """
+    )
 
-    fun `test fn return type 1`() = doTest(INC, """
+    fun `test fn return type 1`() = doTest(
+        INC, """
         fn foo()/*caret*/ {}
-    """, "-> u8")
+    """, "-> u8"
+    )
 
-    fun `test fn return type 2`() = doTest(INC, """
+    fun `test fn return type 2`() = doTest(
+        INC, """
         fn foo() -> u/*caret*/ {}
-    """, "-> 8")
+    """, "-> 8"
+    )
 
-    fun `test fn body`() = doTest(NOT_INC, """
+    fun `test fn body`() = doTest(
+        NOT_INC, """
         fn foo() { /*caret*/ }
-    """)
+    """
+    )
 
     //
 
-    fun `test struct vis`() = doTest(INC, """
+    fun `test struct vis`() = doTest(
+        INC, """
         /*caret*/struct Foo;
-    """, "pub ")
+    """, "pub "
+    )
 
-    fun `test struct name`() = doTest(INC, """
+    fun `test struct name`() = doTest(
+        INC, """
         struct Foo/*caret*/;
-    """)
+    """
+    )
 
-    fun `test struct body`() = doTest(INC, """
+    fun `test struct body`() = doTest(
+        INC, """
         struct Foo { /*caret*/ }
-    """)
+    """
+    )
 
     //
 
-    fun `test const vis`() = doTest(INC, """
+    fun `test const vis`() = doTest(
+        INC, """
         /*caret*/const FOO: u8 = 0;
-    """, "pub ")
+    """, "pub "
+    )
 
-    fun `test const name`() = doTest(INC, """
+    fun `test const name`() = doTest(
+        INC, """
         const FOO/*caret*/: u8 = 0;
-    """)
+    """
+    )
 
-    fun `test const body`() = doTest(INC, """
+    fun `test const body`() = doTest(
+        INC, """
         const FOO: u8 = 0/*caret*/;
-    """, "1")
+    """, "1"
+    )
 
     //
 
-    fun `test impl type`() = doTest(INC, """
+    fun `test impl type`() = doTest(
+        INC, """
         impl Foo/*caret*/ {}
-    """)
+    """
+    )
 
-    fun `test impl for`() = doTest(INC, """
+    fun `test impl for`() = doTest(
+        INC, """
         impl Foo/*caret*/ {}
-    """, " for")
+    """, " for"
+    )
 
-    fun `test impl for trait`() = doTest(INC, """
+    fun `test impl for trait`() = doTest(
+        INC, """
         impl Foo for/*caret*/ {}
-    """, " Bar")
+    """, " Bar"
+    )
 
-    fun `test impl body`() = doTest(INC, """
+    fun `test impl body`() = doTest(
+        INC, """
         impl Foo { /*caret*/ }
-    """, "fn foo() {}")
+    """, "fn foo() {}"
+    )
 
-    fun `test impl fn`() = doTest(INC, """
+    fun `test impl fn`() = doTest(
+        INC, """
         impl Foo { fn foo(/*caret*/) {} }
-    """, "&self")
+    """, "&self"
+    )
 
-    fun `test impl fn body`() = doTest(NOT_INC, """
+    fun `test impl fn body`() = doTest(
+        NOT_INC, """
         impl Foo { fn foo() { /*caret*/ } }
-    """)
+    """
+    )
 
     //
 
-    fun `test macro`() = doTest(INC, """
+    fun `test macro`() = doTest(
+        INC, """
         macro_rules! foo { () => { /*caret*/ } }
-    """)
+    """
+    )
 
-    fun `test macro call (old engine)`() = checkModCount(INC, """
+    fun `test macro call (old engine)`() = checkModCount(
+        INC, """
         foo! { /*caret*/ }
-    """, "a")
+    """, "a"
+    )
 
     @ExpandMacros
-    fun `test macro call (new engine)`() = checkModCount(NOT_INC, """
+    fun `test macro call (new engine)`() = checkModCount(
+        NOT_INC, """
         foo! { /*caret*/ }
-    """, "a")
+    """, "a"
+    )
 
-    fun `test macro call inside a function (old engine)`() = checkModCount(NOT_INC, """
+    fun `test macro call inside a function (old engine)`() = checkModCount(
+        NOT_INC, """
         fn wrapped() { foo! { /*caret*/ } }
-    """, "a")
+    """, "a"
+    )
 
     @ExpandMacros
-    fun `test macro call a function (new engine)`() = checkModCount(NOT_INC, """
+    fun `test macro call a function (new engine)`() = checkModCount(
+        NOT_INC, """
         fn wrapped() { foo! { /*caret*/ } }
-    """, "a")
+    """, "a"
+    )
 
     //
 
     fun `test vfs file change`() {
-        val p = fileTreeFromText("""
+        val p = fileTreeFromText(
+            """
         //- main.rs
             mod foo;
               //^
         //- foo.rs
             // fn bar() {}
-        """).createAndOpenFileWithCaretMarker()
+        """
+        ).createAndOpenFileWithCaretMarker()
         val file = p.psiFile("foo.rs").virtualFile!!
         checkModCount(INC) {
             runWriteAction {
@@ -186,13 +244,15 @@ class RsRustStructureModificationTrackerTest : RsTestBase() {
     }
 
     fun `test vfs file removal`() {
-        val p = fileTreeFromText("""
+        val p = fileTreeFromText(
+            """
         //- main.rs
             mod foo;
               //^
         //- foo.rs
             fn bar() {}
-        """).createAndOpenFileWithCaretMarker()
+        """
+        ).createAndOpenFileWithCaretMarker()
         val file = p.psiFile("foo.rs").virtualFile!!
         checkModCount(INC) {
             runWriteAction {
@@ -202,13 +262,15 @@ class RsRustStructureModificationTrackerTest : RsTestBase() {
     }
 
     fun `test vfs directory removal`() {
-        val p = fileTreeFromText("""
+        val p = fileTreeFromText(
+            """
         //- main.rs
             mod foo;
               //^
         //- foo/mod.rs
             fn bar() {}
-        """).createAndOpenFileWithCaretMarker()
+        """
+        ).createAndOpenFileWithCaretMarker()
         val file = p.psiFile("foo").virtualFile!!
         checkModCount(INC) {
             runWriteAction {
@@ -218,14 +280,16 @@ class RsRustStructureModificationTrackerTest : RsTestBase() {
     }
 
     fun `test vfs file rename`() {
-        val p = fileTreeFromText("""
+        val p = fileTreeFromText(
+            """
         //- main.rs
             mod foo;
               //^
             mod bar;
         //- foo.rs
             fn bar() {}
-        """).createAndOpenFileWithCaretMarker()
+        """
+        ).createAndOpenFileWithCaretMarker()
         val file = p.psiFile("foo.rs").virtualFile!!
         checkModCount(INC) {
             runWriteAction {
@@ -236,26 +300,36 @@ class RsRustStructureModificationTrackerTest : RsTestBase() {
 
     //
 
-    fun `test replace function with comment`() = doTest(INC, """
+    fun `test replace function with comment`() = doTest(
+        INC, """
         /*caret*/fn foo() {}
-    """, "//")
+    """, "//"
+    )
 
-    fun `test replace expr with block with item`() = doTest(INC, """
+    fun `test replace expr with block with item`() = doTest(
+        INC, """
         fn foo() { 2/*caret*/; }
-    """, "\b{ fn bar() {} }")
+    """, "\b{ fn bar() {} }"
+    )
 
-    fun `test replace expr with block with macro definition`() = doTest(INC, """
+    fun `test replace expr with block with macro definition`() = doTest(
+        INC, """
         fn foo() { 2/*caret*/; }
-    """, "\b{ macro_rules! foo { () => {} } }")
+    """, "\b{ macro_rules! foo { () => {} } }"
+    )
 
-    fun `test replace expr with block with call`() = doTest(NOT_INC, """
+    fun `test replace expr with block with call`() = doTest(
+        NOT_INC, """
         fn foo() { 2/*caret*/; }
-    """, "\b{ foo!() }")
+    """, "\b{ foo!() }"
+    )
 
     fun `test delete use item via PSI`() {
-        InlineFile("""
+        InlineFile(
+            """
             use foo::bar;
-        """)
+        """
+        )
 
         checkModCount(INC) {
             project.runWriteCommandAction {

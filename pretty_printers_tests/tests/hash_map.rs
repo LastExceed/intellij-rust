@@ -23,7 +23,9 @@ use std::collections::{HashMap, HashSet};
 use std::hash::{BuildHasherDefault, Hasher};
 
 #[derive(Default)]
-struct SimpleHasher { hash: u64 }
+struct SimpleHasher {
+    hash: u64,
+}
 
 impl Hasher for SimpleHasher {
     fn finish(&self) -> u64 { self.hash }

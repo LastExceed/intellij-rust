@@ -1,6 +1,5 @@
-import functools
-
 import click
+import functools
 import requests
 from typing import Dict, Any, Optional
 
@@ -11,9 +10,10 @@ def send_github_event(workflow_name: str, token: str, inputs: Optional[Dict[str,
     payload = {"ref": "master", "inputs": inputs}
     headers = {"Authorization": f"token {token}",
                "Accept": "application/vnd.github.v3+json"}
-    response = requests.post(f"https://api.github.com/repos/intellij-rust/intellij-rust/actions/workflows/{workflow_name}/dispatches",
-                             json=payload,
-                             headers=headers)
+    response = requests.post(
+        f"https://api.github.com/repos/intellij-rust/intellij-rust/actions/workflows/{workflow_name}/dispatches",
+        json=payload,
+        headers=headers)
     response.raise_for_status()
 
 

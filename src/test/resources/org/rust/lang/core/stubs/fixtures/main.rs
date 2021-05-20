@@ -15,12 +15,12 @@ fn bar() {}
 /// comment
 pub struct S {
     pub f: f32,
-    g: u32
+    g: u32,
 }
 
 enum E {
     Ok,
-    Error((u32, u8))
+    Error((u32, u8)),
 }
 
 #[repr(C)]
@@ -60,5 +60,5 @@ if_std! {
     use bar::foo as f;
 }
 
-#[path="quux.rs"]
+#[path = "quux.rs"]
 pub mod baz;

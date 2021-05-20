@@ -9,7 +9,8 @@ import org.rust.ide.annotator.RsAnnotatorTestBase
 import org.rust.ide.annotator.RsErrorAnnotator
 
 class AddSelfTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
-    fun `test has no parameters`() = checkFixByText("Add self to function", """
+    fun `test has no parameters`() = checkFixByText(
+        "Add self to function", """
         struct S;
 
         impl S {
@@ -25,9 +26,11 @@ class AddSelfTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
                 self/*caret*/;
             }
         }
-    """)
+    """
+    )
 
-    fun `test has parameters`() = checkFixByText("Add self to function", """
+    fun `test has parameters`() = checkFixByText(
+        "Add self to function", """
         struct S;
 
         impl S {
@@ -43,9 +46,11 @@ class AddSelfTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
                 self/*caret*/;
             }
         }
-    """)
+    """
+    )
 
-    fun `test has parameters under cfg`() = checkFixByText("Add self to function", """
+    fun `test has parameters under cfg`() = checkFixByText(
+        "Add self to function", """
         struct S;
 
         impl S {
@@ -61,5 +66,6 @@ class AddSelfTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
                 self/*caret*/;
             }
         }
-    """)
+    """
+    )
 }

@@ -10,7 +10,8 @@ import org.intellij.lang.annotations.Language
 import org.rust.RsTestBase
 
 class RsGotoImplementationsTest : RsTestBase() {
-    fun `test trait`() = doTest("""
+    fun `test trait`() = doTest(
+        """
         trait T/*caret*/{
             fn test(&self);
         }
@@ -26,9 +27,11 @@ class RsGotoImplementationsTest : RsTestBase() {
         impl T for /*caret*/(){
             fn test(&self) {}
         }
-    """)
+    """
+    )
 
-    fun `test member`() = doTest("""
+    fun `test member`() = doTest(
+        """
         trait T{
             fn test/*caret*/(&self);
         }
@@ -42,9 +45,11 @@ class RsGotoImplementationsTest : RsTestBase() {
         impl T for (){
             fn /*caret*/test(&self) {}
         }
-    """)
+    """
+    )
 
-    fun `test not implemented`() = doTest("""
+    fun `test not implemented`() = doTest(
+        """
         trait T{
             fn test/*caret*/(&self) {}
         }
@@ -56,7 +61,8 @@ class RsGotoImplementationsTest : RsTestBase() {
         }
         impl T for (){
         }
-    """)
+    """
+    )
 
 
     private fun doTest(@Language("Rust") before: String, @Language("Rust") after: String) =

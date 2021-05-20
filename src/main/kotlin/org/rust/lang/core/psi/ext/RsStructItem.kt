@@ -28,10 +28,11 @@ enum class RsStructKind {
     UNION
 }
 
-val RsStructItem.kind: RsStructKind get() {
-    val hasUnion = greenStub?.isUnion ?: (union != null)
-    return if (hasUnion) RsStructKind.UNION else RsStructKind.STRUCT
-}
+val RsStructItem.kind: RsStructKind
+    get() {
+        val hasUnion = greenStub?.isUnion ?: (union != null)
+        return if (hasUnion) RsStructKind.UNION else RsStructKind.STRUCT
+    }
 
 val RsStructItem.isTupleStruct get() = tupleFields != null
 

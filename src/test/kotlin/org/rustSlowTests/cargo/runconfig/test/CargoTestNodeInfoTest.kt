@@ -15,58 +15,83 @@ import org.intellij.lang.annotations.Language
 
 class CargoTestNodeInfoTest : CargoTestRunnerTestBase() {
 
-    fun `test int diff`() = checkErrors("""
+    fun `test int diff`() = checkErrors(
+        """
        assert_eq!(1, 2);
-    """, "", Diff("1", "2"))
+    """, "", Diff("1", "2")
+    )
 
-    fun `test char diff`() = checkErrors("""
+    fun `test char diff`() = checkErrors(
+        """
        assert_eq!('a', 'c');
-    """, "", Diff("a", "c"))
+    """, "", Diff("a", "c")
+    )
 
-    fun `test string diff`() = checkErrors("""
+    fun `test string diff`() = checkErrors(
+        """
        assert_eq!("aaa", "bbb");
-    """, "", Diff("aaa", "bbb"))
+    """, "", Diff("aaa", "bbb")
+    )
 
-    fun `test multiline string diff`() = checkErrors("""
+    fun `test multiline string diff`() = checkErrors(
+        """
        assert_eq!("a\naa", "bbb");
-    """, "", Diff("a\naa", "bbb"))
+    """, "", Diff("a\naa", "bbb")
+    )
 
-    fun `test assert_eq with message`() = checkErrors("""
+    fun `test assert_eq with message`() = checkErrors(
+        """
        assert_eq!(1, 2, "`1` != `2`");
-    """, "`1` != `2`", Diff("1", "2"))
+    """, "`1` != `2`", Diff("1", "2")
+    )
 
-    fun `test no diff`() = checkErrors("""
+    fun `test no diff`() = checkErrors(
+        """
        assert!(1 != 1);
-    """, """assertion failed: 1 != 1""")
+    """, """assertion failed: 1 != 1"""
+    )
 
-    fun `test assert with message`() = checkErrors("""
+    fun `test assert with message`() = checkErrors(
+        """
        assert!("aaa" != "aaa", "message");
-    """, "message")
+    """, "message"
+    )
 
-    fun `test assert_ne`() = checkErrors("""
+    fun `test assert_ne`() = checkErrors(
+        """
        assert_ne!(123, 123);
-    """, "")
+    """, ""
+    )
 
-    fun `test assert_ne with message`() = checkErrors("""
+    fun `test assert_ne with message`() = checkErrors(
+        """
        assert_ne!(123, 123, "123 == 123");
-    """, "123 == 123")
+    """, "123 == 123"
+    )
 
-    fun `test unescape error messages`() = checkErrors("""
+    fun `test unescape error messages`() = checkErrors(
+        """
        assert_eq!("a\\\\b", "a\\b", "`a\\\\b` != `a\\b`");
-    """, "`a\\\\b` != `a\\b`", Diff("a\\\\b", "a\\b"))
+    """, "`a\\\\b` != `a\\b`", Diff("a\\\\b", "a\\b")
+    )
 
-    fun `test don't unescape test output`() = checkOutput("""
+    fun `test don't unescape test output`() = checkOutput(
+        """
         println!("a\\\\b");
-    """, "a\\\\b\n")
+    """, "a\\\\b\n"
+    )
 
-    fun `test successful output`() = checkOutput("""
+    fun `test successful output`() = checkOutput(
+        """
         println!("
                   aaa - bbb");
     """, """
           aaa - bbb
-    """)
+    """
+    )
 
-    fun `test failed output`() = checkOutput("""
+    fun `test failed output`() = checkOutput(
+        """
         println!("
                   aaa - bbb");
         panic!("
@@ -76,25 +101,30 @@ class CargoTestNodeInfoTest : CargoTestRunnerTestBase() {
 
 
           ccc - ddd
-    """, shouldPass = false)
+    """, shouldPass = false
+    )
 
     fun `test root output`() {
         val testProject = buildProject {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "sandbox"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
 
             dir("src") {
-                rust("main.rs", """
+                rust(
+                    "main.rs", """
                     #[test]
                     fn test() {
                         /*caret*/
                         let x = 42;
                     }
-                """)
+                """
+                )
             }
         }
 
@@ -133,20 +163,24 @@ class CargoTestNodeInfoTest : CargoTestRunnerTestBase() {
 
     private fun getTestNode(testFnText: String, shouldPass: Boolean): SMTestProxy {
         val testProject = buildProject {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "sandbox"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
 
             dir("src") {
-                rust("main.rs", """
+                rust(
+                    "main.rs", """
                     #[test]
                     fn test() {/*caret*/
                         $testFnText
                     }
-                """)
+                """
+                )
             }
         }
         myFixture.configureFromTempProjectFile(testProject.fileWithCaret)

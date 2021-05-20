@@ -66,7 +66,8 @@ if __name__ == '__main__':
         dump_as_json(fixed, f"regressions/{project_name}_fixed.json")
         dump_as_json(new, f"regressions/{project_name}_new.json")
 
-        print(f"total annotations for {project_name}: {len(without_changes)} without changes, {len(with_changes)} with changes")
+        print(
+            f"total annotations for {project_name}: {len(without_changes)} without changes, {len(with_changes)} with changes")
         # should be single line (second and subsequent lines are not displayed)
         print(f"::warning file={project_name}:: {len(new)} annotations introduced, {len(fixed)} annotations fixed")
         print()

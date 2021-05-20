@@ -14,7 +14,6 @@ Feel free to remove all the irrelevant text to request a new feature.
 
 ## Problem description
 
-
 ## Steps to reproduce
 
 <!--

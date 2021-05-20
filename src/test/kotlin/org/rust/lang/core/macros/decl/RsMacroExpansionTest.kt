@@ -20,7 +20,8 @@ import org.rust.singleProject
 import org.rust.stdext.BothEditions
 
 class RsMacroExpansionTest : RsMacroExpansionTestBase() {
-    fun `test ident`() = doTest("""
+    fun `test ident`() = doTest(
+        """
         macro_rules! foo {
             ($ i:ident) => (
                 fn $ i() {}
@@ -29,7 +30,8 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
         foo! { bar }
     """, """
         fn bar() {}
-    """)
+    """
+    )
 
     fun `test any rust keyword may be matched as an identifier`() {
         val keywords = RS_KEYWORDS.types.map { it.toString() } +
@@ -41,25 +43,29 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
                 )
             }
             ${keywords.joinToString("\n") { "foo! { $it }" }}
-        """, *keywords.map { "bar! { $it }" }.toTypedArray())
+        """, *keywords.map { "bar! { $it }" }.toTypedArray()
+        )
     }
 
     fun `test any rust keyword may be used as a metavar name`() {
         val keywords = TokenSet.andNot(RS_KEYWORDS, tokenSetOf(CRATE)).types.map { it.toString() } +
             listOf("true", "false")
-        doTest(keywords.joinToString("\n") {"""
+        doTest(keywords.joinToString("\n") {
+            """
             macro_rules! ${it}1 {
                 ($ $it:ident) => (
                     use $ $it;
                 )
             }
             ${it}1! { bar }
-        """}, *keywords.map { "use bar;" }.toTypedArray())
+        """
+        }, *keywords.map { "use bar;" }.toTypedArray())
     }
 
     // This test doesn't check result of '$crate' expansion because it's implementation detail.
     // For example rustc expands '$crate' to synthetic token without text representation
-    fun `test '$crate' metavar is matched as identifier`() = doTest("""
+    fun `test '$crate' metavar is matched as identifier`() = doTest(
+        """
         macro_rules! foo {
             () => { bar!($ crate); } // $ crate consumed as a single identifier by `bar`
         }
@@ -69,9 +75,11 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
         foo! {}
     """, """
         mod a {}
-    """)
+    """
+    )
 
-    fun `test path`() = doTest("""
+    fun `test path`() = doTest(
+        """
         macro_rules! foo {
             ($ i:path) => {
                 fn foo() { let a = $ i; }
@@ -89,9 +97,11 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
         fn foo() { let a = bar::baz::<u8>; }
     """, """
         fn foo() { let a = bar::<u8>::baz::<u8>; }
-    """)
+    """
+    )
 
-    fun `test type-like path`() = doTest("""
+    fun `test type-like path`() = doTest(
+        """
         macro_rules! foo {
             ($ i:path) => {
                 struct Foo<F: $ i> { inner: F }
@@ -100,18 +110,22 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
         foo! { Bar<Baz> }
     """, """
         struct Foo<F: Bar<Baz>> { inner: F }
-    """)
+    """
+    )
 
-    fun `test expr`() = doTest("""
+    fun `test expr`() = doTest(
+        """
         macro_rules! foo {
             ($ i:expr) => ( fn bar() { $ i; } )
         }
         foo! { 2 + 2 * baz(3).quux() }
     """, """
          fn bar() { (2 + 2 * baz(3).quux()); }
-    """)
+    """
+    )
 
-    fun `test ty`() = doTest("""
+    fun `test ty`() = doTest(
+        """
         macro_rules! foo {
             ($ i:ty) => (
                 fn bar() -> $ i { unimplemented!() }
@@ -120,18 +134,22 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
         foo! { Baz<u8> }
     """, """
         fn bar() -> Baz<u8> { unimplemented!() }
-    """)
+    """
+    )
 
-    fun `test pat`() = doTest("""
+    fun `test pat`() = doTest(
+        """
         macro_rules! foo {
             ($ i:pat) => { fn foo() { let $ i; } }
         }
         foo! { (a, b) }
     """, """
         fn foo() { let (a, b); }
-    """)
+    """
+    )
 
-    fun `test stmt`() = doTest("""
+    fun `test stmt`() = doTest(
+        """
         macro_rules! foo {
             ($ i:stmt) => (
                 fn bar() { $ i; }
@@ -143,18 +161,22 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
          fn bar() { 2; }
     """, """
          fn bar() { let a = 0; }
-    """)
+    """
+    )
 
-    fun `test block`() = doTest("""
+    fun `test block`() = doTest(
+        """
         macro_rules! foo {
             ($ i:block) => { fn foo() $ i }
         }
         foo! { { 1; } }
     """, """
         fn foo() { 1; }
-    """)
+    """
+    )
 
-    fun `test meta`() = doTest("""
+    fun `test meta`() = doTest(
+        """
         macro_rules! foo {
             ($ i:meta) => (
                 #[$ i]
@@ -165,27 +187,33 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
     """, """
         #[cfg(target_os = "windows")]
          fn bar() {}
-    """)
+    """
+    )
 
-    fun `test tt block`() = doTest("""
+    fun `test tt block`() = doTest(
+        """
         macro_rules! foo {
             ($ i:tt) => { fn foo() $ i }
         }
         foo! { { 1; } }
     """, """
         fn foo() { 1; }
-    """)
+    """
+    )
 
-    fun `test tt collapsed token`() = doTest("""
+    fun `test tt collapsed token`() = doTest(
+        """
         macro_rules! foo {
             ($ i:tt) => { fn foo() { true $ i false; } }
         }
         foo! { && }
     """, """
         fn foo() { true && false; }
-    """)
+    """
+    )
 
-    fun `test tt collapsed token 2`() = doTest("""
+    fun `test tt collapsed token 2`() = doTest(
+        """
         macro_rules! foo {
             ($ i:tt) => { fn foo() { $ i; } }
         }
@@ -201,9 +229,11 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
         fn foo() { 0.0f32; }
     """, """
         fn foo() { 0.1e-3f32; }
-    """)
+    """
+    )
 
-    fun `test vis matcher`() = doTest("""
+    fun `test vis matcher`() = doTest(
+        """
         macro_rules! foo {
             ($ vis:vis $ name:ident) => { $ vis fn $ name() {}};
         }
@@ -219,9 +249,11 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
         pub(in a::b) fn baz() {}
     """, """
         fn baz() {}
-    """)
+    """
+    )
 
-    fun `test lifetime matcher`() = doTest("""
+    fun `test lifetime matcher`() = doTest(
+        """
         macro_rules! foo {
             ($ lt:lifetime) => { struct Ref<$ lt>(&$ lt str);};
         }
@@ -231,9 +263,11 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
         struct Ref<'a>(&'a str);
     """, """
         struct Ref<'lifetime>(&'lifetime str);
-    """)
+    """
+    )
 
-    fun `test literal matcher`() = doTest("""
+    fun `test literal matcher`() = doTest(
+        """
         macro_rules! foo {
             ($ type:ty $ lit:literal) => { const VALUE: $ type = $ lit;};
         }
@@ -255,25 +289,31 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
         const VALUE: f32 = 0.0f32;
     """, """
         const VALUE: f32 = 0.1e-3f32;
-    """)
+    """
+    )
 
-    fun `test tt group`() = doTest("""
+    fun `test tt group`() = doTest(
+        """
         macro_rules! foo {
             ($($ i:tt)*) => { $($ i)* }
         }
         foo! { fn foo() {} }
     """, """
         fn foo() {}
-    """)
+    """
+    )
 
-    fun `test empty group`() = doTest(MacroExpansionMarks.groupInputEnd1, """
+    fun `test empty group`() = doTest(
+        MacroExpansionMarks.groupInputEnd1, """
         macro_rules! foo {
             ($ ($ i:item)*) => ($ ( $ i )*)
         }
         foo! {}
-    """, "")
+    """, ""
+    )
 
-    fun `test group after empty group`() = doTest("""
+    fun `test group after empty group`() = doTest(
+        """
         macro_rules! foo {
             ($($ i:meta)* ; $($ j:item)*) => {
                 $($ j)*
@@ -283,16 +323,20 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
         foo!{ ; fn foo() {} }
     """, """
         fn foo() {}
-    """)
+    """
+    )
 
-    fun `test group with $crate usage`() = doTest(MacroExpansionMarks.groupInputEnd1, """
+    fun `test group with $crate usage`() = doTest(
+        MacroExpansionMarks.groupInputEnd1, """
         macro_rules! foo {
             ($ ($ i:item)*; $ ($ j:item)*) => ($ ( use $ crate::$ i; )* $ ( use $ crate::$ i; )*)
         }
         foo! {;}
-    """, "")
+    """, ""
+    )
 
-    fun `test all items`() = doTest("""
+    fun `test all items`() = doTest(
+        """
         macro_rules! foo {
             ($ ($ i:item)*) => ($ (
                 $ i
@@ -327,9 +371,11 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
         fn h() {}
         extern {}
         type T = u8;
-    """)
+    """
+    )
 
-    fun `test match complex pattern`() = doTest("""
+    fun `test match complex pattern`() = doTest(
+        """
         macro_rules! foo {
             (=/ $ i1:item #%*=> $ i2:item 0.0) => (
                 $ i1
@@ -346,9 +392,11 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
     """, """
         fn foo() {}
         fn bar() {}
-    """)
+    """
+    )
 
-    fun `test match pattern by first token`() = doTest(MacroExpansionMarks.failMatchPatternByToken, """
+    fun `test match pattern by first token`() = doTest(
+        MacroExpansionMarks.failMatchPatternByToken, """
         macro_rules! foo {
             ($ i:ident) => (
                 mod $ i {}
@@ -369,9 +417,11 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
         fn bar() {}
     """, """
         struct Baz;
-    """)
+    """
+    )
 
-    fun `test match pattern by last token`() = doTest(MacroExpansionMarks.failMatchPatternByToken, """
+    fun `test match pattern by last token`() = doTest(
+        MacroExpansionMarks.failMatchPatternByToken, """
         macro_rules! foo {
             ($ i:ident) => (
                 mod $ i {}
@@ -392,9 +442,11 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
         fn bar() {}
     """, """
         struct Baz;
-    """)
+    """
+    )
 
-    fun `test match pattern by word token 1`() = doTest(MacroExpansionMarks.failMatchPatternByToken, """
+    fun `test match pattern by word token 1`() = doTest(
+        MacroExpansionMarks.failMatchPatternByToken, """
         macro_rules! foo {
             ($ i:ident) => (
                 mod $ i {}
@@ -415,9 +467,11 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
         fn bar() {}
     """, """
         struct Baz;
-    """)
+    """
+    )
 
-    fun `test match pattern by word token 2`() = doTest(MacroExpansionMarks.failMatchPatternByToken, """
+    fun `test match pattern by word token 2`() = doTest(
+        MacroExpansionMarks.failMatchPatternByToken, """
         macro_rules! foo {
             ($ i:ident) => (
                 mod $ i {}
@@ -438,9 +492,11 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
         fn bar() {}
     """, """
         struct Baz;
-    """)
+    """
+    )
 
-    fun `test match pattern by word token 3`() = doTest(MacroExpansionMarks.failMatchPatternByToken, """
+    fun `test match pattern by word token 3`() = doTest(
+        MacroExpansionMarks.failMatchPatternByToken, """
         macro_rules! foo {
             ($ i:ident) => (
                 mod $ i {}
@@ -461,9 +517,11 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
         fn bar() {}
     """, """
         struct Baz;
-    """)
+    """
+    )
 
-    fun `test match pattern by binding type 1`() = doTest(MacroExpansionMarks.failMatchPatternByExtraInput, """
+    fun `test match pattern by binding type 1`() = doTest(
+        MacroExpansionMarks.failMatchPatternByExtraInput, """
         macro_rules! foo {
             ($ i:ident) => (
                 fn $ i() {}
@@ -478,9 +536,11 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
         fn foo() {}
     """, """
         struct Bar { field: Baz<u8> }
-    """)
+    """
+    )
 
-    fun `test match pattern by binding type 2`() = doTest(MacroExpansionMarks.failMatchPatternByBindingType, """
+    fun `test match pattern by binding type 2`() = doTest(
+        MacroExpansionMarks.failMatchPatternByBindingType, """
         macro_rules! foo {
             ($ i:item) => (
                 $ i
@@ -495,9 +555,11 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
         fn foo() {}
     """, """
         struct Bar { field: Baz<u8> }
-    """)
+    """
+    )
 
-    fun `test match group pattern by separator token`() = doTest("""
+    fun `test match group pattern by separator token`() = doTest(
+        """
         macro_rules! foo {
             ($ ($ i:ident),*) => ($ (
                 mod $ i {}
@@ -522,9 +584,11 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
     """ to MacroExpansionMarks.failMatchGroupBySeparator, """
         struct Foo;
         struct Bar;
-    """ to MacroExpansionMarks.failMatchPatternByExtraInput)
+    """ to MacroExpansionMarks.failMatchPatternByExtraInput
+    )
 
-    fun `test match * vs + group pattern`() = doTest("""
+    fun `test match * vs + group pattern`() = doTest(
+        """
         macro_rules! foo {
             ($ ($ i:ident)+) => (
                 mod plus_matched {}
@@ -539,10 +603,12 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
         mod asterisk_matched {}
     """ to MacroExpansionMarks.failMatchGroupTooFewElements, """
         mod plus_matched {}
-    """ to null)
+    """ to null
+    )
 
     // TODO should work only on 2018 edition
-    fun `test match * vs ? group pattern`() = doTest(MacroExpansionMarks.questionMarkGroupEnd, """
+    fun `test match * vs ? group pattern`() = doTest(
+        MacroExpansionMarks.questionMarkGroupEnd, """
         macro_rules! foo {
             ($ ($ i:ident)?) => (
                 mod question_matched {}
@@ -561,9 +627,11 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
         mod question_matched {}
     """, """
         mod asterisk_matched {}
-    """)
+    """
+    )
 
-    fun `test group pattern with collapsed token as a separator`() = doTest("""
+    fun `test group pattern with collapsed token as a separator`() = doTest(
+        """
         macro_rules! foo {
             ($ ($ i:ident)&&*) => ($ (
                 mod $ i {}
@@ -573,9 +641,11 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
     """, """
         mod foo {}
         mod bar {}
-    """)
+    """
+    )
 
-    fun `test insert group with separator token`() = doTest("""
+    fun `test insert group with separator token`() = doTest(
+        """
         macro_rules! foo {
             ($ ($ i:expr),*) => {
                 fn foo() { $ ($ i);*; }
@@ -584,9 +654,11 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
         foo! { 1, 2, 3, 4 }
     """, """
         fn foo() { 1; 2; 3; 4; }
-    """)
+    """
+    )
 
-    fun `test match non-group pattern with asterisk`() = doTest("""
+    fun `test match non-group pattern with asterisk`() = doTest(
+        """
         macro_rules! foo {
             ($ ($ i:ident),*) => ($ (
                 mod $ i {}
@@ -604,9 +676,11 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
     """ to MacroExpansionMarks.groupInputEnd3, """
         struct Foo;
         struct Bar;
-    """ to MacroExpansionMarks.failMatchPatternByExtraInput)
+    """ to MacroExpansionMarks.failMatchPatternByExtraInput
+    )
 
-    fun `test multiple groups with reversed variables order`() = doTest("""
+    fun `test multiple groups with reversed variables order`() = doTest(
+        """
         macro_rules! foo {
             ($($ i:item),*; $($ e:expr),*) => {
                 fn foo() { $($ e);*; }
@@ -618,9 +692,11 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
         fn foo() { 1; 2; }
         mod a {}
         mod b {}
-    """)
+    """
+    )
 
-    fun `test nested groups`() = doTest("""
+    fun `test nested groups`() = doTest(
+        """
         macro_rules! foo {
             ($($ i:ident $($ e:expr),*);*) => {
                 $(fn $ i() { $($ e);*; })*
@@ -630,9 +706,11 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
     """, """
         fn foo() { 1; 2; 3; }
         fn bar() { 4; 5; 6; }
-    """)
+    """
+    )
 
-    fun `test nested groups that uses vars from outer group`() = doTest("""
+    fun `test nested groups that uses vars from outer group`() = doTest(
+        """
         macro_rules! foo {
             ($($ i:expr, $($ e:ident),*);*) => {
                 $($( fn $ e() { $ i; } )*)*
@@ -645,9 +723,11 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
         fn baz() { 1; }
         fn quux() { 2; }
         fn eggs() { 2; }
-    """)
+    """
+    )
 
-    fun `test group in braces`() = doTest("""
+    fun `test group in braces`() = doTest(
+        """
         macro_rules! foo {
             ( { $($ i:item)* } $ j:expr) => {
                 $( $ i )*
@@ -662,9 +742,11 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
          mod a {}
          mod b {}
          fn foo() { 2; }
-    """)
+    """
+    )
 
-    fun `test group with the separator the same as the next token 1`() = doTest(MacroExpansionMarks.groupInputEnd1, """
+    fun `test group with the separator the same as the next token 1`() = doTest(
+        MacroExpansionMarks.groupInputEnd1, """
         macro_rules! foo {
             ($($ i:item)=* =) => {
                 $($ i)*
@@ -676,9 +758,11 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
         }
     """, """
          fn foo() {}
-    """)
+    """
+    )
 
-    fun `test group with the separator the same as the next token 2`() = doTest(MacroExpansionMarks.groupInputEnd2, """
+    fun `test group with the separator the same as the next token 2`() = doTest(
+        MacroExpansionMarks.groupInputEnd2, """
         macro_rules! foo {
             ($($ i:item)=* = #) => {
                 $($ i)*
@@ -690,9 +774,11 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
         }
     """, """
          fn foo() {}
-    """)
+    """
+    )
 
-    fun `test distinguish between ',)+' and '),*' groups`() = doTest("""
+    fun `test distinguish between ',)+' and '),*' groups`() = doTest(
+        """
         macro_rules! foo {
             ($($ e:expr,)+) => { fn foo() { $( $ e; )+ } };
             ($($ e:expr),*) => { fn bar() { $( $ e; )* } };
@@ -703,9 +789,11 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
         fn foo() { 1; 2; }
     """, """
         fn bar() { 1; 2; }
-    """)
+    """
+    )
 
-    fun `test merged groups`() = doTest("""
+    fun `test merged groups`() = doTest(
+        """
         macro_rules! foo {
             (($($ a:ident)*) ; ($($ b:block)*)) => {
                 $(
@@ -721,9 +809,11 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
     """, """
         fn bar() { 0; }
         fn baz() { 1; }
-    """)
+    """
+    )
 
-    fun `test impl members context`() = checkSingleMacro("""
+    fun `test impl members context`() = checkSingleMacro(
+        """
         macro_rules! foo {
             () => {
                 fn foo() {}
@@ -740,9 +830,11 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
         fn foo() {}
         type Bar = u8;
         const BAZ: u8 = 0;
-    """)
+    """
+    )
 
-    fun `test pattern context`() = checkSingleMacro("""
+    fun `test pattern context`() = checkSingleMacro(
+        """
         macro_rules! foo {
             ($ i:ident, $ j:ident) => {
                 ($ i, $ j)
@@ -754,9 +846,11 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
         }      //^
     """, """
         (a, b)
-    """)
+    """
+    )
 
-    fun `test type context`() = checkSingleMacro("""
+    fun `test type context`() = checkSingleMacro(
+        """
         macro_rules! foo {
             ($ i:ident, $ j:ident) => {
                 $ i<$ j>
@@ -767,9 +861,11 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
                   //^
     """, """
         Option<i32>
-    """)
+    """
+    )
 
-    fun `test stmt context`() = checkSingleMacro("""
+    fun `test stmt context`() = checkSingleMacro(
+        """
         macro_rules! foo {
             ($ i:ident, $ j:ident) => {
                 struct $ i;
@@ -785,27 +881,32 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
         struct S;
         let a = 0;
         (S, a)
-    """)
+    """
+    )
 
     // There was a problem with "debug" macro related to the fact that we parse macro call
     // with such name as a specific syntax construction
-    fun `test macro with name "debug"`() = doTest("""
+    fun `test macro with name "debug"`() = doTest(
+        """
         macro_rules! debug {
             ($ t:ty) => { fn foo() -> $ t {} }
         }
         debug!(i32);
     """, """
         fn foo() -> i32 {}
-    """)
+    """
+    )
 
-    fun `test macro with name "vec"`() = doTest("""
+    fun `test macro with name "vec"`() = doTest(
+        """
        macro_rules! vec {
            ($ t:ty) => { fn foo() -> $ t {} }
        }
        vec!(i32);
     """, """
         fn foo() -> i32 {}
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
     fun `test standard "vec!"`() {
@@ -818,14 +919,17 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
             // language=Rust
             "(<[_]>::into_vec(box [1, 2, 3]))"
         }
-        checkSingleMacro("""
+        checkSingleMacro(
+            """
             fn main() {
                 vec![1, 2, 3];
             } //^
-        """, expansion)
+        """, expansion
+        )
     }
 
-    fun `test expend macro definition`() = doTest("""
+    fun `test expend macro definition`() = doTest(
+        """
         macro_rules! foo {
             () => {
                 macro_rules! bar { () => {} }
@@ -834,9 +938,11 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
         foo!();
     """, """
         macro_rules! bar { () => {} }
-    """)
+    """
+    )
 
-    fun `test macro defined with a macro`() = doTest("""
+    fun `test macro defined with a macro`() = doTest(
+        """
         macro_rules! foo {
             () => {
                 macro_rules! bar { () => { fn foo() {} } }
@@ -847,9 +953,11 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
     """, """
         macro_rules! bar { () => { fn foo() {} } }
         fn foo() {}
-    """)
+    """
+    )
 
-    fun `test macro (with arguments) defined with a macro`() = doTest("""
+    fun `test macro (with arguments) defined with a macro`() = doTest(
+        """
         macro_rules! foo {
             ($ a:item) => {
                 macro_rules! bar { ($ b:item) => { $ b }; }
@@ -860,9 +968,11 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
     """, """
         macro_rules! bar { ($ b:item) => { $ b }; }
         fn foo() {}
-    """ to MacroExpansionMarks.substMetaVarNotFound)
+    """ to MacroExpansionMarks.substMetaVarNotFound
+    )
 
-    fun `test expand macro defined in function`() = doTest("""
+    fun `test expand macro defined in function`() = doTest(
+        """
         fn main() {
             macro_rules! foo {
                 () => { 2 + 2 };
@@ -871,9 +981,11 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
         }
     """, """
         2 + 2
-    """)
+    """
+    )
 
-    fun `test expand macro qualified with $crate`() = doTest("""
+    fun `test expand macro qualified with $crate`() = doTest(
+        """
         macro_rules! foo {
             () => { $ crate::bar!(); };
         }
@@ -884,18 +996,22 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
         foo!();
     """, """
         fn foo() {}
-    """ to NameResolutionTestmarks.dollarCrateMagicIdentifier)
+    """ to NameResolutionTestmarks.dollarCrateMagicIdentifier
+    )
 
-    fun `test incorrect "vis" group does not cause OOM`() = doErrorTest("""
+    fun `test incorrect "vis" group does not cause OOM`() = doErrorTest(
+        """
         // error: repetition matches empty token tree
         macro_rules! foo {
             ($($ p:vis)*) => {}
         }
         foo!(a);
         //^
-    """, MacroExpansionMarks.groupMatchedEmptyTT)
+    """, MacroExpansionMarks.groupMatchedEmptyTT
+    )
 
-    fun `test two sequential groups starting with the same token`() = doTest("""
+    fun `test two sequential groups starting with the same token`() = doTest(
+        """
         macro_rules! foobar {
             (
                 $(: foo)?
@@ -915,11 +1031,13 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
         fn b(){}
     """, """
         fn c(){}
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithDependencyRustProjectDescriptor::class)
     @BothEditions
-    fun `test local_inner_macros 1`() = checkSingleMacroByTree("""
+    fun `test local_inner_macros 1`() = checkSingleMacroByTree(
+        """
     //- main.rs
         extern crate test_package;
         use test_package::foo;
@@ -937,11 +1055,13 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
         }
     """, """
         fn bar() {}
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithDependencyRustProjectDescriptor::class)
     @BothEditions
-    fun `test local_inner_macros 2`() = checkSingleMacroByTree("""
+    fun `test local_inner_macros 2`() = checkSingleMacroByTree(
+        """
     //- main.rs
         extern crate test_package;
         use test_package::foo;
@@ -967,11 +1087,13 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
             () => { fn fake_bar() {} };
         }
         fn bar() {}
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithDependencyRustProjectDescriptor::class)
     @BothEditions
-    fun `test local_inner_macros 3`() = checkSingleMacroByTree("""
+    fun `test local_inner_macros 3`() = checkSingleMacroByTree(
+        """
     //- main.rs
         extern crate test_package;
         use test_package::foo;
@@ -994,11 +1116,13 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
     """, """
         fn bar() {}
         fn local_bar() {}
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithDependencyRustProjectDescriptor::class)
     @BothEditions
-    fun `test local_inner_macros 4`() = checkSingleMacroByTree("""
+    fun `test local_inner_macros 4`() = checkSingleMacroByTree(
+        """
     //- main.rs
         extern crate test_package;
         use test_package::foo;
@@ -1024,9 +1148,11 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
     """, """
         fn bar() {}
         fn local_bar() {}
-    """)
+    """
+    )
 
-    fun `test item with docs`() = doTest("""
+    fun `test item with docs`() = doTest(
+        """
         macro_rules! foo {
             ($ i:item) => { $ i }
         }
@@ -1037,9 +1163,11 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
     """, """
         #[doc = " Some docs"]
         fn foo() {}
-    """ to MacroExpansionMarks.docsLowering)
+    """ to MacroExpansionMarks.docsLowering
+    )
 
-    fun `test docs lowering`() = doTest("""
+    fun `test docs lowering`() = doTest(
+        """
         macro_rules! foo {
             (#[$ i:meta]) => {
                 #[$ i]
@@ -1052,9 +1180,11 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
     """, """
         #[doc = " Some docs"]
         fn foo() {}
-    """ to MacroExpansionMarks.docsLowering)
+    """ to MacroExpansionMarks.docsLowering
+    )
 
-    fun `test comment in macro definition`() = doTest("""
+    fun `test comment in macro definition`() = doTest(
+        """
         macro_rules! foobar {
             ($ name:ident) => {
                 // Say hello
@@ -1070,9 +1200,11 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
         pub fn foo() {
             println!("Hello!")
         }
-    """)
+    """
+    )
 
-    fun `test doc comment in macro definition`() = doTest("""
+    fun `test doc comment in macro definition`() = doTest(
+        """
         macro_rules! foobar {
             ($ name:ident) => {
                 /// outer doc comment
@@ -1100,9 +1232,11 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
                 println!("Hello!")
             }
         }
-    """)
+    """
+    )
 
-    fun `test literal expr is not wrapped into parens`() = doTest("""
+    fun `test literal expr is not wrapped into parens`() = doTest(
+        """
         macro_rules! foo {
             ($ e:expr) => {
                 #[cfg(feature = $ e)]
@@ -1113,9 +1247,11 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
     """, """
         #[cfg(feature = "bar")]
         fn bar() {}
-    """)
+    """
+    )
 
-    fun `test macro call expr is not wrapped into parens`() = checkSingleMacro("""
+    fun `test macro call expr is not wrapped into parens`() = checkSingleMacro(
+        """
         macro_rules! foo {
             ($ e:expr) => {
                 $ e
@@ -1126,15 +1262,17 @@ class RsMacroExpansionTest : RsMacroExpansionTestBase() {
         }         //^
     """, """
         (2 + 2)
-    """)
+    """
+    )
 
     fun `test 1-char macro call body`() = doTest(
-    """
+        """
         macro_rules! foo {
             () => { fn bar() {} }
         }
         foo!{""", // '{' must be the LAST character in the file
-    """
+        """
         fn bar() {}
-    """)
+    """
+    )
 }

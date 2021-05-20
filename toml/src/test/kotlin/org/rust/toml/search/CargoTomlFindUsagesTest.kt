@@ -22,7 +22,8 @@ import org.rust.openapiext.toPsiFile
 class CargoTomlFindUsagesTest : RsWithToolchainTestBase() {
 
     fun test() = doTest {
-        toml("Cargo.toml", """
+        toml(
+            "Cargo.toml", """
             [package]
             name = "hello"
             version = "0.1.0"
@@ -33,16 +34,20 @@ class CargoTomlFindUsagesTest : RsWithToolchainTestBase() {
 
             [dependencies]
             dep_pkg = { path = "./dep_pkg", features = ["feature_bar"] } # - Package dependency
-        """)
+        """
+        )
 
         dir("src") {
-            rust("main.rs", """
+            rust(
+                "main.rs", """
                 fn main() {}
-            """)
+            """
+            )
         }
 
         dir("dep_pkg") {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "dep_pkg"
                 version = "0.1.0"
@@ -52,14 +57,17 @@ class CargoTomlFindUsagesTest : RsWithToolchainTestBase() {
                 feature_foo = ["feature_bar"] # - Cargo feature dependency
                 feature_bar = []
                 #^
-            """)
+            """
+            )
 
             dir("src") {
-                rust("lib.rs", """
+                rust(
+                    "lib.rs", """
                     #[cfg(feature = "feature_bar")] // - Cfg attribute
                     #[cfg_attr(feature = "feature_bar", allow(all))] // - Cfg attribute
                     fn foobar() {}
-                """)
+                """
+                )
             }
         }
     }
@@ -119,7 +127,8 @@ class CargoTomlFindUsagesTest : RsWithToolchainTestBase() {
 
     private fun markersFrom(file: VirtualFile): List<Pair<Int, String>> {
         val text = VfsUtil.loadText(file)
-        val commentPrefix = LanguageCommenters.INSTANCE.forLanguage(file.toPsiFile(project)!!.language).lineCommentPrefix ?: "//"
+        val commentPrefix = LanguageCommenters.INSTANCE.forLanguage(file.toPsiFile(project)!!.language).lineCommentPrefix
+            ?: "//"
         val marker = "$commentPrefix - "
         return text.split('\n')
             .withIndex()

@@ -21,7 +21,8 @@ class RsMacroGraphBuilderTest : RsTestBase() {
         assertEquals(expected, actual)
     }
 
-    fun `test one rule simple`() = check("""
+    fun `test one rule simple`() = check(
+        """
         macro_rules! my_macro {
             ($ e:expr) => (1);
         }
@@ -31,9 +32,11 @@ class RsMacroGraphBuilderTest : RsTestBase() {
         Expr
         [E]
         END
-    """)
+    """
+    )
 
-    fun `test one rule ?`() = check("""
+    fun `test one rule ?`() = check(
+        """
         macro_rules! my_macro {
             ($ ($ id:ident $ e:expr)? ) => (1);
         }
@@ -46,9 +49,11 @@ class RsMacroGraphBuilderTest : RsTestBase() {
         [E]
         [E]
         END
-    """)
+    """
+    )
 
-    fun `test one rule repetition *`() = check("""
+    fun `test one rule repetition *`() = check(
+        """
         macro_rules! my_macro {
             ($ ($ id:ident),* ) => (1);
         }
@@ -63,9 +68,11 @@ class RsMacroGraphBuilderTest : RsTestBase() {
         [E]
         [E]
         END
-    """)
+    """
+    )
 
-    fun `test one rule repetition +`() = check("""
+    fun `test one rule repetition +`() = check(
+        """
         macro_rules! my_macro {
             ($ ($ id:ident),+ ) => (1);
         }
@@ -78,9 +85,11 @@ class RsMacroGraphBuilderTest : RsTestBase() {
         ,
         [E]
         END
-    """)
+    """
+    )
 
-    fun `test one rule parens`() = check("""
+    fun `test one rule parens`() = check(
+        """
         macro_rules! my_macro {
             ($ i:ident($ t:ty)) => (1);
         }
@@ -93,9 +102,11 @@ class RsMacroGraphBuilderTest : RsTestBase() {
         )
         [E]
         END
-    """)
+    """
+    )
 
-    fun `test many rules simple`() = check("""
+    fun `test many rules simple`() = check(
+        """
         macro_rules! my_macro {
             ($ e:expr) => (1);
             ($ e:ident) => (2);
@@ -111,9 +122,11 @@ class RsMacroGraphBuilderTest : RsTestBase() {
         Ident
         Ty
         Literal
-    """)
+    """
+    )
 
-    fun `test many rules complex`() = check("""
+    fun `test many rules complex`() = check(
+        """
         macro_rules! my_macro {
             ($ e:expr) => (1);
             ($ ($ id:ident)+ ) => (2);
@@ -136,5 +149,6 @@ class RsMacroGraphBuilderTest : RsTestBase() {
         ,
         ABC
         Expr
-    """)
+    """
+    )
 }

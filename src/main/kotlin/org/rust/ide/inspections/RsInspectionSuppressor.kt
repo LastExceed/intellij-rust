@@ -50,6 +50,5 @@ class RsInspectionSuppressor : InspectionSuppressor {
     }
 }
 
-private fun RsItemElement.leadingComments(): Sequence<PsiComment>
-    = generateSequence(firstChild) { psi -> psi.nextSibling.takeIf { it.elementType in RS_COMMENTS || it is PsiWhiteSpace } }
+private fun RsItemElement.leadingComments(): Sequence<PsiComment> = generateSequence(firstChild) { psi -> psi.nextSibling.takeIf { it.elementType in RS_COMMENTS || it is PsiWhiteSpace } }
     .filterIsInstance<PsiComment>()

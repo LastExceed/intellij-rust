@@ -11,7 +11,8 @@ import org.rust.cargo.project.workspace.CargoWorkspace
 @MockEdition(CargoWorkspace.Edition.EDITION_2018)
 class RsMoveTopLevelItemsSelectionTest : RsMoveTopLevelItemsTestBase() {
 
-    fun `test cursor before item`() = doTest("""
+    fun `test cursor before item`() = doTest(
+        """
     //- lib.rs
         /*caret*/fn foo() {}
     //- main.rs
@@ -20,9 +21,11 @@ class RsMoveTopLevelItemsSelectionTest : RsMoveTopLevelItemsTestBase() {
     //- lib.rs
     //- main.rs
         fn foo() {}
-    """)
+    """
+    )
 
-    fun `test cursor inside item`() = doTest("""
+    fun `test cursor inside item`() = doTest(
+        """
     //- lib.rs
         fn foo/*caret*/() {}
     //- main.rs
@@ -31,9 +34,11 @@ class RsMoveTopLevelItemsSelectionTest : RsMoveTopLevelItemsTestBase() {
     //- lib.rs
     //- main.rs
         fn foo() {}
-    """)
+    """
+    )
 
-    fun `test cursor after item`() = doTest("""
+    fun `test cursor after item`() = doTest(
+        """
     //- lib.rs
         fn foo() {}/*caret*/
         fn bar() {}
@@ -44,9 +49,11 @@ class RsMoveTopLevelItemsSelectionTest : RsMoveTopLevelItemsTestBase() {
         fn bar() {}
     //- main.rs
         fn foo() {}
-    """)
+    """
+    )
 
-    fun `test selected start of item`() = doTest("""
+    fun `test selected start of item`() = doTest(
+        """
     //- lib.rs
         <selection>f</selection>n foo() {}
     //- main.rs
@@ -55,9 +62,11 @@ class RsMoveTopLevelItemsSelectionTest : RsMoveTopLevelItemsTestBase() {
     //- lib.rs
     //- main.rs
         fn foo() {}
-    """)
+    """
+    )
 
-    fun `test selected middle of item`() = doTest("""
+    fun `test selected middle of item`() = doTest(
+        """
     //- lib.rs
         fn <selection>f</selection>oo() {}
     //- main.rs
@@ -66,9 +75,11 @@ class RsMoveTopLevelItemsSelectionTest : RsMoveTopLevelItemsTestBase() {
     //- lib.rs
     //- main.rs
         fn foo() {}
-    """)
+    """
+    )
 
-    fun `test selected end of item`() = doTest("""
+    fun `test selected end of item`() = doTest(
+        """
     //- lib.rs
         fn foo() {<selection>}</selection>
     //- main.rs
@@ -77,9 +88,11 @@ class RsMoveTopLevelItemsSelectionTest : RsMoveTopLevelItemsTestBase() {
     //- lib.rs
     //- main.rs
         fn foo() {}
-    """)
+    """
+    )
 
-    fun `test selected two items`() = doTest("""
+    fun `test selected two items`() = doTest(
+        """
     //- lib.rs
         fn foo1() {}
         <selection>fn foo2() {}
@@ -96,9 +109,11 @@ class RsMoveTopLevelItemsSelectionTest : RsMoveTopLevelItemsTestBase() {
         fn foo2() {}
 
         fn foo3() {}
-    """)
+    """
+    )
 
-    fun `test selected two items at end of file`() = doTest("""
+    fun `test selected two items at end of file`() = doTest(
+        """
     //- lib.rs
         fn foo1() {}
         <selection>fn foo2() {}
@@ -112,9 +127,11 @@ class RsMoveTopLevelItemsSelectionTest : RsMoveTopLevelItemsTestBase() {
         fn foo2() {}
 
         fn foo3() {}
-    """)
+    """
+    )
 
-    fun `test selected two items partially`() = doTest("""
+    fun `test selected two items partially`() = doTest(
+        """
     //- lib.rs
         fn foo1() {}
         fn foo2<selection>() {}
@@ -131,9 +148,11 @@ class RsMoveTopLevelItemsSelectionTest : RsMoveTopLevelItemsTestBase() {
         fn foo2() {}
 
         fn foo3() {}
-    """)
+    """
+    )
 
-    fun `test selected two items with surrounding whitespace`() = doTest("""
+    fun `test selected two items with surrounding whitespace`() = doTest(
+        """
     //- lib.rs
         <selection>
         fn foo1() {}
@@ -147,9 +166,11 @@ class RsMoveTopLevelItemsSelectionTest : RsMoveTopLevelItemsTestBase() {
         fn foo1() {}
 
         fn foo2() {}
-    """)
+    """
+    )
 
-    fun `test selected two items with file attribute`() = doTest("""
+    fun `test selected two items with file attribute`() = doTest(
+        """
     //- lib.rs
         <selection>#![attr]
         fn foo1() {}
@@ -163,9 +184,11 @@ class RsMoveTopLevelItemsSelectionTest : RsMoveTopLevelItemsTestBase() {
         fn foo1() {}
 
         fn foo2() {}
-    """)
+    """
+    )
 
-    fun `test selected two items inside inline mod 1`() = doTest("""
+    fun `test selected two items inside inline mod 1`() = doTest(
+        """
     //- lib.rs
         mod mod1 {
             <selection>fn foo1() {}
@@ -180,9 +203,11 @@ class RsMoveTopLevelItemsSelectionTest : RsMoveTopLevelItemsTestBase() {
         fn foo1() {}
 
         fn foo2() {}
-    """)
+    """
+    )
 
-    fun `test selected two items inside inline mod 2`() = doTest("""
+    fun `test selected two items inside inline mod 2`() = doTest(
+        """
     //- lib.rs
         mod mod1 {
             fn foo1() {}
@@ -203,9 +228,11 @@ class RsMoveTopLevelItemsSelectionTest : RsMoveTopLevelItemsTestBase() {
         fn foo2() {}
 
         fn foo3() {}
-    """)
+    """
+    )
 
-    fun `test selected three items`() = doTest("""
+    fun `test selected three items`() = doTest(
+        """
     //- lib.rs
         fn foo1() {}
         <selection>fn foo2() {}
@@ -225,9 +252,11 @@ class RsMoveTopLevelItemsSelectionTest : RsMoveTopLevelItemsTestBase() {
         fn foo3() {}
 
         fn foo4() {}
-    """)
+    """
+    )
 
-    fun `test selected three items partially`() = doTest("""
+    fun `test selected three items partially`() = doTest(
+        """
     //- lib.rs
         fn foo1() {}
         fn foo2<selection>() {}
@@ -247,9 +276,11 @@ class RsMoveTopLevelItemsSelectionTest : RsMoveTopLevelItemsTestBase() {
         fn foo3() {}
 
         fn foo4() {}
-    """)
+    """
+    )
 
-    fun `test selected empty inline mod`() = doTest("""
+    fun `test selected empty inline mod`() = doTest(
+        """
     //- lib.rs
         <selection>mod foo {}</selection>
     //- main.rs
@@ -258,9 +289,11 @@ class RsMoveTopLevelItemsSelectionTest : RsMoveTopLevelItemsTestBase() {
     //- lib.rs
     //- main.rs
         mod foo {}
-    """)
+    """
+    )
 
-    fun `test selected non-empty inline mod`() = doTest("""
+    fun `test selected non-empty inline mod`() = doTest(
+        """
     //- lib.rs
         <selection>mod foo { fn func() {} }</selection>
     //- main.rs
@@ -269,5 +302,6 @@ class RsMoveTopLevelItemsSelectionTest : RsMoveTopLevelItemsTestBase() {
     //- lib.rs
     //- main.rs
         mod foo { fn func() {} }
-    """)
+    """
+    )
 }

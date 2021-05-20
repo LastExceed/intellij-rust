@@ -6,14 +6,17 @@
 package org.rust.ide.template.postfix
 
 class WhileNotPostfixTemplateTest : RsPostfixTemplateTest(WhileNotExpressionPostfixTemplate()) {
-    fun `test not boolean expr 1`() = doTestNotApplicable("""
+    fun `test not boolean expr 1`() = doTestNotApplicable(
+        """
         fn main() {
             let a = 4;
             a.whilenot/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test not boolean expr 2`() = doTestNotApplicable("""
+    fun `test not boolean expr 2`() = doTestNotApplicable(
+        """
         fn func() -> i32 {
             1234
         }
@@ -21,9 +24,11 @@ class WhileNotPostfixTemplateTest : RsPostfixTemplateTest(WhileNotExpressionPost
         fn main() {
             func().whilenot/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test boolean expr`() = doTest("""
+    fun `test boolean expr`() = doTest(
+        """
         fn main() {
             let a = 4 == 2;
             a.whilenot/*caret*/
@@ -33,9 +38,11 @@ class WhileNotPostfixTemplateTest : RsPostfixTemplateTest(WhileNotExpressionPost
             let a = 4 == 2;
             while !a {/*caret*/}
         }
-    """)
+    """
+    )
 
-    fun `test negated boolean expr`() = doTest("""
+    fun `test negated boolean expr`() = doTest(
+        """
         fn main() {
             let a = 4 == 2;
             !a.whilenot/*caret*/
@@ -45,9 +52,11 @@ class WhileNotPostfixTemplateTest : RsPostfixTemplateTest(WhileNotExpressionPost
             let a = 4 == 2;
             while a {/*caret*/}
         }
-    """)
+    """
+    )
 
-    fun `test fun arg`() = doTest("""
+    fun `test fun arg`() = doTest(
+        """
         fn foo(a: bool) {
             a.whilenot/*caret*/
         }
@@ -55,9 +64,11 @@ class WhileNotPostfixTemplateTest : RsPostfixTemplateTest(WhileNotExpressionPost
         fn foo(a: bool) {
             while !a {/*caret*/}
         }
-    """)
+    """
+    )
 
-    fun `test simple eq expr`() = doTest("""
+    fun `test simple eq expr`() = doTest(
+        """
         fn main() {
             true == true.whilenot/*caret*/
         }
@@ -65,9 +76,11 @@ class WhileNotPostfixTemplateTest : RsPostfixTemplateTest(WhileNotExpressionPost
         fn main() {
             while true != true {/*caret*/}
         }
-    """)
+    """
+    )
 
-    fun `test selector`() = doTest("""
+    fun `test selector`() = doTest(
+        """
         fn main() {
             let a = if (true) {
                 42 < 43.whilenot/*caret*/
@@ -83,9 +96,11 @@ class WhileNotPostfixTemplateTest : RsPostfixTemplateTest(WhileNotExpressionPost
                 false == true
             };
         }
-    """)
+    """
+    )
 
-    fun `test call`() = doTest("""
+    fun `test call`() = doTest(
+        """
         fn func() -> bool {
             false
         }
@@ -101,7 +116,8 @@ class WhileNotPostfixTemplateTest : RsPostfixTemplateTest(WhileNotExpressionPost
         fn main() {
             while !func() {/*caret*/}
         }
-    """)
+    """
+    )
 
     fun `test bin operators bool`() {
         val cases = listOf(
@@ -116,7 +132,8 @@ class WhileNotPostfixTemplateTest : RsPostfixTemplateTest(WhileNotExpressionPost
         )
 
         for (case in cases) {
-            doTest("""
+            doTest(
+                """
                 fn main() {
                     ${case.first}.whilenot/*caret*/
                 }
@@ -124,7 +141,8 @@ class WhileNotPostfixTemplateTest : RsPostfixTemplateTest(WhileNotExpressionPost
                 fn main() {
                     while ${case.second} {/*caret*/}
                 }
-            """)
+            """
+            )
         }
     }
 }

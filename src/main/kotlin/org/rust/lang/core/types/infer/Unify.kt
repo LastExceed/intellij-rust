@@ -10,10 +10,11 @@ import org.rust.lang.utils.snapshot.UndoLog
 import org.rust.lang.utils.snapshot.Undoable
 
 interface NodeOrValue
-interface Node: NodeOrValue {
+interface Node : NodeOrValue {
     var parent: NodeOrValue
 }
-data class VarValue<out V>(val value: V?, val rank: Int): NodeOrValue
+
+data class VarValue<out V>(val value: V?, val rank: Int) : NodeOrValue
 
 /**
  * [UnificationTable] is map from [K] to [V] with additional ability
@@ -34,7 +35,7 @@ class UnificationTable<K : Node, V> {
     private val undoLog: UndoLog = UndoLog()
 
     @Suppress("UNCHECKED_CAST")
-    private data class Root<out K: Node, out V>(val key: K) {
+    private data class Root<out K : Node, out V>(val key: K) {
         private val varValue: VarValue<V> = key.parent as VarValue<V>
         val rank: Int get() = varValue.rank
         val value: V? get() = varValue.value
@@ -61,13 +62,13 @@ class UnificationTable<K : Node, V> {
 
     private fun unify(rootA: Root<K, V>, rootB: Root<K, V>, newValue: V?): K {
         return when {
-        // a has greater rank, so a should become b's parent,
-        // i.e., b should redirect to a.
+            // a has greater rank, so a should become b's parent,
+            // i.e., b should redirect to a.
             rootA.rank > rootB.rank -> redirectRoot(rootA.rank, rootB, rootA, newValue)
-        // b has greater rank, so a should redirect to b.
+            // b has greater rank, so a should redirect to b.
             rootA.rank < rootB.rank -> redirectRoot(rootB.rank, rootA, rootB, newValue)
-        // If equal, redirect one to the other and increment the
-        // other's rank.
+            // If equal, redirect one to the other and increment the
+            // other's rank.
             else -> redirectRoot(rootA.rank + 1, rootA, rootB, newValue)
         }
     }

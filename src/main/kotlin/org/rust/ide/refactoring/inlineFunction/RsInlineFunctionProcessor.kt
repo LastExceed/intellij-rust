@@ -169,7 +169,8 @@ class RsInlineFunctionProcessor(
             val enclosingStatement = ref.element.ancestorOrSelf<RsStmt>()
                 ?: ref.element.ancestorOrSelf<RsExpr>()
                 ?: throw IncorrectOperationException(
-                    "Usage without expression parent bypassed preprocessing: ${ref.element.text}")
+                    "Usage without expression parent bypassed preprocessing: ${ref.element.text}"
+                )
             val blockParent = enclosingStatement.ancestorOrSelf<RsBlock>()
             val childContainingEnclosingStatement = if (blockParent?.children?.isNotEmpty() == true) {
                 blockParent.children.first { it.isAncestorOf(enclosingStatement) }
@@ -179,7 +180,8 @@ class RsInlineFunctionProcessor(
 
             val caller = ref.element.ancestors.filter { it is RsCallExpr || it is RsDotExpr }.firstOrNull()
                 ?: throw IncorrectOperationException(
-                    "Usage without caller expression parent bypassed preprocessing: ${ref.element.text}")
+                    "Usage without caller expression parent bypassed preprocessing: ${ref.element.text}"
+                )
 
             val funcScope = LocalSearchScope(body)
 
@@ -291,8 +293,10 @@ class RsInlineFunctionProcessor(
         paramUsagesToReplace.forEach { it.key?.replace(it.value) }
     }
 
-    private fun replaceParameterUsage(arguments: List<RsExpr>, index: Int, parameter: RsPat, caller: PsiElement,
-                                      funcScope: LocalSearchScope): Map<RsExpr?, @NotNull PsiElement> {
+    private fun replaceParameterUsage(
+        arguments: List<RsExpr>, index: Int, parameter: RsPat, caller: PsiElement,
+        funcScope: LocalSearchScope
+    ): Map<RsExpr?, @NotNull PsiElement> {
         if (arguments.size <= index) {
             return emptyMap()
         }

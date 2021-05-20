@@ -8,19 +8,24 @@ package org.rust.ide.annotator
 class RsErrorAnnotatorWithToolchainOverrideTest : RsWithToolchainAnnotatorTestBase<Unit>(RsErrorAnnotator::class) {
 
     fun `test do not highlight box syntax as experimental with nightly toolchain`() = check {
-        toml("rust-toolchain", """
+        toml(
+            "rust-toolchain", """
             [toolchain]
             channel = "nightly"
-        """)
-        toml("Cargo.toml", """
+        """
+        )
+        toml(
+            "Cargo.toml", """
             [package]
             name = "hello"
             version = "0.1.0"
             authors = []
-        """)
+        """
+        )
 
         dir("src") {
-            rust("main.rs", """
+            rust(
+                "main.rs", """
                 #![feature(box_syntax)]
 
                 /*caret*/
@@ -28,7 +33,8 @@ class RsErrorAnnotatorWithToolchainOverrideTest : RsWithToolchainAnnotatorTestBa
                     let world = box "world";
                     println!("Hello, {}!", world);
                 }
-            """)
+            """
+            )
         }
     }
 }

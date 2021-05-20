@@ -29,28 +29,29 @@ val MACROS: Set<Namespace> = EnumSet.of(Namespace.Macros)
 val TYPES_N_VALUES: Set<Namespace> = EnumSet.of(Namespace.Types, Namespace.Values)
 val TYPES_N_VALUES_N_MACROS: Set<Namespace> = EnumSet.of(Namespace.Types, Namespace.Values, Namespace.Macros)
 
-val RsNamedElement.namespaces: Set<Namespace> get() = when (this) {
-    is RsMod,
-    is RsModDeclItem,
-    is RsEnumItem,
-    is RsTraitItem,
-    is RsTypeParameter,
-    is RsTypeAlias -> TYPES
+val RsNamedElement.namespaces: Set<Namespace>
+    get() = when (this) {
+        is RsMod,
+        is RsModDeclItem,
+        is RsEnumItem,
+        is RsTraitItem,
+        is RsTypeParameter,
+        is RsTypeAlias -> TYPES
 
-    is RsPatBinding,
-    is RsConstant -> VALUES
-    is RsFunction -> if (this.isProcMacroDef) MACROS else VALUES
+        is RsPatBinding,
+        is RsConstant -> VALUES
+        is RsFunction -> if (this.isProcMacroDef) MACROS else VALUES
 
-    is RsEnumVariant -> namespaces
+        is RsEnumVariant -> namespaces
 
-    is RsStructItem -> if (blockFields == null) TYPES_N_VALUES else TYPES
+        is RsStructItem -> if (blockFields == null) TYPES_N_VALUES else TYPES
 
-    is RsLifetimeParameter -> LIFETIMES
+        is RsLifetimeParameter -> LIFETIMES
 
-    is RsMacro, is RsMacro2 -> MACROS
+        is RsMacro, is RsMacro2 -> MACROS
 
-    else -> TYPES_N_VALUES
-}
+        else -> TYPES_N_VALUES
+    }
 
 fun StubElement<*>.getNamespaces(crate: Crate): Set<Namespace> = when (this) {
     is RsModItemStub,

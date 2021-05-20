@@ -53,7 +53,8 @@ class RsBraceMatcherTest : RsTestBase() {
     fun `test match square brackets`() = doMatch("fn foo(x: <caret>[i32; 192]) {}", "]")
 
     fun `test match angle brackets`() {
-        InlineFile("""
+        InlineFile(
+            """
             type R = Result<Foo, /*comment*/ Box<[T; 92]>  b   >;
 
             fn foo<'a, T: Clone, K: Clone + Debug>(x: Y, y: K) {}
@@ -63,7 +64,8 @@ class RsBraceMatcherTest : RsTestBase() {
                 let x = xs.map().collect::<::Vec<super::Result<&mut String, * const i32>>>();
                 let x:Punctuated<Ident,Token![|]>;
             }
-        """)
+        """
+        )
 
         val text = myFixture.file.text
         for ((offset, brace) in text.withIndex()) {

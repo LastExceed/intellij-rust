@@ -48,11 +48,13 @@ class RsCodeFragmentFactory(val project: Project) {
         } else {
             "" to "use $usePath;"
         }
-        val mod = psiFactory.createModItem(TMP_MOD_NAME, """
+        val mod = psiFactory.createModItem(
+            TMP_MOD_NAME, """
             $externCrateItem
             use super::*;
             $useItem
-            """)
+            """
+        )
         mod.setContext(context)
         return createPath(importingPathName, mod, mode, ns)
     }

@@ -99,14 +99,16 @@ data class StandardLibrary(
                         contentRootUrl = packageSrcDir.url,
                         name = libInfo.name,
                         version = "",
-                        targets = listOf(CargoWorkspaceData.Target(
-                            crateRootUrl = libFile.url,
-                            name = libInfo.name,
-                            kind = CargoWorkspace.TargetKind.Lib(CargoWorkspace.LibKind.LIB),
-                            edition = CargoWorkspace.Edition.EDITION_2015,
-                            doctest = true,
-                            requiredFeatures = emptyList()
-                        )),
+                        targets = listOf(
+                            CargoWorkspaceData.Target(
+                                crateRootUrl = libFile.url,
+                                name = libInfo.name,
+                                kind = CargoWorkspace.TargetKind.Lib(CargoWorkspace.LibKind.LIB),
+                                edition = CargoWorkspace.Edition.EDITION_2015,
+                                doctest = true,
+                                requiredFeatures = emptyList()
+                            )
+                        ),
                         source = null,
                         origin = PackageOrigin.STDLIB,
                         edition = CargoWorkspace.Edition.EDITION_2015,

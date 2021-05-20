@@ -6,7 +6,8 @@
 package org.rust.ide.intentions
 
 class NestUseStatementsIntentionTest : RsIntentionTestBase(NestUseStatementsIntention::class) {
-    fun `test simple use statements`() = doAvailableTest("""
+    fun `test simple use statements`() = doAvailableTest(
+        """
         use /*caret*/std::error;
         use std::io;
     """, """
@@ -15,9 +16,11 @@ class NestUseStatementsIntentionTest : RsIntentionTestBase(NestUseStatementsInte
             io
         };
 
-    """)
+    """
+    )
 
-    fun `test caret last path`() = doAvailableTest("""
+    fun `test caret last path`() = doAvailableTest(
+        """
         use std::error/*caret*/;
         use std::io;
     """, """
@@ -26,9 +29,11 @@ class NestUseStatementsIntentionTest : RsIntentionTestBase(NestUseStatementsInte
             io
         };
 
-    """)
+    """
+    )
 
-    fun `test example use statements`() = doAvailableTest("""
+    fun `test example use statements`() = doAvailableTest(
+        """
         use /*caret*/std::error::Error;
         use std::io::Write;
         use std::path::PathBuf;
@@ -39,9 +44,11 @@ class NestUseStatementsIntentionTest : RsIntentionTestBase(NestUseStatementsInte
             path::PathBuf
         };
 
-    """)
+    """
+    )
 
-    fun `test nest statements which only be able to nested with selected one`() = doAvailableTest("""
+    fun `test nest statements which only be able to nested with selected one`() = doAvailableTest(
+        """
         use /*caret*/std::error::Error;
         use std::io::Write;
         use quux::spam;
@@ -53,9 +60,11 @@ class NestUseStatementsIntentionTest : RsIntentionTestBase(NestUseStatementsInte
         };
         use quux::spam;
         use quux::eggs;
-    """)
+    """
+    )
 
-    fun `test inner path`() = doAvailableTest("""
+    fun `test inner path`() = doAvailableTest(
+        """
         use std::{
             sync/*caret*/::mpsc,
             sync::Arc
@@ -73,9 +82,11 @@ class NestUseStatementsIntentionTest : RsIntentionTestBase(NestUseStatementsInte
         use std::io::Write;
         use quux::spam;
         use quux::eggs;
-    """)
+    """
+    )
 
-    fun `test inner path without last comma`() = doAvailableTest("""
+    fun `test inner path without last comma`() = doAvailableTest(
+        """
         use std::{
             sync/*caret*/::mpsc,
             sync::Arc
@@ -93,9 +104,11 @@ class NestUseStatementsIntentionTest : RsIntentionTestBase(NestUseStatementsInte
         use std::io::Write;
         use quux::spam;
         use quux::eggs;
-    """)
+    """
+    )
 
-    fun `test inner path with last position of caret`() = doAvailableTest("""
+    fun `test inner path with last position of caret`() = doAvailableTest(
+        """
         use std::{
             sync::mpsc,
             sync::Ar/*caret*/c
@@ -113,9 +126,11 @@ class NestUseStatementsIntentionTest : RsIntentionTestBase(NestUseStatementsInte
         use std::io::Write;
         use quux::spam;
         use quux::eggs;
-    """)
+    """
+    )
 
-    fun `test inner path with many useSpeck`() = doAvailableTest("""
+    fun `test inner path with many useSpeck`() = doAvailableTest(
+        """
         use std::{
             sync::mpsc,
             sync::Ar/*caret*/c,
@@ -145,9 +160,11 @@ class NestUseStatementsIntentionTest : RsIntentionTestBase(NestUseStatementsInte
         use std::io::Write;
         use quux::spam;
         use quux::eggs;
-    """)
+    """
+    )
 
-    fun `test very nested inner path`() = doAvailableTest("""
+    fun `test very nested inner path`() = doAvailableTest(
+        """
         use std::{
             b1::{
                 c1::{
@@ -183,9 +200,11 @@ class NestUseStatementsIntentionTest : RsIntentionTestBase(NestUseStatementsInte
         use std::io::Write;
         use quux::spam;
         use quux::eggs;
-    """)
+    """
+    )
 
-    fun `test very nested inner path but caret is middle of it`() = doAvailableTest("""
+    fun `test very nested inner path but caret is middle of it`() = doAvailableTest(
+        """
         use std::{
             b1::{
                 c1/*caret*/::{
@@ -223,14 +242,18 @@ class NestUseStatementsIntentionTest : RsIntentionTestBase(NestUseStatementsInte
         use std::io::Write;
         use quux::spam;
         use quux::eggs;
-    """)
+    """
+    )
 
-    fun `test cannot nest if non common base path exist`() = doUnavailableTest("""
+    fun `test cannot nest if non common base path exist`() = doUnavailableTest(
+        """
         use a1::/*caret*/b::c;
         use a2::b::c;
-    """)
+    """
+    )
 
-    fun `test starts with colon colon`() = doAvailableTest("""
+    fun `test starts with colon colon`() = doAvailableTest(
+        """
         use ::a1/*caret*/::b1::c;
         use ::a1::b2::c;
     """, """
@@ -239,14 +262,18 @@ class NestUseStatementsIntentionTest : RsIntentionTestBase(NestUseStatementsInte
             b2::c
         };
 
-    """)
+    """
+    )
 
-    fun `test starts with colon colon with no colon colon`() = doUnavailableTest("""
+    fun `test starts with colon colon with no colon colon`() = doUnavailableTest(
+        """
         use ::a1/*caret*/::b::c;
         use a1::b::c;
-    """)
+    """
+    )
 
-    fun `test converts module to self`() = doAvailableTest("""
+    fun `test converts module to self`() = doAvailableTest(
+        """
         use foo/*caret*/;
         use foo::foo;
         use foo::bar;
@@ -257,9 +284,11 @@ class NestUseStatementsIntentionTest : RsIntentionTestBase(NestUseStatementsInte
             bar
         };
 
-    """)
+    """
+    )
 
-    fun `test pub and non-pub on pub`() = doAvailableTest("""
+    fun `test pub and non-pub on pub`() = doAvailableTest(
+        """
         pub use a::b1;
         use a::b2;
         pub use a::b3/*caret*/;
@@ -274,9 +303,11 @@ class NestUseStatementsIntentionTest : RsIntentionTestBase(NestUseStatementsInte
         use a::b2;
         use a::b4;
 
-    """)
+    """
+    )
 
-    fun `test pub and non-pub on non-pub`() = doAvailableTest("""
+    fun `test pub and non-pub on non-pub`() = doAvailableTest(
+        """
         use a::b1;
         pub use a::b2;
         use a::b3/*caret*/;
@@ -291,5 +322,6 @@ class NestUseStatementsIntentionTest : RsIntentionTestBase(NestUseStatementsInte
         pub use a::b2;
         pub use a::b4;
 
-    """)
+    """
+    )
 }

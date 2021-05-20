@@ -171,8 +171,7 @@ private class TableModel(
     private fun createNewParameter(descriptor: SignatureDescriptor): Parameter =
         Parameter(factory, "p${descriptor.parametersCount}", ParameterProperty.Empty())
 
-    private class SignatureTypeColumn(descriptor: SignatureDescriptor)
-        : TypeColumn<SignatureParameter, ModelItem>(descriptor.function.project, RsFileType) {
+    private class SignatureTypeColumn(descriptor: SignatureDescriptor) : TypeColumn<SignatureParameter, ModelItem>(descriptor.function.project, RsFileType) {
         override fun setValue(item: ModelItem?, value: PsiCodeFragment?) {
             val fragment = value as? RsTypeReferenceCodeFragment ?: return
             if (item != null) {
@@ -181,8 +180,7 @@ private class TableModel(
         }
     }
 
-    private class SignatureDefaultValueColumn(descriptor: SignatureDescriptor)
-        : DefaultValueColumn<SignatureParameter, ModelItem>(descriptor.function.project, RsFileType) {
+    private class SignatureDefaultValueColumn(descriptor: SignatureDescriptor) : DefaultValueColumn<SignatureParameter, ModelItem>(descriptor.function.project, RsFileType) {
         override fun setValue(item: ModelItem?, value: PsiCodeFragment?) {
             val fragment = value as? RsExpressionCodeFragment ?: return
             if (item != null) {
@@ -391,8 +389,7 @@ private fun createTypeCodeFragment(
     )
 }
 
-private fun createExprCodeFragment(importContext: RsMod): PsiCodeFragment
-    = createCodeFragment(importContext) { importTarget ->
+private fun createExprCodeFragment(importContext: RsMod): PsiCodeFragment = createCodeFragment(importContext) { importTarget ->
     RsExpressionCodeFragment(
         importContext.project,
         "",

@@ -14,24 +14,29 @@ import org.rust.lang.core.psi.ext.RsFieldDecl
 
 class RsResolveTest : RsResolveTestBase() {
 
-    fun `test function argument`() = checkByCode("""
+    fun `test function argument`() = checkByCode(
+        """
         fn foo(x: i32, y: f64) -> f64 {
                      //X
             y
           //^
         }
-    """)
+    """
+    )
 
-    fun `test locals`() = checkByCode("""
+    fun `test locals`() = checkByCode(
+        """
         fn foo() {
             let z = 92;
               //X
             z;
           //^
         }
-    """)
+    """
+    )
 
-    fun `test shadowing`() = checkByCode("""
+    fun `test shadowing`() = checkByCode(
+        """
         fn foo() {
             let z = 92;
             let z = 42;
@@ -39,9 +44,11 @@ class RsResolveTest : RsResolveTestBase() {
             z;
           //^
         }
-    """)
+    """
+    )
 
-    fun `test nested patterns`() = checkByCode("""
+    fun `test nested patterns`() = checkByCode(
+        """
         enum E { Variant(i32, i32) }
 
         struct S { field: E }
@@ -52,9 +59,11 @@ class RsResolveTest : RsResolveTestBase() {
             x;
           //^
         }
-    """)
+    """
+    )
 
-    fun `test ref pattern`() = checkByCode("""
+    fun `test ref pattern`() = checkByCode(
+        """
         fn main() {
             let x = 92;
             if let Some(&y) = Some(&x) {
@@ -63,17 +72,21 @@ class RsResolveTest : RsResolveTestBase() {
               //^
             }
         }
-    """)
+    """
+    )
 
-    fun `test closure`() = checkByCode("""
+    fun `test closure`() = checkByCode(
+        """
         fn main() { (0..10).map(|x|  {
                                //X
               x
             //^
         })}
-    """)
+    """
+    )
 
-    fun `test match`() = checkByCode("""
+    fun `test match`() = checkByCode(
+        """
         fn main() {
             match Some(92) {
                 Some(i) => {
@@ -84,9 +97,11 @@ class RsResolveTest : RsResolveTestBase() {
                 _ => 0
             };
         }
-    """)
+    """
+    )
 
-    fun `test match if`() = checkByCode("""
+    fun `test match if`() = checkByCode(
+        """
         fn main() {
             let a = true;
               //X
@@ -98,9 +113,11 @@ class RsResolveTest : RsResolveTestBase() {
                 _ => 0
             };
         }
-    """)
+    """
+    )
 
-    fun `test match if 2`() = checkByCode("""
+    fun `test match if 2`() = checkByCode(
+        """
         fn main() {
             match Some(92) {
                 Some(i)
@@ -112,9 +129,11 @@ class RsResolveTest : RsResolveTestBase() {
                 _ => 0
             };
         }
-    """)
+    """
+    )
 
-    fun `test let`() = checkByCode("""
+    fun `test let`() = checkByCode(
+        """
         fn f(i: i32) -> Option<i32> {}
 
         fn bar() {
@@ -126,32 +145,40 @@ class RsResolveTest : RsResolveTestBase() {
                 }
             }
         }
-    """)
+    """
+    )
 
-    fun `test let cycle 1`() = checkByCode("""
+    fun `test let cycle 1`() = checkByCode(
+        """
         fn main() {
             let x = { x };
                     //^ unresolved
         }
-    """)
+    """
+    )
 
-    fun `test let cycle 2`() = checkByCode("""
+    fun `test let cycle 2`() = checkByCode(
+        """
         fn main() {
             let x = 92;
               //X
             let x = x;
                   //^
         }
-    """)
+    """
+    )
 
-    fun `test let cycle 3`() = checkByCode("""
+    fun `test let cycle 3`() = checkByCode(
+        """
         fn main() {
             if let Some(x) = x { }
                            //^ unresolved
         }
-    """)
+    """
+    )
 
-    fun `test if let 1`() = checkByCode("""
+    fun `test if let 1`() = checkByCode(
+        """
         fn main() {
             if let Some(i) = Some(92) {
                       //X
@@ -159,17 +186,21 @@ class RsResolveTest : RsResolveTestBase() {
                 //^
             }
         }
-    """)
+    """
+    )
 
-    fun `test if let 2`() = checkByCode("""
+    fun `test if let 2`() = checkByCode(
+        """
         fn main() {
             if let Some(i) =  Some(92) { }
             i;
           //^ unresolved
         }
-    """)
+    """
+    )
 
-    fun `test if let with or pattern 1`() = checkByCode("""
+    fun `test if let with or pattern 1`() = checkByCode(
+        """
         fn foo(x: V) {
             if let V1(v) | V2(v) = x {
                     //X
@@ -177,9 +208,11 @@ class RsResolveTest : RsResolveTestBase() {
               //^
             }
         }
-    """)
+    """
+    )
 
-    fun `test if let with or pattern 2`() = checkByCode("""
+    fun `test if let with or pattern 2`() = checkByCode(
+        """
         fn foo(x: Option<V>) {
             if let Some(V1(v) | V2(v)) = x {
                          //X
@@ -187,9 +220,11 @@ class RsResolveTest : RsResolveTestBase() {
               //^
             }
         }
-    """)
+    """
+    )
 
-    fun `test if let with or pattern 3`() = checkByCode("""
+    fun `test if let with or pattern 3`() = checkByCode(
+        """
         fn foo(x: Option<V>) {
             if let Some(L(V1(v) | V2(v)) | R(V1(v) | V2(v))) = x {
                            //X
@@ -197,9 +232,11 @@ class RsResolveTest : RsResolveTestBase() {
               //^
             }
         }
-    """)
+    """
+    )
 
-    fun `test if let else branch`() = checkByCode("""
+    fun `test if let else branch`() = checkByCode(
+        """
         fn foo(x: Option<i32>) {
              //X
             if let Some(x) = x {
@@ -209,9 +246,11 @@ class RsResolveTest : RsResolveTestBase() {
               //^
             }
         }
-    """)
+    """
+    )
 
-    fun `test while let 1`() = checkByCode("""
+    fun `test while let 1`() = checkByCode(
+        """
         fn main() {
             while let Some(i) = Some(92) {
                          //X
@@ -219,17 +258,21 @@ class RsResolveTest : RsResolveTestBase() {
               //^
             }
         }
-    """)
+    """
+    )
 
-    fun `test while let 2`() = checkByCode("""
+    fun `test while let 2`() = checkByCode(
+        """
         fn main() {
             while let Some(i) = Some(92) { }
             i;
           //^ unresolved
         }
-    """)
+    """
+    )
 
-    fun `test while let with or pattern 1`() = checkByCode("""
+    fun `test while let with or pattern 1`() = checkByCode(
+        """
         fn foo(x: V) {
             while let V1(v) | V2(v) = x {
                        //X
@@ -237,9 +280,11 @@ class RsResolveTest : RsResolveTestBase() {
               //^
             }
         }
-    """)
+    """
+    )
 
-    fun `test while let with or pattern 2`() = checkByCode("""
+    fun `test while let with or pattern 2`() = checkByCode(
+        """
         fn foo(x: Option<V>) {
             while let Some(V1(v) | V2(v)) = x {
                             //X
@@ -247,9 +292,11 @@ class RsResolveTest : RsResolveTestBase() {
               //^
             }
         }
-    """)
+    """
+    )
 
-    fun `test for`() = checkByCode("""
+    fun `test for`() = checkByCode(
+        """
         fn main() {
             for x in 0..10 {
               //X
@@ -257,16 +304,20 @@ class RsResolveTest : RsResolveTestBase() {
               //^
             }
         }
-    """)
+    """
+    )
 
-    fun `test for no leak`() = checkByCode("""
+    fun `test for no leak`() = checkByCode(
+        """
         fn main() {
             for x in x { }
                    //^ unresolved
         }
-    """)
+    """
+    )
 
-    fun `test let overlapping with mod`() = checkByCode("""
+    fun `test let overlapping with mod`() = checkByCode(
+        """
         mod abc {
             pub fn foo() {}
                   //X
@@ -276,9 +327,11 @@ class RsResolveTest : RsResolveTestBase() {
             abc::foo();
                //^
         }
-    """)
+    """
+    )
 
-    fun `test if let overlapping with mod`() = checkByCode("""
+    fun `test if let overlapping with mod`() = checkByCode(
+        """
         mod abc {
             pub fn foo() {}
                   //X
@@ -289,9 +342,11 @@ class RsResolveTest : RsResolveTestBase() {
                    //^
             }
         }
-    """)
+    """
+    )
 
-    fun `test while let overlapping with mod`() = checkByCode("""
+    fun `test while let overlapping with mod`() = checkByCode(
+        """
         mod abc {
             pub fn foo() {}
                   //X
@@ -302,9 +357,11 @@ class RsResolveTest : RsResolveTestBase() {
                    //^
             }
         }
-    """)
+    """
+    )
 
-    fun `test for overlapping with mod`() = checkByCode("""
+    fun `test for overlapping with mod`() = checkByCode(
+        """
         mod abc {
             pub fn foo() {}
                   //X
@@ -315,9 +372,11 @@ class RsResolveTest : RsResolveTestBase() {
                    //^
             }
         }
-    """)
+    """
+    )
 
-    fun `test match overlapping with mod`() = checkByCode("""
+    fun `test match overlapping with mod`() = checkByCode(
+        """
         mod abc {
             pub fn foo() {}
                   //X
@@ -331,9 +390,11 @@ class RsResolveTest : RsResolveTestBase() {
                 None => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test lambda overlapping with mod`() = checkByCode("""
+    fun `test lambda overlapping with mod`() = checkByCode(
+        """
         mod abc {
             pub fn foo() {}
                   //X
@@ -344,9 +405,11 @@ class RsResolveTest : RsResolveTestBase() {
                    //^
             };
         }
-    """)
+    """
+    )
 
-    fun `test trait method argument`() = checkByCode("""
+    fun `test trait method argument`() = checkByCode(
+        """
         trait T {
             fn foo(x: i32) {
                  //X
@@ -354,9 +417,11 @@ class RsResolveTest : RsResolveTestBase() {
               //^
             }
         }
-    """)
+    """
+    )
 
-    fun `test impl method argument`() = checkByCode("""
+    fun `test impl method argument`() = checkByCode(
+        """
         impl T {
             fn foo(x: i32) {
                  //X
@@ -364,9 +429,11 @@ class RsResolveTest : RsResolveTestBase() {
               //^
             }
         }
-    """)
+    """
+    )
 
-    fun `test struct patterns 1`() = checkByCode("""
+    fun `test struct patterns 1`() = checkByCode(
+        """
         #[derive(Default)]
         struct S { foo: i32 }
 
@@ -376,9 +443,11 @@ class RsResolveTest : RsResolveTestBase() {
             foo;
            //^
         }
-    """)
+    """
+    )
 
-    fun `test struct patterns 2`() = checkByCode("""
+    fun `test struct patterns 2`() = checkByCode(
+        """
         #[derive(Default)]
         struct S { foo: i32 }
 
@@ -388,9 +457,11 @@ class RsResolveTest : RsResolveTestBase() {
             bar;
            //^
         }
-    """)
+    """
+    )
 
-    fun `test mod items 1`() = checkByCode("""
+    fun `test mod items 1`() = checkByCode(
+        """
         mod m {
             fn main() {
                 foo()
@@ -400,9 +471,11 @@ class RsResolveTest : RsResolveTestBase() {
             fn foo() { }
               //X
         }
-    """)
+    """
+    )
 
-    fun `test mod items 2`() = checkByCode("""
+    fun `test mod items 2`() = checkByCode(
+        """
         mod bar {
             pub fn foo() {}
                    //X
@@ -418,9 +491,11 @@ class RsResolveTest : RsResolveTestBase() {
                 }
             }
         }
-    """)
+    """
+    )
 
-    fun `test mod items 3`() = checkByCode("""
+    fun `test mod items 3`() = checkByCode(
+        """
         mod bar {
             pub fn foo() {}
         }
@@ -435,9 +510,11 @@ class RsResolveTest : RsResolveTestBase() {
                 }
             }
         }
-    """)
+    """
+    )
 
-    fun `test mod items 4`() = checkByCode("""
+    fun `test mod items 4`() = checkByCode(
+        """
         mod bar {
             pub fn foo() {}
         }
@@ -453,9 +530,11 @@ class RsResolveTest : RsResolveTestBase() {
                 }
             }
         }
-    """)
+    """
+    )
 
-    fun `test mod items 5`() = checkByCode("""
+    fun `test mod items 5`() = checkByCode(
+        """
         mod bar {
             pub fn foo() {}
         }
@@ -470,9 +549,11 @@ class RsResolveTest : RsResolveTestBase() {
                 }
             }
         }
-    """)
+    """
+    )
 
-    fun `test nested module`() = checkByCode("""
+    fun `test nested module`() = checkByCode(
+        """
         mod a {
             mod b {
                 mod c {
@@ -486,9 +567,11 @@ class RsResolveTest : RsResolveTestBase() {
                      //^
             }
         }
-    """)
+    """
+    )
 
-    fun `test self`() = checkByCode("""
+    fun `test self`() = checkByCode(
+        """
         //X
         fn foo() {}
 
@@ -496,9 +579,11 @@ class RsResolveTest : RsResolveTestBase() {
             self::foo();
             //^
         }
-    """)
+    """
+    )
 
-    fun `test self 2`() = checkByCode("""
+    fun `test self 2`() = checkByCode(
+        """
         fn foo() {}
           //X
 
@@ -506,9 +591,11 @@ class RsResolveTest : RsResolveTestBase() {
             self::foo();
                 //^
         }
-    """)
+    """
+    )
 
-    fun `test self identifier`() = checkByCode("""
+    fun `test self identifier`() = checkByCode(
+        """
         struct S;
 
         impl S {
@@ -518,9 +605,11 @@ class RsResolveTest : RsResolveTestBase() {
                //^
             }
         }
-    """)
+    """
+    )
 
-    fun `test super`() = checkByCode("""
+    fun `test super`() = checkByCode(
+        """
         fn foo() {}
            //X
 
@@ -530,9 +619,11 @@ class RsResolveTest : RsResolveTestBase() {
                       //^
             }
         }
-    """)
+    """
+    )
 
-    fun `test nested super 1`() = checkByCode("""
+    fun `test nested super 1`() = checkByCode(
+        """
         mod foo {
             mod bar {
                 fn main() {
@@ -544,10 +635,12 @@ class RsResolveTest : RsResolveTestBase() {
 
         fn foo() {}
          //X
-    """)
+    """
+    )
 
     @MockEdition(CargoWorkspace.Edition.EDITION_2018)
-    fun `test nested super 2`() = checkByCode("""
+    fun `test nested super 2`() = checkByCode(
+        """
         mod foo {
             mod bar {
                 use self::super::super::foo;
@@ -560,10 +653,12 @@ class RsResolveTest : RsResolveTestBase() {
 
         fn foo() {}
          //X
-    """)
+    """
+    )
 
     @MockEdition(CargoWorkspace.Edition.EDITION_2018)
-    fun `test function and mod with same name`() = checkByCode("""
+    fun `test function and mod with same name`() = checkByCode(
+        """
         mod foo {}
 
         fn foo() {}
@@ -573,18 +668,22 @@ class RsResolveTest : RsResolveTestBase() {
             foo();
            //^
         }
-    """)
+    """
+    )
 
-    fun `test format positional`() = checkByCode("""
+    fun `test format positional`() = checkByCode(
+        """
         fn main() {
             let x = 92;
               //X
             println!("{}", x);
                          //^
         }
-    """)
+    """
+    )
 
-    fun `test format named`() = checkByCode("""
+    fun `test format named`() = checkByCode(
+        """
         fn main() {
             let x = 92;
             let y = 62;
@@ -592,27 +691,33 @@ class RsResolveTest : RsResolveTestBase() {
             print!("{} + {foo}", x, foo = y);
                                         //^
         }
-    """)
+    """
+    )
 
-    fun `test await argument`() = checkByCode("""
+    fun `test await argument`() = checkByCode(
+        """
         fn main() {
             let x = 42;
               //X
             await!(x);
                  //^
         }
-    """)
+    """
+    )
 
-    fun `test dbg argument`() = checkByCode("""
+    fun `test dbg argument`() = checkByCode(
+        """
         fn main() {
             let x = 42;
               //X
             dbg!(x);
                //^
         }
-    """)
+    """
+    )
 
-    fun `test enum variant 1`() = checkByCode("""
+    fun `test enum variant 1`() = checkByCode(
+        """
         enum E { X }
                //X
 
@@ -620,17 +725,21 @@ class RsResolveTest : RsResolveTestBase() {
             let _ = E::X;
                      //^
         }
-    """)
+    """
+    )
 
-    fun `test enum Self in impl block`() = checkByCode("""
+    fun `test enum Self in impl block`() = checkByCode(
+        """
         enum E { X }
                //X
 
         impl E { fn foo() -> Self { Self::X }}
                                         //^
-    """)
+    """
+    )
 
-    fun `test enum Self in impl block for invalid self-containing struct`() = checkByCodeGeneric<RsImplItem>("""
+    fun `test enum Self in impl block for invalid self-containing struct`() = checkByCodeGeneric<RsImplItem>(
+        """
         struct E {
             value: Self
         }
@@ -640,14 +749,18 @@ class RsResolveTest : RsResolveTestBase() {
                 Self
             } //^
         }
-    """)
+    """
+    )
 
-    fun `test enum variant 2`() = checkByCode("""
+    fun `test enum variant 2`() = checkByCode(
+        """
         enum E { X, Y(X) }
                     //^ unresolved
-    """)
+    """
+    )
 
-    fun `test enum variant 3`() = checkByCode("""
+    fun `test enum variant 3`() = checkByCode(
+        """
         use E::A;
 
         enum E {
@@ -659,18 +772,22 @@ class RsResolveTest : RsResolveTestBase() {
             let e = A { a: 10 };
                   //^
         }
-    """)
+    """
+    )
 
-    fun `test enum variant with alias`() = checkByCode("""
+    fun `test enum variant with alias`() = checkByCode(
+        """
         enum E { A }
                //X
         type T1 = E;
         fn main() {
             let _ = T1::A;
         }             //^
-    """)
+    """
+    )
 
-    fun `test local fn`() = checkByCode("""
+    fun `test local fn`() = checkByCode(
+        """
         fn main() {
             foo();
            //^
@@ -678,25 +795,31 @@ class RsResolveTest : RsResolveTestBase() {
             fn foo() {}
               //X
         }
-    """)
+    """
+    )
 
-    fun `test struct field named`() = checkByCode("""
+    fun `test struct field named`() = checkByCode(
+        """
         struct S { foo: i32 }
                   //X
         fn main() {
             let _ = S { foo: 92 };
         }              //^
-    """)
+    """
+    )
 
-    fun `test struct field positional`() = checkByCodeGeneric<RsFieldDecl>("""
+    fun `test struct field positional`() = checkByCodeGeneric<RsFieldDecl>(
+        """
         struct S(i32, i32);
                      //X
         fn main() {
             let _ = S { 1: 92 };
         }             //^
-    """)
+    """
+    )
 
-    fun `test struct field with alias`() = checkByCode("""
+    fun `test struct field with alias`() = checkByCode(
+        """
         struct S { foo: i32 }
                   //X
         type T1 = S;
@@ -704,17 +827,21 @@ class RsResolveTest : RsResolveTestBase() {
         fn main() {
             let _ = T2 { foo: 92 };
         }              //^
-    """)
+    """
+    )
 
-    fun `test unknown struct field shorthand`() = checkByCode("""
+    fun `test unknown struct field shorthand`() = checkByCode(
+        """
         fn main() {
             let foo = 62;
               //X
             let _ = UnknownStruct { foo };
         }                          //^
-    """)
+    """
+    )
 
-    fun `test cyclic type aliases`() = checkByCode("""
+    fun `test cyclic type aliases`() = checkByCode(
+        """
         type Foo = Bar;
         type Bar = Foo;
 
@@ -722,9 +849,11 @@ class RsResolveTest : RsResolveTestBase() {
             let x = Foo { foo: 123 };
                         //^ unresolved
         }
-    """)
+    """
+    )
 
-    fun `test struct field Self`() = checkByCode("""
+    fun `test struct field Self`() = checkByCode(
+        """
         struct S { foo: i32 }
                   //X
         impl S {
@@ -734,9 +863,11 @@ class RsResolveTest : RsResolveTestBase() {
                 } //^
             }
         }
-    """)
+    """
+    )
 
-    fun `test type reference inside Self struct literal`() = checkByCode("""
+    fun `test type reference inside Self struct literal`() = checkByCode(
+        """
         struct A;
              //X
         struct S { foo: A }
@@ -747,9 +878,11 @@ class RsResolveTest : RsResolveTestBase() {
                 }      //^
             }
         }
-    """)
+    """
+    )
 
-    fun `test type reference struct literal that resolved to non-struct type`() = checkByCode("""
+    fun `test type reference struct literal that resolved to non-struct type`() = checkByCode(
+        """
         struct A;
              //X
         trait Trait {}
@@ -758,9 +891,11 @@ class RsResolveTest : RsResolveTestBase() {
                 foo: A
             }      //^
         }
-    """)
+    """
+    )
 
-    fun `test Self-related item lookup`() = checkByCode("""
+    fun `test Self-related item lookup`() = checkByCode(
+        """
         struct S;
         impl S {
             fn new() -> S { S }
@@ -772,9 +907,11 @@ class RsResolveTest : RsResolveTestBase() {
                 Self::new();
             }       //^
         }
-    """)
+    """
+    )
 
-    fun `test method of Self type`() = checkByCode("""
+    fun `test method of Self type`() = checkByCode(
+        """
         struct S;
         impl S {
             fn foo(a: Self) { a.bar() }
@@ -783,9 +920,11 @@ class RsResolveTest : RsResolveTestBase() {
         trait T { fn bar(&self) {} }
                    //X
         impl T for S {}
-    """)
+    """
+    )
 
-    fun `test struct update syntax`() = checkByCode("""
+    fun `test struct update syntax`() = checkByCode(
+        """
         struct S {
             f1: u32,
             f2: u8,
@@ -799,9 +938,11 @@ class RsResolveTest : RsResolveTestBase() {
         fn main() {
             let a = S { f1: 1, ..S::new() };
         }                         //^
-    """)
+    """
+    )
 
-    fun `test struct update syntax Default`() = checkByCode("""
+    fun `test struct update syntax Default`() = checkByCode(
+        """
         trait Default {
             fn default() -> Self;
         }
@@ -818,18 +959,22 @@ class RsResolveTest : RsResolveTestBase() {
         fn main() {
             let a = S { f1: 1, ..Default::default() };
         }                               //^
-    """)
+    """
+    )
 
-    fun `test enum field`() = checkByCode("""
+    fun `test enum field`() = checkByCode(
+        """
         enum E { X { foo: i32 } }
                      //X
         fn main() {
             let _ = E::X { foo: 92 };
                           //^
         }
-    """)
+    """
+    )
 
-    fun `test enum struct pattern`() = checkByCode("""
+    fun `test enum struct pattern`() = checkByCode(
+        """
         enum E {
             B { f: i32 }
           //X
@@ -841,9 +986,11 @@ class RsResolveTest : RsResolveTestBase() {
                  //^
             };
         }
-    """)
+    """
+    )
 
-    fun `test non global path with colons`() = checkByCode("""
+    fun `test non global path with colons`() = checkByCode(
+        """
         mod m {
             pub struct Matrix<T> { data: Vec<T> }
                       //X
@@ -853,9 +1000,11 @@ class RsResolveTest : RsResolveTestBase() {
                       //^
             }
         }
-    """)
+    """
+    )
 
-    fun `test type alias`() = checkByCode("""
+    fun `test type alias`() = checkByCode(
+        """
         type Foo = usize;
            //X
 
@@ -865,18 +1014,22 @@ class RsResolveTest : RsResolveTestBase() {
 
         impl T for S { type O = Foo; }
                                //^
-    """)
+    """
+    )
 
-    fun `test trait`() = checkByCode("""
+    fun `test trait`() = checkByCode(
+        """
         trait Foo { }
              //X
 
         struct S;
         impl Foo for S { }
             //^
-    """)
+    """
+    )
 
-    fun `test foreign fn`() = checkByCode("""
+    fun `test foreign fn`() = checkByCode(
+        """
         extern "C" { fn foo(); }
                        //X
 
@@ -884,9 +1037,11 @@ class RsResolveTest : RsResolveTestBase() {
             unsafe { foo() }
                    //^
         }
-    """)
+    """
+    )
 
-    fun `test foreign static`() = checkByCode("""
+    fun `test foreign static`() = checkByCode(
+        """
         extern "C" { static FOO: i32; }
                             //X
 
@@ -894,51 +1049,65 @@ class RsResolveTest : RsResolveTestBase() {
             let _ = FOO;
                    //^
         }
-    """)
+    """
+    )
 
-    fun `test trait Self type`() = checkByCode("""
+    fun `test trait Self type`() = checkByCode(
+        """
         trait T {
             //X
             fn create() -> Self;
                          //^
         }
-    """)
+    """
+    )
 
-    fun `test struct Self type`() = checkByCode("""
+    fun `test struct Self type`() = checkByCode(
+        """
         pub struct S<'a> {
                  //X
             field: &'a Self
         }             //^
-    """)
+    """
+    )
 
-    fun `test enum Self type`() = checkByCode("""
+    fun `test enum Self type`() = checkByCode(
+        """
         pub enum E<'a> {
                //X
             V { field: &'a Self }
         }                //^
-    """)
+    """
+    )
 
-    fun `test union def`() = checkByCode("""
+    fun `test union def`() = checkByCode(
+        """
         union U { f: f64, u: u64 }
             //X
         fn foo(u: U) { }
                 //^
-    """)
+    """
+    )
 
-    fun `test unbound`() = checkByCode("""
+    fun `test unbound`() = checkByCode(
+        """
         fn foo() { y }
                  //^ unresolved
-    """)
+    """
+    )
 
-    fun `test ordering`() = checkByCode("""
+    fun `test ordering`() = checkByCode(
+        """
         fn foo() {
             z;
           //^ unresolved
             let z = 92;
         }
-    """)
+    """
+    )
 
-    fun `test mod boundary`() = checkByCode("""
+    fun `test mod boundary`() = checkByCode(
+        """
         mod a {
             fn foo() {}
             mod b {
@@ -948,37 +1117,45 @@ class RsResolveTest : RsResolveTestBase() {
                 }
             }
         }
-    """)
+    """
+    )
 
-    fun `test follow path`() = checkByCode("""
+    fun `test follow path`() = checkByCode(
+        """
         fn main() {
             let x = 92;
             foo::x;
                //^ unresolved
         }
-    """)
+    """
+    )
 
-    fun `test self in static`() = checkByCode("""
+    fun `test self in static`() = checkByCode(
+        """
         struct S;
 
         impl S {
             fn foo() { self }
                       //^ unresolved
         }
-    """)
+    """
+    )
 
-    fun `test wrong self`() = checkByCode("""
+    fun `test wrong self`() = checkByCode(
+        """
         fn foo() {}
 
         fn main() {
             self::self::foo();
                        //^ unresolved
         }
-    """)
+    """
+    )
 
     // We resolve this, although this usage of `super` is invalid.
     // Annotator will highlight it as an error.
-    fun `test wrong super`() = checkByCode("""
+    fun `test wrong super`() = checkByCode(
+        """
         fn foo() {}
           //X
         mod inner {
@@ -987,128 +1164,162 @@ class RsResolveTest : RsResolveTestBase() {
                                //^
             }
         }
-    """)
+    """
+    )
 
-    fun `test function is not module`() = checkByCode("""
+    fun `test function is not module`() = checkByCode(
+        """
         fn foo(bar: usize) {}
 
         fn main() {
             foo::bar // Yep, we used to resolve this!
                 //^ unresolved
         }
-    """)
+    """
+    )
 
-    fun `test lifetime in function arguments`() = checkByCode("""
+    fun `test lifetime in function arguments`() = checkByCode(
+        """
         fn foo<'a>(
               //X
             a: &'a u32) {}
                //^
-    """)
+    """
+    )
 
-    fun `test lifetime in function return type`() = checkByCode("""
+    fun `test lifetime in function return type`() = checkByCode(
+        """
         fn foo<'a>()
               //X
             -> &'a u32 {}
                //^
-    """)
+    """
+    )
 
-    fun `test lifetime in struct`() = checkByCode("""
+    fun `test lifetime in struct`() = checkByCode(
+        """
         struct Foo<'a> {
                   //X
             a: &'a u32 }
                //^
-    """)
+    """
+    )
 
-    fun `test lifetime in enum`() = checkByCode("""
+    fun `test lifetime in enum`() = checkByCode(
+        """
         enum Foo<'a> {
                 //X
             BAR(&'a u32) }
                 //^
-    """)
+    """
+    )
 
-    fun `test lifetime in type alias`() = checkByCode("""
+    fun `test lifetime in type alias`() = checkByCode(
+        """
         type Str<'a>
                 //X
             = &'a str;
               //^
-    """)
+    """
+    )
 
-    fun `test lifetime in impl`() = checkByCode("""
+    fun `test lifetime in impl`() = checkByCode(
+        """
         struct Foo<'a> { a: &'a str }
         impl<'a>
             //X
             Foo<'a> {}
                //^
-    """)
+    """
+    )
 
-    fun `test lifetime in trait`() = checkByCode("""
+    fun `test lifetime in trait`() = checkByCode(
+        """
         trait Named<'a> {
                    //X
             fn name(&self) -> &'a str;
                               //^
          }
-    """)
+    """
+    )
 
-    fun `test lifetime in fn parameters`() = checkByCode("""
+    fun `test lifetime in fn parameters`() = checkByCode(
+        """
         fn foo<'a>(
               //X
           f: &'a Fn() -> &'a str) {}
                          //^
-    """)
+    """
+    )
 
-    fun `test lifetime in type param bounds`() = checkByCode("""
+    fun `test lifetime in type param bounds`() = checkByCode(
+        """
         fn foo<'a,
               //X
             T: 'a>(a: &'a T) {}
               //^
-    """)
+    """
+    )
 
-    fun `test lifetime in where clause`() = checkByCode("""
+    fun `test lifetime in where clause`() = checkByCode(
+        """
         fn foo<'a, T>(a: &'a T)
               //X
             where T: 'a {}
                     //^
-    """)
+    """
+    )
 
-    fun `test lifetime in for lifetimes 1`() = checkByCode("""
+    fun `test lifetime in for lifetimes 1`() = checkByCode(
+        """
         fn foo_func<'a>(a: &'a u32) -> &'a u32 { a }
         const FOO: for<'a> fn(&'a u32)
                       //X
             -> &'a u32 = foo_func;
                //^
-    """)
+    """
+    )
 
-    fun `test lifetime in for lifetimes 2`() = checkByCode("""
+    fun `test lifetime in for lifetimes 2`() = checkByCode(
+        """
         fn foo<F>(f: F) where F: for<'a>
                                     //X
             Fn(&'a i32) {}
                //^
-    """)
+    """
+    )
 
-    fun `test lifetime in for lifetimes 3`() = checkByCode("""
+    fun `test lifetime in for lifetimes 3`() = checkByCode(
+        """
         trait Foo<T> {}
         fn foo<T>(t: T) where for<'a>
                                  //X
                               T: Foo<&'a T> {}
                                      //^
-    """)
+    """
+    )
 
-    fun `test static lifetime unresolved`() = checkByCode("""
+    fun `test static lifetime unresolved`() = checkByCode(
+        """
         fn foo(name: &'static str) {}
                       //^ unresolved
-    """)
+    """
+    )
 
     @MockRustcVersion("1.23.0")
-    fun `test in-band lifetime unresolved`() = checkByCode("""
+    fun `test in-band lifetime unresolved`() = checkByCode(
+        """
         fn foo(
             x: &'a str,
             y: &'a str
                //^ unresolved
         ) {}
-    """)
+    """
+    )
 
     @MockRustcVersion("1.23.0-nightly")
-    fun `test in-band lifetime resolve`() = checkByCode("""
+    fun `test in-band lifetime resolve`() = checkByCode(
+        """
         #![feature(in_band_lifetimes)]
         fn foo(
             x: &'a str,
@@ -1116,10 +1327,12 @@ class RsResolveTest : RsResolveTestBase() {
             y: &'a str
                //^
         ) {}
-    """)
+    """
+    )
 
     @MockRustcVersion("1.23.0-nightly")
-    fun `test in-band lifetime single definition`() = checkByCode("""
+    fun `test in-band lifetime single definition`() = checkByCode(
+        """
         #![feature(in_band_lifetimes)]
         fn foo(
             x: &'a str,
@@ -1129,29 +1342,35 @@ class RsResolveTest : RsResolveTestBase() {
             let z: &'a str = unimplemented!();
                    //^
         }
-    """)
+    """
+    )
 
     @MockRustcVersion("1.23.0-nightly")
-    fun `test in-band lifetime no definition in body`() = checkByCode("""
+    fun `test in-band lifetime no definition in body`() = checkByCode(
+        """
         #![feature(in_band_lifetimes)]
         fn foo() {
             let z: &'a str = unimplemented!();
                    //^ unresolved
         }
-    """)
+    """
+    )
 
     @MockRustcVersion("1.23.0-nightly")
-    fun `test in-band and explicit lifetimes`() = checkByCode("""
+    fun `test in-band and explicit lifetimes`() = checkByCode(
+        """
         #![feature(in_band_lifetimes)]
         fn foo<'b>(
             x: &'a str,
             y: &'a str
                //^ unresolved
         ) {}
-    """)
+    """
+    )
 
     @MockRustcVersion("1.23.0-nightly")
-    fun `test in-band lifetime resolve in impl`() = checkByCode("""
+    fun `test in-band lifetime resolve in impl`() = checkByCode(
+        """
         #![feature(in_band_lifetimes)]
         trait T<'a> {}
         struct S<'a>(&'a str);
@@ -1159,10 +1378,12 @@ class RsResolveTest : RsResolveTestBase() {
               //X
         for S<'a> {}
              //^
-    """)
+    """
+    )
 
     @MockRustcVersion("1.23.0-nightly")
-    fun `test in-band lifetime resolve in impl (where)`() = checkByCode("""
+    fun `test in-band lifetime resolve in impl (where)`() = checkByCode(
+        """
         #![feature(in_band_lifetimes)]
         trait T<'a> {}
         struct S<'a>(&'a str);
@@ -1171,18 +1392,22 @@ class RsResolveTest : RsResolveTestBase() {
         for S<'a>
         where 'a: 'static {}
              //^
-    """)
+    """
+    )
 
     @MockRustcVersion("1.23.0-nightly")
-    fun `test in-band lifetime resolve in impl and explicit lifetimes`() = checkByCode("""
+    fun `test in-band lifetime resolve in impl and explicit lifetimes`() = checkByCode(
+        """
         #![feature(in_band_lifetimes)]
         trait T<'a> {}
         struct S<'a>(&'a str);
         impl <'b> T<'a> for S<'a> {}
                              //^ unresolved
-    """)
+    """
+    )
 
-    fun `test loop label`() = checkByCode("""
+    fun `test loop label`() = checkByCode(
+        """
         fn foo() {
             'a: loop {
            //X
@@ -1190,9 +1415,11 @@ class RsResolveTest : RsResolveTestBase() {
                      //^
             }
         }
-    """)
+    """
+    )
 
-    fun `test while loop label`() = checkByCode("""
+    fun `test while loop label`() = checkByCode(
+        """
         fn foo() {
             'a: while true {
            //X
@@ -1200,9 +1427,11 @@ class RsResolveTest : RsResolveTestBase() {
                         //^
             }
         }
-    """)
+    """
+    )
 
-    fun `test for loop label`() = checkByCode("""
+    fun `test for loop label`() = checkByCode(
+        """
         fn foo() {
             'a: for _ in 0..3 {
            //X
@@ -1210,9 +1439,11 @@ class RsResolveTest : RsResolveTestBase() {
                      //^
             }
         }
-    """)
+    """
+    )
 
-    fun `test for loop label vs lifetime conflict 1`() = checkByCode("""
+    fun `test for loop label vs lifetime conflict 1`() = checkByCode(
+        """
         fn foo<'a>(a: &'a str) {
             'a: for _ in 0..3 {
            //X
@@ -1220,9 +1451,11 @@ class RsResolveTest : RsResolveTestBase() {
                      //^
             }
         }
-    """)
+    """
+    )
 
-    fun `test for loop label vs lifetime conflict 2`() = checkByCode("""
+    fun `test for loop label vs lifetime conflict 2`() = checkByCode(
+        """
         fn foo<'a>(a: &'a str) {
               //X
             'a: for _ in 0..3 {
@@ -1230,9 +1463,11 @@ class RsResolveTest : RsResolveTestBase() {
                        //^
             }
         }
-    """)
+    """
+    )
 
-    fun `test block label`() = checkByCode("""
+    fun `test block label`() = checkByCode(
+        """
         fn main() {
             let block_with_label = 'block: {
                                    //X
@@ -1241,9 +1476,11 @@ class RsResolveTest : RsResolveTestBase() {
                 3
             };
         }
-    """)
+    """
+    )
 
-    fun `test pattern constant binding ambiguity`() = checkByCode("""
+    fun `test pattern constant binding ambiguity`() = checkByCode(
+        """
         const X: i32 = 0;
             //X
         fn foo(x: i32) {
@@ -1251,18 +1488,22 @@ class RsResolveTest : RsResolveTestBase() {
                 X => 92
             };//^
         }
-    """)
+    """
+    )
 
-    fun `test pattern constant ambiguity 2`() = checkByCode("""
+    fun `test pattern constant ambiguity 2`() = checkByCode(
+        """
         const NONE: () = ();
              //X
 
         fn main() {
             match () { NONE => NONE }
         }                     //^
-    """)
+    """
+    )
 
-    fun `test pattern binding in let 1`() = checkByCode("""
+    fun `test pattern binding in let 1`() = checkByCode(
+        """
         struct S { foo: i32 }
                   //X
         fn main() {
@@ -1270,9 +1511,11 @@ class RsResolveTest : RsResolveTestBase() {
                    //^
             let x = foo;
         }
-    """)
+    """
+    )
 
-    fun `test pattern binding in let 2`() = checkByCode("""
+    fun `test pattern binding in let 2`() = checkByCode(
+        """
         struct S { foo: i32 }
                   //X
         type A = S;
@@ -1281,9 +1524,11 @@ class RsResolveTest : RsResolveTestBase() {
                    //^
             let x = foo;
         }
-    """)
+    """
+    )
 
-    fun `test match enum path`() = checkByCode("""
+    fun `test match enum path`() = checkByCode(
+        """
         enum Enum { Var1, Var2 }
                   //X
         fn main() {
@@ -1293,68 +1538,84 @@ class RsResolveTest : RsResolveTestBase() {
                 _ => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test associated type binding`() = checkByCode("""
+    fun `test associated type binding`() = checkByCode(
+        """
         trait Tr {
             type Item;
         }      //X
         type T = Tr<Item=u8>;
                   //^
-    """)
+    """
+    )
 
-    fun `test inherited associated type binding`() = checkByCode("""
+    fun `test inherited associated type binding`() = checkByCode(
+        """
         trait Tr1 {
             type Item;
         }      //X
         trait Tr2: Tr1 {}
         type T = Tr2<Item=u8>;
                    //^
-    """)
+    """
+    )
 
-    fun `test associated type binding in (wrong) non-type context (fn call)`() = checkByCode("""
+    fun `test associated type binding in (wrong) non-type context (fn call)`() = checkByCode(
+        """
         fn foo() {}
         fn main () {
             foo::<Item=u8>();
         }       //^ unresolved
-    """)
+    """
+    )
 
-    fun `test associated type binding in (wrong) non-type context (method call)`() = checkByCode("""
+    fun `test associated type binding in (wrong) non-type context (method call)`() = checkByCode(
+        """
         struct S;
         impl S { fn foo(&self) {} }
         fn main () {
             S.foo::<Item=u8>();
         }         //^ unresolved
-    """)
+    """
+    )
 
-    fun `test raw identifier 1`() = checkByCode("""
+    fun `test raw identifier 1`() = checkByCode(
+        """
         fn foo() {
             let r#match = 42;
               //X
             r#match;
           //^
         }
-    """)
+    """
+    )
 
-    fun `test raw identifier 2`() = checkByCode("""
+    fun `test raw identifier 2`() = checkByCode(
+        """
         fn foo() {}
            //X
         fn main() {
             r#foo();
              //^
         }
-    """)
+    """
+    )
 
-    fun `test raw identifier 3`() = checkByCode("""
+    fun `test raw identifier 3`() = checkByCode(
+        """
         struct r#Foo;
                //X
         fn main() {
             let f = Foo;
                    //^
         }
-    """)
+    """
+    )
 
-    fun `test resolve path with crate keyword`() = checkByCode("""
+    fun `test resolve path with crate keyword`() = checkByCode(
+        """
         mod foo {
             pub struct Foo;
                       //X
@@ -1362,9 +1623,11 @@ class RsResolveTest : RsResolveTestBase() {
 
         use crate::foo::Foo;
                        //^
-    """)
+    """
+    )
 
-    fun `test resolve path with crate keyword 2`() = checkByCode("""
+    fun `test resolve path with crate keyword 2`() = checkByCode(
+        """
         mod foo {
             pub struct Foo;
                       //X
@@ -1374,9 +1637,11 @@ class RsResolveTest : RsResolveTestBase() {
             let foo = crate::foo::Foo;
                                  //^
         }
-    """)
+    """
+    )
 
-    fun `test derive serde Serialize`() = checkByCode("""
+    fun `test derive serde Serialize`() = checkByCode(
+        """
         #[lang = "serde::Serialize"]
         trait Serialize { fn serialize(&self); }
                            //X
@@ -1387,19 +1652,23 @@ class RsResolveTest : RsResolveTestBase() {
             foo.serialize();
               //^
         }
-    """)
+    """
+    )
 
-    fun `test 'pub (in path)' is crate-relative`() = checkByCode("""
+    fun `test 'pub (in path)' is crate-relative`() = checkByCode(
+        """
         mod foo {
           //X
             mod bar {
                 pub(in foo) fn baz() {}
             }        //^
         }
-    """)
+    """
+    )
 
     @MockEdition(CargoWorkspace.Edition.EDITION_2018)
-    fun `test 'pub (in incomplete_path)'`() = checkByCode("""
+    fun `test 'pub (in incomplete_path)'`() = checkByCode(
+        """
         mod foo {
             mod bar {
                 pub(in foo::) fn baz() {}
@@ -1410,32 +1679,40 @@ class RsResolveTest : RsResolveTestBase() {
                 } //^
             }
         }
-    """)
+    """
+    )
 
-    fun `test 'pub (self)'`() = checkByCode("""
+    fun `test 'pub (self)'`() = checkByCode(
+        """
         mod bar {
           //X
             pub(self) fn baz() {}
         }     //^
-    """)
+    """
+    )
 
-    fun `test 'pub (super)'`() = checkByCode("""
+    fun `test 'pub (super)'`() = checkByCode(
+        """
         mod foo {
           //X
             mod bar {
                 pub(super) fn baz() {}
             }     //^
         }
-    """)
+    """
+    )
 
-    fun `test 'pub (self)' mod`() = checkByCode("""
+    fun `test 'pub (self)' mod`() = checkByCode(
+        """
         mod foo {
           //X
             pub(self) mod bar {}
         }     //^
-    """)
+    """
+    )
 
-    fun `test extern crate self`() = checkByCode("""
+    fun `test extern crate self`() = checkByCode(
+        """
         extern crate self as foo;
 
         struct Foo;
@@ -1443,9 +1720,11 @@ class RsResolveTest : RsResolveTestBase() {
 
         use foo::Foo;
                 //^
-    """)
+    """
+    )
 
-    fun `test extern crate self without alias`() = checkByCode("""
+    fun `test extern crate self without alias`() = checkByCode(
+        """
         extern crate self;
 
         struct Foo;
@@ -1453,41 +1732,51 @@ class RsResolveTest : RsResolveTestBase() {
 
         use self::Foo;
                 //^
-    """, ItemResolutionTestmarks.externCrateSelfWithoutAlias.ignoreInNewResolve(project))
+    """, ItemResolutionTestmarks.externCrateSelfWithoutAlias.ignoreInNewResolve(project)
+    )
 
-    fun `test const generic in fn`() = checkByCode("""
+    fun `test const generic in fn`() = checkByCode(
+        """
         fn f<const AAA: usize>() {
                   //X
             AAA;
            //^
         }
-    """)
+    """
+    )
 
-    fun `test const generic in struct`() = checkByCode("""
+    fun `test const generic in struct`() = checkByCode(
+        """
         struct S<const AAA: usize> {
                       //X
             x: [usize; AAA]
                       //^
         }
-    """)
+    """
+    )
 
-    fun `test const generic in trait`() = checkByCode("""
+    fun `test const generic in trait`() = checkByCode(
+        """
         trait T<const AAA: usize> {
                      //X
             const BBB: usize = AAA;
                               //^
         }
-    """)
+    """
+    )
 
-    fun `test const generic in enum`() = checkByCode("""
+    fun `test const generic in enum`() = checkByCode(
+        """
         enum E<const AAA: usize> {
                     //X
             V([usize; AAA]),
                      //^
         }
-    """)
+    """
+    )
 
-    fun `test Self with nested impls`() = checkByCodeGeneric<RsImplItem>("""
+    fun `test Self with nested impls`() = checkByCodeGeneric<RsImplItem>(
+        """
         struct A;
 
         impl A {
@@ -1506,5 +1795,6 @@ class RsResolveTest : RsResolveTestBase() {
                 }
             }
         }
-    """)
+    """
+    )
 }

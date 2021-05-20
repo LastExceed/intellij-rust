@@ -10,31 +10,38 @@ package org.rust.ide.lineMarkers
  */
 class RsRecursiveCallLineMarkerProviderTest : RsLineMarkerProviderTestBase() {
 
-    fun `test function`() = doTestByText("""
+    fun `test function`() = doTestByText(
+        """
         fn foo() {
             foo();      // - Recursive call
         }
-    """)
+    """
+    )
 
-    fun `test assoc function`() = doTestByText("""
+    fun `test assoc function`() = doTestByText(
+        """
         struct Foo {} // - Has implementations
         impl Foo {
             fn foo() {
                 Foo::foo();      // - Recursive call
             }
         }
-    """)
+    """
+    )
 
-    fun `test method`() = doTestByText("""
+    fun `test method`() = doTestByText(
+        """
         struct Foo {} // - Has implementations
         impl Foo {
             fn foo(&self) {
                 self.foo();      // - Recursive call
             }
         }
-    """)
+    """
+    )
 
-    fun `test names collision`() = doTestByText("""
+    fun `test names collision`() = doTestByText(
+        """
         fn foo() {}
         struct Foo {} // - Has implementations
         impl Foo {
@@ -42,20 +49,25 @@ class RsRecursiveCallLineMarkerProviderTest : RsLineMarkerProviderTestBase() {
                 foo();  // It's the high-level function, no marker
             }
         }
-    """)
+    """
+    )
 
-    fun `test ignore transitive`() = doTestByText("""
+    fun `test ignore transitive`() = doTestByText(
+        """
         fn foo() {
             bar();      // Doesn't count
         }
         fn bar() {
             foo();      // Doesn't count
         }
-    """)
+    """
+    )
 
-    fun `test multiple`() = doTestByText("""
+    fun `test multiple`() = doTestByText(
+        """
         fn increment(v: u32) -> u32 {
             increment(increment(1))     // - Recursive call
         }
-    """)
+    """
+    )
 }

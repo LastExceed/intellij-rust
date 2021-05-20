@@ -9,23 +9,29 @@ impl A for S {
 }
 
 
-trait T { }
-trait P<X> { }
+trait T {}
+
+trait P<X> {}
 
 
-impl T  { }
-impl (T) { }
-impl T for S { }
+impl T {}
+
+impl (T) {}
+
+impl T for S {}
 // Syntactically invalid
 //impl (T) for S { }
 
-impl<U> P<U> { }
-impl<U> (P<U>) { }
-impl<U> P<U> for S { }
-impl T for <S as A>::B { }
+impl<U> P<U> {}
+
+impl<U> (P<U>) {}
+
+impl<U> P<U> for S {}
+
+impl T for <S as A>::B {}
 
 // Semantically invalid
-impl (<S as A>::B) { }
+impl (<S as A>::B) {}
 
 impl<'a, T> Iterator for Iter<'a, T> + 'a {
     type Item = &'a T;
@@ -40,7 +46,7 @@ impl<T> GenVal<T> {
 
 impl<T: fmt::Display + ?Sized> ToString for T {
     #[inline]
-    default fn to_string(&self) -> String { }
+    default fn to_string(&self) -> String {}
     default fn a() {}
     default fn b() {}
     default const BAR: u32 = 81;

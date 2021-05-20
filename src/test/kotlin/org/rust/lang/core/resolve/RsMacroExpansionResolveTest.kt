@@ -13,7 +13,8 @@ import org.rust.stdext.BothEditions
 class RsMacroExpansionResolveTest : RsResolveTestBase() {
     override val followMacroExpansions: Boolean get() = true
 
-    fun `test expand item`() = checkByCode("""
+    fun `test expand item`() = checkByCode(
+        """
         macro_rules! if_std {
             ($ i:item) => (
                 $ i
@@ -32,9 +33,11 @@ class RsMacroExpansionResolveTest : RsResolveTestBase() {
         fn main() {
             foo().bar()
         }       //^
-    """)
+    """
+    )
 
-    fun `test expand items star`() = checkByCode("""
+    fun `test expand items star`() = checkByCode(
+        """
         macro_rules! if_std {
             ($ ($ i:item)*) => ($ (
                 $ i
@@ -54,9 +57,11 @@ class RsMacroExpansionResolveTest : RsResolveTestBase() {
             foo().bar()
         }       //^
 
-    """)
+    """
+    )
 
-    fun `test expand items star with reexport`() = checkByCode("""
+    fun `test expand items star with reexport`() = checkByCode(
+        """
         macro_rules! if_std {
             ($ ($ i:item)*) => ($ (
                 $ i
@@ -75,9 +80,11 @@ class RsMacroExpansionResolveTest : RsResolveTestBase() {
         fn main() {
             Bar.bar()
         }      //^
-    """)
+    """
+    )
 
-    fun `test expand items star with reexport from expansion`() = checkByCode("""
+    fun `test expand items star with reexport from expansion`() = checkByCode(
+        """
         macro_rules! if_std {
             ($ ($ i:item)*) => ($ (
                 $ i
@@ -97,9 +104,11 @@ class RsMacroExpansionResolveTest : RsResolveTestBase() {
         fn main() {
             bar().bar()
         }        //^
-    """)
+    """
+    )
 
-    fun `test expand items star with nested macro calls`() = checkByCode("""
+    fun `test expand items star with nested macro calls`() = checkByCode(
+        """
         macro_rules! if_std {
             ($ ($ i:item)*) => ($ (
                 $ i
@@ -124,9 +133,11 @@ class RsMacroExpansionResolveTest : RsResolveTestBase() {
         fn main() {
             foo().bar()
         }       //^
-    """)
+    """
+    )
 
-    fun `test expand items star with infinite recursive nested macro calls`() = checkByCode("""
+    fun `test expand items star with infinite recursive nested macro calls`() = checkByCode(
+        """
         macro_rules! foo {
             ($ ($ i:item)*) => ($ (
                 foo! { $ i }
@@ -145,9 +156,11 @@ class RsMacroExpansionResolveTest : RsResolveTestBase() {
         fn main() {
             foo().bar()
         }       //^ unresolved
-    """)
+    """
+    )
 
-    fun `test method defined with a macro`() = checkByCode("""
+    fun `test method defined with a macro`() = checkByCode(
+        """
         macro_rules! foo {
             ($ i:ident, $ j:ty) => { fn $ i(&self) -> $ j { unimplemented!() } }
         }
@@ -160,9 +173,11 @@ class RsMacroExpansionResolveTest : RsResolveTestBase() {
         fn main() {
             Foo.foo().bar();
         }           //^
-    """)
+    """
+    )
 
-    fun `test method defined with a stubbed macro`() = stubOnlyResolve("""
+    fun `test method defined with a stubbed macro`() = stubOnlyResolve(
+        """
     //- foo.rs
         macro_rules! foo {
             ($ i:ident, $ j:ty) => { pub fn $ i(&self) -> $ j { unimplemented!() } }
@@ -178,10 +193,12 @@ class RsMacroExpansionResolveTest : RsResolveTestBase() {
         fn main() {
             Foo.foo().bar();
         }           //^ main.rs
-    """)
+    """
+    )
 
     // This is a test for RsAbstractable.owner when RsAbstractable is expanded from a macro
-    fun `test generic trait method defined with a stubbed macro`() = stubOnlyResolve("""
+    fun `test generic trait method defined with a stubbed macro`() = stubOnlyResolve(
+        """
     //- foo.rs
         macro_rules! foo {
             ($ i:ident, $ j:ty) => { pub fn $ i(&self) -> $ j { unimplemented!() } }
@@ -198,9 +215,11 @@ class RsMacroExpansionResolveTest : RsResolveTestBase() {
         fn main() {
             Foo(Bar).foo().bar();
         }                //^ main.rs
-    """)
+    """
+    )
 
-    fun `test trait method defined with a macro`() = checkByCode("""
+    fun `test trait method defined with a macro`() = checkByCode(
+        """
         macro_rules! foo {
             ($ i:ident, $ j:ty) => { fn $ i(&self) -> $ j { unimplemented!() } }
         }
@@ -214,9 +233,11 @@ class RsMacroExpansionResolveTest : RsResolveTestBase() {
         fn main() {
             Foo.foo().bar();
         }           //^
-    """)
+    """
+    )
 
-    fun `test method defined with a nested macro call`() = checkByCode("""
+    fun `test method defined with a nested macro call`() = checkByCode(
+        """
         macro_rules! foo {
             ($ i:ident, $ j:ty) => { fn $ i(&self) -> $ j { unimplemented!() } }
         }
@@ -233,9 +254,11 @@ class RsMacroExpansionResolveTest : RsResolveTestBase() {
         fn main() {
             Foo.foo().bar();
         }           //^
-    """)
+    """
+    )
 
-    fun `test expand impl members with infinite recursive nested macro calls`() = checkByCode("""
+    fun `test expand impl members with infinite recursive nested macro calls`() = checkByCode(
+        """
         macro_rules! foo {
             ($ i:ident, $ j:ty) => { foo!($ i, $ j) }
         }
@@ -247,9 +270,11 @@ class RsMacroExpansionResolveTest : RsResolveTestBase() {
         fn main() {
             Foo.foo().bar();
         }           //^ unresolved
-    """)
+    """
+    )
 
-    fun `test 'crate' metavar in same crate`() = checkByCode("""
+    fun `test 'crate' metavar in same crate`() = checkByCode(
+        """
         struct Foo;
         impl Foo {
             pub fn bar(&self) {}
@@ -263,11 +288,13 @@ class RsMacroExpansionResolveTest : RsResolveTestBase() {
         fn main() {
             foo().bar()
         }       //^
-    """)
+    """
+    )
 
     // We need to test macros expanded to import,
     // because paths in imports are resolved using different code when Resolve2 is enabled.
-    fun `test 'crate' metavar in same crate (macro expanded to import)`() = checkByCode("""
+    fun `test 'crate' metavar in same crate (macro expanded to import)`() = checkByCode(
+        """
         fn func() {}
          //X
 
@@ -281,9 +308,11 @@ class RsMacroExpansionResolveTest : RsResolveTestBase() {
                 func();
             } //^
         }
-    """)
+    """
+    )
 
-    fun `test 'crate' metavar in same crate 1 (macro expanded to inline mod)`() = checkByCode("""
+    fun `test 'crate' metavar in same crate 1 (macro expanded to inline mod)`() = checkByCode(
+        """
         fn func() {}
          //X
 
@@ -297,9 +326,11 @@ class RsMacroExpansionResolveTest : RsResolveTestBase() {
         fn main() {
             inner::func();
         }        //^
-    """)
+    """
+    )
 
-    fun `test 'crate' metavar in same crate 2 (macro expanded to inline mod)`() = checkByCode("""
+    fun `test 'crate' metavar in same crate 2 (macro expanded to inline mod)`() = checkByCode(
+        """
         fn func() {}
          //X
 
@@ -316,10 +347,12 @@ class RsMacroExpansionResolveTest : RsResolveTestBase() {
         fn main() {
             inner::func();
         }        //^
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithDependencyRustProjectDescriptor::class)
-    fun `test 'crate' metavar`() = stubOnlyResolve("""
+    fun `test 'crate' metavar`() = stubOnlyResolve(
+        """
     //- lib.rs
         pub struct Foo;
         impl Foo {
@@ -339,10 +372,12 @@ class RsMacroExpansionResolveTest : RsResolveTestBase() {
         fn main() {
             foo().bar()
         }       //^ lib.rs
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithDependencyRustProjectDescriptor::class)
-    fun `test 'crate' metavar (macro expanded to import)`() = stubOnlyResolve("""
+    fun `test 'crate' metavar (macro expanded to import)`() = stubOnlyResolve(
+        """
     //- lib.rs
         pub fn func() {}
              //X
@@ -359,10 +394,12 @@ class RsMacroExpansionResolveTest : RsResolveTestBase() {
         fn main() {
             func();
         } //^ lib.rs
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithDependencyRustProjectDescriptor::class)
-    fun `test 'crate' metavar (dollar crate in path of macro call)`() = stubOnlyResolve("""
+    fun `test 'crate' metavar (dollar crate in path of macro call)`() = stubOnlyResolve(
+        """
     //- lib.rs
         pub fn func() {}
              //X
@@ -383,10 +420,12 @@ class RsMacroExpansionResolveTest : RsResolveTestBase() {
         fn main() {
             func();
         } //^ lib.rs
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithDependencyRustProjectDescriptor::class)
-    fun `test 'crate' metavar with alias`() = stubOnlyResolve("""
+    fun `test 'crate' metavar with alias`() = stubOnlyResolve(
+        """
     //- lib.rs
         pub struct Foo;
         impl Foo {
@@ -406,10 +445,12 @@ class RsMacroExpansionResolveTest : RsResolveTestBase() {
         fn main() {
             foo().bar()
         }       //^ lib.rs
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithDependencyRustProjectDescriptor::class)
-    fun `test 'crate' metavar with alias (macro expanded to import)`() = stubOnlyResolve("""
+    fun `test 'crate' metavar with alias (macro expanded to import)`() = stubOnlyResolve(
+        """
     //- lib.rs
         pub fn func() {}
              //X
@@ -426,10 +467,12 @@ class RsMacroExpansionResolveTest : RsResolveTestBase() {
         fn main() {
             func();
         } //^ lib.rs
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithDependencyRustProjectDescriptor::class)
-    fun `test 'crate' metavar with alias (macro expanded to import with group)`() = stubOnlyResolve("""
+    fun `test 'crate' metavar with alias (macro expanded to import with group)`() = stubOnlyResolve(
+        """
     //- lib.rs
         pub fn func() {}
              //X
@@ -446,10 +489,12 @@ class RsMacroExpansionResolveTest : RsResolveTestBase() {
         fn main() {
             func();
         } //^ lib.rs
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithDependencyRustProjectDescriptor::class)
-    fun `test 'crate' metavar with macro call not in crate root`() = stubOnlyResolve("""
+    fun `test 'crate' metavar with macro call not in crate root`() = stubOnlyResolve(
+        """
     //- lib.rs
         pub struct Foo;
         impl Foo {
@@ -471,10 +516,12 @@ class RsMacroExpansionResolveTest : RsResolveTestBase() {
                 foo().bar()
             }       //^ lib.rs
         }
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithDependencyRustProjectDescriptor::class)
-    fun `test 'crate' metavar with macro call not in crate root (macro expanded to import)`() = stubOnlyResolve("""
+    fun `test 'crate' metavar with macro call not in crate root (macro expanded to import)`() = stubOnlyResolve(
+        """
     //- lib.rs
         pub fn func() {}
              //X
@@ -493,10 +540,12 @@ class RsMacroExpansionResolveTest : RsResolveTestBase() {
                 func()
             } //^ lib.rs
         }
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithDependencyRustProjectDescriptor::class)
-    fun `test 'crate' metavar passed to another macro in a different crate`() = stubOnlyResolve("""
+    fun `test 'crate' metavar passed to another macro in a different crate`() = stubOnlyResolve(
+        """
     //- trans-lib/lib.rs
         #[macro_export]
         macro_rules! def_fn {
@@ -524,10 +573,12 @@ class RsMacroExpansionResolveTest : RsResolveTestBase() {
         fn main() {
             foo().bar()
         }       //^ dep-lib/lib.rs
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithDependencyRustProjectDescriptor::class)
-    fun `test 'crate' metavar passed to another macro in a different crate 2`() = stubOnlyResolve("""
+    fun `test 'crate' metavar passed to another macro in a different crate 2`() = stubOnlyResolve(
+        """
     //- trans-lib-2/lib.rs
         #[macro_export]
         macro_rules! def_fn_2 {
@@ -576,10 +627,12 @@ class RsMacroExpansionResolveTest : RsResolveTestBase() {
         fn main() {
             foo().bar()
         }       //^ dep-lib/lib.rs
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithDependencyRustProjectDescriptor::class)
-    fun `test 'crate' metavar passed to another macro in a different crate (macro expanded to import)`() = stubOnlyResolve("""
+    fun `test 'crate' metavar passed to another macro in a different crate (macro expanded to import)`() = stubOnlyResolve(
+        """
     //- trans-lib/lib.rs
         #[macro_export]
         macro_rules! def_fn {
@@ -604,9 +657,11 @@ class RsMacroExpansionResolveTest : RsResolveTestBase() {
         fn main() {
             func();
         } //^ dep-lib/lib.rs
-    """)
+    """
+    )
 
-    fun `test expand macro inside stubbed file`() = stubOnlyResolve("""
+    fun `test expand macro inside stubbed file`() = stubOnlyResolve(
+        """
     //- bar.rs
         pub struct S;
         impl S { pub fn bar(&self) {} }
@@ -621,9 +676,11 @@ class RsMacroExpansionResolveTest : RsResolveTestBase() {
         fn main() {
             bar::foo().bar();
         }            //^ bar.rs
-    """)
+    """
+    )
 
-    fun `test impl defined by macro`() = checkByCode("""
+    fun `test impl defined by macro`() = checkByCode(
+        """
         macro_rules! foo {
             ($ i:ident) => {
                 impl $ i {
@@ -640,9 +697,11 @@ class RsMacroExpansionResolveTest : RsResolveTestBase() {
         fn main() {
             Foo.foo().bar();
         }           //^
-    """)
+    """
+    )
 
-    fun `test impl defined by macro with method defined by nested macro`() = checkByCode("""
+    fun `test impl defined by macro with method defined by nested macro`() = checkByCode(
+        """
         macro_rules! bar {
             ($ i:ident, $ j:ty) => { fn $ i(&self) -> $ j { unimplemented!() } }
         }
@@ -663,9 +722,11 @@ class RsMacroExpansionResolveTest : RsResolveTestBase() {
         fn main() {
             Foo.foo().bar();
         }           //^
-    """)
+    """
+    )
 
-    fun `test mod declared with macro`() = stubOnlyResolve("""
+    fun `test mod declared with macro`() = stubOnlyResolve(
+        """
     //- main.rs
         macro_rules! foo {
             () => { mod child; };
@@ -677,10 +738,12 @@ class RsMacroExpansionResolveTest : RsResolveTestBase() {
     //- child.rs
         use super::S;
                  //^ main.rs
-    """)
+    """
+    )
 
     @MockEdition(CargoWorkspace.Edition.EDITION_2018)
-    fun `test mod declared with macro inside inline expanded mod`() = stubOnlyResolve("""
+    fun `test mod declared with macro inside inline expanded mod`() = stubOnlyResolve(
+        """
     //- main.rs
         macro_rules! gen_mod_decl_item {
             () => { mod foo2; };
@@ -697,10 +760,12 @@ class RsMacroExpansionResolveTest : RsResolveTestBase() {
     //- foo1/foo2.rs
         pub struct S;
                  //X
-    """)
+    """
+    )
 
     @MockEdition(CargoWorkspace.Edition.EDITION_2018)
-    fun `test mod with path attribute declared with macro`() = stubOnlyResolve("""
+    fun `test mod with path attribute declared with macro`() = stubOnlyResolve(
+        """
     //- main.rs
         macro_rules! foo {
             () => { #[path="foo.rs"] mod child; };
@@ -716,9 +781,11 @@ class RsMacroExpansionResolveTest : RsResolveTestBase() {
                 func();
             } //^ foo.rs
         }
-    """)
+    """
+    )
 
-    fun `test resolve item expanded from stmt context macro`() = checkByCode("""
+    fun `test resolve item expanded from stmt context macro`() = checkByCode(
+        """
         macro_rules! foo {
             ($ i:item) => ( $ i )
         }
@@ -732,9 +799,11 @@ class RsMacroExpansionResolveTest : RsResolveTestBase() {
             }
             foo().bar();
         }       //^
-    """)
+    """
+    )
 
-    fun `test resolve binding from stmt context macro`() = checkByCode("""
+    fun `test resolve binding from stmt context macro`() = checkByCode(
+        """
         macro_rules! foo {
             ($ i:stmt) => ( $ i )
         }
@@ -744,9 +813,11 @@ class RsMacroExpansionResolveTest : RsResolveTestBase() {
             }     //X
             let _ = a;
         }         //^
-    """)
+    """
+    )
 
-    fun `test hygiene 1`() = checkByCode("""
+    fun `test hygiene 1`() = checkByCode(
+        """
         macro_rules! foo {
             () => ( let a = 0; )
         }
@@ -754,9 +825,11 @@ class RsMacroExpansionResolveTest : RsResolveTestBase() {
             foo!();
             let _ = a;
         }         //^ unresolved
-    """)
+    """
+    )
 
-    fun `test hygiene 2`() = checkByCode("""
+    fun `test hygiene 2`() = checkByCode(
+        """
         macro_rules! foo {
             ($ i:ident) => ( let $ i = 0; )
         }
@@ -770,9 +843,11 @@ class RsMacroExpansionResolveTest : RsResolveTestBase() {
                 let _ = a;
             }         //^
         }
-    """)
+    """
+    )
 
-    fun `test hygiene 3`() = checkByCode("""
+    fun `test hygiene 3`() = checkByCode(
+        """
         macro_rules! foo {
             () => ( let a = 0; )
         }
@@ -785,9 +860,11 @@ class RsMacroExpansionResolveTest : RsResolveTestBase() {
                 let _ = a;
             }         //^ unresolved
         }
-    """)
+    """
+    )
 
-    fun `test hygiene 4`() = checkByCode("""
+    fun `test hygiene 4`() = checkByCode(
+        """
         macro_rules! foo {
             () => ( let a = 0; )
         }
@@ -802,9 +879,11 @@ class RsMacroExpansionResolveTest : RsResolveTestBase() {
                 let _ = a;
             }         //^
         }
-    """)
+    """
+    )
 
-    fun `test hygiene 5`() = checkByCode("""
+    fun `test hygiene 5`() = checkByCode(
+        """
         macro_rules! bar {
             ($($ t:tt)*) => { $($ t)* };
         }
@@ -816,9 +895,11 @@ class RsMacroExpansionResolveTest : RsResolveTestBase() {
             }         //^
             let a = 2;
         }
-    """)
+    """
+    )
 
-    fun `test resolve generic impl from impl trait`() = checkByCode("""
+    fun `test resolve generic impl from impl trait`() = checkByCode(
+        """
         macro_rules! foo {
             ($($ t:tt)*) => { $($ t)* };
         }
@@ -830,9 +911,11 @@ class RsMacroExpansionResolveTest : RsResolveTestBase() {
         fn main() {
             foo().bar();
         }       //^
-    """)
+    """
+    )
 
-    fun `test resolve module under macro chain`() = stubOnlyResolve("""
+    fun `test resolve module under macro chain`() = stubOnlyResolve(
+        """
     //- main.rs
         macro_rules! if_std {
             ($ i:item) => (
@@ -852,11 +935,13 @@ class RsMacroExpansionResolveTest : RsResolveTestBase() {
         if_std! {
             pub struct Baz;
         }
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithDependencyRustProjectDescriptor::class)
     @BothEditions
-    fun `test local_inner_macros`() = stubOnlyResolve("""
+    fun `test local_inner_macros`() = stubOnlyResolve(
+        """
     //- main.rs
         extern crate test_package;
         use test_package::foo;
@@ -879,12 +964,14 @@ class RsMacroExpansionResolveTest : RsResolveTestBase() {
         macro_rules! bar {
             () => { use Foo as Bar; };
         }
-    """)
+    """
+    )
 
     // we only test that there are no exception with new resolve
     @MockEdition(CargoWorkspace.Edition.EDITION_2018)
     @ProjectDescriptor(WithDependencyRustProjectDescriptor::class)
-    fun `test local_inner_macros expanded to extern crate`() = stubOnlyResolve("""
+    fun `test local_inner_macros expanded to extern crate`() = stubOnlyResolve(
+        """
     //- main.rs
         use test_package::foo;
         foo!();
@@ -897,10 +984,12 @@ class RsMacroExpansionResolveTest : RsResolveTestBase() {
                 extern crate foo;
             };
         }
-    """)
+    """
+    )
 
     @MockEdition(CargoWorkspace.Edition.EDITION_2018)
-    fun `test expand macro with incomplete path`() = stubOnlyResolve("""
+    fun `test expand macro with incomplete path`() = stubOnlyResolve(
+        """
     //- main.rs
         macro_rules! gen_func {
             () => { fn func() {} };
@@ -912,10 +1001,12 @@ class RsMacroExpansionResolveTest : RsResolveTestBase() {
             // here we just check that incomplete path doesn't cause exceptions
             func();
         } //^ unresolved
-    """)
+    """
+    )
 
     @UseNewResolve
-    fun `test legacy textual macro reexported as macro 2`() = checkByCode("""
+    fun `test legacy textual macro reexported as macro 2`() = checkByCode(
+        """
         mod inner {
             #[macro_export]
             macro_rules! as_is_ {
@@ -930,22 +1021,26 @@ class RsMacroExpansionResolveTest : RsResolveTestBase() {
         fn main() {
             foo();
         } //^
-    """)
+    """
+    )
 
     @MockEdition(CargoWorkspace.Edition.EDITION_2018)
-    fun `test macro call expanded to macro def and macro call 1`() = checkByCode("""
+    fun `test macro call expanded to macro def and macro call 1`() = checkByCode(
+        """
         macro_rules! as_is { ($($ t:tt)*) => { $($ t)* }; }
         as_is! {
             macro_rules! foo { () => {}; }
                        //X
             foo!();
         } //^
-    """)
+    """
+    )
 
     // when resolving macro call expanded from other macro call,
     // firstly left sibling expanded elements should be processed
     @MockEdition(CargoWorkspace.Edition.EDITION_2018)
-    fun `test macro call expanded to macro def and macro call 2`() = checkByCode("""
+    fun `test macro call expanded to macro def and macro call 2`() = checkByCode(
+        """
         macro_rules! foo {
             (1) => {
                 macro_rules! foo {
@@ -964,11 +1059,13 @@ class RsMacroExpansionResolveTest : RsResolveTestBase() {
         fn main() {
             func();
         } //^
-    """)
+    """
+    )
 
     @UseNewResolve
     @MockEdition(CargoWorkspace.Edition.EDITION_2018)
-    fun `test propagate expanded macro def to grandparent mod`() = checkByCode("""
+    fun `test propagate expanded macro def to grandparent mod`() = checkByCode(
+        """
         mod inner {
             #[macro_use]
             mod mod1 {
@@ -986,5 +1083,6 @@ class RsMacroExpansionResolveTest : RsResolveTestBase() {
             foo!();
             //^
         }
-    """)
+    """
+    )
 }

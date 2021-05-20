@@ -13,7 +13,8 @@ class RsUnsafeExpressionErrorAnnotatorTest : RsAnnotatorTestBase(RsUnsafeExpress
         annotationFixture.registerSeverities(listOf(RsColor.UNSAFE_CODE.testSeverity))
     }
 
-    fun `test extern static requires unsafe`() = checkErrors("""
+    fun `test extern static requires unsafe`() = checkErrors(
+        """
         extern {
             static C: i32;
         }
@@ -21,17 +22,21 @@ class RsUnsafeExpressionErrorAnnotatorTest : RsAnnotatorTestBase(RsUnsafeExpress
         fn main() {
             let a = <error descr="Use of extern static is unsafe and requires unsafe function or block [E0133]">C</error>;
         }
-    """)
+    """
+    )
 
-    fun `test need unsafe static mutable`() = checkErrors("""
+    fun `test need unsafe static mutable`() = checkErrors(
+        """
         static mut test : u8 = 0;
 
         fn main() {
             <error descr="Use of mutable static is unsafe and requires unsafe function or block [E0133]">test</error> += 1;
         }
-    """)
+    """
+    )
 
-    fun `test need unsafe function`() = checkErrors("""
+    fun `test need unsafe function`() = checkErrors(
+        """
         struct S;
 
         impl S {
@@ -42,9 +47,11 @@ class RsUnsafeExpressionErrorAnnotatorTest : RsAnnotatorTestBase(RsUnsafeExpress
             let s = S;
             <error descr="Call to unsafe function requires unsafe function or block [E0133]">s.foo()</error>;
         }
-    """)
+    """
+    )
 
-    fun `test need unsafe block`() = checkErrors("""
+    fun `test need unsafe block`() = checkErrors(
+        """
         struct S;
 
         impl S {
@@ -57,25 +64,31 @@ class RsUnsafeExpressionErrorAnnotatorTest : RsAnnotatorTestBase(RsUnsafeExpress
                 <error descr="Call to unsafe function requires unsafe function or block [E0133]">s.foo()</error>;
             }
         }
-    """)
+    """
+    )
 
-    fun `test need unsafe 2`() = checkErrors("""
+    fun `test need unsafe 2`() = checkErrors(
+        """
         unsafe fn foo() { return; }
 
         fn main() {
             <error>foo()</error>;
         }
-    """)
+    """
+    )
 
-    fun `test external ABI is unsafe`() = checkErrors("""
+    fun `test external ABI is unsafe`() = checkErrors(
+        """
         extern "C" { fn foo(); }
 
         fn main() {
             <error descr="Call to unsafe function requires unsafe function or block [E0133]">foo()</error>;
         }
-    """)
+    """
+    )
 
-    fun `test is unsafe block`() = checkErrors("""
+    fun `test is unsafe block`() = checkErrors(
+        """
         unsafe fn foo() {}
 
         fn main() {
@@ -85,9 +98,11 @@ class RsUnsafeExpressionErrorAnnotatorTest : RsAnnotatorTestBase(RsUnsafeExpress
                 }
             }
         }
-    """)
+    """
+    )
 
-    fun `test is unsafe function`() = checkErrors("""
+    fun `test is unsafe function`() = checkErrors(
+        """
         unsafe fn foo() {}
 
         fn main() {
@@ -97,32 +112,40 @@ class RsUnsafeExpressionErrorAnnotatorTest : RsAnnotatorTestBase(RsUnsafeExpress
                 }
             }
         }
-    """)
+    """
+    )
 
-    fun `test pointer dereference`() = checkErrors("""
+    fun `test pointer dereference`() = checkErrors(
+        """
         fn main() {
             let char_ptr: *const char = 42 as *const _;
             let val = <error descr="Dereference of raw pointer requires unsafe function or block [E0133]">*char_ptr</error>;
         }
-    """)
+    """
+    )
 
-    fun `test pointer dereference in unsafe block`() = checkHighlighting("""
+    fun `test pointer dereference in unsafe block`() = checkHighlighting(
+        """
         fn main() {
             let char_ptr: *const char = 42 as *const _;
             let val = unsafe { <info descr="Unsafe dereference of raw pointer">*char_ptr</info> };
         }
-    """)
+    """
+    )
 
-    fun `test pointer dereference in unsafe fn`() = checkHighlighting("""
+    fun `test pointer dereference in unsafe fn`() = checkHighlighting(
+        """
         fn main() {
         }
         unsafe fn foo() {
             let char_ptr: *const char = 42 as *const _;
             let val = <info descr="Unsafe dereference of raw pointer">*char_ptr</info>;
         }
-    """)
+    """
+    )
 
-    fun `test function defined in wasm_bindgen extern block is not unsafe`() = checkErrors("""
+    fun `test function defined in wasm_bindgen extern block is not unsafe`() = checkErrors(
+        """
         #[wasm_bindgen]
         extern {
             fn foo();
@@ -131,5 +154,6 @@ class RsUnsafeExpressionErrorAnnotatorTest : RsAnnotatorTestBase(RsUnsafeExpress
         fn main() {
             foo();
         }
-    """)
+    """
+    )
 }

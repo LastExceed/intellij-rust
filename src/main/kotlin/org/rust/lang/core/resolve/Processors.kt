@@ -181,10 +181,12 @@ fun collectCompletionVariants(
         val element = e.element ?: return@createProcessor false
         if (element is RsFunction && element.isTest) return@createProcessor false
         if (element !is RsDocAndAttributeOwner || element.existsAfterExpansionSelf) {
-            result.addElement(createLookupElement(
-                scopeEntry = e,
-                context = context
-            ))
+            result.addElement(
+                createLookupElement(
+                    scopeEntry = e,
+                    context = context
+                )
+            )
         }
         false
     }

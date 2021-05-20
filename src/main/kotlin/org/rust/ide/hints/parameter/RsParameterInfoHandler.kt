@@ -52,7 +52,8 @@ class RsParameterInfoHandler : RsAsyncParameterInfoHandler<RsValueArgumentList, 
             !context.isUIComponentEnabled,
             false,
             false,
-            context.defaultParameterColor)
+            context.defaultParameterColor
+        )
     }
 }
 

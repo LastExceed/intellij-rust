@@ -13,7 +13,8 @@ import org.rust.ide.inspections.RsTypeCheckInspection
 
 @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
 class ConvertToTyUsingTryFromTraitFixTest : RsInspectionsTestBase(RsTypeCheckInspection::class) {
-    fun `test B from A when impl TryFrom A for B is available`() = checkFixByText("Convert to Bb using `TryFrom` trait", """
+    fun `test B from A when impl TryFrom A for B is available`() = checkFixByText(
+        "Convert to Bb using `TryFrom` trait", """
         #![feature(try_from)]
         use std::convert::TryFrom;
 
@@ -39,9 +40,11 @@ class ConvertToTyUsingTryFromTraitFixTest : RsInspectionsTestBase(RsTypeCheckIns
         fn main () {
             let b: Bb = Bb::try_from(Aa).unwrap();
         }
-    """)
+    """
+    )
 
-    fun `test B from A when impl TryFrom A for B is available and fn ret Result with Err match`() = checkFixByText("Convert to Bb using `TryFrom` trait", """
+    fun `test B from A when impl TryFrom A for B is available and fn ret Result with Err match`() = checkFixByText(
+        "Convert to Bb using `TryFrom` trait", """
         #![feature(try_from)]
         use std::convert::TryFrom;
 
@@ -69,9 +72,11 @@ class ConvertToTyUsingTryFromTraitFixTest : RsInspectionsTestBase(RsTypeCheckIns
             let b: Bb = Bb::try_from(Aa)?;
             return Ok(b);
         }
-    """)
+    """
+    )
 
-    fun `test B from A when impl TryFrom A for B is available and fn ret Result with Err mismatch`() = checkFixByText("Convert to Bb using `TryFrom` trait", """
+    fun `test B from A when impl TryFrom A for B is available and fn ret Result with Err mismatch`() = checkFixByText(
+        "Convert to Bb using `TryFrom` trait", """
         #![feature(try_from)]
         use std::convert::TryFrom;
 
@@ -101,9 +106,11 @@ class ConvertToTyUsingTryFromTraitFixTest : RsInspectionsTestBase(RsTypeCheckIns
             let b: Bb = Bb::try_from(Aa).unwrap();
             return Ok(b);
         }
-    """)
+    """
+    )
 
-    fun `test B from A when impl TryFrom A for B is available and fn ret Result with Err match through From trait`() = checkFixByText("Convert to Bb using `TryFrom` trait", """
+    fun `test B from A when impl TryFrom A for B is available and fn ret Result with Err match through From trait`() = checkFixByText(
+        "Convert to Bb using `TryFrom` trait", """
         #![feature(try_from)]
         use std::convert::TryFrom;
 
@@ -135,9 +142,11 @@ class ConvertToTyUsingTryFromTraitFixTest : RsInspectionsTestBase(RsTypeCheckIns
             let b: Bb = Bb::try_from(Aa)?;
             return Ok(b);
         }
-    """)
+    """
+    )
 
-    fun `test B from A when impl TryFrom A for B is available and lambda ret Result with Err match`() = checkFixByText("Convert to Bb using `TryFrom` trait", """
+    fun `test B from A when impl TryFrom A for B is available and lambda ret Result with Err match`() = checkFixByText(
+        "Convert to Bb using `TryFrom` trait", """
         #![feature(try_from)]
         use std::convert::TryFrom;
 
@@ -163,9 +172,11 @@ class ConvertToTyUsingTryFromTraitFixTest : RsInspectionsTestBase(RsTypeCheckIns
         fn main() {
             let f = || -> Result<B, Ee> { let b: Bb = Bb::try_from(Aa)?; return Ok(b);};
         }
-    """)
+    """
+    )
 
-    fun `test Result of B from A when impl TryFrom A for B is available`() = checkFixByText("Convert to Bb using `TryFrom` trait", """
+    fun `test Result of B from A when impl TryFrom A for B is available`() = checkFixByText(
+        "Convert to Bb using `TryFrom` trait", """
         #![feature(try_from)]
         use std::convert::TryFrom;
 
@@ -191,9 +202,11 @@ class ConvertToTyUsingTryFromTraitFixTest : RsInspectionsTestBase(RsTypeCheckIns
         fn main () {
             let b: Result<Bb, Ee> = Bb::try_from(Aa);
         }
-    """)
+    """
+    )
 
-    fun `test no fix when impl TryFrom A for B has wrong Err type`() = checkFixIsUnavailable("Convert to Bb using `TryFrom` trait", """
+    fun `test no fix when impl TryFrom A for B has wrong Err type`() = checkFixIsUnavailable(
+        "Convert to Bb using `TryFrom` trait", """
         #![feature(try_from)]
         use std::convert::TryFrom;
 
@@ -207,9 +220,11 @@ class ConvertToTyUsingTryFromTraitFixTest : RsInspectionsTestBase(RsTypeCheckIns
         fn main () {
             let b: Result<Bb, Ee2> = <error>Aa<caret></error>;
         }
-    """)
+    """
+    )
 
-    fun `test no fix when impl TryFrom A for B is not available with simple From impl`() = checkFixIsUnavailable("Convert to Bb using `TryFrom` trait", """
+    fun `test no fix when impl TryFrom A for B is not available with simple From impl`() = checkFixIsUnavailable(
+        "Convert to Bb using `TryFrom` trait", """
         struct Aa;
         struct Bb;
 
@@ -220,9 +235,11 @@ class ConvertToTyUsingTryFromTraitFixTest : RsInspectionsTestBase(RsTypeCheckIns
         fn main () {
             let b: Bb = <error>Aa<caret></error>;
         }
-    """)
+    """
+    )
 
-    fun `test no fix when impl TryFrom A for B is not available`() = checkFixIsUnavailable("Convert to Bb using `TryFrom` trait", """
+    fun `test no fix when impl TryFrom A for B is not available`() = checkFixIsUnavailable(
+        "Convert to Bb using `TryFrom` trait", """
         #![feature(try_from)]
         use std::convert::TryFrom;
         struct Aa;
@@ -237,5 +254,6 @@ class ConvertToTyUsingTryFromTraitFixTest : RsInspectionsTestBase(RsTypeCheckIns
         fn main () {
             let b: Bb = <error>Aa<caret></error>;
         }
-    """)
+    """
+    )
 }

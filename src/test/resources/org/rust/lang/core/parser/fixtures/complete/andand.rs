@@ -1,5 +1,5 @@
 fn main() {
-    &&& x;
+    &&&x;
     &a & &b;
     false == false && true
 }

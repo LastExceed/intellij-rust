@@ -34,34 +34,46 @@ class RsTypeInferenceCachingTest : RsTestBase() {
         }
     }
 
-    fun `test reinferred only current function after insert`() = checkReinferred(type(), """
+    fun `test reinferred only current function after insert`() = checkReinferred(
+        type(), """
         fn foo() { /*caret*/ }
         fn bar() {  }
-    """, "foo")
+    """, "foo"
+    )
 
-    fun `test reinferred only current function after remove`() = checkReinferred(type("\b"), """
+    fun `test reinferred only current function after remove`() = checkReinferred(
+        type("\b"), """
         fn foo() { 2/*caret*/ }
         fn bar() {  }
-    """, "foo")
+    """, "foo"
+    )
 
-    fun `test reinferred only current function after replace`() = checkReinferred(type("\ba"), """
+    fun `test reinferred only current function after replace`() = checkReinferred(
+        type("\ba"), """
         fn foo() { 2/*caret*/ }
         fn bar() {  }
-    """, "foo")
+    """, "foo"
+    )
 
-    fun `test nothing reinferred after completion invocation`() = checkReinferred(complete, """
+    fun `test nothing reinferred after completion invocation`() = checkReinferred(
+        complete, """
         fn foo() { /*caret*/ }
         fn bar() {  }
-    """)
+    """
+    )
 
-    fun `test reinferred everything on structure change 1`() = checkReinferred(type(), """
+    fun `test reinferred everything on structure change 1`() = checkReinferred(
+        type(), """
         struct S { /*caret*/ }
         fn foo() {  }
         fn bar() {  }
-    """, "foo", "bar")
+    """, "foo", "bar"
+    )
 
-    fun `test reinferred everything on structure change 2`() = checkReinferred(type(), """
+    fun `test reinferred everything on structure change 2`() = checkReinferred(
+        type(), """
         fn foo() { struct S { /*caret*/ } }
         fn bar() {  }
-    """, "foo", "bar")
+    """, "foo", "bar"
+    )
 }

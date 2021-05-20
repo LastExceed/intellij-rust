@@ -9,23 +9,29 @@ import org.intellij.lang.annotations.Language
 import org.rust.lang.core.macros.decl.FragmentKind
 
 class RsFragmentSpecifierCompletionTest : RsCompletionTestBase() {
-    fun `test fragment specifiers`() = checkContains("""
+    fun `test fragment specifiers`() = checkContains(
+        """
         macro_rules! foo {
             ($ l:/*caret*/) => {}
         }
-    """)
+    """
+    )
 
-    fun `test fragment specifiers after name`() = checkNotContains("""
+    fun `test fragment specifiers after name`() = checkNotContains(
+        """
         macro_rules! foo {
             ($ i/*caret*/) => {}
         }
-    """)
+    """
+    )
 
-    fun `test fragment specifiers after $ sign`() = checkNotContains("""
+    fun `test fragment specifiers after $ sign`() = checkNotContains(
+        """
         macro_rules! foo {
             ($/*caret*/) => {}
         }
-    """)
+    """
+    )
 
     @Suppress("SameParameterValue")
     private fun checkContains(@Language("Rust") text: String) {

@@ -11,7 +11,8 @@ import org.rust.ide.annotator.RsAnnotatorTestBase
 import org.rust.ide.annotator.RsErrorAnnotator
 
 class MakePublicFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
-    fun `test make simple const public`() = checkFixByText("Make `BAR` public", """
+    fun `test make simple const public`() = checkFixByText(
+        "Make `BAR` public", """
         mod foo {
             const BAR: i32 = 10;
         }
@@ -25,9 +26,11 @@ class MakePublicFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
         fn main() {
             foo::BAR/*caret*/;
         }
-    """)
+    """
+    )
 
-    fun `test make const with comment only public`() = checkFixByText("Make `BAR` public", """
+    fun `test make const with comment only public`() = checkFixByText(
+        "Make `BAR` public", """
         mod foo {
             // Only comment
             const BAR: i32 = 10;
@@ -43,9 +46,11 @@ class MakePublicFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
         fn main() {
             foo::BAR/*caret*/;
         }
-    """)
+    """
+    )
 
-    fun `test make const with attribute only public`() = checkFixByText("Make `BAR` public", """
+    fun `test make const with attribute only public`() = checkFixByText(
+        "Make `BAR` public", """
         mod foo {
             #[doc(hidden)]
             const BAR: i32 = 10;
@@ -61,9 +66,11 @@ class MakePublicFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
         fn main() {
             foo::BAR/*caret*/;
         }
-    """)
+    """
+    )
 
-    fun `test make const with comment and attribute public`() = checkFixByText("Make `BAR` public", """
+    fun `test make const with comment and attribute public`() = checkFixByText(
+        "Make `BAR` public", """
         mod foo {
             // Some constant
             #[doc(hidden)]
@@ -81,9 +88,11 @@ class MakePublicFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
         fn main() {
             foo::BAR;
         }
-    """)
+    """
+    )
 
-    fun `test make static const public`() = checkFixByText("Make `BAR` public", """
+    fun `test make static const public`() = checkFixByText(
+        "Make `BAR` public", """
         mod foo {
             // Static constant
             #[doc(hidden)]
@@ -101,9 +110,11 @@ class MakePublicFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
         fn main() {
             &foo::BAR/*caret*/;
         }
-    """)
+    """
+    )
 
-    fun `test make static mut const public`() = checkFixByText("Make `BAR` public", """
+    fun `test make static mut const public`() = checkFixByText(
+        "Make `BAR` public", """
         mod foo {
             // Static mut constant
             #[doc(hidden)]
@@ -121,9 +132,11 @@ class MakePublicFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
         fn main() {
             unsafe { &foo::BAR/*caret*/ };
         }
-    """)
+    """
+    )
 
-    fun `test make simple function public`() = checkFixByText("Make `bar` public", """
+    fun `test make simple function public`() = checkFixByText(
+        "Make `bar` public", """
         mod foo {
             fn bar() {}
         }
@@ -137,9 +150,11 @@ class MakePublicFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
         fn main() {
             foo::bar/*caret*/();
         }
-    """)
+    """
+    )
 
-    fun `test make async function public`() = checkFixByText("Make `bar` public", """
+    fun `test make async function public`() = checkFixByText(
+        "Make `bar` public", """
         mod foo {
             async fn bar() {}
         }
@@ -153,9 +168,11 @@ class MakePublicFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
         fn main() {
             foo::bar/*caret*/();
         }
-    """)
+    """
+    )
 
-    fun `test make unsafe function public`() = checkFixByText("Make `bar` public", """
+    fun `test make unsafe function public`() = checkFixByText(
+        "Make `bar` public", """
         mod foo {
             unsafe fn bar() {}
         }
@@ -169,9 +186,11 @@ class MakePublicFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
         fn main() {
             unsafe { foo::bar/*caret*/(); };
         }
-    """)
+    """
+    )
 
-    fun `test make const function public`() = checkFixByText("Make `bar` public", """
+    fun `test make const function public`() = checkFixByText(
+        "Make `bar` public", """
         mod foo {
             const fn bar() {}
         }
@@ -185,9 +204,11 @@ class MakePublicFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
         fn main() {
             foo::bar/*caret*/();
         }
-    """)
+    """
+    )
 
-    fun `test make extern function public`() = checkFixByText("Make `bar` public", """
+    fun `test make extern function public`() = checkFixByText(
+        "Make `bar` public", """
         mod foo {
             extern "C" fn bar() {}
         }
@@ -201,9 +222,11 @@ class MakePublicFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
         fn main() {
             foo::bar/*caret*/();
         }
-    """)
+    """
+    )
 
-    fun `test make simple function with comment public`() = checkFixByText("Make `bar` public", """
+    fun `test make simple function with comment public`() = checkFixByText(
+        "Make `bar` public", """
         mod foo {
             // comment
             fn bar() {}
@@ -219,9 +242,11 @@ class MakePublicFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
         fn main() {
             foo::bar/*caret*/();
         }
-    """)
+    """
+    )
 
-    fun `test make async function with comment and attribute public`() = checkFixByText("Make `bar` public", """
+    fun `test make async function with comment and attribute public`() = checkFixByText(
+        "Make `bar` public", """
         mod foo {
             // comment and attribute
             #[doc(hidden)]
@@ -239,9 +264,11 @@ class MakePublicFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
         fn main() {
             foo::bar/*caret*/();
         }
-    """)
+    """
+    )
 
-    fun `test make unsafe function with attribute public`() = checkFixByText("Make `bar` public", """
+    fun `test make unsafe function with attribute public`() = checkFixByText(
+        "Make `bar` public", """
         mod foo {
             #[doc(hidden)]
             unsafe fn bar() {}
@@ -257,9 +284,11 @@ class MakePublicFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
         fn main() {
             unsafe { foo::bar/*caret*/(); };
         }
-    """)
+    """
+    )
 
-    fun `test make const function with comment public`() = checkFixByText("Make `bar` public", """
+    fun `test make const function with comment public`() = checkFixByText(
+        "Make `bar` public", """
         mod foo {
             // comment
             const fn bar() {}
@@ -275,9 +304,11 @@ class MakePublicFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
         fn main() {
             foo::bar/*caret*/();
         }
-    """)
+    """
+    )
 
-    fun `test make extern function with comment and attribute public`() = checkFixByText("Make `bar` public", """
+    fun `test make extern function with comment and attribute public`() = checkFixByText(
+        "Make `bar` public", """
         mod foo {
             // some comment
             #[doc(hidden)]
@@ -295,9 +326,11 @@ class MakePublicFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
         fn main() {
             foo::bar/*caret*/();
         }
-    """)
+    """
+    )
 
-    fun `test make inner function public`() = checkFixByText("Make `quux` public", """
+    fun `test make inner function public`() = checkFixByText(
+        "Make `quux` public", """
         mod foo {
             pub(crate) mod bar {
                 fn quux() {}
@@ -315,9 +348,11 @@ class MakePublicFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
         fn main() {
             foo::bar::quux/*caret*/();
         }
-    """)
+    """
+    )
 
-    fun `test make inner function with comment public`() = checkFixByText("Make `quux` public", """
+    fun `test make inner function with comment public`() = checkFixByText(
+        "Make `quux` public", """
         mod foo {
             pub(crate) mod bar {
                 // Some comment
@@ -337,9 +372,11 @@ class MakePublicFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
         fn main() {
             foo::bar::quux/*caret*/();
         }
-    """)
+    """
+    )
 
-    fun `test make struct public`() = checkFixByText("Make `Bar` public", """
+    fun `test make struct public`() = checkFixByText(
+        "Make `Bar` public", """
         mod foo {
             // Comment
             struct Bar;
@@ -355,9 +392,11 @@ class MakePublicFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
         fn main() {
             foo::Bar/*caret*/;
         }
-    """)
+    """
+    )
 
-    fun `test make simple trait public`() = checkFixByText("Make `Bar` public", """
+    fun `test make simple trait public`() = checkFixByText(
+        "Make `Bar` public", """
         mod foo {
             // Some simple trait
             trait Bar {}
@@ -369,9 +408,11 @@ class MakePublicFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
             pub(crate) trait Bar {}
         }
         fn quux<T: foo::Bar/*caret*/>() {}
-    """)
+    """
+    )
 
-    fun `test make unsafe trait public`() = checkFixByText("Make `Bar` public", """
+    fun `test make unsafe trait public`() = checkFixByText(
+        "Make `Bar` public", """
         mod foo {
             // Some unsafe trait
             unsafe trait Bar {}
@@ -383,9 +424,11 @@ class MakePublicFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
             pub(crate) unsafe trait Bar {}
         }
         fn quux<T: foo::Bar/*caret*/>() {}
-    """)
+    """
+    )
 
-    fun `test make auto trait public`() = checkFixByText("Make `Bar` public", """
+    fun `test make auto trait public`() = checkFixByText(
+        "Make `Bar` public", """
         mod foo {
             // Some auto trait
             auto trait Bar {}
@@ -397,9 +440,11 @@ class MakePublicFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
             pub(crate) auto trait Bar {}
         }
         fn quux<T: foo::Bar/*caret*/>() {}
-    """)
+    """
+    )
 
-    fun `test make unsafe auto trait public`() = checkFixByText("Make `Bar` public", """
+    fun `test make unsafe auto trait public`() = checkFixByText(
+        "Make `Bar` public", """
         mod foo {
             // Some unsafe auto trait
             #[doc(hidden)]
@@ -413,9 +458,11 @@ class MakePublicFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
             pub(crate) unsafe auto trait Bar {}
         }
         fn quux<T: foo::Bar/*caret*/>() {}
-    """)
+    """
+    )
 
-    fun `test make enum public`() = checkFixByText("Make `Bar` public", """
+    fun `test make enum public`() = checkFixByText(
+        "Make `Bar` public", """
         mod foo {
             // Comment
             #[doc(hidden)]
@@ -433,9 +480,11 @@ class MakePublicFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
         fn main() {
             foo::Bar/*caret*/::Baz;
         }
-    """)
+    """
+    )
 
-    fun `test make struct field public (from field lookup)`() = checkFixByText("Make `baz` public", """
+    fun `test make struct field public (from field lookup)`() = checkFixByText(
+        "Make `baz` public", """
         mod foo {
             pub(crate) struct Bar { baz: i32 }
             impl Bar {
@@ -457,9 +506,11 @@ class MakePublicFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
             let foo = foo::Bar::new();
             foo.baz/*caret*/;
         }
-    """)
+    """
+    )
 
-    fun `test make struct field public (from struct literal)`() = checkFixByText("Make `baz` public", """
+    fun `test make struct field public (from struct literal)`() = checkFixByText(
+        "Make `baz` public", """
         mod foo {
             pub(crate) struct Bar { baz: i32 }
         }
@@ -473,9 +524,11 @@ class MakePublicFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
         fn main() {
             let foo = foo::Bar { baz: 1 };
         }
-    """)
+    """
+    )
 
-    fun `test make tuple struct field public`() = checkFixByText("Make `0` public", """
+    fun `test make tuple struct field public`() = checkFixByText(
+        "Make `0` public", """
         mod foo {
             pub(crate) struct Bar(i32);
             impl Bar {
@@ -497,9 +550,11 @@ class MakePublicFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
             let foo = foo::Bar::new();
             foo.0/*caret*/;
         }
-    """)
+    """
+    )
 
-    fun `test make type alias public`() = checkFixByText("Make `Bar` public", """
+    fun `test make type alias public`() = checkFixByText(
+        "Make `Bar` public", """
         mod foo {
             type Bar = i32;
         }
@@ -513,9 +568,11 @@ class MakePublicFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
         fn main() {
             let foo : foo::Bar/*caret*/ = 1;
         }
-    """)
+    """
+    )
 
-    fun `test make mod public`() = checkFixByText("Make `bar` public", """
+    fun `test make mod public`() = checkFixByText(
+        "Make `bar` public", """
         mod foo {
             #[doc(hidden)]
             mod bar {
@@ -535,10 +592,12 @@ class MakePublicFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
         fn main() {
             foo::bar/*caret*/::quux();
         }
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithDependencyRustProjectDescriptor::class)
-    fun `test make fn from another crate public`() = checkFixByFileTree("Make `bar` public", """
+    fun `test make fn from another crate public`() = checkFixByFileTree(
+        "Make `bar` public", """
     //- main.rs
         extern crate test_package;
         fn main() {
@@ -558,9 +617,11 @@ class MakePublicFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
         pub mod foo {
             pub fn bar() {}
         }
-    """, stubOnly = false)
+    """, stubOnly = false
+    )
 
-    fun `test make mod decl public`() = checkFixByFileTree("Make `bar` public", """
+    fun `test make mod decl public`() = checkFixByFileTree(
+        "Make `bar` public", """
     //- main.rs
         mod foo {
             mod bar;
@@ -580,9 +641,11 @@ class MakePublicFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
         }
     //- foo/bar.rs
         pub fn baz() {}
-    """, stubOnly = false)
+    """, stubOnly = false
+    )
 
-    fun `test make public fix for restricted visibility 1`() = checkFixByText("Make `A` public", """
+    fun `test make public fix for restricted visibility 1`() = checkFixByText(
+        "Make `A` public", """
         pub mod foo {
             pub(self) struct A;
         }
@@ -598,9 +661,11 @@ class MakePublicFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
         fn main() {
             foo::A/*caret*/;
         }
-    """)
+    """
+    )
 
-    fun `test make public fix for restricted visibility 2`() = checkFixByFileTree("Make `A` public", """
+    fun `test make public fix for restricted visibility 2`() = checkFixByFileTree(
+        "Make `A` public", """
     //- lib.rs
         pub mod foo {
             pub(self) struct A;
@@ -620,5 +685,6 @@ class MakePublicFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
         fn main() {
             test_package::foo::A/*caret*/;
         }
-    """)
+    """
+    )
 }

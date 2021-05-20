@@ -10,7 +10,8 @@ import org.rust.ide.settings.RsCodeInsightSettings
 
 class RsTraitMethodCompletionTest : RsCompletionTestBase() {
 
-    fun `test auto import trait while method completion 1`() = doTest("""
+    fun `test auto import trait while method completion 1`() = doTest(
+        """
         mod baz {
             pub trait Foo {
                 fn foo(&self);
@@ -46,9 +47,11 @@ class RsTraitMethodCompletionTest : RsCompletionTestBase() {
         fn main() {
             Bar.foo()/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test auto import trait while method completion 2`() = doTest("""
+    fun `test auto import trait while method completion 2`() = doTest(
+        """
         mod baz {
             pub trait Foo {
                 fn foo(&self, x: i32);
@@ -84,9 +87,11 @@ class RsTraitMethodCompletionTest : RsCompletionTestBase() {
         fn main() {
             Bar.foo(/*caret*/)
         }
-    """)
+    """
+    )
 
-    fun `test auto import trait while method completion 3`() = doTest("""
+    fun `test auto import trait while method completion 3`() = doTest(
+        """
         mod baz {
             pub trait Foo {
                 fn foo(&self);
@@ -122,9 +127,11 @@ class RsTraitMethodCompletionTest : RsCompletionTestBase() {
         fn main() {
             Bar.foo()/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test auto import trait while method completion for multiple carets`() = doTest("""
+    fun `test auto import trait while method completion for multiple carets`() = doTest(
+        """
         mod baz {
             pub trait Foo {
                 fn foo(&self);
@@ -164,9 +171,11 @@ class RsTraitMethodCompletionTest : RsCompletionTestBase() {
             Bar.foo()/*caret*/
             Bar.foo()/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test do not insert trait import while method completion when trait in scope`() = doTest("""
+    fun `test do not insert trait import while method completion when trait in scope`() = doTest(
+        """
         mod baz {
             pub trait Foo {
                 fn foo(&self);
@@ -202,9 +211,11 @@ class RsTraitMethodCompletionTest : RsCompletionTestBase() {
         fn main() {
             Bar.foo()/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test do not insert trait import while method completion when setting disabled`() = doTest("""
+    fun `test do not insert trait import while method completion when setting disabled`() = doTest(
+        """
         mod baz {
             pub trait Foo {
                 fn foo(&self, x: i32);
@@ -240,7 +251,8 @@ class RsTraitMethodCompletionTest : RsCompletionTestBase() {
         fn main() {
             Bar.foo(/*caret*/)
         }
-    """, importOutOfScopeItems = false)
+    """, importOutOfScopeItems = false
+    )
 
     private fun doTest(
         @Language("Rust") before: String,

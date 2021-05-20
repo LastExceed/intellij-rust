@@ -122,8 +122,7 @@ class RsExpressionCodeFragment : RsCodeFragment, RsInferenceContextOwner {
     val expr: RsExpr? get() = childOfType()
 }
 
-class RsStatementCodeFragment(project: Project, text: CharSequence, context: RsElement)
-    : RsCodeFragment(project, text, RsCodeFragmentElementType.STMT, context) {
+class RsStatementCodeFragment(project: Project, text: CharSequence, context: RsElement) : RsCodeFragment(project, text, RsCodeFragmentElementType.STMT, context) {
     val stmt: RsStmt? get() = childOfType()
 }
 
@@ -132,9 +131,8 @@ class RsTypeReferenceCodeFragment(
     text: CharSequence,
     context: RsElement,
     importTarget: RsItemsOwner? = null,
-)
-    : RsCodeFragment(project, text, RsCodeFragmentElementType.TYPE_REF, context, importTarget = importTarget),
-      RsNamedElement {
+) : RsCodeFragment(project, text, RsCodeFragmentElementType.TYPE_REF, context, importTarget = importTarget),
+    RsNamedElement {
     val typeReference: RsTypeReference? get() = childOfType()
 }
 
@@ -165,9 +163,8 @@ class RsPathCodeFragment(
     }
 }
 
-class RsReplCodeFragment(fileViewProvider: FileViewProvider, override var context: RsElement)
-    : RsCodeFragment(fileViewProvider, RsCodeFragmentElementType.REPL, context, false),
-      RsInferenceContextOwner, RsItemsOwner {
+class RsReplCodeFragment(fileViewProvider: FileViewProvider, override var context: RsElement) : RsCodeFragment(fileViewProvider, RsCodeFragmentElementType.REPL, context, false),
+                                                                                                RsInferenceContextOwner, RsItemsOwner {
 
     val expandedStmtsAndTailExpr: Pair<List<RsExpandedElement>, RsExpr?>
         get() {

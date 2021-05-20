@@ -9,7 +9,8 @@ package org.rust.ide.lineMarkers
  * Tests for Trait member (const, fn, type) Implementation Line Marker
  */
 class RsTraitItemImplLineMarkerProviderTest : RsLineMarkerProviderTestBase() {
-    fun `test impl`() = doTestByText("""
+    fun `test impl`() = doTestByText(
+        """
         trait Foo {         // - Has implementations
             fn foo(&self);  // - Has implementations
             fn bar(&self) { // - Has implementations
@@ -31,9 +32,11 @@ class RsTraitItemImplLineMarkerProviderTest : RsLineMarkerProviderTestBase() {
             const C1: u32 = 1; // - Implements constant in `Foo`
             const C2: u32 = 1; // - Overrides constant in `Foo`
         }
-    """)
+    """
+    )
 
-    fun `test icon position`() = doTestByText("""
+    fun `test icon position`() = doTestByText(
+        """
         trait
         Foo // - Has implementations
         {
@@ -70,5 +73,6 @@ class RsTraitItemImplLineMarkerProviderTest : RsLineMarkerProviderTestBase() {
             C1 // - Implements constant in `Foo`
             : u32 = 1;
         }
-    """)
+    """
+    )
 }

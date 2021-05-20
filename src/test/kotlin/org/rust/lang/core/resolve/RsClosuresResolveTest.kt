@@ -22,7 +22,8 @@ class RsClosuresResolveTest : RsResolveTestBase() {
         super.checkByCode("$fnLangItems\n\n$code")
     }
 
-    fun `test simple method resolve for closure`() = checkByCode("""
+    fun `test simple method resolve for closure`() = checkByCode(
+        """
         struct T;
         impl T {
             fn bar(&self) {}
@@ -34,9 +35,11 @@ class RsClosuresResolveTest : RsResolveTestBase() {
         fn main() {
             foo(|t| { t.bar(); })
         }              //^
-    """)
+    """
+    )
 
-    fun `test wrong closure parameter`() = checkByCode("""
+    fun `test wrong closure parameter`() = checkByCode(
+        """
         struct T;
         impl T {
             fn bar(&self) {}
@@ -47,9 +50,11 @@ class RsClosuresResolveTest : RsResolveTestBase() {
         fn main() {
             foo(None, |t| { t.bar(); })
         }                    //^ unresolved
-    """)
+    """
+    )
 
-    fun `test simple method resolve with where for closure`() = checkByCode("""
+    fun `test simple method resolve with where for closure`() = checkByCode(
+        """
         struct T;
         impl T {
             fn bar(&self) {}
@@ -61,9 +66,11 @@ class RsClosuresResolveTest : RsResolveTestBase() {
         fn main() {
             foo(|t| { t.bar(); })
         }              //^
-    """)
+    """
+    )
 
-    fun `test simple self resolve for closure`() = checkByCode("""
+    fun `test simple self resolve for closure`() = checkByCode(
+        """
         struct T;
         impl T {
             fn bar(&self) {}
@@ -75,9 +82,11 @@ class RsClosuresResolveTest : RsResolveTestBase() {
             let t = T;
             t.foo(|e| { e.bar(); })
         }                //^
-    """)
+    """
+    )
 
-    fun `test multi self resolve for closure`() = checkByCode("""
+    fun `test multi self resolve for closure`() = checkByCode(
+        """
         struct T;
         impl T {
             fn bar(&self) {}
@@ -93,9 +102,11 @@ class RsClosuresResolveTest : RsResolveTestBase() {
 
             T.foo(|t| t.bar());
         }              //^
-    """)
+    """
+    )
 
-    fun `test associated type resolve for closure`() = checkByCode("""
+    fun `test associated type resolve for closure`() = checkByCode(
+        """
         trait Iter {
             type Item;
             fn filter<P>(self, predicate: P) -> Filter<Self, P> where Self: Sized, P: FnMut(&Self::Item) {}
@@ -116,9 +127,11 @@ class RsClosuresResolveTest : RsResolveTestBase() {
             let t = S;
             t.filter(|e| { e.bar(); })
         }                   //^
-    """)
+    """
+    )
 
-    fun `test apply`() = checkByCode("""
+    fun `test apply`() = checkByCode(
+        """
         struct S;
         impl S { fn foo(&self) {} }
                    //X
@@ -126,9 +139,11 @@ class RsClosuresResolveTest : RsResolveTestBase() {
         fn call<F: Fn() -> S>(f: F) {
             f().foo()
         }      //^
-    """)
+    """
+    )
 
-    fun `test generic trait method`() = checkByCode("""
+    fun `test generic trait method`() = checkByCode(
+        """
         struct S<T1>(T1);
 
         trait Foo<T2> { fn foo<F: FnOnce(T2)>(&self, f: F) {} }
@@ -143,9 +158,11 @@ class RsClosuresResolveTest : RsResolveTestBase() {
                 x.fox();
             });  //^
         }
-    """)
+    """
+    )
 
-    fun `test lambda in generic expression with function type`() = checkByCode("""
+    fun `test lambda in generic expression with function type`() = checkByCode(
+        """
         struct S;
         impl S { fn bar(&self) {} }
                    //X
@@ -155,9 +172,11 @@ class RsClosuresResolveTest : RsResolveTestBase() {
         fn main() {
             (with_s)(|s| s.bar())
         }                 //^
-    """)
+    """
+    )
 
-    fun `test layered visitor example`() = checkByCode("""
+    fun `test layered visitor example`() = checkByCode(
+        """
         struct PhantomData;
 
         trait NodeVisitor<'f, C> {
@@ -191,10 +210,12 @@ class RsClosuresResolveTest : RsResolveTestBase() {
                 .visit::<(), _>(|ctx, t| ctx.foo())
             ;                               //^
         }
-    """)
+    """
+    )
 
     // This test failed with OOME due to the bug in associated types inference
-    fun `test futures example`() = checkByCode("""
+    fun `test futures example`() = checkByCode(
+        """
         fn foo<F: Future>(f: F) {
             f.and_then(|x| x).and_then(|x| x).and_then(|x| x)
         }                                   //^
@@ -231,9 +252,11 @@ class RsClosuresResolveTest : RsResolveTestBase() {
             type Item = B::Item;
             type Error = B::Error;
         }
-    """)
+    """
+    )
 
-    fun `test infer generic parameter from lambda return type by fn pointer`() = checkByCode("""
+    fun `test infer generic parameter from lambda return type by fn pointer`() = checkByCode(
+        """
         struct X;
         impl X { fn foo(&self) {} }
                    //X
@@ -242,9 +265,11 @@ class RsClosuresResolveTest : RsResolveTestBase() {
             let a = apply(X, |x| x);
             a.foo()
         }   //^
-    """)
+    """
+    )
 
-    fun `test infer generic parameter from lambda return type by trait object`() = checkByCode("""
+    fun `test infer generic parameter from lambda return type by trait object`() = checkByCode(
+        """
         struct X;
         impl X { fn foo(&self) {} }
                    //X
@@ -253,9 +278,11 @@ class RsClosuresResolveTest : RsResolveTestBase() {
             let a = apply(X, &|x| x);
             a.foo()
         }   //^
-    """)
+    """
+    )
 
-    fun `test infer generic parameter from lambda return type by impl trait`() = checkByCode("""
+    fun `test infer generic parameter from lambda return type by impl trait`() = checkByCode(
+        """
         struct X;
         impl X { fn foo(&self) {} }
                    //X
@@ -264,9 +291,11 @@ class RsClosuresResolveTest : RsResolveTestBase() {
             let a = apply(X, |x| x);
             a.foo()
         }   //^
-    """)
+    """
+    )
 
-    fun `test infer generic parameter from lambda return type 1`() = checkByCode("""
+    fun `test infer generic parameter from lambda return type 1`() = checkByCode(
+        """
         struct X;
         impl X { fn foo(&self) {} }
                    //X
@@ -275,9 +304,11 @@ class RsClosuresResolveTest : RsResolveTestBase() {
             let a = apply(X, |x| x);
             a.foo()
         }   //^
-    """)
+    """
+    )
 
-    fun `test infer generic parameter from lambda return type 2`() = checkByCode("""
+    fun `test infer generic parameter from lambda return type 2`() = checkByCode(
+        """
         struct X;
         impl X { fn foo(&self) {} }
                    //X
@@ -286,9 +317,11 @@ class RsClosuresResolveTest : RsResolveTestBase() {
             let a = apply(|x| x, X);
             a.foo()
         }   //^
-    """)
+    """
+    )
 
-    fun `test infer lambda argument type from next method argument`() = checkByCode("""
+    fun `test infer lambda argument type from next method argument`() = checkByCode(
+        """
         struct X;
         impl X {
             fn foo(self) -> X { self }
@@ -298,9 +331,11 @@ class RsClosuresResolveTest : RsResolveTestBase() {
         fn main() {
             apply((|x| x.foo().bar()), X);
         }                    //^
-    """)
+    """
+    )
 
-    fun `test infer argument type from next method argument 2`() = checkByCode("""
+    fun `test infer argument type from next method argument 2`() = checkByCode(
+        """
         struct X;
         impl X {
             fn foo(self) -> X { self }
@@ -315,5 +350,6 @@ class RsClosuresResolveTest : RsResolveTestBase() {
         fn main() {
             apply(|x| x, |x| x.foo().bar(), X);
         }                          //^
-    """)
+    """
+    )
 }

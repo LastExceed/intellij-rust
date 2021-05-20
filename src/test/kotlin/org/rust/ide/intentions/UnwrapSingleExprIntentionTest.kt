@@ -6,7 +6,8 @@
 package org.rust.ide.intentions
 
 class UnwrapSingleExprIntentionTest : RsIntentionTestBase(UnwrapSingleExprIntention::class) {
-    fun `test available lambda unwrap braces single expression`() = doAvailableTest("""
+    fun `test available lambda unwrap braces single expression`() = doAvailableTest(
+        """
         fn main() {
             {
                 4/*caret*/2
@@ -16,9 +17,11 @@ class UnwrapSingleExprIntentionTest : RsIntentionTestBase(UnwrapSingleExprIntent
         fn main() {
             4/*caret*/2
         }
-    """)
+    """
+    )
 
-    fun `test available lambda unwrap braces`() = doAvailableTest("""
+    fun `test available lambda unwrap braces`() = doAvailableTest(
+        """
         fn main() {
             |x| { x */*caret*/ x }
         }
@@ -26,9 +29,11 @@ class UnwrapSingleExprIntentionTest : RsIntentionTestBase(UnwrapSingleExprIntent
         fn main() {
             |x| x */*caret*/ x
         }
-    """)
+    """
+    )
 
-    fun `test available unwrap braces single expression if`() = doAvailableTest("""
+    fun `test available unwrap braces single expression if`() = doAvailableTest(
+        """
         fn main() {
             let a = {
                 if (true) {
@@ -46,49 +51,63 @@ class UnwrapSingleExprIntentionTest : RsIntentionTestBase(UnwrapSingleExprIntent
                 43
             };
         }
-    """)
+    """
+    )
 
-    fun `test available lambda unwrap braces single statement`() = doUnavailableTest("""
+    fun `test available lambda unwrap braces single statement`() = doUnavailableTest(
+        """
         fn main() {
             {
                 /*caret*/42;
             }
         }
-    """)
+    """
+    )
 
-    fun `test unavailable unwrap braces`() = doUnavailableTest("""
+    fun `test unavailable unwrap braces`() = doUnavailableTest(
+        """
         fn main() {
             |x| { let a = 3; x */*caret*/ a
             }
-    """)
+    """
+    )
 
-    fun `test unavailable unwrap braces let`() = doUnavailableTest("""
+    fun `test unavailable unwrap braces let`() = doUnavailableTest(
+        """
         fn main() {
             {
                 /*caret*/let a = 5;
             }
         }
-    """)
+    """
+    )
 
-    fun `test unavailable unwrap braces unsafe`() = doUnavailableTest("""
+    fun `test unavailable unwrap braces unsafe`() = doUnavailableTest(
+        """
         fn main() {
             let wellThen = unsafe/*caret*/ { magic() };
         }
-    """)
+    """
+    )
 
-    fun `test unavailable unwrap braces async`() = doUnavailableTest("""
+    fun `test unavailable unwrap braces async`() = doUnavailableTest(
+        """
         fn main() {
             let wellThen = async/*caret*/ { magic() };
         }
-    """)
+    """
+    )
 
-    fun `test unavailable unwrap braces try`() = doUnavailableTest("""
+    fun `test unavailable unwrap braces try`() = doUnavailableTest(
+        """
         fn main() {
             let wellThen = try/*caret*/ { magic() };
         }
-    """)
+    """
+    )
 
-    fun `test available unwrap braces single expression match`() = doAvailableTest("""
+    fun `test available unwrap braces single expression match`() = doAvailableTest(
+        """
         fn main() {
             match x {
                 0 => {
@@ -102,9 +121,11 @@ class UnwrapSingleExprIntentionTest : RsIntentionTestBase(UnwrapSingleExprIntent
                 0 => prin/*caret*/tln!("x = 0"),
             }
         }
-    """)
+    """
+    )
 
-    fun `test available unwrap braces match with caret before`() = doAvailableTest("""
+    fun `test available unwrap braces match with caret before`() = doAvailableTest(
+        """
         fn main() {
             match x {
                 0 => /*caret*/{
@@ -118,9 +139,11 @@ class UnwrapSingleExprIntentionTest : RsIntentionTestBase(UnwrapSingleExprIntent
                 0 => /*caret*/println!("x = 0"),
             }
         }
-    """)
+    """
+    )
 
-    fun `test available unwrap braces match with caret after`() = doAvailableTest("""
+    fun `test available unwrap braces match with caret after`() = doAvailableTest(
+        """
         fn main() {
             match x {
                 0 => {
@@ -134,9 +157,11 @@ class UnwrapSingleExprIntentionTest : RsIntentionTestBase(UnwrapSingleExprIntent
                 0 => println!("x = 0")/*caret*/,
             }
         }
-    """)
+    """
+    )
 
-    fun `test available unwrap braces multiple expression match`() = doAvailableTest("""
+    fun `test available unwrap braces multiple expression match`() = doAvailableTest(
+        """
         fn main() {
             match x {
                 0 => /*caret*/{
@@ -152,5 +177,6 @@ class UnwrapSingleExprIntentionTest : RsIntentionTestBase(UnwrapSingleExprIntent
                 _ => println!("x != 0")
             }
         }
-    """)
+    """
+    )
 }

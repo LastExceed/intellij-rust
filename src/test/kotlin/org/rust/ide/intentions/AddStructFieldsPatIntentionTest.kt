@@ -6,7 +6,8 @@
 package org.rust.ide.intentions
 
 class AddStructFieldsPatIntentionTest : RsIntentionTestBase(AddStructFieldsPatIntention::class) {
-    fun `test simple case match`() = doAvailableTest("""
+    fun `test simple case match`() = doAvailableTest(
+        """
         struct Foo {
             a: i32,
             b: i32,
@@ -30,9 +31,11 @@ class AddStructFieldsPatIntentionTest : RsIntentionTestBase(AddStructFieldsPatIn
                 Foo { a, b, c, d /*caret*/} => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test no fields match`() = doAvailableTest("""
+    fun `test no fields match`() = doAvailableTest(
+        """
         struct Foo {
             a: i32,
             b: i32,
@@ -56,9 +59,11 @@ class AddStructFieldsPatIntentionTest : RsIntentionTestBase(AddStructFieldsPatIn
                 Foo { a, b, c, d /*caret*/} => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test simple let expression`() = doAvailableTest("""
+    fun `test simple let expression`() = doAvailableTest(
+        """
         struct Foo {
             a: i32,
             b: i32,
@@ -78,9 +83,11 @@ class AddStructFieldsPatIntentionTest : RsIntentionTestBase(AddStructFieldsPatIn
         fn f(foo: Foo) {
             let Foo { a, b, c, d /*caret*/} = foo;
         }
-    """)
+    """
+    )
 
-    fun `test no fields let expression`() = doAvailableTest("""
+    fun `test no fields let expression`() = doAvailableTest(
+        """
         struct Foo {
             a: i32,
             b: i32,
@@ -100,9 +107,11 @@ class AddStructFieldsPatIntentionTest : RsIntentionTestBase(AddStructFieldsPatIn
         fn f(foo: Foo) {
             let Foo { a, b, c, d /*caret*/} = foo;
         }
-    """)
+    """
+    )
 
-    fun `test match one field missing`() = doAvailableTest("""
+    fun `test match one field missing`() = doAvailableTest(
+        """
         struct Foo {
             a: i32,
             b: i32,
@@ -126,9 +135,11 @@ class AddStructFieldsPatIntentionTest : RsIntentionTestBase(AddStructFieldsPatIn
                 Foo { a, b, c, d /*caret*/} => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test let one field missing`() = doAvailableTest("""
+    fun `test let one field missing`() = doAvailableTest(
+        """
         struct Foo {
             a: i32,
             b: i32,
@@ -148,9 +159,11 @@ class AddStructFieldsPatIntentionTest : RsIntentionTestBase(AddStructFieldsPatIn
         fn f(foo: Foo) {
             let Foo { a, b, c, d /*caret*/} = foo;
         }
-    """)
+    """
+    )
 
-    fun `test filling order with existing 2 last fields in descending order`() = doAvailableTest("""
+    fun `test filling order with existing 2 last fields in descending order`() = doAvailableTest(
+        """
         struct Foo {
             a: i32,
             b: i32,
@@ -170,9 +183,11 @@ class AddStructFieldsPatIntentionTest : RsIntentionTestBase(AddStructFieldsPatIn
         fn f(foo: Foo) {
             let Foo { a, b, d, c /*caret*/} = foo;
         }
-    """)
+    """
+    )
 
-    fun `test filling order with the second field existing`() = doAvailableTest("""
+    fun `test filling order with the second field existing`() = doAvailableTest(
+        """
         struct Foo {
             a: i32,
             b: i32,
@@ -192,9 +207,11 @@ class AddStructFieldsPatIntentionTest : RsIntentionTestBase(AddStructFieldsPatIn
         fn f(foo: Foo) {
             let Foo { a, b, c, d /*caret*/} = foo;
         }
-    """)
+    """
+    )
 
-    fun `test tuple struct with dots`() = doAvailableTest("""
+    fun `test tuple struct with dots`() = doAvailableTest(
+        """
         struct Foo(i32, i32, i32);
         fn f(foo: Foo) {
             match foo {
@@ -208,9 +225,11 @@ class AddStructFieldsPatIntentionTest : RsIntentionTestBase(AddStructFieldsPatIn
                 Foo (a, b, _0/*caret*/) => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test struct with no spaces`() = doAvailableTest("""
+    fun `test struct with no spaces`() = doAvailableTest(
+        """
         struct Foo {
             a: i32,
             b: i32,
@@ -230,9 +249,11 @@ class AddStructFieldsPatIntentionTest : RsIntentionTestBase(AddStructFieldsPatIn
         fn f(foo: Foo) {
             let Foo {a,b,/*caret*/ c } = foo;
         }
-    """)
+    """
+    )
 
-    fun `test tuple struct with no spaces`() = doAvailableTest("""
+    fun `test tuple struct with no spaces`() = doAvailableTest(
+        """
         struct Foo(i32, i32, i32);
         fn f(foo: Foo) {
             match foo {
@@ -246,18 +267,22 @@ class AddStructFieldsPatIntentionTest : RsIntentionTestBase(AddStructFieldsPatIn
                 Foo (a, b, _0/*caret*/) => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test intention not available in range`() = doUnavailableTest("""
+    fun `test intention not available in range`() = doUnavailableTest(
+        """
         fn f() {
             match 1 {
                 0./*caret*/.2 => {}
                 _ => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test tuple with dots in the middle`() = doAvailableTest("""
+    fun `test tuple with dots in the middle`() = doAvailableTest(
+        """
         struct Foo(i32, i32, i32);
 
         fn f(foo: Foo) {
@@ -269,9 +294,11 @@ class AddStructFieldsPatIntentionTest : RsIntentionTestBase(AddStructFieldsPatIn
         fn f(foo: Foo) {
             let Foo (a, _0/*caret*/, c) = foo;
         }
-    """)
+    """
+    )
 
-    fun `test tuple with dots in the middle and trailing comma`() = doAvailableTest("""
+    fun `test tuple with dots in the middle and trailing comma`() = doAvailableTest(
+        """
         struct Foo(i32, i32, i32);
 
         fn f(foo: Foo) {
@@ -283,9 +310,11 @@ class AddStructFieldsPatIntentionTest : RsIntentionTestBase(AddStructFieldsPatIn
         fn f(foo: Foo) {
             let Foo (a, _0/*caret*/, c,) = foo;
         }
-    """)
+    """
+    )
 
-    fun `test tuple with dots in the middle and 4 fields`() = doAvailableTest("""
+    fun `test tuple with dots in the middle and 4 fields`() = doAvailableTest(
+        """
         struct Foo(i32, i32, i32, i32);
 
         fn f(foo: Foo) {
@@ -297,9 +326,11 @@ class AddStructFieldsPatIntentionTest : RsIntentionTestBase(AddStructFieldsPatIn
         fn f(foo: Foo) {
             let Foo (a, _0/*caret*/, _1, c) = foo;
         }
-    """)
+    """
+    )
 
-    fun `test tuple with dots in the middle and 5 fields`() = doAvailableTest("""
+    fun `test tuple with dots in the middle and 5 fields`() = doAvailableTest(
+        """
         struct Foo(i32, i32, i32, i32, i32);
 
         fn f(foo: Foo) {
@@ -311,5 +342,6 @@ class AddStructFieldsPatIntentionTest : RsIntentionTestBase(AddStructFieldsPatIn
         fn f(foo: Foo) {
             let Foo (a, _0/*caret*/, _1, _2, c) = foo;
         }
-    """)
+    """
+    )
 }

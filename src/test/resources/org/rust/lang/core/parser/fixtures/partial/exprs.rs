@@ -1,6 +1,6 @@
 fn foo() {
     2
-    let ;
+    let;
 
     let _ = (
     let _ = (1
@@ -13,8 +13,8 @@ fn foo() {
     let _ = 0.0.0e92;
 
     foo1(1, , 2);
-    foo2(,, 2);
-    foo3(1,,);
+    foo2(, , 2);
+    foo3(1, ,);
 
     foo4(1,;
     foo5(;

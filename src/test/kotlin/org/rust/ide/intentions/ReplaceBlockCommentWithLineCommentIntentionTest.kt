@@ -7,13 +7,16 @@ package org.rust.ide.intentions
 
 class ReplaceBlockCommentWithLineCommentIntentionTest : RsIntentionTestBase(ReplaceBlockCommentWithLineCommentIntention::class) {
 
-    fun `test convert single block comment`() = doAvailableTest("""
+    fun `test convert single block comment`() = doAvailableTest(
+        """
         /* /*caret*/Hello, World! */
     """, """
         /*caret*/// Hello, World!
-    """)
+    """
+    )
 
-    fun `test convert multiline block comment`() = doAvailableTest("""
+    fun `test convert multiline block comment`() = doAvailableTest(
+        """
         /*
         First
         /*caret*/Second
@@ -23,23 +26,27 @@ class ReplaceBlockCommentWithLineCommentIntentionTest : RsIntentionTestBase(Repl
         /*caret*/// First
         // Second
         // Third
-    """)
+    """
+    )
 
-    fun `test convert multiline block comment with spaces`() = doAvailableTest("""
+    fun `test convert multiline block comment with spaces`() = doAvailableTest(
+        """
         /*
         First
-        
-        
+
+
         Second/*caret*/ Third
         */
     """, """
         // First
-        // 
-        // 
+        //
+        //
         // Second Third
-    """)
+    """
+    )
 
-    fun `test convert multiline block comment with indent`() = doAvailableTest("""
+    fun `test convert multiline block comment with indent`() = doAvailableTest(
+        """
         fn foo() {
             /*
             First
@@ -53,9 +60,11 @@ class ReplaceBlockCommentWithLineCommentIntentionTest : RsIntentionTestBase(Repl
             // Second
             let x = 1;
         }
-    """)
+    """
+    )
 
-    fun `test convert multiple line comments with indent members`() = doAvailableTest("""
+    fun `test convert multiple line comments with indent members`() = doAvailableTest(
+        """
         trait Foo {
             /*
             First
@@ -69,5 +78,6 @@ class ReplaceBlockCommentWithLineCommentIntentionTest : RsIntentionTestBase(Repl
             // Second
             fn foo() {}
         }
-    """)
+    """
+    )
 }

@@ -9,9 +9,10 @@ import org.rust.ProjectDescriptor
 import org.rust.WithStdlibRustProjectDescriptor
 
 @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-class UnwrapToMatchIntentionTest: RsIntentionTestBase(UnwrapToMatchIntention::class) {
+class UnwrapToMatchIntentionTest : RsIntentionTestBase(UnwrapToMatchIntention::class) {
 
-    fun `test option base case`() = doAvailableTest("""
+    fun `test option base case`() = doAvailableTest(
+        """
         fn main() {
             let a: Option<i32> = Some(42);
             let a = a.unwrap/*caret*/();
@@ -24,9 +25,11 @@ class UnwrapToMatchIntentionTest: RsIntentionTestBase(UnwrapToMatchIntention::cl
                 None => todo!(),
             };
         }
-    """)
+    """
+    )
 
-    fun `test result base case`() = doAvailableTest("""
+    fun `test result base case`() = doAvailableTest(
+        """
         fn main() {
             let a: Result<i32, &str> = Ok(42);
             let a = a.unwrap/*caret*/();
@@ -39,9 +42,11 @@ class UnwrapToMatchIntentionTest: RsIntentionTestBase(UnwrapToMatchIntention::cl
                 Err(_) => todo!(),
             };
         }
-    """)
+    """
+    )
 
-    fun `test base case - redundant whitespaces are ignored`() = doAvailableTest("""
+    fun `test base case - redundant whitespaces are ignored`() = doAvailableTest(
+        """
         fn main() {
             let a : Option<&str> = None;
             let a = a           .
@@ -56,9 +61,11 @@ class UnwrapToMatchIntentionTest: RsIntentionTestBase(UnwrapToMatchIntention::cl
                 None => todo!(),
             };
         }
-    """)
+    """
+    )
 
-    fun `test chain of dot expessions`() = doAvailableTest("""
+    fun `test chain of dot expessions`() = doAvailableTest(
+        """
         fn main() {
             let a = Test{};
             a.b().unwrap/*caret*/().d().e().f();
@@ -87,9 +94,11 @@ class UnwrapToMatchIntentionTest: RsIntentionTestBase(UnwrapToMatchIntention::cl
                 Some(42)
             }
         }
-        """)
+        """
+    )
 
-    fun `test unwrap() as method call parameter`() = doAvailableTest("""
+    fun `test unwrap() as method call parameter`() = doAvailableTest(
+        """
         fn main() {
             let b = Some(50);
             f(a, b.unwrap/*caret*/(), c)
@@ -102,9 +111,11 @@ class UnwrapToMatchIntentionTest: RsIntentionTestBase(UnwrapToMatchIntention::cl
                 None => todo!(),
             }, c)
         }
-    """)
+    """
+    )
 
-    fun `test binary expression with unwrap() result`() = doAvailableTest("""
+    fun `test binary expression with unwrap() result`() = doAvailableTest(
+        """
         fn main() {
             let x: Result<i32, &str> = Err("test");
             let x = x.unwrap/*caret*/() + 42;
@@ -117,9 +128,11 @@ class UnwrapToMatchIntentionTest: RsIntentionTestBase(UnwrapToMatchIntention::cl
                 Err(_) => todo!(),
             } + 42;
         }
-    """)
+    """
+    )
 
-    fun `test chain of unwrap()-s`() = doAvailableTest("""
+    fun `test chain of unwrap()-s`() = doAvailableTest(
+        """
         fn main() {
             let x = Some(Some(Some(42)));
             let x = x.unwrap().unwrap/*caret*/().unwrap();
@@ -132,9 +145,11 @@ class UnwrapToMatchIntentionTest: RsIntentionTestBase(UnwrapToMatchIntention::cl
                 None => todo!(),
             }.unwrap();
         }
-    """)
+    """
+    )
 
-    fun `test base case - nor Option or Result type being unwrapped`() = doUnavailableTest("""
+    fun `test base case - nor Option or Result type being unwrapped`() = doUnavailableTest(
+        """
         fn main() {
             enum Foobar {
                 Foo,
@@ -144,52 +159,67 @@ class UnwrapToMatchIntentionTest: RsIntentionTestBase(UnwrapToMatchIntention::cl
             let a = Foo;
             a.unwrap/*caret*/();
         }
-    """)
+    """
+    )
 
-    fun `test base case - type cannot be inferred`() = doUnavailableTest("""
+    fun `test base case - type cannot be inferred`() = doUnavailableTest(
+        """
         fn main() {
             a.unwrap/*caret*/();
         }
-    """)
+    """
+    )
 
-    fun `test base case - brackets missing`() = doUnavailableTest("""
+    fun `test base case - brackets missing`() = doUnavailableTest(
+        """
          fn main() {
             let a = Some(5);
             let a = a.unwrap/*caret*/;
         }
-    """)
+    """
+    )
 
-    fun `test base case - incorrect method call`() = doUnavailableTest("""
+    fun `test base case - incorrect method call`() = doUnavailableTest(
+        """
          fn main() {
             let a = Some(5);
             let a = a.unwra/*caret*/();
         }
-    """)
+    """
+    )
 
-    fun `test base case - no unwrap() call receiver`() = doUnavailableTest("""
+    fun `test base case - no unwrap() call receiver`() = doUnavailableTest(
+        """
          fn foo(a: Option<i32>) {
             let a = unwrap/*caret*/();
          }
-    """)
+    """
+    )
 
-    fun `test base case - unwrap() call with parameters`() = doUnavailableTest("""
+    fun `test base case - unwrap() call with parameters`() = doUnavailableTest(
+        """
          fn main() {
             let a = Some(5);
             let a = unwrap/*caret*/(0);
         }
-    """)
+    """
+    )
 
-    fun `test base case - call with blank type specialization`() = doUnavailableTest("""
+    fun `test base case - call with blank type specialization`() = doUnavailableTest(
+        """
         fn main() {
             let a = Some(5);
             let a = a.unwrap::<>/*caret*/();
         }
-    """)
+    """
+    )
 
-    fun `test base case - call with non-blank type specialization`() = doUnavailableTest("""
+    fun `test base case - call with non-blank type specialization`() = doUnavailableTest(
+        """
         fn main() {
             let a = Some(5);
             let a = a.unwrap::<i32>/*caret*/();
         }
-    """)
+    """
+    )
 }

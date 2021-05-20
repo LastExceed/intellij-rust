@@ -17,65 +17,81 @@ import javax.swing.Icon
 
 class CargoTestLineMarkerStatusTest : CargoTestRunnerTestBase() {
 
-    fun `test show a green mark for a passed test`() = checkTestStateIcon<RsFunction>("""
+    fun `test show a green mark for a passed test`() = checkTestStateIcon<RsFunction>(
+        """
         #[test]
         fn passing_test() {
             assert!(true);
         }
-    """, CargoIcons.TEST_GREEN)
+    """, CargoIcons.TEST_GREEN
+    )
 
-    fun `test show a red mark for a failed test`() = checkTestStateIcon<RsFunction>("""
+    fun `test show a red mark for a failed test`() = checkTestStateIcon<RsFunction>(
+        """
         #[test]
         fn failing_test() {
             assert!(false);
         }
-    """, CargoIcons.TEST_RED)
+    """, CargoIcons.TEST_RED
+    )
 
-    fun `test show a mark for an ignored test`() = checkTestStateIcon<RsFunction>("""
+    fun `test show a mark for an ignored test`() = checkTestStateIcon<RsFunction>(
+        """
         #[test]
         #[ignore]
         fn ignored_test() {}
-    """, CargoIcons.TEST)
+    """, CargoIcons.TEST
+    )
 
-    fun `test show a green mark for a passed mod`() = checkTestStateIcon<RsMod>("""
+    fun `test show a green mark for a passed mod`() = checkTestStateIcon<RsMod>(
+        """
         mod tests {
             #[test]
             fn passing_test() {
                 assert!(true);
             }
         }
-    """, CargoIcons.TEST_GREEN)
+    """, CargoIcons.TEST_GREEN
+    )
 
-    fun `test show a red mark for a failed mod`() = checkTestStateIcon<RsMod>("""
+    fun `test show a red mark for a failed mod`() = checkTestStateIcon<RsMod>(
+        """
         mod tests {
             #[test]
             fn failing_test() {
                 assert!(false);
             }
         }
-    """, CargoIcons.TEST_RED)
+    """, CargoIcons.TEST_RED
+    )
 
-    fun `test show a mark for an ignored mod`() = checkTestStateIcon<RsMod>("""
+    fun `test show a mark for an ignored mod`() = checkTestStateIcon<RsMod>(
+        """
         mod tests {
             #[test]
             #[ignore]
             fn ignored_test() {}
         }
-    """, CargoIcons.TEST)
+    """, CargoIcons.TEST
+    )
 
     private inline fun <reified E : RsElement> checkTestStateIcon(@Language("Rust") code: String, expected: Icon) {
         val testProject = buildProject {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "sandbox"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
 
             dir("src") {
-                rust("lib.rs", """
+                rust(
+                    "lib.rs", """
                     /*caret*/$code
-                """)
+                """
+                )
             }
         }
         val file = myFixture.configureFromTempProjectFile(testProject.fileWithCaret)

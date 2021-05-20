@@ -14,45 +14,56 @@ import org.rust.WithStdlibRustProjectDescriptor
 @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
 class RsDropRefInspectionTest : RsInspectionsTestBase(RsDropRefInspection::class) {
 
-    fun testDropRefSimple() = checkByText("""
+    fun testDropRefSimple() = checkByText(
+        """
         fn main() {
             let val1 = Box::new(10);
             <warning descr="Call to std::mem::drop with a reference argument. Dropping a reference does nothing">drop(&val1)</warning>;
         }
-    """)
+    """
+    )
 
-    fun testDropRefFullPath() = checkByText("""
+    fun testDropRefFullPath() = checkByText(
+        """
         fn main() {
             let val1 = Box::new(20);
             <warning descr="Call to std::mem::drop with a reference argument. Dropping a reference does nothing">std::mem::drop(&val1)</warning>;
         }
-    """)
+    """
+    )
 
-    fun testDropRefAliased() = checkByText("""
+    fun testDropRefAliased() = checkByText(
+        """
         use std::mem::drop as free;
         fn main() {
             let val1 = Box::new(30);
             <warning descr="Call to std::mem::drop with a reference argument. Dropping a reference does nothing">free(&val1)</warning>;
         }
-    """)
+    """
+    )
 
-    fun testDropRefRefType() = checkByText("""
+    fun testDropRefRefType() = checkByText(
+        """
         fn foo() {}
         fn main() {
             let val = &foo();
             <warning descr="Call to std::mem::drop with a reference argument. Dropping a reference does nothing">drop(val)</warning>;
         }
-    """)
+    """
+    )
 
-    fun testDropRefShadowed() = checkByText("""
+    fun testDropRefShadowed() = checkByText(
+        """
         fn drop(val: &Box<u32>) {}
         fn main() {
             let val = Box::new(84);
             drop(&val); // This must not be highlighted
         }
-    """)
+    """
+    )
 
-    fun testDropManuallyDrop() = checkByText("""
+    fun testDropManuallyDrop() = checkByText(
+        """
         use std::mem::ManuallyDrop;
         fn main() {
             let mut drop = ManuallyDrop::new("nodrop");
@@ -60,9 +71,11 @@ class RsDropRefInspectionTest : RsInspectionsTestBase(RsDropRefInspection::class
                 ManuallyDrop::drop(&mut drop); // This must not be highlighted
             }
         }
-    """)
+    """
+    )
 
-    fun testDropRefMethodCall() = checkByText("""
+    fun testDropRefMethodCall() = checkByText(
+        """
         struct Foo;
         impl Foo {
             pub fn drop(&self, val: &Foo) {}
@@ -71,9 +84,11 @@ class RsDropRefInspectionTest : RsInspectionsTestBase(RsDropRefInspection::class
             let f = Foo;
             f.drop(&f); // This must not be highlighted
         }
-    """)
+    """
+    )
 
-    fun testDropRefFix() = checkFixByText("Remove &", """
+    fun testDropRefFix() = checkFixByText(
+        "Remove &", """
         fn main() {
             let val1 = Box::new(40);
             <warning descr="Call to std::mem::drop with a reference argument. Dropping a reference does nothing">drop(&va<caret>l1)</warning>;
@@ -83,9 +98,11 @@ class RsDropRefInspectionTest : RsInspectionsTestBase(RsDropRefInspection::class
             let val1 = Box::new(40);
             drop(val1);
         }
-    """)
+    """
+    )
 
-    fun testDropRefFix2() = checkFixByText("Remove &", """
+    fun testDropRefFix2() = checkFixByText(
+        "Remove &", """
         fn main() {
             let val1 = Box::new(40);
             <warning descr="Call to std::mem::drop with a reference argument. Dropping a reference does nothing">drop(&   va<caret>l1)</warning>;
@@ -95,9 +112,11 @@ class RsDropRefInspectionTest : RsInspectionsTestBase(RsDropRefInspection::class
             let val1 = Box::new(40);
             drop(val1);
         }
-    """)
+    """
+    )
 
-    fun testRefMutDropFix() = checkFixByText("Remove &mut", """
+    fun testRefMutDropFix() = checkFixByText(
+        "Remove &mut", """
         fn main() {
             let val1 = Box::new(40);
             <warning descr="Call to std::mem::drop with a reference argument. Dropping a reference does nothing">drop(&mut<caret> val1)</warning>;
@@ -107,9 +126,11 @@ class RsDropRefInspectionTest : RsInspectionsTestBase(RsDropRefInspection::class
             let val1 = Box::new(40);
             drop(val1);
         }
-    """)
+    """
+    )
 
-    fun testRefMutDropFix2() = checkFixByText("Remove &mut", """
+    fun testRefMutDropFix2() = checkFixByText(
+        "Remove &mut", """
         fn main() {
             let val1 = Box::new(40);
             <warning descr="Call to std::mem::drop with a reference argument. Dropping a reference does nothing">drop(&  mut<caret>  val1)</warning>;
@@ -119,5 +140,6 @@ class RsDropRefInspectionTest : RsInspectionsTestBase(RsDropRefInspection::class
             let val1 = Box::new(40);
             drop(val1);
         }
-    """)
+    """
+    )
 }

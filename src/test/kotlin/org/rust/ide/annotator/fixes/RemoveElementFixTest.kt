@@ -10,69 +10,88 @@ import org.rust.ide.annotator.RsErrorAnnotator
 
 class RemoveElementFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
 
-    fun `test inline on struct`() = checkFixByText("Remove attribute `inline`", """
+    fun `test inline on struct`() = checkFixByText(
+        "Remove attribute `inline`", """
         #[<error descr="Attribute should be applied to function or closure [E0518]">inline/*caret*/</error>]
         struct Test {}
     """, """
         struct Test {}
-    """)
+    """
+    )
 
-    fun `test inline(always) on enum`() = checkFixByText("Remove attribute `inline`", """
+    fun `test inline(always) on enum`() = checkFixByText(
+        "Remove attribute `inline`", """
         #[<error descr="Attribute should be applied to function or closure [E0518]">inline/*caret*/</error>(always)]
         enum Test {}
     """, """
         enum Test {}
-    """)
+    """
+    )
 
-    fun `test repr on empty enum`() = checkFixByText("Remove attribute `repr`", """
+    fun `test repr on empty enum`() = checkFixByText(
+        "Remove attribute `repr`", """
         #[<error descr="Enum with no variants can't have `repr` attribute [E0084]">repr/*caret*/</error>(u8)]
         enum Test {}
     """, """
         enum Test {}
-    """)
+    """
+    )
 
-    fun `test remove colon colon in type ref`() = checkFixByText("Remove `::`", """
+    fun `test remove colon colon in type ref`() = checkFixByText(
+        "Remove `::`", """
         type A = Vec<weak_warning descr="Redundant `::`">::/*caret*/</weak_warning><i32>;
     """, """
         type A = Vec<i32>;
-    """, checkWeakWarn = true)
+    """, checkWeakWarn = true
+    )
 
-    fun `test remove colon colon in trait ref`() = checkFixByText("Remove `::`", """
+    fun `test remove colon colon in trait ref`() = checkFixByText(
+        "Remove `::`", """
         trait Foo<T> {}
         impl<T> Foo<weak_warning descr="Redundant `::`">::/*caret*/</weak_warning><T> for T {}
     """, """
         trait Foo<T> {}
         impl<T> Foo<T> for T {}
-    """, checkWeakWarn = true)
+    """, checkWeakWarn = true
+    )
 
-    fun `test remove colon colon in Fn types`() = checkFixByText("Remove `::`", """
+    fun `test remove colon colon in Fn types`() = checkFixByText(
+        "Remove `::`", """
         type IntFn = Fn<weak_warning descr="Redundant `::`">::/*caret*/</weak_warning>(i32) -> i32;
     """, """
         type IntFn = Fn(i32) -> i32;
-    """, checkWeakWarn = true)
+    """, checkWeakWarn = true
+    )
 
-    fun `test remove colon colon in expr`() = checkFixIsUnavailable("Remove `::`", """
+    fun `test remove colon colon in expr`() = checkFixIsUnavailable(
+        "Remove `::`", """
         fn main() {
             let v = Vec::/*caret*/<i32>::new();
         }
-    """, checkWeakWarn = true)
+    """, checkWeakWarn = true
+    )
 
-    fun `test remove colon colon in array size expr`() = checkFixIsUnavailable("Remove `::`", """
+    fun `test remove colon colon in array size expr`() = checkFixIsUnavailable(
+        "Remove `::`", """
         use std::mem::size_of;
 
         fn main() {
             let b: &[u8; size_of::/*caret*/<i32>()];
         }
-    """, checkWeakWarn = true)
+    """, checkWeakWarn = true
+    )
 
-    fun `test derive on function`() = checkFixByText("Remove attribute `derive`","""
+    fun `test derive on function`() = checkFixByText(
+        "Remove attribute `derive`", """
         <error descr="`derive` may only be applied to structs, enums and unions">#[derive(Debug)]</error>
         fn foo() { }
     """, """
         fn foo() { }
-    """)
+    """
+    )
 
-    fun `test remove visibility qualifier impl`() = checkFixByText("Remove visibility qualifier", """
+    fun `test remove visibility qualifier impl`() = checkFixByText(
+        "Remove visibility qualifier", """
         struct S;
         <error descr="Unnecessary visibility qualifier [E0449]">pub/*caret*/</error> impl S {
             fn foo() {}
@@ -82,9 +101,11 @@ class RemoveElementFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
         impl S {
             fn foo() {}
         }
-    """)
+    """
+    )
 
-    fun `test remove visibility qualifier enum variant`() = checkFixByText("Remove visibility qualifier", """
+    fun `test remove visibility qualifier enum variant`() = checkFixByText(
+        "Remove visibility qualifier", """
         enum E {
             <error descr="Unnecessary visibility qualifier [E0449]">pub/*caret*/(crate)</error>V
         }
@@ -92,5 +113,6 @@ class RemoveElementFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
         enum E {
             V
         }
-    """)
+    """
+    )
 }

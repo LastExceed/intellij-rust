@@ -12,7 +12,8 @@ import org.rust.lang.core.psi.ext.RsFieldDecl
 import kotlin.reflect.KClass
 
 class RsCompletionSortingTest : RsTestBase() {
-    fun `test macros are low priority`() = doTest("""
+    fun `test macros are low priority`() = doTest(
+        """
         fn foo_bar() {}
         macro_rules! foo_bar {}
 
@@ -27,9 +28,11 @@ class RsCompletionSortingTest : RsTestBase() {
         RsFunction::class to "_foo_bar",
         RsMacro::class to "foo_bar",
         RsMacro::class to "_foo_bar"
-    ))
+    )
+    )
 
-    fun `test named fields before members`() = doTest("""
+    fun `test named fields before members`() = doTest(
+        """
         struct S  { foo: i32 }
         impl S { fn foo(&self) {} }
 
@@ -37,9 +40,11 @@ class RsCompletionSortingTest : RsTestBase() {
     """, listOf(
         RsNamedFieldDecl::class to "foo",
         RsFunction::class to "foo"
-    ))
+    )
+    )
 
-    fun `test tuple fields before members`() = doTest("""
+    fun `test tuple fields before members`() = doTest(
+        """
         struct S(i32);
         impl S { fn foo(&self) {} }
 
@@ -47,9 +52,11 @@ class RsCompletionSortingTest : RsTestBase() {
     """, listOf(
         RsTupleFieldDecl::class to "0",
         RsFunction::class to "foo"
-    ))
+    )
+    )
 
-    fun `test enum variants before associated constants`() = doTest("""
+    fun `test enum variants before associated constants`() = doTest(
+        """
         enum E { A, B }
         trait T { const A: i32; }
         impl T for E { const A: i32 = 0; }
@@ -59,9 +66,11 @@ class RsCompletionSortingTest : RsTestBase() {
         RsEnumVariant::class to "A",
         RsEnumVariant::class to "B",
         RsConstant::class to "A"
-    ))
+    )
+    )
 
-    fun `test inherent impl methods before trait impl methods`() = doTest("""
+    fun `test inherent impl methods before trait impl methods`() = doTest(
+        """
         struct S;
         trait T { fn a(&self); }
         impl T for S { fn a(&self) {} }
@@ -71,9 +80,11 @@ class RsCompletionSortingTest : RsTestBase() {
     """, listOf(
         RsFunction::class to "b",
         RsFunction::class to "a"
-    ))
+    )
+    )
 
-    fun `test inherited before non-inherited`() = doTest("""
+    fun `test inherited before non-inherited`() = doTest(
+        """
         struct S;
 
         impl S {
@@ -97,9 +108,11 @@ class RsCompletionSortingTest : RsTestBase() {
         RsFunction::class to "foo3",
         RsFunction::class to "foo2",
         RsFunction::class to "foo4"
-    ))
+    )
+    )
 
-    fun `test const before mut for const reference`() = doTest("""
+    fun `test const before mut for const reference`() = doTest(
+        """
         struct S;
 
         impl S {
@@ -115,9 +128,11 @@ class RsCompletionSortingTest : RsTestBase() {
         RsFunction::class to "foo4",
         RsFunction::class to "foo1",
         RsFunction::class to "foo2"
-    ))
+    )
+    )
 
-    fun `test const before mut for const binding`() = doTest("""
+    fun `test const before mut for const binding`() = doTest(
+        """
         struct S;
 
         impl S {
@@ -133,9 +148,11 @@ class RsCompletionSortingTest : RsTestBase() {
         RsFunction::class to "foo4",
         RsFunction::class to "foo1",
         RsFunction::class to "foo2"
-    ))
+    )
+    )
 
-    fun `test mut reference`() = doTest("""
+    fun `test mut reference`() = doTest(
+        """
         struct S;
 
         impl S {
@@ -151,9 +168,11 @@ class RsCompletionSortingTest : RsTestBase() {
         RsFunction::class to "foo2",
         RsFunction::class to "foo3",
         RsFunction::class to "foo4"
-    ))
+    )
+    )
 
-    fun `test mut binding`() = doTest("""
+    fun `test mut binding`() = doTest(
+        """
         struct S;
 
         impl S {
@@ -169,9 +188,11 @@ class RsCompletionSortingTest : RsTestBase() {
         RsFunction::class to "foo2",
         RsFunction::class to "foo3",
         RsFunction::class to "foo4"
-    ))
+    )
+    )
 
-    fun `test assoc fns before methods`() = doTest("""
+    fun `test assoc fns before methods`() = doTest(
+        """
         struct S;
 
         impl S {
@@ -205,9 +226,11 @@ class RsCompletionSortingTest : RsTestBase() {
         RsFunction::class to "foo7",
         RsFunction::class to "foo4",
         RsFunction::class to "foo8"
-    ))
+    )
+    )
 
-    fun `test locals before non-locals`() = doTest("""
+    fun `test locals before non-locals`() = doTest(
+        """
         struct foo2;
         const foo3: () = ();
         fn foo4() {}
@@ -237,9 +260,11 @@ class RsCompletionSortingTest : RsTestBase() {
         RsConstant::class to "foo3",
         RsFunction::class to "foo4",
         RsMacro::class to "foo5"
-    ))
+    )
+    )
 
-    fun `test expected types priority (let binding)`() = doTest("""
+    fun `test expected types priority (let binding)`() = doTest(
+        """
         struct foo1<T>(T);
         struct foo2<T>(T);
 
@@ -300,9 +325,11 @@ class RsCompletionSortingTest : RsTestBase() {
         RsFunction::class to "foo7",
         RsFunction::class to "foo8",
         RsMacro::class to "foo9"
-    ))
+    )
+    )
 
-    fun `test expected types priority (fn arg)`() = doTest("""
+    fun `test expected types priority (fn arg)`() = doTest(
+        """
         struct foo1<T>(T);
         struct foo2<T>(T);
 
@@ -363,9 +390,11 @@ class RsCompletionSortingTest : RsTestBase() {
         RsFunction::class to "foo7",
         RsFunction::class to "foo8",
         RsMacro::class to "foo9"
-    ))
+    )
+    )
 
-    fun `test expected types priority (return type)`() = doTest("""
+    fun `test expected types priority (return type)`() = doTest(
+        """
         struct foo1<T>(T);
         struct foo2<T>(T);
 
@@ -426,9 +455,11 @@ class RsCompletionSortingTest : RsTestBase() {
         RsFunction::class to "foo7",
         RsFunction::class to "foo8",
         RsMacro::class to "foo9"
-    ))
+    )
+    )
 
-    fun `test expected types priority (dot expr)`() = doTest("""
+    fun `test expected types priority (dot expr)`() = doTest(
+        """
         struct foo1<T>(T);
         struct foo2<T>(T);
 
@@ -459,9 +490,11 @@ class RsCompletionSortingTest : RsTestBase() {
         RsFieldDecl::class to "foo5",
         RsFunction::class to "foo7",
         RsFunction::class to "foo8"
-    ))
+    )
+    )
 
-    fun `test tuple field order`() = doTest("""
+    fun `test tuple field order`() = doTest(
+        """
         fn main() {
             let tuple = (0, "", 0.0);
             let d: f64 = tuple./*caret*/
@@ -470,7 +503,8 @@ class RsCompletionSortingTest : RsTestBase() {
         Int::class to "2",
         Int::class to "0",
         Int::class to "1"
-    ))
+    )
+    )
 
     private fun doTest(@Language("Rust") code: String, expected: List<Pair<KClass<out Any>, String>>) {
         InlineFile(code).withCaret()

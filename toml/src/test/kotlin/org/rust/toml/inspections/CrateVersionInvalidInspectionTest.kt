@@ -9,12 +9,15 @@ import org.rust.toml.crates.local.CargoRegistryCrate
 import org.rust.toml.crates.local.CargoRegistryCrateVersion
 
 class CrateVersionInvalidInspectionTest : CargoTomlCrateInspectionTestBase(CrateVersionInvalidInspection::class) {
-    fun `test do not warn about missing crate`() = doTest("""
+    fun `test do not warn about missing crate`() = doTest(
+        """
         [dependencies]
         foo = "1"
-    """)
+    """
+    )
 
-    fun `test standalone version patch`() = doTest("""
+    fun `test standalone version patch`() = doTest(
+        """
         [dependencies]
         foo1 = <warning descr="No version matching 1.2.3 found for crate foo1">"1.2.3"</warning>
         foo2 = <warning descr="No version matching 1.2.3 found for crate foo2">"1.2.3"</warning>
@@ -35,7 +38,8 @@ class CrateVersionInvalidInspectionTest : CargoTomlCrateInspectionTestBase(Crate
         "foo8" to CargoRegistryCrate.of("0.2.0"),
     )
 
-    fun `test standalone version minor`() = doTest("""
+    fun `test standalone version minor`() = doTest(
+        """
         [dependencies]
         foo1 = <warning descr="No version matching 1.2 found for crate foo1">"1.2"</warning>
         foo2 = "1.2"
@@ -52,7 +56,8 @@ class CrateVersionInvalidInspectionTest : CargoTomlCrateInspectionTestBase(Crate
         "foo6" to CargoRegistryCrate.of("0.3.0"),
     )
 
-    fun `test standalone version major`() = doTest("""
+    fun `test standalone version major`() = doTest(
+        """
         [dependencies]
         foo1 = <warning descr="No version matching 1 found for crate foo1">"1"</warning>
         foo2 = "1"
@@ -65,7 +70,8 @@ class CrateVersionInvalidInspectionTest : CargoTomlCrateInspectionTestBase(Crate
         "foo4" to CargoRegistryCrate.of("2.0.0"),
     )
 
-    fun `test caret version patch`() = doTest("""
+    fun `test caret version patch`() = doTest(
+        """
         [dependencies]
         foo1 = <warning descr="No version matching ^1.2.3 found for crate foo1">"^1.2.3"</warning>
         foo2 = <warning descr="No version matching ^1.2.3 found for crate foo2">"^1.2.3"</warning>
@@ -86,7 +92,8 @@ class CrateVersionInvalidInspectionTest : CargoTomlCrateInspectionTestBase(Crate
         "foo8" to CargoRegistryCrate.of("0.2.0"),
     )
 
-    fun `test caret version minor`() = doTest("""
+    fun `test caret version minor`() = doTest(
+        """
         [dependencies]
         foo1 = <warning descr="No version matching ^1.2 found for crate foo1">"^1.2"</warning>
         foo2 = "^1.2"
@@ -103,7 +110,8 @@ class CrateVersionInvalidInspectionTest : CargoTomlCrateInspectionTestBase(Crate
         "foo6" to CargoRegistryCrate.of("0.3.0"),
     )
 
-    fun `test caret version major`() = doTest("""
+    fun `test caret version major`() = doTest(
+        """
         [dependencies]
         foo1 = <warning descr="No version matching ^1 found for crate foo1">"^1"</warning>
         foo2 = "^1"
@@ -116,7 +124,8 @@ class CrateVersionInvalidInspectionTest : CargoTomlCrateInspectionTestBase(Crate
         "foo4" to CargoRegistryCrate.of("2.0.0"),
     )
 
-    fun `test tilde version patch`() = doTest("""
+    fun `test tilde version patch`() = doTest(
+        """
         [dependencies]
         foo1 = <warning descr="No version matching ~1.2.3 found for crate foo1">"~1.2.3"</warning>
         foo2 = "~1.2.3"
@@ -129,7 +138,8 @@ class CrateVersionInvalidInspectionTest : CargoTomlCrateInspectionTestBase(Crate
         "foo4" to CargoRegistryCrate.of("1.3.0"),
     )
 
-    fun `test tilde version minor`() = doTest("""
+    fun `test tilde version minor`() = doTest(
+        """
         [dependencies]
         foo1 = <warning descr="No version matching ~1.2 found for crate foo1">"~1.2"</warning>
         foo2 = "~1.2"
@@ -142,7 +152,8 @@ class CrateVersionInvalidInspectionTest : CargoTomlCrateInspectionTestBase(Crate
         "foo4" to CargoRegistryCrate.of("1.3.0"),
     )
 
-    fun `test tilde version major`() = doTest("""
+    fun `test tilde version major`() = doTest(
+        """
         [dependencies]
         foo1 = <warning descr="No version matching ~1 found for crate foo1">"~1"</warning>
         foo2 = "~1"
@@ -155,7 +166,8 @@ class CrateVersionInvalidInspectionTest : CargoTomlCrateInspectionTestBase(Crate
         "foo4" to CargoRegistryCrate.of("2.0.0"),
     )
 
-    fun `test wildcard version patch`() = doTest("""
+    fun `test wildcard version patch`() = doTest(
+        """
         [dependencies]
         foo1 = <warning descr="No version matching 1.2.* found for crate foo1">"1.2.*"</warning>
         foo2 = "1.2.*"
@@ -168,7 +180,8 @@ class CrateVersionInvalidInspectionTest : CargoTomlCrateInspectionTestBase(Crate
         "foo4" to CargoRegistryCrate.of("1.3.0"),
     )
 
-    fun `test wildcard version minor`() = doTest("""
+    fun `test wildcard version minor`() = doTest(
+        """
         [dependencies]
         foo1 = <warning descr="No version matching 1.* found for crate foo1">"1.*"</warning>
         foo2 = "1.*"
@@ -181,7 +194,8 @@ class CrateVersionInvalidInspectionTest : CargoTomlCrateInspectionTestBase(Crate
         "foo4" to CargoRegistryCrate.of("2.0.0"),
     )
 
-    fun `test wildcard version major`() = doTest("""
+    fun `test wildcard version major`() = doTest(
+        """
         [dependencies]
         foo1 = "*"
         foo2 = "*"
@@ -192,7 +206,8 @@ class CrateVersionInvalidInspectionTest : CargoTomlCrateInspectionTestBase(Crate
         "foo3" to CargoRegistryCrate.of("2.3.4"),
     )
 
-    fun `test empty version`() = doTest("""
+    fun `test empty version`() = doTest(
+        """
         [dependencies]
         foo1 = ""
         foo2 = ""
@@ -203,7 +218,8 @@ class CrateVersionInvalidInspectionTest : CargoTomlCrateInspectionTestBase(Crate
         "foo3" to CargoRegistryCrate.of("2.3.4"),
     )
 
-    fun `test exact version patch`() = doTest("""
+    fun `test exact version patch`() = doTest(
+        """
         [dependencies]
         foo1 = <warning descr="No version matching =1.2.3 found for crate foo1">"=1.2.3"</warning>
         foo2 = "=1.2.3"
@@ -214,14 +230,16 @@ class CrateVersionInvalidInspectionTest : CargoTomlCrateInspectionTestBase(Crate
         "foo3" to CargoRegistryCrate.of("1.2.4"),
     )
 
-    fun `test search all versions`() = doTest("""
+    fun `test search all versions`() = doTest(
+        """
         [dependencies]
         foo1 = "=1.2.3"
     """,
-        "foo1" to CargoRegistryCrate.of("0.1.2", "1.2.2", "1.2.3","3.4.5"),
+        "foo1" to CargoRegistryCrate.of("0.1.2", "1.2.2", "1.2.3", "3.4.5"),
     )
 
-    fun `test version range`() = doTest("""
+    fun `test version range`() = doTest(
+        """
         [dependencies]
         foo1 = <warning descr="No version matching >=1.2.0 found for crate foo1">">=1.2.0"</warning>
         foo2 = <warning descr="No version matching >=1.2 found for crate foo2">">=1.2"</warning>
@@ -238,7 +256,8 @@ class CrateVersionInvalidInspectionTest : CargoTomlCrateInspectionTestBase(Crate
         "foo6" to CargoRegistryCrate.of("2.3.4"),
     )
 
-    fun `test multiple version requirements`() = doTest("""
+    fun `test multiple version requirements`() = doTest(
+        """
         [dependencies]
         foo1 = <warning descr="No version matching >=1.2.0, <1.4.3 found for crate foo1">">=1.2.0, <1.4.3"</warning>
         foo2 = ">=1.2.0, <1.4.3"
@@ -255,44 +274,53 @@ class CrateVersionInvalidInspectionTest : CargoTomlCrateInspectionTestBase(Crate
         "foo6" to CargoRegistryCrate.of("1.5"),
     )
 
-    fun `test matching versions not yanked`() = doTest("""
+    fun `test matching versions not yanked`() = doTest(
+        """
         [dependencies]
         foo1 = ">=1.2.0"
     """,
-        "foo1" to CargoRegistryCrate(listOf(
-            CargoRegistryCrateVersion("1.2.2", true, listOf()),
-            CargoRegistryCrateVersion("1.2.3", true, listOf()),
-            CargoRegistryCrateVersion("1.3.0", false, listOf())
-        ))
+        "foo1" to CargoRegistryCrate(
+            listOf(
+                CargoRegistryCrateVersion("1.2.2", true, listOf()),
+                CargoRegistryCrateVersion("1.2.3", true, listOf()),
+                CargoRegistryCrateVersion("1.3.0", false, listOf())
+            )
+        )
     )
 
-    fun `test matching versions yanked`() = doTest("""
+    fun `test matching versions yanked`() = doTest(
+        """
         [dependencies]
         foo1 = <warning descr="All versions matching >=1.2.0 for crate foo1 are yanked">">=1.2.0"</warning>
     """,
-        "foo1" to CargoRegistryCrate(listOf(
-            CargoRegistryCrateVersion("1.1.0", false, listOf()),
-            CargoRegistryCrateVersion("1.2.2", true, listOf()),
-            CargoRegistryCrateVersion("1.2.3", true, listOf()),
-            CargoRegistryCrateVersion("1.3.0", true, listOf())
-        ))
+        "foo1" to CargoRegistryCrate(
+            listOf(
+                CargoRegistryCrateVersion("1.1.0", false, listOf()),
+                CargoRegistryCrateVersion("1.2.2", true, listOf()),
+                CargoRegistryCrateVersion("1.2.3", true, listOf()),
+                CargoRegistryCrateVersion("1.3.0", true, listOf())
+            )
+        )
     )
 
-    fun `test dependency inline table`() = doTest("""
+    fun `test dependency inline table`() = doTest(
+        """
         [dependencies]
         foo = { version = <warning descr="No version matching =1.2.0 found for crate foo">"=1.2.0"</warning> }
     """,
         "foo" to CargoRegistryCrate.of("1.1.0")
     )
 
-    fun `test dependency specific table`() = doTest("""
+    fun `test dependency specific table`() = doTest(
+        """
         [dependencies.foo]
         version = <warning descr="No version matching =1.2.0 found for crate foo">"=1.2.0"</warning>
     """,
         "foo" to CargoRegistryCrate.of("1.1.0")
     )
 
-    fun `test renamed package`() = doTest("""
+    fun `test renamed package`() = doTest(
+        """
         [dependencies]
         foo1 = { version = "=1.2.0", package = "bar" }
         foo2 = { version = <warning descr="No version matching =1.2.0 found for crate baz">"=1.2.0"</warning>, package = "baz" }
@@ -301,7 +329,8 @@ class CrateVersionInvalidInspectionTest : CargoTomlCrateInspectionTestBase(Crate
         "baz" to CargoRegistryCrate.of("1.3.0")
     )
 
-    fun `test invalid version`() = doTest("""
+    fun `test invalid version`() = doTest(
+        """
         [dependencies]
         foo1 = <weak_warning descr="Invalid version requirement 0.4.0-rc--3-42=34=-23=-42=">"0.4.0-rc--3-42=34=-23=-42="</weak_warning>
         foo2 = <weak_warning descr="Invalid version requirement ---### aqwe58768">"---### aqwe58768"</weak_warning>

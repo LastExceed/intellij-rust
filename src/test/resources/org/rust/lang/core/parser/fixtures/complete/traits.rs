@@ -7,13 +7,16 @@ trait Contains {
 }
 
 fn foo() {
-    trait Inner {};
-    unsafe trait UnsafeInner {};
+    trait Inner {}
+    ;
+    unsafe trait UnsafeInner {}
+    ;
 }
 
 trait bar<T> {
-    fn baz(&self,);
+    fn baz(&self);
 }
 
-trait TrailingPlusIsOk: Clone+{}
+trait TrailingPlusIsOk: Clone + {}
+
 trait EmptyBoundsAreValid: {}

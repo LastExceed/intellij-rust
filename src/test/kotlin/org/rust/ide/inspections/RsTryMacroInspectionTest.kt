@@ -7,7 +7,8 @@ package org.rust.ide.inspections
 
 class RsTryMacroInspectionTest : RsInspectionsTestBase(RsTryMacroInspection::class) {
 
-    fun testFix() = checkFixByText("Change try! to ?", """
+    fun testFix() = checkFixByText(
+        "Change try! to ?", """
         fn foo() -> Result<(), ()> {
             <weak_warning descr="try! macro can be replaced with ? operator">try/*caret*/!(Err(()))</weak_warning>;
             Ok(())
@@ -17,5 +18,6 @@ class RsTryMacroInspectionTest : RsInspectionsTestBase(RsTryMacroInspection::cla
             Err(())?;
             Ok(())
         }
-    """, checkWeakWarn = true)
+    """, checkWeakWarn = true
+    )
 }

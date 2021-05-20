@@ -12,7 +12,8 @@ import org.toml.lang.psi.TomlLiteral
 import org.toml.lang.psi.TomlKeySegment
 
 class CargoTomlFeatureDependencyReferenceProviderTest : CargoTomlResolveTestBase() {
-    fun `test feature in the same package 1`() = checkResolve("""
+    fun `test feature in the same package 1`() = checkResolve(
+        """
         [package]
         name = "intellij-rust-test"
         version = "0.1.0"
@@ -23,27 +24,33 @@ class CargoTomlFeatureDependencyReferenceProviderTest : CargoTomlResolveTestBase
         #X
         bar = [ "foo" ]
                 #^
-    """)
+    """
+    )
 
-    fun `test feature in the same package 2`() = checkResolve("""
+    fun `test feature in the same package 2`() = checkResolve(
+        """
         [features]
         foo = []
         bar = []
         #X
         baz = [ "foo", "bar" ]
                        #^
-    """)
+    """
+    )
 
-    fun `test optional dependency as a feature in the same package 1`() = checkResolve("""
+    fun `test optional dependency as a feature in the same package 1`() = checkResolve(
+        """
         [dependencies]
         bar = { version = "*", optional = true }
         #X
         [features]
         foo = ["bar" ]
                #^
-    """)
+    """
+    )
 
-    fun `test optional dependency as a feature in the same package 2`() = checkResolve("""
+    fun `test optional dependency as a feature in the same package 2`() = checkResolve(
+        """
         [dependencies.bar]
                      #X
         version = "1"
@@ -52,11 +59,13 @@ class CargoTomlFeatureDependencyReferenceProviderTest : CargoTomlResolveTestBase
         [features]
         foo = ["bar" ]
                #^
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithDependencyRustProjectDescriptor::class)
     fun `test feature in another package`() = doResolveTest<TomlLiteral> {
-        toml("Cargo.toml", """
+        toml(
+            "Cargo.toml", """
             [package]
             name = "intellij-rust-test"
             version = "0.1.0"
@@ -68,9 +77,11 @@ class CargoTomlFeatureDependencyReferenceProviderTest : CargoTomlResolveTestBase
 
             [dependencies]
             dep-lib = "0.1.0"
-        """)
+        """
+        )
         dir("dep-lib") {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "intellij-rust-test"
                 version = "0.1.0"
@@ -78,13 +89,15 @@ class CargoTomlFeatureDependencyReferenceProviderTest : CargoTomlResolveTestBase
 
                 [features]
                 feature_foo = []
-            """)
+            """
+            )
         }
     }
 
     @ProjectDescriptor(WithDependencyRustProjectDescriptor::class)
     fun `test optional dependency as a feature in another package 1`() = doResolveTest<TomlLiteral> {
-        toml("Cargo.toml", """
+        toml(
+            "Cargo.toml", """
             [package]
             name = "intellij-rust-test"
             version = "0.1.0"
@@ -96,9 +109,11 @@ class CargoTomlFeatureDependencyReferenceProviderTest : CargoTomlResolveTestBase
 
             [dependencies]
             dep-lib = "0.1.0"
-        """)
+        """
+        )
         dir("dep-lib") {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "intellij-rust-test"
                 version = "0.1.0"
@@ -106,13 +121,15 @@ class CargoTomlFeatureDependencyReferenceProviderTest : CargoTomlResolveTestBase
 
                 [dependencies]
                 trans-lib = { version = "0.1.0", optional = true }
-            """)
+            """
+            )
         }
     }
 
     @ProjectDescriptor(WithDependencyRustProjectDescriptor::class)
     fun `test optional dependency as a feature in another package 2`() = doResolveTest<TomlLiteral> {
-        toml("Cargo.toml", """
+        toml(
+            "Cargo.toml", """
             [package]
             name = "intellij-rust-test"
             version = "0.1.0"
@@ -124,9 +141,11 @@ class CargoTomlFeatureDependencyReferenceProviderTest : CargoTomlResolveTestBase
 
             [dependencies]
             dep-lib = "0.1.0"
-        """)
+        """
+        )
         dir("dep-lib") {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "intellij-rust-test"
                 version = "0.1.0"
@@ -135,7 +154,8 @@ class CargoTomlFeatureDependencyReferenceProviderTest : CargoTomlResolveTestBase
                 [dependencies.trans-lib]
                 version = "0.1.0"
                 optional = true
-            """)
+            """
+            )
         }
     }
 

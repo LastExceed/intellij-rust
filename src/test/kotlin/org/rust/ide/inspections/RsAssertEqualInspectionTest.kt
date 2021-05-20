@@ -10,7 +10,8 @@ import org.rust.WithStdlibRustProjectDescriptor
 
 @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
 class RsAssertEqualInspectionTest : RsInspectionsTestBase(RsAssertEqualInspection::class) {
-    fun `test simple assert_eq fix`() = checkFixByText("Convert to assert_eq!", """
+    fun `test simple assert_eq fix`() = checkFixByText(
+        "Convert to assert_eq!", """
         fn main() {
             let x = 10;
             let y = 10;
@@ -22,11 +23,13 @@ class RsAssertEqualInspectionTest : RsInspectionsTestBase(RsAssertEqualInspectio
             let y = 10;
             assert_eq!(x, y);
         }
-    """, checkWeakWarn = true)
+    """, checkWeakWarn = true
+    )
 
-    fun `test expr assert_eq fix`() = checkFixByText("Convert to assert_eq!", """
+    fun `test expr assert_eq fix`() = checkFixByText(
+        "Convert to assert_eq!", """
         fn answer() -> i32 {
-            return 42
+            return 42;
         }
 
         fn main() {
@@ -34,15 +37,17 @@ class RsAssertEqualInspectionTest : RsInspectionsTestBase(RsAssertEqualInspectio
         }
     """, """
         fn answer() -> i32 {
-            return 42
+            return 42;
         }
 
         fn main() {
             assert_eq!(answer(), 42);
         }
-    """, checkWeakWarn = true)
+    """, checkWeakWarn = true
+    )
 
-    fun `test simple assert_eq fix with format_args`() = checkFixByText("Convert to assert_eq!", """
+    fun `test simple assert_eq fix with format_args`() = checkFixByText(
+        "Convert to assert_eq!", """
         fn main() {
             let x = 10;
             let y = 10;
@@ -54,9 +59,11 @@ class RsAssertEqualInspectionTest : RsInspectionsTestBase(RsAssertEqualInspectio
             let y = 10;
             assert_eq!(x, y, "format {}", 0);
         }
-    """, checkWeakWarn = true)
+    """, checkWeakWarn = true
+    )
 
-    fun `test simple assert_ne fix`() = checkFixByText("Convert to assert_ne!", """
+    fun `test simple assert_ne fix`() = checkFixByText(
+        "Convert to assert_ne!", """
         fn main() {
             let x = 10;
             let y = 42;
@@ -68,9 +75,11 @@ class RsAssertEqualInspectionTest : RsInspectionsTestBase(RsAssertEqualInspectio
             let y = 42;
             assert_ne!(x, y);
         }
-    """, checkWeakWarn = true)
+    """, checkWeakWarn = true
+    )
 
-    fun `test expr assert_ne fix`() = checkFixByText("Convert to assert_ne!", """
+    fun `test expr assert_ne fix`() = checkFixByText(
+        "Convert to assert_ne!", """
         fn answer() -> i32 {
             return 42;
         }
@@ -86,9 +95,11 @@ class RsAssertEqualInspectionTest : RsInspectionsTestBase(RsAssertEqualInspectio
         fn main() {
             assert_ne!(answer(), 50);
         }
-    """, checkWeakWarn = true)
+    """, checkWeakWarn = true
+    )
 
-    fun `test simple assert_ne fix with format_args`() = checkFixByText("Convert to assert_ne!", """
+    fun `test simple assert_ne fix with format_args`() = checkFixByText(
+        "Convert to assert_ne!", """
         fn main() {
             let x = 10;
             let y = 10;
@@ -100,9 +111,11 @@ class RsAssertEqualInspectionTest : RsInspectionsTestBase(RsAssertEqualInspectio
             let y = 10;
             assert_ne!(x, y, "format {}", 0);
         }
-    """, checkWeakWarn = true)
+    """, checkWeakWarn = true
+    )
 
-    fun `test fix unavailable when arguments do not implement Debug`() = checkFixIsUnavailable("Convert to assert_eq!", """
+    fun `test fix unavailable when arguments do not implement Debug`() = checkFixIsUnavailable(
+        "Convert to assert_eq!", """
         #[derive(PartialEq)]
         struct Number(u32);
 
@@ -111,9 +124,11 @@ class RsAssertEqualInspectionTest : RsInspectionsTestBase(RsAssertEqualInspectio
             let y = Number(10);
             assert!(x == y/*caret*/);
         }
-    """, checkWeakWarn = true, testmark = RsAssertEqualInspection.Testmarks.debugTraitIsNotImplemented)
+    """, checkWeakWarn = true, testmark = RsAssertEqualInspection.Testmarks.debugTraitIsNotImplemented
+    )
 
-    fun `test fix unavailable when arguments do not implement PartialEq`() = checkFixIsUnavailable("Convert to assert_eq!", """
+    fun `test fix unavailable when arguments do not implement PartialEq`() = checkFixIsUnavailable(
+        "Convert to assert_eq!", """
         #[derive(Debug)]
         struct Number(u32);
 
@@ -122,9 +137,11 @@ class RsAssertEqualInspectionTest : RsInspectionsTestBase(RsAssertEqualInspectio
             let y = Number(10);
             assert!(x == y/*caret*/);
         }
-    """, checkWeakWarn = true, testmark = RsAssertEqualInspection.Testmarks.partialEqTraitIsNotImplemented)
+    """, checkWeakWarn = true, testmark = RsAssertEqualInspection.Testmarks.partialEqTraitIsNotImplemented
+    )
 
-    fun `test fix available when arguments derive PartialEq & Debug`() = checkFixByText("Convert to assert_ne!", """
+    fun `test fix available when arguments derive PartialEq & Debug`() = checkFixByText(
+        "Convert to assert_ne!", """
         #[derive(Debug, PartialEq)]
         struct Number(u32);
 
@@ -142,5 +159,6 @@ class RsAssertEqualInspectionTest : RsInspectionsTestBase(RsAssertEqualInspectio
             let y = Number(10);
             assert_ne!(x, y);
         }
-    """, checkWeakWarn = true)
+    """, checkWeakWarn = true
+    )
 }

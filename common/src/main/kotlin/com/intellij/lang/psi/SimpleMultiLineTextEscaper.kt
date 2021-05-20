@@ -10,7 +10,7 @@ import com.intellij.psi.LiteralTextEscaper
 import com.intellij.psi.PsiLanguageInjectionHost
 
 /** Same as [com.intellij.psi.LiteralTextEscaper.createSimple], but multi line */
-class SimpleMultiLineTextEscaper<T: PsiLanguageInjectionHost>(host: T) : LiteralTextEscaper<T>(host) {
+class SimpleMultiLineTextEscaper<T : PsiLanguageInjectionHost>(host: T) : LiteralTextEscaper<T>(host) {
     override fun decode(rangeInsideHost: TextRange, outChars: java.lang.StringBuilder): Boolean {
         outChars.append(rangeInsideHost.substring(myHost.text))
         return true

@@ -3,33 +3,33 @@ name: release branch
 on:
     workflow_dispatch:
     schedule:
-        - cron: '0 1 * * *' # try everyday
+        -   cron: '0 1 * * *' # try everyday
 
 jobs:
     make-release-branch:
         runs-on: ubuntu-18.04
         steps:
-            - uses: actions/checkout@v2
+            -   uses: actions/checkout@v2
 
-            - name: Set up Python
-              uses: actions/setup-python@v1
-              with:
-                  python-version: 3.7
+            -   name: Set up Python
+                uses: actions/setup-python@v1
+                with:
+                    python-version: 3.7
 
-            - name: Set up git user
-              run: |
-                  git config --local user.email "action@github.com"
-                  git config --local user.name "GitHub Action"
+            -   name: Set up git user
+                run: |
+                    git config --local user.email "action@github.com"
+                    git config --local user.name "GitHub Action"
 
-            - name: Check date
-              if: github.event_name == 'schedule'
-              id: check-date
-              run: echo "::set-output name=result::$(python scripts/check_release_branch_date.py)"
+            -   name: Check date
+                if: github.event_name == 'schedule'
+                id: check-date
+                run: echo "::set-output name=result::$(python scripts/check_release_branch_date.py)"
 
-            - name: Make release branch
-              if: github.event_name != 'schedule' || fromJSON(steps.check-date.outputs.result).create_release_branch
-              run: python scripts/make_release_branch.py --token ${{ secrets.WORKFLOW_GITHUB_TOKEN }}
+            -   name: Make release branch
+                if: github.event_name != 'schedule' || fromJSON(steps.check-date.outputs.result).create_release_branch
+                run: python scripts/make_release_branch.py --token ${{ secrets.WORKFLOW_GITHUB_TOKEN }}
 
-            - name: Create new milestone
-              if: github.event_name != 'schedule' || fromJSON(steps.check-date.outputs.result).create_release_branch
-              run: python scripts/make_next_milestone.py --token ${{ secrets.WORKFLOW_GITHUB_TOKEN }}
+            -   name: Create new milestone
+                if: github.event_name != 'schedule' || fromJSON(steps.check-date.outputs.result).create_release_branch
+                run: python scripts/make_next_milestone.py --token ${{ secrets.WORKFLOW_GITHUB_TOKEN }}

@@ -8,7 +8,8 @@ package org.rust.ide.refactoring.generate
 class GenerateConstructorActionTest : RsGenerateBaseTest() {
     override val generateId: String = "Rust.GenerateConstructor"
 
-    fun `test generic struct`() = doTest("""
+    fun `test generic struct`() = doTest(
+        """
         struct S<T> {
             n: i32,/*caret*/
             m: T
@@ -27,9 +28,11 @@ class GenerateConstructorActionTest : RsGenerateBaseTest() {
                 S { n, m }
             }
         }
-    """)
+    """
+    )
 
-    fun `test empty type declaration`() = doTest("""
+    fun `test empty type declaration`() = doTest(
+        """
         struct S {
             n: i32,/*caret*/
             m:
@@ -48,9 +51,11 @@ class GenerateConstructorActionTest : RsGenerateBaseTest() {
                 S { n, m }
             }
         }
-    """)
+    """
+    )
 
-    fun `test empty struct`() = doTest("""
+    fun `test empty struct`() = doTest(
+        """
         struct S {/*caret*/}
     """, emptyList(), """
         struct S {}
@@ -60,9 +65,11 @@ class GenerateConstructorActionTest : RsGenerateBaseTest() {
                 S {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test tuple struct`() = doTest("""
+    fun `test tuple struct`() = doTest(
+        """
         struct Color(i32, i32, i32)/*caret*/;
     """, listOf(
         MemberSelection("field0: i32", true),
@@ -76,9 +83,11 @@ class GenerateConstructorActionTest : RsGenerateBaseTest() {
                 Color(field0, field1, field2)
             }
         }
-    """)
+    """
+    )
 
-    fun `test select none fields`() = doTest("""
+    fun `test select none fields`() = doTest(
+        """
         struct S {
             n: i32,/*caret*/
             m: i64,
@@ -97,9 +106,11 @@ class GenerateConstructorActionTest : RsGenerateBaseTest() {
                 S { n: (), m: () }
             }
         }
-    """)
+    """
+    )
 
-    fun `test select all fields`() = doTest("""
+    fun `test select all fields`() = doTest(
+        """
         struct S {
             n: i32,/*caret*/
             m: i64,
@@ -118,9 +129,11 @@ class GenerateConstructorActionTest : RsGenerateBaseTest() {
                 S { n, m }
             }
         }
-    """)
+    """
+    )
 
-    fun `test select some fields`() = doTest("""
+    fun `test select some fields`() = doTest(
+        """
         struct S {
             n: i32,/*caret*/
             m: i64,
@@ -139,9 +152,11 @@ class GenerateConstructorActionTest : RsGenerateBaseTest() {
                 S { n, m: () }
             }
         }
-    """)
+    """
+    )
 
-    fun `test generate all fields on impl`() = doTest("""
+    fun `test generate all fields on impl`() = doTest(
+        """
         struct S {
             n: i32,
             m: i64,
@@ -164,9 +179,11 @@ class GenerateConstructorActionTest : RsGenerateBaseTest() {
                 S { n, m }
             }
         }
-    """)
+    """
+    )
 
-    fun `test not available when new method exists`() = doUnavailableTest("""
+    fun `test not available when new method exists`() = doUnavailableTest(
+        """
         struct S {
             n: i32,
             m: i64,
@@ -176,9 +193,11 @@ class GenerateConstructorActionTest : RsGenerateBaseTest() {
             pub fn new() {}
             /*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test not available on trait impl`() = doUnavailableTest("""
+    fun `test not available on trait impl`() = doUnavailableTest(
+        """
         trait T { fn foo() }
 
         struct S {
@@ -189,9 +208,11 @@ class GenerateConstructorActionTest : RsGenerateBaseTest() {
         impl T for S {
             /*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test take type parameters from impl block`() = doTest("""
+    fun `test take type parameters from impl block`() = doTest(
+        """
         struct S<T>(T);
 
         impl S<i32> {
@@ -205,9 +226,11 @@ class GenerateConstructorActionTest : RsGenerateBaseTest() {
                 S(field0)
             }
         }
-    """)
+    """
+    )
 
-    fun `test take lifetimes from impl block`() = doTest("""
+    fun `test take lifetimes from impl block`() = doTest(
+        """
         struct S<'a, T>(&'a T);
 
         impl <'a> S<'a, i32> {
@@ -221,5 +244,6 @@ class GenerateConstructorActionTest : RsGenerateBaseTest() {
                 S(field0)
             }
         }
-    """)
+    """
+    )
 }

@@ -154,7 +154,7 @@ class RsAnsiEscapeDecoderTest : HeavyPlatformTestCase() {
                 make8BitColorCtrlSeq(15, isForeground = true) + "BRIGHT WHITE"
         )
             .addExpected("BRIGHT BLACK", make8BitColorCtrlSeq(8, isForeground = true))
-            .addExpected("BRIGHT RED",make8BitColorCtrlSeq(9, isForeground = true))
+            .addExpected("BRIGHT RED", make8BitColorCtrlSeq(9, isForeground = true))
             .addExpected("BRIGHT GREEN", make8BitColorCtrlSeq(10, isForeground = true))
             .addExpected("BRIGHT YELLOW", make8BitColorCtrlSeq(11, isForeground = true))
             .addExpected("BRIGHT BLUE", make8BitColorCtrlSeq(12, isForeground = true))

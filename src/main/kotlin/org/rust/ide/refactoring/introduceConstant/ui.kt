@@ -38,7 +38,8 @@ class Highlighter(private val editor: Editor) : JBPopupListener {
         val textRange = candidate.parent.textRange
         highlighter = markupModel.addRangeHighlighter(
             textRange.startOffset, textRange.endOffset, HighlighterLayer.SELECTION - 1, attributes,
-            HighlighterTargetArea.EXACT_RANGE)
+            HighlighterTargetArea.EXACT_RANGE
+        )
     }
 
     override fun onClosed(event: LightweightWindowEvent) {
@@ -63,11 +64,13 @@ fun showInsertionChooser(
         JBPopupFactory.getInstance()
             .createPopupChooserBuilder(candidates)
             .setRenderer(object : DefaultListCellRenderer() {
-                override fun getListCellRendererComponent(list: JList<*>?,
-                                                          value: Any,
-                                                          index: Int,
-                                                          isSelected: Boolean,
-                                                          cellHasFocus: Boolean): Component {
+                override fun getListCellRendererComponent(
+                    list: JList<*>?,
+                    value: Any,
+                    index: Int,
+                    isSelected: Boolean,
+                    cellHasFocus: Boolean
+                ): Component {
                     val candidate = value as InsertionCandidate
                     val text = candidate.description()
                     return super.getListCellRendererComponent(list, text, index, isSelected, cellHasFocus)

@@ -24,13 +24,16 @@ class ShareInPlaygroundIntentionTest : RsIntentionTestBase(ShareInPlaygroundInte
         super.tearDown()
     }
 
-    fun `test unavailable without selection`() = doUnavailableTest("""
+    fun `test unavailable without selection`() = doUnavailableTest(
+        """
         fn main() {/*caret*/
             println("Hello!")
         }
-    """)
+    """
+    )
 
-    fun `test with selection`() = doTest("""
+    fun `test with selection`() = doTest(
+        """
         <selection>fn main() {
             println("Hello!")
         }</selection>
@@ -38,7 +41,8 @@ class ShareInPlaygroundIntentionTest : RsIntentionTestBase(ShareInPlaygroundInte
         fn main() {
             println("Hello!")
         }
-    """)
+    """
+    )
 
     private fun doTest(@Language("Rust") code: String, @Language("Rust") codeToShare: String) {
         InlineFile(code.trimIndent())

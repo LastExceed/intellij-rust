@@ -17,11 +17,12 @@ class RsImplementationTextSelectioner : ImplementationTextSelectioner {
     override fun getTextEndOffset(element: PsiElement): Int = element.definitionRoot.endOffset
     override fun getTextStartOffset(element: PsiElement): Int = element.definitionRoot.startOffset
 
-    private val PsiElement.definitionRoot: PsiElement get() {
-        var element = this
-        while (element is RsPatBinding || element is RsPat) {
-            element = element.parent
+    private val PsiElement.definitionRoot: PsiElement
+        get() {
+            var element = this
+            while (element is RsPatBinding || element is RsPat) {
+                element = element.parent
+            }
+            return element
         }
-        return element
-    }
 }

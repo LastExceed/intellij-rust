@@ -6,7 +6,8 @@
 package org.rust.ide.intentions
 
 class UnwrapToTryIntentionTest : RsIntentionTestBase(UnwrapToTryIntention::class) {
-    fun `test available 1`() = doAvailableTest("""
+    fun `test available 1`() = doAvailableTest(
+        """
         fn main() {
             let a = a.unwrap/*caret*/();
         }
@@ -14,9 +15,11 @@ class UnwrapToTryIntentionTest : RsIntentionTestBase(UnwrapToTryIntention::class
         fn main() {
             let a = a?;
         }
-    """)
+    """
+    )
 
-    fun `test available 2`() = doAvailableTest("""
+    fun `test available 2`() = doAvailableTest(
+        """
         fn main() {
             let a = Ok(12).unwrap/*caret*/();
         }
@@ -24,9 +27,11 @@ class UnwrapToTryIntentionTest : RsIntentionTestBase(UnwrapToTryIntention::class
         fn main() {
             let a = Ok(12)?;
         }
-    """)
+    """
+    )
 
-    fun `test available 3`() = doAvailableTest("""
+    fun `test available 3`() = doAvailableTest(
+        """
         fn main() {
             let a = (a + b).unwrap/*caret*/();
         }
@@ -34,9 +39,11 @@ class UnwrapToTryIntentionTest : RsIntentionTestBase(UnwrapToTryIntention::class
         fn main() {
             let a = (a + b)?;
         }
-    """)
+    """
+    )
 
-    fun `test available 4`() = doAvailableTest("""
+    fun `test available 4`() = doAvailableTest(
+        """
         fn main() {
             let a = a + b.unwrap/*caret*/();
         }
@@ -44,9 +51,11 @@ class UnwrapToTryIntentionTest : RsIntentionTestBase(UnwrapToTryIntention::class
         fn main() {
             let a = a + b?;
         }
-    """)
+    """
+    )
 
-    fun `test available 5`() = doAvailableTest("""
+    fun `test available 5`() = doAvailableTest(
+        """
         fn main() {
             let a = a.unwrap/*caret*/().to_string();
         }
@@ -54,9 +63,11 @@ class UnwrapToTryIntentionTest : RsIntentionTestBase(UnwrapToTryIntention::class
         fn main() {
             let a = a?.to_string();
         }
-    """)
+    """
+    )
 
-    fun `test available 6`() = doAvailableTest("""
+    fun `test available 6`() = doAvailableTest(
+        """
         fn main() {
             let a = a.unwrap().unwrap/*caret*/().unwrap();
         }
@@ -64,9 +75,11 @@ class UnwrapToTryIntentionTest : RsIntentionTestBase(UnwrapToTryIntention::class
         fn main() {
             let a = a.unwrap()?.unwrap();
         }
-    """)
+    """
+    )
 
-    fun `test available 7`() = doAvailableTest("""
+    fun `test available 7`() = doAvailableTest(
+        """
         fn main() {
             let a = a.unwrap  /*caret*/  ();
         }
@@ -74,9 +87,11 @@ class UnwrapToTryIntentionTest : RsIntentionTestBase(UnwrapToTryIntention::class
         fn main() {
             let a = a?;
         }
-    """)
+    """
+    )
 
-    fun `test available 8`() = doAvailableTest("""
+    fun `test available 8`() = doAvailableTest(
+        """
         fn main() {
             let a = a.unwrap(b.unwrap(/*caret*/));
         }
@@ -84,35 +99,46 @@ class UnwrapToTryIntentionTest : RsIntentionTestBase(UnwrapToTryIntention::class
         fn main() {
             let a = a.unwrap(b?);
         }
-    """)
+    """
+    )
 
-    fun `test unavailable 1`() = doUnavailableTest("""
+    fun `test unavailable 1`() = doUnavailableTest(
+        """
         fn main() {
             let a = a.foo/*caret*/();
         }
-    """)
+    """
+    )
 
-    fun `test unavailable 2`() = doUnavailableTest("""
+    fun `test unavailable 2`() = doUnavailableTest(
+        """
         fn main() {
             let a = a.unwrap::<>/*caret*/();
         }
-    """)
+    """
+    )
 
-    fun `test unavailable 3`() = doUnavailableTest("""
+    fun `test unavailable 3`() = doUnavailableTest(
+        """
         fn main() {
             let a = a.unwrap::<i32>/*caret*/();
         }
-    """)
+    """
+    )
 
-    fun `test unavailable 4`() = doUnavailableTest("""
+    fun `test unavailable 4`() = doUnavailableTest(
+        """
         fn main() {
             let a = a.unwrap/*caret*/(12);
         }
-    """)
+    """
+    )
 
-    fun `test unavailable 5`() = doUnavailableTest("""
+    fun `test unavailable 5`() = doUnavailableTest(
+        """
         fn main() {
             let a = a.unwrap/*caret*/;
         }
-    """)
+    """
+    )
 }

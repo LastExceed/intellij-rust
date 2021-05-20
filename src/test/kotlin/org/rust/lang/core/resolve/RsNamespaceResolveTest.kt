@@ -6,7 +6,8 @@
 package org.rust.lang.core.resolve
 
 class RsNamespaceResolveTest : RsResolveTestBase() {
-    fun `test mod and fn`() = checkByCode("""
+    fun `test mod and fn`() = checkByCode(
+        """
         mod test {
            //X
             pub struct Test {
@@ -20,9 +21,11 @@ class RsNamespaceResolveTest : RsResolveTestBase() {
                       //^
             println!("Value: {}", test.a);
         }
-    """)
+    """
+    )
 
-    fun `test mod fn inner`() = checkByCode("""
+    fun `test mod fn inner`() = checkByCode(
+        """
         mod m { fn bar() {} }
                   //X
 
@@ -30,9 +33,11 @@ class RsNamespaceResolveTest : RsResolveTestBase() {
 
         fn main() { let _ = m::bar(); }
                               //^
-    """)
+    """
+    )
 
-    fun `test mod fn inner inner`() = checkByCode("""
+    fun `test mod fn inner inner`() = checkByCode(
+        """
         mod outer {
             mod m { fn bar() {} }
                       //X
@@ -42,9 +47,11 @@ class RsNamespaceResolveTest : RsResolveTestBase() {
 
         fn main() { let _ = outer::m::bar(); }
                                      //^
-    """)
+    """
+    )
 
-    fun `test type and const`() = checkByCode("""
+    fun `test type and const`() = checkByCode(
+        """
         struct T { }
              //X
         const T: i32 = 0;
@@ -53,24 +60,30 @@ class RsNamespaceResolveTest : RsResolveTestBase() {
             let _: T = T { };
                  //^
         }
-    """)
+    """
+    )
 
-    fun `test fn struct`() = checkByCode("""
+    fun `test fn struct`() = checkByCode(
+        """
         struct P { }
              //X
         fn P() -> P { }
                 //^
-    """)
+    """
+    )
 
-    fun `test static is not type`() = checkByCode("""
+    fun `test static is not type`() = checkByCode(
+        """
         static S: u8  = 0;
         fn main() {
             let _: S = unimplemented!();
                  //^ unresolved
         }
-    """)
+    """
+    )
 
-    fun `test extern static is not type`() = checkByCode("""
+    fun `test extern static is not type`() = checkByCode(
+        """
         extern "C" {
             static Foo: i32;
         }
@@ -79,9 +92,11 @@ class RsNamespaceResolveTest : RsResolveTestBase() {
 
         fn bar(foo: Foo) {}
                    //^
-    """)
+    """
+    )
 
-    fun `test extern fn is not type`() = checkByCode("""
+    fun `test extern fn is not type`() = checkByCode(
+        """
         extern "C" {
             fn Foo();
         }
@@ -90,9 +105,11 @@ class RsNamespaceResolveTest : RsResolveTestBase() {
 
         fn bar(foo: Foo) {}
                    //^
-    """)
+    """
+    )
 
-    fun `test path`() = checkByCode("""
+    fun `test path`() = checkByCode(
+        """
         mod m {
             fn foo() {}
         }
@@ -101,9 +118,11 @@ class RsNamespaceResolveTest : RsResolveTestBase() {
             let _: m::foo = unimplemented!();
                      //^ unresolved
         }
-    """)
+    """
+    )
 
-    fun `test use fn`() = checkByCode("""
+    fun `test use fn`() = checkByCode(
+        """
         use m::foo;
         mod m {
             fn foo() {}
@@ -118,9 +137,11 @@ class RsNamespaceResolveTest : RsResolveTestBase() {
             foo::bar();
 
         }
-    """)
+    """
+    )
 
-    fun `test use mod`() = checkByCode("""
+    fun `test use mod`() = checkByCode(
+        """
         use m::foo;
         mod m {
             fn foo() {}
@@ -135,9 +156,11 @@ class RsNamespaceResolveTest : RsResolveTestBase() {
             foo::bar();
            //^
         }
-    """)
+    """
+    )
 
-    fun `test use mod glob`() = checkByCode("""
+    fun `test use mod glob`() = checkByCode(
+        """
         use m::{foo};
         mod m {
             fn foo() {}
@@ -152,9 +175,11 @@ class RsNamespaceResolveTest : RsResolveTestBase() {
             foo::bar();
            //^
         }
-    """)
+    """
+    )
 
-    fun `test use fn glob`() = checkByCode("""
+    fun `test use fn glob`() = checkByCode(
+        """
         use m::{foo};
         mod m {
             fn foo() {}
@@ -169,9 +194,11 @@ class RsNamespaceResolveTest : RsResolveTestBase() {
             foo::bar();
 
         }
-    """)
+    """
+    )
 
-    fun `test issue 1138`() = checkByCode("""
+    fun `test issue 1138`() = checkByCode(
+        """
         mod foo {
             mod inner { pub fn inner() {} }
                                 //X
@@ -183,16 +210,20 @@ class RsNamespaceResolveTest : RsResolveTestBase() {
 
         fn f() { inner(); }
                  //^
-    """)
+    """
+    )
 
-    fun `test constructor`() = checkByCode("""
+    fun `test constructor`() = checkByCode(
+        """
         struct Foo {}
               //X
         fn Foo() -> Foo { Foo {}}
                          //^
-    """)
+    """
+    )
 
-    fun `test assoc namespaces 1`() = checkByCode("""
+    fun `test assoc namespaces 1`() = checkByCode(
+        """
         trait Foo {
             type X;
                //X
@@ -201,9 +232,11 @@ class RsNamespaceResolveTest : RsResolveTestBase() {
         fn foo<T: Foo>() {
             let _: T::X = T::X;
         }           //^
-    """)
+    """
+    )
 
-    fun `test assoc namespaces 2`() = checkByCode("""
+    fun `test assoc namespaces 2`() = checkByCode(
+        """
         trait Foo {
             type X;
             const X: Self::X;
@@ -211,9 +244,11 @@ class RsNamespaceResolveTest : RsResolveTestBase() {
         fn foo<T: Foo>() {
             let _: T::X = T::X;
         }                  //^
-    """)
+    """
+    )
 
-    fun `test tuple struct pattern namespace`() = checkByCode("""
+    fun `test tuple struct pattern namespace`() = checkByCode(
+        """
         struct Foo {}
         enum Bar {
             Foo(i32)
@@ -222,97 +257,124 @@ class RsNamespaceResolveTest : RsResolveTestBase() {
         fn main() {
             let Foo(_) = Foo(1);
         }     //^
-    """)
+    """
+    )
 
-    fun `test struct pattern namespace`() = checkByCode("""
+    fun `test struct pattern namespace`() = checkByCode(
+        """
         struct Foo { f: i32 }
              //X
         fn Foo() {}
         fn main() {
             let Foo { f } = Foo { f: 1 };
         }     //^
-    """)
+    """
+    )
 
-    fun `test const generic type namespace (type alias)`() = checkByCode("""
+    fun `test const generic type namespace (type alias)`() = checkByCode(
+        """
         type A<const N: usize> =
                    //X
             [N; N];
               //^
-    """)
+    """
+    )
 
-    fun `test const generic value namespace (type alias)`() = checkByCode("""
+    fun `test const generic value namespace (type alias)`() = checkByCode(
+        """
         type A<const N: usize> = [N; N];
                                 //^ unresolved
-    """)
+    """
+    )
 
-    fun `test const generic type namespace (enum)`() = checkByCode("""
+    fun `test const generic type namespace (enum)`() = checkByCode(
+        """
         enum E<const N: usize> {
                    //X
             V([N; N])
                 //^
         }
-    """)
+    """
+    )
 
-    fun `test const generic value namespace (enum)`() = checkByCode("""
+    fun `test const generic value namespace (enum)`() = checkByCode(
+        """
         enum E<const N: usize> { V([N; N]) }
                                   //^ unresolved
-    """)
+    """
+    )
 
-    fun `test const generic type namespace (struct)`() = checkByCode("""
+    fun `test const generic type namespace (struct)`() = checkByCode(
+        """
         struct S<const N: usize>(
                      //X
             [N; N]
               //^
         );
-    """)
+    """
+    )
 
-    fun `test const generic value namespace (struct)`() = checkByCode("""
+    fun `test const generic value namespace (struct)`() = checkByCode(
+        """
         struct S<const N: usize>([N; N]);
                                 //^ unresolved
-    """)
+    """
+    )
 
-    fun `test const generic type namespace (trait)`() = checkByCode("""
+    fun `test const generic type namespace (trait)`() = checkByCode(
+        """
         trait T<const N: usize> {
                     //X
             fn f(x: [N; N]) {}
                       //^
         }
-    """)
+    """
+    )
 
-    fun `test const generic value namespace (trait)`() = checkByCode("""
+    fun `test const generic value namespace (trait)`() = checkByCode(
+        """
         trait T<const N: usize> {
             fn f(x: [N; N]) {}
                    //^ unresolved
         }
-    """)
+    """
+    )
 
-    fun `test const generic type namespace (impl)`() = checkByCode("""
+    fun `test const generic type namespace (impl)`() = checkByCode(
+        """
         struct S;
         impl <const N: usize> S {
                   //X
             fn f(x: [N; N]) {}
                       //^
         }
-    """)
+    """
+    )
 
-    fun `test const generic value namespace (impl)`() = checkByCode("""
+    fun `test const generic value namespace (impl)`() = checkByCode(
+        """
         struct S;
         impl <const N: usize> S {
             fn f(x: [N; N]) {}
                    //^ unresolved
         }
-    """)
+    """
+    )
 
-    fun `test const generic type namespace (function)`() = checkByCode("""
+    fun `test const generic type namespace (function)`() = checkByCode(
+        """
         fn f<const N: usize>(
                  //X
             x: [N; N]
                  //^
         ) {}
-    """)
+    """
+    )
 
-    fun `test const generic value namespace (function)`() = checkByCode("""
+    fun `test const generic value namespace (function)`() = checkByCode(
+        """
         fn f<const N: usize>(x: [N; N]) {}
                                //^ unresolved
-    """)
+    """
+    )
 }

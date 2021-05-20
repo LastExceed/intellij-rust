@@ -6,39 +6,48 @@
 package org.rust.lang.core.completion
 
 class RsAttributeCompletionTest : RsAttributeCompletionTestBase() {
-    fun `test derive on struct`() = doSingleAttributeCompletion("""
+    fun `test derive on struct`() = doSingleAttributeCompletion(
+        """
         #[der/*caret*/]
         struct Bar;
     """, """
         #[derive(/*caret*/)]
         struct Bar;
-    """)
+    """
+    )
 
-    fun `test warn on trait`() = doSingleAttributeCompletion("""
+    fun `test warn on trait`() = doSingleAttributeCompletion(
+        """
         #[war/*caret*/]
         trait Bar {}
     """, """
         #[warn(/*caret*/)]
         trait Bar {}
-    """)
+    """
+    )
 
-    fun `test inline on fn`() = doSingleAttributeCompletion("""
+    fun `test inline on fn`() = doSingleAttributeCompletion(
+        """
         #[inl/*caret*/]
         fn foo() {}
     """, """
         #[inline/*caret*/]
         fn foo() {}
-    """)
+    """
+    )
 
-    fun `test outer allow on fn`() = doSingleAttributeCompletion("""
+    fun `test outer allow on fn`() = doSingleAttributeCompletion(
+        """
         #[allo/*caret*/]
         fn foo() {}
     """, """
         #[allow(/*caret*/)]
         fn foo() {}
-    """)
+    """
+    )
 
-    fun `test inner allow on fn`() = doSingleAttributeCompletion("""
+    fun `test inner allow on fn`() = doSingleAttributeCompletion(
+        """
         fn foo() {
             #![allo/*caret*/]
         }
@@ -46,33 +55,41 @@ class RsAttributeCompletionTest : RsAttributeCompletionTestBase() {
         fn foo() {
             #![allow(/*caret*/)]
         }
-    """)
+    """
+    )
 
-    fun `test simd on tuple struct`() = doSingleAttributeCompletion("""
+    fun `test simd on tuple struct`() = doSingleAttributeCompletion(
+        """
         #[si/*caret*/]
         struct Bar(u8, u8);
     """, """
         #[simd/*caret*/]
         struct Bar(u8, u8);
-    """)
+    """
+    )
 
-    fun `test forbid on static`() = doSingleAttributeCompletion("""
+    fun `test forbid on static`() = doSingleAttributeCompletion(
+        """
         #[forb/*caret*/]
         static BAR: u8 = 1;
     """, """
         #[forbid(/*caret*/)]
         static BAR: u8 = 1;
-    """)
+    """
+    )
 
-    fun `test thread local on static mut`() = doSingleAttributeCompletion("""
+    fun `test thread local on static mut`() = doSingleAttributeCompletion(
+        """
         #[thre/*caret*/]
         static mut BAR: u8 = 1;
     """, """
         #[thread_local/*caret*/]
         static mut BAR: u8 = 1;
-    """)
+    """
+    )
 
-    fun `test deny on enum`() = doSingleAttributeCompletion("""
+    fun `test deny on enum`() = doSingleAttributeCompletion(
+        """
         #[den/*caret*/]
         enum Foo {
             BAR,
@@ -84,39 +101,49 @@ class RsAttributeCompletionTest : RsAttributeCompletionTestBase() {
             BAR,
             BAZ
         }
-    """)
+    """
+    )
 
-    fun `test no mangle on enum`() = doSingleAttributeCompletion("""
+    fun `test no mangle on enum`() = doSingleAttributeCompletion(
+        """
         #[no_ma/*caret*/]
         mod foo {}
     """, """
         #[no_mangle/*caret*/]
         mod foo {}
-    """)
+    """
+    )
 
-    fun `test outer deny on file`() = doSingleAttributeCompletion("""
+    fun `test outer deny on file`() = doSingleAttributeCompletion(
+        """
         #![den/*caret*/]
     """, """
         #![deny(/*caret*/)]
-    """)
+    """
+    )
 
-    fun `test macro use on mod`() = doSingleAttributeCompletion("""
+    fun `test macro use on mod`() = doSingleAttributeCompletion(
+        """
         #[macr/*caret*/]
         mod foo {}
     """, """
         #[macro_use/*caret*/]
         mod foo {}
-    """)
+    """
+    )
 
-    fun `test macro use on mod 2`() = doSingleAttributeCompletion("""
+    fun `test macro use on mod 2`() = doSingleAttributeCompletion(
+        """
         #[macr/*caret*/]
         mod foo;
     """, """
         #[macro_use/*caret*/]
         mod foo;
-    """)
+    """
+    )
 
-    fun `test outer warn on mod`() = doSingleAttributeCompletion("""
+    fun `test outer warn on mod`() = doSingleAttributeCompletion(
+        """
         mod foo {
             #![war/*caret*/]
         }
@@ -124,9 +151,11 @@ class RsAttributeCompletionTest : RsAttributeCompletionTestBase() {
         mod foo {
             #![warn(/*caret*/)]
         }
-    """)
+    """
+    )
 
-    fun `test export name on trait impl method`() = doSingleAttributeCompletion("""
+    fun `test export name on trait impl method`() = doSingleAttributeCompletion(
+        """
         struct HasDrop;
         impl Drop for HasDrop {
             #[allo/*caret*/]
@@ -138,9 +167,11 @@ class RsAttributeCompletionTest : RsAttributeCompletionTestBase() {
             #[allow(/*caret*/)]
             fn drop(&mut self) {}
         }
-    """)
+    """
+    )
 
-    fun `test linked from on extern block`() = doSingleAttributeCompletion("""
+    fun `test linked from on extern block`() = doSingleAttributeCompletion(
+        """
         #[linke/*caret*/]
         extern {
             fn bar(baz: size_t) -> size_t;
@@ -150,9 +181,11 @@ class RsAttributeCompletionTest : RsAttributeCompletionTestBase() {
         extern {
             fn bar(baz: size_t) -> size_t;
         }
-    """)
+    """
+    )
 
-    fun `test linkage on extern block decl`() = doSingleAttributeCompletion("""
+    fun `test linkage on extern block decl`() = doSingleAttributeCompletion(
+        """
         extern {
             #[linka/*caret*/]
             fn bar(baz: size_t) -> size_t;
@@ -162,85 +195,109 @@ class RsAttributeCompletionTest : RsAttributeCompletionTestBase() {
             #[linkage/*caret*/]
             fn bar(baz: size_t) -> size_t;
         }
-    """)
+    """
+    )
 
-    fun `test no link on extern crate`() = doSingleAttributeCompletion("""
+    fun `test no link on extern crate`() = doSingleAttributeCompletion(
+        """
         #[no_l/*caret*/]
         extern crate bar;
     """, """
         #[no_link/*caret*/]
         extern crate bar;
-    """)
+    """
+    )
 
-    fun `test macro export on macro`() = doSingleAttributeCompletion("""
+    fun `test macro export on macro`() = doSingleAttributeCompletion(
+        """
         #[macr/*caret*/]
         macro_rules! bar {}
     """, """
         #[macro_export/*caret*/]
         macro_rules! bar {}
-    """)
+    """
+    )
 
-    fun `test cfg on mod`() = checkContainsCompletion("cfg", """
+    fun `test cfg on mod`() = checkContainsCompletion(
+        "cfg", """
         #[cf/*caret*/]
         mod foo {}
-    """)
+    """
+    )
 
-    fun `test cfg on file inner`() = checkContainsCompletion("cfg", """
+    fun `test cfg on file inner`() = checkContainsCompletion(
+        "cfg", """
         #![cf/*caret*/]
-    """)
+    """
+    )
 
-    fun `test deprecated`() = doSingleAttributeCompletion("""
+    fun `test deprecated`() = doSingleAttributeCompletion(
+        """
         #[dep/*caret*/]
         mod foo {}
     """, """
         #[deprecated/*caret*/]
         mod foo {}
-    """)
+    """
+    )
 
-    fun `test do not complete existing attributes`() = checkNoCompletion("""
+    fun `test do not complete existing attributes`() = checkNoCompletion(
+        """
         #[deprecated]
         #[dep/*caret*/]
         mod foo {}
-    """)
+    """
+    )
 
-    fun `test repr completion on enum`() = doSingleAttributeCompletion("""
+    fun `test repr completion on enum`() = doSingleAttributeCompletion(
+        """
         #[rep/*caret*/]
         enum Foo {}
     """, """
         #[repr(/*caret*/)]
         enum Foo {}
-    """)
+    """
+    )
 
-    fun `test repr completion on struct`() = doSingleAttributeCompletion("""
+    fun `test repr completion on struct`() = doSingleAttributeCompletion(
+        """
         #[rep/*caret*/]
         struct Foo {}
     """, """
         #[repr(/*caret*/)]
         struct Foo {}
-    """)
+    """
+    )
 
-    fun `test track_caller on function`() = doSingleAttributeCompletion("""
+    fun `test track_caller on function`() = doSingleAttributeCompletion(
+        """
         #[track/*caret*/]
         fn foo() {}
     """, """
         #[track_caller/*caret*/]
         fn foo() {}
-    """)
+    """
+    )
 
-    fun `test no track_caller on struct`() = checkNoCompletion("""
+    fun `test no track_caller on struct`() = checkNoCompletion(
+        """
         #[track/*caret*/]
         struct Foo;
-    """)
+    """
+    )
 
-    fun `test non_exhaustive on enum`() = doSingleAttributeCompletion("""
+    fun `test non_exhaustive on enum`() = doSingleAttributeCompletion(
+        """
         #[non_/*caret*/]
         enum Foo {}
     """, """
         #[non_exhaustive/*caret*/]
         enum Foo {}
-    """)
+    """
+    )
 
-    fun `test non_exhaustive on struct`() = doSingleAttributeCompletion("""
+    fun `test non_exhaustive on struct`() = doSingleAttributeCompletion(
+        """
         #[non_/*caret*/]
         struct S {
             a: u32
@@ -250,9 +307,11 @@ class RsAttributeCompletionTest : RsAttributeCompletionTestBase() {
         struct S {
             a: u32
         }
-    """)
+    """
+    )
 
-    fun `test non_exhaustive on enum variant`() = doSingleAttributeCompletion("""
+    fun `test non_exhaustive on enum variant`() = doSingleAttributeCompletion(
+        """
         enum Foo {
             #[non_/*caret*/]
             A
@@ -262,10 +321,13 @@ class RsAttributeCompletionTest : RsAttributeCompletionTestBase() {
             #[non_exhaustive/*caret*/]
             A
         }
-    """)
+    """
+    )
 
-    fun `test no non_exhaustive on function`() = checkNoCompletion("""
+    fun `test no non_exhaustive on function`() = checkNoCompletion(
+        """
         #[non_/*caret*/]
         fn foo() {}
-    """)
+    """
+    )
 }

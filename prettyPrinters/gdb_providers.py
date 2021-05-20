@@ -9,6 +9,7 @@ if version_info[0] >= 3:
 ZERO_FIELD = "__0"
 FIRST_FIELD = "__1"
 
+
 class StructProvider:
     def __init__(self, valobj):
         # type: (Value) -> StructProvider

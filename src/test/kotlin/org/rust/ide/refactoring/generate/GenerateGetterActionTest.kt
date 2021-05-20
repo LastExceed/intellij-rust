@@ -11,7 +11,8 @@ import org.rust.WithStdlibRustProjectDescriptor
 class GenerateGetterActionTest : RsGenerateBaseTest() {
     override val generateId: String = "Rust.GenerateGetter"
 
-    fun `test not available on impl trait block`() = doUnavailableTest("""
+    fun `test not available on impl trait block`() = doUnavailableTest(
+        """
         trait T {}
 
         struct S {
@@ -20,9 +21,11 @@ class GenerateGetterActionTest : RsGenerateBaseTest() {
         }
 
         impl T for S/*caret*/ {}
-    """)
+    """
+    )
 
-    fun `test not available inside method body`() = doUnavailableTest("""
+    fun `test not available inside method body`() = doUnavailableTest(
+        """
         struct S {
             a: i32,
             b: i32,
@@ -33,27 +36,35 @@ class GenerateGetterActionTest : RsGenerateBaseTest() {
                 /*caret*/
             }
         }
-    """)
+    """
+    )
 
-    fun `test not available on tuple struct`() = doUnavailableTest("""
+    fun `test not available on tuple struct`() = doUnavailableTest(
+        """
         struct S(u32, u32);
 
         impl S/*caret*/ {}
-    """)
+    """
+    )
 
-    fun `test not available on empty struct`() = doUnavailableTest("""
+    fun `test not available on empty struct`() = doUnavailableTest(
+        """
         struct S;
 
         impl S/*caret*/ {}
-    """)
+    """
+    )
 
-    fun `test not available on struct without fields`() = doUnavailableTest("""
+    fun `test not available on struct without fields`() = doUnavailableTest(
+        """
         struct S {}
 
         impl S/*caret*/ {}
-    """)
+    """
+    )
 
-    fun `test primitive fields`() = doTest("""
+    fun `test primitive fields`() = doTest(
+        """
         struct S {
             a: i32,
             b: bool,
@@ -79,9 +90,11 @@ class GenerateGetterActionTest : RsGenerateBaseTest() {
                 self.b
             }
         }
-    """)
+    """
+    )
 
-    fun `test select field`() = doTest("""
+    fun `test select field`() = doTest(
+        """
         struct S {
             a: i32,
             b: bool,
@@ -104,10 +117,12 @@ class GenerateGetterActionTest : RsGenerateBaseTest() {
                 self.a
             }
         }
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test copy impl`() = doTest("""
+    fun `test copy impl`() = doTest(
+        """
         #[derive(Copy, Clone)]
         struct Copyable {
             x: u64
@@ -135,10 +150,12 @@ class GenerateGetterActionTest : RsGenerateBaseTest() {
                 self.a
             }
         }
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test string`() = doTest("""
+    fun `test string`() = doTest(
+        """
         struct S {
             a: String
         }
@@ -156,10 +173,12 @@ class GenerateGetterActionTest : RsGenerateBaseTest() {
                 &self.a
             }
         }
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test enum and struct fields`() = doTest("""
+    fun `test enum and struct fields`() = doTest(
+        """
         enum E {
             E1, E2
         }
@@ -198,9 +217,11 @@ class GenerateGetterActionTest : RsGenerateBaseTest() {
                 &self.s1
             }
         }
-    """)
+    """
+    )
 
-    fun `test reference`() = doTest("""
+    fun `test reference`() = doTest(
+        """
         struct S<'a> {
             a: &'a str
         }
@@ -216,10 +237,12 @@ class GenerateGetterActionTest : RsGenerateBaseTest() {
                 self.a
             }
         }
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test tuple copy`() = doTest("""
+    fun `test tuple copy`() = doTest(
+        """
         struct S {
             a: (u32, u32)
         }
@@ -235,10 +258,12 @@ class GenerateGetterActionTest : RsGenerateBaseTest() {
                 self.a
             }
         }
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test tuple move`() = doTest("""
+    fun `test tuple move`() = doTest(
+        """
         struct NoCopy;
         struct S {
             a: (u32, NoCopy)
@@ -256,9 +281,11 @@ class GenerateGetterActionTest : RsGenerateBaseTest() {
                 &self.a
             }
         }
-    """)
+    """
+    )
 
-    fun `test generic field changed type parameter name`() = doTest("""
+    fun `test generic field changed type parameter name`() = doTest(
+        """
         struct S<T> {
             a: T
         }
@@ -274,9 +301,11 @@ class GenerateGetterActionTest : RsGenerateBaseTest() {
                 &self.a
             }
         }
-    """)
+    """
+    )
 
-    fun `test generic field specific type`() = doTest("""
+    fun `test generic field specific type`() = doTest(
+        """
         struct S<T> {
             a: T
         }
@@ -292,9 +321,11 @@ class GenerateGetterActionTest : RsGenerateBaseTest() {
                 self.a
             }
         }
-    """)
+    """
+    )
 
-    fun `test filter fields with a getter`() = doTest("""
+    fun `test filter fields with a getter`() = doTest(
+        """
         struct S {
             a: i32,
             b: i32,
@@ -321,9 +352,11 @@ class GenerateGetterActionTest : RsGenerateBaseTest() {
                 self.b
             }
         }
-    """)
+    """
+    )
 
-    fun `test unavailable when all fields have a getter`() = doUnavailableTest("""
+    fun `test unavailable when all fields have a getter`() = doUnavailableTest(
+        """
         struct S {
             a: i32,
         }
@@ -334,9 +367,11 @@ class GenerateGetterActionTest : RsGenerateBaseTest() {
             }
             /*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test unrelated method exists`() = doTest("""
+    fun `test unrelated method exists`() = doTest(
+        """
         struct S {
             a: i32,
         }
@@ -361,9 +396,11 @@ class GenerateGetterActionTest : RsGenerateBaseTest() {
                 self.a
             }
         }
-    """)
+    """
+    )
 
-    fun `test skip pub field`() = doTest("""
+    fun `test skip pub field`() = doTest(
+        """
         struct S {
             a: i32,
             pub b: i32,
@@ -386,9 +423,11 @@ class GenerateGetterActionTest : RsGenerateBaseTest() {
                 self.c
             }
         }
-    """)
+    """
+    )
 
-    fun `test type alias`() = doTest("""
+    fun `test type alias`() = doTest(
+        """
         struct T;
         type Alias = T;
         struct S {
@@ -408,9 +447,11 @@ class GenerateGetterActionTest : RsGenerateBaseTest() {
                 &self.a
             }
         }
-    """)
+    """
+    )
 
-    fun `test move to first generated getter`() = doTest("""
+    fun `test move to first generated getter`() = doTest(
+        """
         struct S {
             a: i32,
             b: bool,/*caret*/
@@ -432,5 +473,6 @@ class GenerateGetterActionTest : RsGenerateBaseTest() {
                 self.b
             }
         }
-    """)
+    """
+    )
 }

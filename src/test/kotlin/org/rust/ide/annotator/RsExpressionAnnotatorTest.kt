@@ -7,7 +7,8 @@ package org.rust.ide.annotator
 
 class RsExpressionAnnotatorTest : RsAnnotatorTestBase(RsExpressionAnnotator::class) {
 
-    fun `test unnecessary parens`() = checkWarnings("""
+    fun `test unnecessary parens`() = checkWarnings(
+        """
 
         struct S { f: i32 }
 
@@ -25,7 +26,7 @@ class RsExpressionAnnotatorTest : RsAnnotatorTestBase(RsExpressionAnnotator::cla
             }
 
             if <weak_warning descr="Predicate expression has unnecessary parentheses">(pred)</weak_warning> {
-                return <weak_warning descr="Return expression has unnecessary parentheses">(true)</weak_warning>;
+                return; <weak_warning descr="Return expression has unnecessary parentheses">(true)</weak_warning>;
             }
 
             while <weak_warning descr="Predicate expression has unnecessary parentheses">(true)</weak_warning> {
@@ -40,15 +41,19 @@ class RsExpressionAnnotatorTest : RsAnnotatorTestBase(RsExpressionAnnotator::cla
                 let _ = 1;
             }
         }
-        """)
+        """
+    )
 
-    fun `test nested parentheses`() = checkWarnings("""
+    fun `test nested parentheses`() = checkWarnings(
+        """
         fn test() {
             let _ = (<weak_warning descr="Redundant parentheses in expression">((((4 + 3))))</weak_warning>);
         }
-        """)
+        """
+    )
 
-    fun `test struct expr`() = checkWarnings("""
+    fun `test struct expr`() = checkWarnings(
+        """
 
         #[derive(Default)]
         struct S {
@@ -144,14 +149,17 @@ class RsExpressionAnnotatorTest : RsAnnotatorTestBase(RsExpressionAnnotator::cla
         fn unix_only() {
             let w = Win { foo: 92 };
         }
-    """)
+    """
+    )
 
-    fun `test union`() = checkWarnings("""
+    fun `test union`() = checkWarnings(
+        """
         union U { a: i32, b: f32 }
 
         fn main() {
             let _ = U { a: 92 };
             let _ = U <error descr="Union expressions should have exactly one field">{ a: 92, b: 92.0}</error>;
         }
-    """)
+    """
+    )
 }

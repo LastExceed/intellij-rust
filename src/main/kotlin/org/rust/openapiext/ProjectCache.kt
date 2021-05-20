@@ -21,10 +21,12 @@ class ProjectCache<in T, R>(
 ) {
     init {
         if (!registered.add(cacheName)) {
-            error("""
+            error(
+                """
                 ProjectCache `$cacheName` is already registered.
                 Make sure ProjectCache is static, that is, put it inside companion object.
-            """.trimIndent())
+            """.trimIndent()
+            )
         }
     }
 

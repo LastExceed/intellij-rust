@@ -47,7 +47,8 @@ class RsPsiStructureTest : RsTestBase() {
     fun `test constant role impl method`() = checkConstantRole({ it is RsAbstractableOwner.Impl }, "impl S for X { const C: () = (); }")
     fun `test constant role trait method`() = checkConstantRole({ it is RsAbstractableOwner.Trait }, "trait S { const C: () = (); }")
 
-    fun `test trait implementation info`() = checkElement<RsImplItem>("""
+    fun `test trait implementation info`() = checkElement<RsImplItem>(
+        """
         trait T {
             fn optional_fn() { }
             fn required_fn();
@@ -64,7 +65,8 @@ class RsPsiStructureTest : RsTestBase() {
             type same_name = ();
             fn spam() {}
         }
-    """) { impl ->
+    """
+    ) { impl ->
         val trait = impl.traitRef!!.resolveToTrait()!!
         val implInfo = TraitImplementationInfo.create(trait, impl)!!
         check(implInfo.declared.map { it.name } == listOf(
@@ -85,11 +87,13 @@ class RsPsiStructureTest : RsTestBase() {
         ))
     }
 
-    fun `test extern crate presentation info`() = checkElement<RsExternCrateItem>("""
+    fun `test extern crate presentation info`() = checkElement<RsExternCrateItem>(
+        """
         #[macro_use]
         #[macro_reexport(vec, format)]
         extern crate collections as core_collections;
-    """) {
+    """
+    ) {
         val info = it.presentationInfo!!.signatureText
         check(info == "extern crate <b>collections</b>")
     }

@@ -213,7 +213,7 @@ fun CodeInsightTestFixture.launchAction(
     if (shouldBeEnabled) {
         check(presentation.isEnabledAndVisible) { "Failed to run `${action.javaClass.simpleName}` action" }
     } else {
-        check(!presentation.isEnabledAndVisible) { "`${action.javaClass.simpleName}` action shouldn't be enabled"}
+        check(!presentation.isEnabledAndVisible) { "`${action.javaClass.simpleName}` action shouldn't be enabled" }
     }
     return presentation
 }

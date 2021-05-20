@@ -28,7 +28,8 @@ class RsMacroGraphWalkerTest : RsTestBase() {
         assertEquals(expected, actual)
     }
 
-    fun `test simple`() = check("""
+    fun `test simple`() = check(
+        """
         macro_rules! my_macro {
             ($ e:expr) => (1);
             ($ i:ident) => (1);
@@ -37,9 +38,11 @@ class RsMacroGraphWalkerTest : RsTestBase() {
         fn main() {
             my_macro!(x/*caret*/);
         }
-    """, hashSetOf(FragmentKind.Expr, FragmentKind.Ident))
+    """, hashSetOf(FragmentKind.Expr, FragmentKind.Ident)
+    )
 
-    fun `test complex expr`() = check("""
+    fun `test complex expr`() = check(
+        """
         macro_rules! my_macro {
             ($ e:expr) => (1);
         }
@@ -47,9 +50,11 @@ class RsMacroGraphWalkerTest : RsTestBase() {
         fn main() {
             my_macro!(x * (y.a/*caret*/ - y.b) * z);
         }
-    """, hashSetOf(FragmentKind.Expr))
+    """, hashSetOf(FragmentKind.Expr)
+    )
 
-    fun `test ident repetition *`() = check("""
+    fun `test ident repetition *`() = check(
+        """
         macro_rules! my_macro {
             ($ ($ id:ident)* $ t:ty) => (1);
         }
@@ -57,9 +62,11 @@ class RsMacroGraphWalkerTest : RsTestBase() {
         fn main() {
             my_macro!(x y z/*caret*/);
         }
-    """, hashSetOf(FragmentKind.Ident, FragmentKind.Ty))
+    """, hashSetOf(FragmentKind.Ident, FragmentKind.Ty)
+    )
 
-    fun `test ident repetition +`() = check("""
+    fun `test ident repetition +`() = check(
+        """
         macro_rules! my_macro {
             ($ ($ id:ident),+ ) => (1);
         }
@@ -67,9 +74,11 @@ class RsMacroGraphWalkerTest : RsTestBase() {
         fn main() {
             my_macro!(x, y/*caret*/);
         }
-    """, hashSetOf(FragmentKind.Ident))
+    """, hashSetOf(FragmentKind.Ident)
+    )
 
-    fun `test ident repetition ?`() = check("""
+    fun `test ident repetition ?`() = check(
+        """
         macro_rules! my_macro {
             ($ ($ id:ident)? $ t:ty) => (1);
         }
@@ -77,18 +86,22 @@ class RsMacroGraphWalkerTest : RsTestBase() {
         fn main() {
             my_macro!(x y/*caret*/);
         }
-    """, hashSetOf(FragmentKind.Ty))
+    """, hashSetOf(FragmentKind.Ty)
+    )
 
-    fun `test parens`() = check("""
+    fun `test parens`() = check(
+        """
         macro_rules! my_macro {
             ($ i:ident($ t:ty)) => (1);
         }
         fn main() {
             my_macro!(foo(i/*caret*/));
         }
-    """, hashSetOf(FragmentKind.Ty))
+    """, hashSetOf(FragmentKind.Ty)
+    )
 
-    fun `test many rules 1`() = check("""
+    fun `test many rules 1`() = check(
+        """
         macro_rules! my_macro {
             ($ e:expr) => (1);
             ($ ($ id:ident)+ ) => (2);
@@ -99,9 +112,11 @@ class RsMacroGraphWalkerTest : RsTestBase() {
         fn main() {
             my_macro!(5, 5+7, i/*caret*/);
         }
-    """, hashSetOf())
+    """, hashSetOf()
+    )
 
-    fun `test nom method 1`() = check("""
+    fun `test nom method 1`() = check(
+        """
         macro_rules! method {
             ($ name:ident<$ a:ty>( $ i:ty ) -> $ o:ty, $ self_:ident, $ submac:ident!( $ ($ args:tt)* )) => (1);
             ($ name:ident<$ a:ty,$ i:ty,$ o:ty,$ e:ty>, $ self_:ident, $ submac:ident!( $ ($ args:tt)* )) => (1);
@@ -128,9 +143,11 @@ class RsMacroGraphWalkerTest : RsTestBase() {
         fn main() {
             method!(pub foo<MyType, u8, i/*caret*/);
         }
-    """, hashSetOf(FragmentKind.Ty))
+    """, hashSetOf(FragmentKind.Ty)
+    )
 
-    fun `test nom method 2`() = check("""
+    fun `test nom method 2`() = check(
+        """
         macro_rules! method {
             ($ name:ident<$ a:ty>( $ i:ty ) -> $ o:ty, $ self_:ident, $ submac:ident!( $ ($ args:tt)* )) => (1);
             ($ name:ident<$ a:ty,$ i:ty,$ o:ty,$ e:ty>, $ self_:ident, $ submac:ident!( $ ($ args:tt)* )) => (1);
@@ -157,27 +174,33 @@ class RsMacroGraphWalkerTest : RsTestBase() {
         fn main() {
             method!(foo<i/*caret*/>, bar, baz!(a));
         }
-    """, hashSetOf(FragmentKind.Ty))
+    """, hashSetOf(FragmentKind.Ty)
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test thread_local 1`() = check("""
+    fun `test thread_local 1`() = check(
+        """
         fn main() {
             thread_local! {
                pub static FOO: RefCell<i/*caret*/> = RefCell::new(1);
             }
         }
-    """, hashSetOf(FragmentKind.Ty))
+    """, hashSetOf(FragmentKind.Ty)
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test thread_local 2`() = check("""
+    fun `test thread_local 2`() = check(
+        """
         fn main() {
             thread_local! {
                pub static FOO: RefCell<i32> = RefCell::new(i/*caret*/);
             }
         }
-    """, hashSetOf(FragmentKind.Expr))
+    """, hashSetOf(FragmentKind.Expr)
+    )
 
-    fun `test cond reduce`() = check("""
+    fun `test cond reduce`() = check(
+        """
         macro_rules! cond_reduce {
             ($ i:expr, $ cond:expr, $ submac:ident!( $($ args:tt)* )) => (1);
             ($ i:expr, $ cond:expr) => (1);
@@ -187,9 +210,11 @@ class RsMacroGraphWalkerTest : RsTestBase() {
         fn main() {
             cond_reduce!(foo, foo.bar(i/*caret*/), foobar!(a b c));
         }
-    """, hashSetOf(FragmentKind.Expr))
+    """, hashSetOf(FragmentKind.Expr)
+    )
 
-    fun `test collapsed tokens`() = check("""
+    fun `test collapsed tokens`() = check(
+        """
         macro_rules! my_macro {
             (&& $ i:ident) => (1);
         }
@@ -197,5 +222,6 @@ class RsMacroGraphWalkerTest : RsTestBase() {
         fn main() {
             my_macro!(&& foo/*caret*/);
         }
-    """, hashSetOf(FragmentKind.Ident))
+    """, hashSetOf(FragmentKind.Ident)
+    )
 }

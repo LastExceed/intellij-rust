@@ -23,7 +23,8 @@ class RsBlocksAndBodiesSelectionHandlerTest : RsSelectionHandlerTestBase() {
         |fn foo() <selection>{
         |    let x = 1;
         |}
-        |</selection>""")
+        |</selection>"""
+    )
 
     fun `test fun body multiline`() = doTestWithTrimmedMargins(
         """
@@ -68,7 +69,8 @@ class RsBlocksAndBodiesSelectionHandlerTest : RsSelectionHandlerTestBase() {
         |
         |    let x = 1;
         |</selection>}
-        |""")
+        |"""
+    )
 
     fun `test fun body line comments`() = doTestWithTrimmedMargins(
         """
@@ -113,7 +115,8 @@ class RsBlocksAndBodiesSelectionHandlerTest : RsSelectionHandlerTestBase() {
         |
         |    // foo
         |</selection>}
-        |""")
+        |"""
+    )
 
     fun `test fun block expression`() = doTestWithTrimmedMargins(
         """
@@ -166,7 +169,8 @@ class RsBlocksAndBodiesSelectionHandlerTest : RsSelectionHandlerTestBase() {
         |        let x = 1;
         |</selection>    };
         |}
-        |""")
+        |"""
+    )
 
     fun `test struct body`() = doTestWithTrimmedMargins(
         """
@@ -211,7 +215,8 @@ class RsBlocksAndBodiesSelectionHandlerTest : RsSelectionHandlerTestBase() {
         |
         |    a : i32
         |</selection>}
-        |""")
+        |"""
+    )
 
     fun `test struct literal body`() = doTestWithTrimmedMargins(
         """
@@ -264,7 +269,8 @@ class RsBlocksAndBodiesSelectionHandlerTest : RsSelectionHandlerTestBase() {
         |        a: 0
         |</selection>    };
         |}
-        |""")
+        |"""
+    )
 
     fun `test struct body last field`() = doTestWithTrimmedMargins(
         """
@@ -295,7 +301,8 @@ class RsBlocksAndBodiesSelectionHandlerTest : RsSelectionHandlerTestBase() {
         |        a : i32
         |</selection>    };
         |}
-        |""")
+        |"""
+    )
 
     fun `test struct literal body last field`() = doTestWithTrimmedMargins(
         """
@@ -326,7 +333,8 @@ class RsBlocksAndBodiesSelectionHandlerTest : RsSelectionHandlerTestBase() {
         |        a: 0
         |</selection>    };
         |}
-        |""")
+        |"""
+    )
 
     fun `test enum body`() = doTestWithTrimmedMargins(
         """
@@ -371,7 +379,8 @@ class RsBlocksAndBodiesSelectionHandlerTest : RsSelectionHandlerTestBase() {
         |
         |    A
         |</selection>}
-        |""")
+        |"""
+    )
 
     fun `test trait body`() = doTestWithTrimmedMargins(
         """
@@ -416,7 +425,8 @@ class RsBlocksAndBodiesSelectionHandlerTest : RsSelectionHandlerTestBase() {
         |
         |    fn f();
         |</selection>}
-        |""")
+        |"""
+    )
 
 
     fun `test match expression`() = doTestWithTrimmedMargins(
@@ -478,5 +488,6 @@ class RsBlocksAndBodiesSelectionHandlerTest : RsSelectionHandlerTestBase() {
         |        _ => 0,
         |</selection>    };
         |}
-        |""")
+        |"""
+    )
 }

@@ -278,7 +278,9 @@ private data class TypeRenderer(
             }
 
             val rendered = when (parameter) {
-                is RsLifetimeParameter -> if (includeLifetimeArguments) render(subst[parameter] ?: ReUnknown) else continue
+                is RsLifetimeParameter -> if (includeLifetimeArguments) render(
+                    subst[parameter] ?: ReUnknown
+                ) else continue
                 is RsTypeParameter -> render(subst[parameter] ?: TyUnknown)
                 is RsConstParameter -> render(subst[parameter] ?: CtUnknown, wrapParameterInBraces = true)
                 else -> error("unreachable")

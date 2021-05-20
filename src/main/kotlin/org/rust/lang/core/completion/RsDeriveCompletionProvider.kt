@@ -33,9 +33,11 @@ object RsDeriveCompletionProvider : RsCompletionProvider() {
     private const val DEFAULT_PRIORITY = 5.0
     private const val GROUP_PRIORITY = DEFAULT_PRIORITY + 0.1
 
-    override fun addCompletions(parameters: CompletionParameters,
-                                context: ProcessingContext,
-                                result: CompletionResultSet) {
+    override fun addCompletions(
+        parameters: CompletionParameters,
+        context: ProcessingContext,
+        result: CompletionResultSet
+    ) {
 
         // TODO: use `processDeriveTraitResolveVariants` to share code between name resolution and completion
         val owner = parameters.position.ancestorStrict<RsStructOrEnumItemElement>()

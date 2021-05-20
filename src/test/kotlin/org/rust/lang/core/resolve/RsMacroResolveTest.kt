@@ -11,7 +11,8 @@ import org.rust.cargo.project.workspace.CargoWorkspace.Edition
 import org.rust.ignoreInNewResolve
 
 class RsMacroResolveTest : RsResolveTestBase() {
-    fun `test resolve simple matching with multiple pattern definition`() = checkByCode("""
+    fun `test resolve simple matching with multiple pattern definition`() = checkByCode(
+        """
         macro_rules! test {
             ($ test:expr) => (
                //X
@@ -22,9 +23,11 @@ class RsMacroResolveTest : RsResolveTestBase() {
                 $ test
             )
         }
-    """)
+    """
+    )
 
-    fun `test resolve simple matching with multiple matching`() = checkByCode("""
+    fun `test resolve simple matching with multiple matching`() = checkByCode(
+        """
         macro_rules! test {
             ($ test:expr, $ ty:ty) => (
                //X
@@ -32,9 +35,11 @@ class RsMacroResolveTest : RsResolveTestBase() {
                  //^
             )
         }
-    """)
+    """
+    )
 
-    fun `test resolve simple matching in complex matching`() = checkByCode("""
+    fun `test resolve simple matching in complex matching`() = checkByCode(
+        """
         macro_rules! test {
             ($ ($ test:expr),+, $ ty:ty) => (
               //X
@@ -42,25 +47,31 @@ class RsMacroResolveTest : RsResolveTestBase() {
                    //^
             )
         }
-    """)
+    """
+    )
 
-    fun `test resolve macro same scope`() = checkByCode("""
+    fun `test resolve macro same scope`() = checkByCode(
+        """
         macro_rules! foo_bar { () => () }
         //X
         foo_bar!();
         //^
-    """)
+    """
+    )
 
-    fun `test resolve macro in function`() = checkByCode("""
+    fun `test resolve macro in function`() = checkByCode(
+        """
         macro_rules! foo_bar { () => () }
         //X
         fn main() {
             foo_bar!();
             //^
         }
-    """)
+    """
+    )
 
-    fun `test resolve macro mod lower`() = checkByCode("""
+    fun `test resolve macro mod lower`() = checkByCode(
+        """
         macro_rules! foo_bar { () => () }
         //X
         mod b {
@@ -69,9 +80,11 @@ class RsMacroResolveTest : RsResolveTestBase() {
                 //^
             }
         }
-    """)
+    """
+    )
 
-    fun `test resolve macro mod`() = checkByCode("""
+    fun `test resolve macro mod`() = checkByCode(
+        """
         #[macro_use]
         mod a {
             macro_rules! foo_bar { () => () }
@@ -83,9 +96,11 @@ class RsMacroResolveTest : RsResolveTestBase() {
                 //^
             }
         }
-    """)
+    """
+    )
 
-    fun `test resolve macro mod inner macro_use`() = checkByCode("""
+    fun `test resolve macro mod inner macro_use`() = checkByCode(
+        """
         mod a {
             #![macro_use]
             macro_rules! foo_bar { () => () }
@@ -97,11 +112,13 @@ class RsMacroResolveTest : RsResolveTestBase() {
                 //^
             }
         }
-    """)
+    """
+    )
 
     // Macros are scoped by lexical order
     // see https://github.com/intellij-rust/intellij-rust/issues/1474
-    fun `test resolve macro mod wrong order`() = checkByCode("""
+    fun `test resolve macro mod wrong order`() = checkByCode(
+        """
         mod b {
             fn main() {
                 foo_bar!();
@@ -112,9 +129,11 @@ class RsMacroResolveTest : RsResolveTestBase() {
         mod a {
             macro_rules! foo_bar { () => () }
         }
-    """)
+    """
+    )
 
-    fun `test resolve macro in lexical order 1`() = checkByCode("""
+    fun `test resolve macro in lexical order 1`() = checkByCode(
+        """
         macro_rules! foo { () => () }
         #[macro_use]
         mod a {
@@ -128,9 +147,11 @@ class RsMacroResolveTest : RsResolveTestBase() {
         fn main() {
             foo!();
         } //^
-    """)
+    """
+    )
 
-    fun `test resolve macro in lexical order 2`() = checkByCode("""
+    fun `test resolve macro in lexical order 2`() = checkByCode(
+        """
        #[macro_use]
         pub mod a {
             macro_rules! foo { () => () }
@@ -144,9 +165,11 @@ class RsMacroResolveTest : RsResolveTestBase() {
             }
 
         }
-    """)
+    """
+    )
 
-    fun `test resolve macro in lexical order 3`() = checkByCode("""
+    fun `test resolve macro in lexical order 3`() = checkByCode(
+        """
         macro_rules! foo { () => () }
         #[macro_use]
         mod a {
@@ -161,10 +184,12 @@ class RsMacroResolveTest : RsResolveTestBase() {
         fn main() {
             foo!();
         } //^
-    """)
+    """
+    )
 
     @MockEdition(Edition.EDITION_2018)
-    fun `test resolve macro in lexical order 4`() = checkByCode("""
+    fun `test resolve macro in lexical order 4`() = checkByCode(
+        """
         mod a {
             macro_rules! foo { () => {} }
                        //X
@@ -173,10 +198,12 @@ class RsMacroResolveTest : RsResolveTestBase() {
             } //^
             macro_rules! foo { () => {} }
         }
-    """)
+    """
+    )
 
     @MockEdition(Edition.EDITION_2018)
-    fun `test resolve macro in lexical order 5`() = checkByCode("""
+    fun `test resolve macro in lexical order 5`() = checkByCode(
+        """
         mod a {
             macro_rules! foo { () => {} }
             macro_rules! foo { () => {} }
@@ -185,10 +212,12 @@ class RsMacroResolveTest : RsResolveTestBase() {
                 foo!();
             } //^
         }
-    """)
+    """
+    )
 
     @MockEdition(Edition.EDITION_2018)
-    fun `test expand macro in lexical order 6`() = checkByCode("""
+    fun `test expand macro in lexical order 6`() = checkByCode(
+        """
         mod a {
             struct Foo1;
                  //X
@@ -199,10 +228,12 @@ class RsMacroResolveTest : RsResolveTestBase() {
                 let x = Foo2;
             }         //^
         }
-    """)
+    """
+    )
 
     @MockEdition(Edition.EDITION_2018)
-    fun `test resolve macro in lexical order 7`() = checkByCode("""
+    fun `test resolve macro in lexical order 7`() = checkByCode(
+        """
         mod a {
             struct Foo1;
                  //X
@@ -213,9 +244,11 @@ class RsMacroResolveTest : RsResolveTestBase() {
                 let x = Foo2;
             }         //^
         }
-    """)
+    """
+    )
 
-    fun `test resolve macro missing macro_use`() = checkByCode("""
+    fun `test resolve macro missing macro_use`() = checkByCode(
+        """
         // Missing #[macro_use] here
         mod a {
             macro_rules! foo_bar { () => () }
@@ -224,9 +257,11 @@ class RsMacroResolveTest : RsResolveTestBase() {
             foo_bar!();
             //^ unresolved
         }
-    """, NameResolutionTestmarks.missingMacroUse.ignoreInNewResolve(project))
+    """, NameResolutionTestmarks.missingMacroUse.ignoreInNewResolve(project)
+    )
 
-    fun `test macro_export macro is visible in the same crate without macro_use`() = checkByCode("""
+    fun `test macro_export macro is visible in the same crate without macro_use`() = checkByCode(
+        """
         // #[macro_use] is not needed here
         mod a {
             #[macro_export]
@@ -236,9 +271,11 @@ class RsMacroResolveTest : RsResolveTestBase() {
             foo_bar!();
             //^
         }
-    """, NameResolutionTestmarks.processSelfCrateExportedMacros.ignoreInNewResolve(project))
+    """, NameResolutionTestmarks.processSelfCrateExportedMacros.ignoreInNewResolve(project)
+    )
 
-    fun `test resolve macro missing macro_use mod`() = checkByCode("""
+    fun `test resolve macro missing macro_use mod`() = checkByCode(
+        """
         // Missing #[macro_use] here
         mod a {
             macro_rules! foo_bar { () => () }
@@ -249,42 +286,52 @@ class RsMacroResolveTest : RsResolveTestBase() {
                 //^ unresolved
             }
         }
-    """, NameResolutionTestmarks.missingMacroUse.ignoreInNewResolve(project))
+    """, NameResolutionTestmarks.missingMacroUse.ignoreInNewResolve(project)
+    )
 
-    fun `test raw identifier 1`() = checkByCode("""
+    fun `test raw identifier 1`() = checkByCode(
+        """
         macro_rules! r#match { () => () }
                      //X
         r#match!();
            //^
-    """)
+    """
+    )
 
-    fun `test raw identifier 2`() = checkByCode("""
+    fun `test raw identifier 2`() = checkByCode(
+        """
         macro_rules! foo { () => () }
                     //X
         r#foo!();
          //^
-    """)
+    """
+    )
 
-    fun `test macro call with crate prefix 1`() = checkByCode("""
+    fun `test macro call with crate prefix 1`() = checkByCode(
+        """
         #[macro_export]
         macro_rules! foo { () => () }
                     //X
         crate::foo!();
               //^
-    """)
+    """
+    )
 
-    fun `test macro call with crate prefix 2`() = checkByCode("""
+    fun `test macro call with crate prefix 2`() = checkByCode(
+        """
         macro_rules! foo { () => () }
 
         crate::foo!();
               //^ unresolved
-    """)
+    """
+    )
 
     // TODO
     @UseNewResolve
     @MockEdition(Edition.EDITION_2018)
     fun `test legacy textual macro reexported as macro 2 in nested mod (reexport)`() = expect<IllegalStateException> {
-        checkByCode("""
+        checkByCode(
+            """
             mod inner {
                 #[macro_export]
                 macro_rules! foo_ {
@@ -294,12 +341,14 @@ class RsMacroResolveTest : RsResolveTestBase() {
                 pub use foo_ as foo;
                       //^
             }
-        """)
+        """
+        )
     }
 
     @UseNewResolve
     @MockEdition(Edition.EDITION_2018)
-    fun `test legacy textual macro reexported as macro 2 in nested mod (import)`() = checkByCode("""
+    fun `test legacy textual macro reexported as macro 2 in nested mod (import)`() = checkByCode(
+        """
         mod inner {
             #[macro_export]
             macro_rules! foo_ {
@@ -312,11 +361,13 @@ class RsMacroResolveTest : RsResolveTestBase() {
             use crate::inner::foo;
                             //^
         }
-    """)
+    """
+    )
 
     @UseNewResolve
     @MockEdition(Edition.EDITION_2018)
-    fun `test legacy textual macro reexported as macro 2 in nested mod (macro call)`() = checkByCode("""
+    fun `test legacy textual macro reexported as macro 2 in nested mod (macro call)`() = checkByCode(
+        """
         mod inner {
             #[macro_export]
             macro_rules! foo_ {
@@ -328,11 +379,13 @@ class RsMacroResolveTest : RsResolveTestBase() {
 
         inner::foo! {}
              //^
-    """)
+    """
+    )
 
     @UseNewResolve
     @MockEdition(Edition.EDITION_2018)
-    fun `test legacy textual macro reexported as macro 2 in crate root (reexport)`() = checkByCode("""
+    fun `test legacy textual macro reexported as macro 2 in crate root (reexport)`() = checkByCode(
+        """
         #[macro_export]
         macro_rules! foo_ {
                    //X
@@ -340,11 +393,13 @@ class RsMacroResolveTest : RsResolveTestBase() {
         }
         pub use foo_ as foo;
               //^
-    """)
+    """
+    )
 
     @UseNewResolve
     @MockEdition(Edition.EDITION_2018)
-    fun `test legacy textual macro reexported as macro 2 in crate root (import)`() = checkByCode("""
+    fun `test legacy textual macro reexported as macro 2 in crate root (import)`() = checkByCode(
+        """
         #[macro_export]
         macro_rules! foo_ {
                    //X
@@ -355,11 +410,13 @@ class RsMacroResolveTest : RsResolveTestBase() {
             use crate::foo;
                      //^
         }
-    """)
+    """
+    )
 
     @UseNewResolve
     @MockEdition(Edition.EDITION_2018)
-    fun `test legacy textual macro reexported as macro 2 in crate root (macro call fqn)`() = checkByCode("""
+    fun `test legacy textual macro reexported as macro 2 in crate root (macro call fqn)`() = checkByCode(
+        """
         #[macro_export]
         macro_rules! foo_ {
                    //X
@@ -369,11 +426,13 @@ class RsMacroResolveTest : RsResolveTestBase() {
 
         crate::foo! {}
              //^
-    """)
+    """
+    )
 
     @UseNewResolve
     @MockEdition(Edition.EDITION_2018)
-    fun `test legacy textual macro reexported as macro 2 in crate root (macro call)`() = checkByCode("""
+    fun `test legacy textual macro reexported as macro 2 in crate root (macro call)`() = checkByCode(
+        """
         #[macro_export]
         macro_rules! foo_ {
                    //X
@@ -383,11 +442,13 @@ class RsMacroResolveTest : RsResolveTestBase() {
 
         foo! {}
         //^
-    """)
+    """
+    )
 
     @UseNewResolve
     @MockEdition(Edition.EDITION_2018)
-    fun `test propagate expanded macro def`() = checkByCode("""
+    fun `test propagate expanded macro def`() = checkByCode(
+        """
         mod outer {
             #[macro_use]
             mod inner {
@@ -405,12 +466,14 @@ class RsMacroResolveTest : RsResolveTestBase() {
                 Bar2;
             } //^
         }
-    """)
+    """
+    )
 
     // From https://github.com/seed-rs/seed/blob/d9935ee25148c151931160d188d5f0e67c746cba/src/shortcuts.rs#L9-L45
     @UseNewResolve
     @MockEdition(Edition.EDITION_2018)
-    fun `test generate two macro defs with same name`() = checkByCode("""
+    fun `test generate two macro defs with same name`() = checkByCode(
+        """
         mod outer {
             macro_rules! with_dollar_sign {
                 ($($ body:tt)*) => {
@@ -443,7 +506,8 @@ class RsMacroResolveTest : RsResolveTestBase() {
                 Foo3;
             } //^
         }
-    """)
+    """
+    )
 
     /** More macro tests in [RsPackageLibraryResolveTest] and [RsStubOnlyResolveTest] */
 }

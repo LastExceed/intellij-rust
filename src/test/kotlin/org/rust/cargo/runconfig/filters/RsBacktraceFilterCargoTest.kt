@@ -23,7 +23,8 @@ class RsBacktraceFilterCargoTest : RsWithToolchainTestBase() {
 
     fun `test resolve cargo crate`() {
         fileTree {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "hello"
                 version = "0.1.0"
@@ -31,7 +32,8 @@ class RsBacktraceFilterCargoTest : RsWithToolchainTestBase() {
 
                 [dependencies]
                 left-pad = "=1.0.1"
-            """)
+            """
+            )
 
             dir("src") {
                 rust("lib.rs", "")

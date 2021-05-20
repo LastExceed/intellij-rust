@@ -9,7 +9,8 @@ import org.rust.ProjectDescriptor
 import org.rust.WithStdlibRustProjectDescriptor
 
 class DerefPostfixTemplateTest : RsPostfixTemplateTest(DerefPostfixTemplate(RsPostfixTemplateProvider())) {
-    fun `test simple`() = doTest("""
+    fun `test simple`() = doTest(
+        """
         fn main() {
             let v = &123;
             assert_eq!(123, v.deref/*caret*/);
@@ -19,10 +20,12 @@ class DerefPostfixTemplateTest : RsPostfixTemplateTest(DerefPostfixTemplate(RsPo
             let v = &123;
             assert_eq!(123, *v);
         }
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test deref trait`() = doTest("""
+    fun `test deref trait`() = doTest(
+        """
         struct Foo<T>(T);
         impl<T> std::ops::Deref for Foo<T> {
             type Target = T;
@@ -46,9 +49,11 @@ class DerefPostfixTemplateTest : RsPostfixTemplateTest(DerefPostfixTemplate(RsPo
             let foo = Foo('x');
             assert_eq!('x', *foo/*caret*/);
         }
-    """)
+    """
+    )
 
-    fun `test deref raw pointer`() = doTest("""
+    fun `test deref raw pointer`() = doTest(
+        """
         fn main() {
             let ptr = &123 as *const i32;
             unsafe {
@@ -62,35 +67,46 @@ class DerefPostfixTemplateTest : RsPostfixTemplateTest(DerefPostfixTemplate(RsPo
                 *ptr;
             }
         }
-    """)
+    """
+    )
 
-    fun `test no deref for non reference`() = doTestNotApplicable("""
+    fun `test no deref for non reference`() = doTestNotApplicable(
+        """
         fn main() {
             assert_eq!(123, 123.deref/*caret*/);
         }
-    """)
+    """
+    )
 
-    fun `test no deref in string literal`() = doTestNotApplicable("""
+    fun `test no deref in string literal`() = doTestNotApplicable(
+        """
         fn main() {
             "qwe.deref/*caret*/";
         }
-    """)
+    """
+    )
 
-    fun `test no deref in raw string literal`() = doTestNotApplicable("""
+    fun `test no deref in raw string literal`() = doTestNotApplicable(
+        """
         fn main() {
             r#"qwe.deref/*caret*/"#;
         }
-    """)
+    """
+    )
 
-    fun `test no deref in byte string literal`() = doTestNotApplicable("""
+    fun `test no deref in byte string literal`() = doTestNotApplicable(
+        """
         fn main() {
             b"qwe.deref/*caret*/";
         }
-    """)
+    """
+    )
 
-    fun `test no deref in raw byte string literal`() = doTestNotApplicable("""
+    fun `test no deref in raw byte string literal`() = doTestNotApplicable(
+        """
         fn main() {
             br#"qwe.deref/*caret*/"#;
         }
-    """)
+    """
+    )
 }

@@ -18,7 +18,8 @@ import org.rust.lang.doc.psi.RsDocKind
 class RsDocHighlightingLexer(kind: RsDocKind) :
     MergingLexerAdapter(
         FlexAdapter(_RustDocHighlightingLexer(null, kind.isBlock)),
-        TOKENS_TO_MERGE) {
+        TOKENS_TO_MERGE
+    ) {
 
     override fun getMergeFunction() = MergeFunction { type, lexer ->
         if (type == DOC_TEXT) {

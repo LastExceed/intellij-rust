@@ -6,16 +6,20 @@
 package org.rust.ide.inspections
 
 class RsExperimentalChecksInspectionTest : RsInspectionsTestBase(RsExperimentalChecksInspection::class) {
-    fun `test E0614 type cannot be dereferenced`() = checkByText("""
+    fun `test E0614 type cannot be dereferenced`() = checkByText(
+        """
         fn main() {
             let _ = <error>*0</error>;
         }
-    """)
+    """
+    )
 
-    fun `test no "E0614 type cannot be dereferenced" when trying to dereference unknown type`() = checkByText("""
+    fun `test no "E0614 type cannot be dereferenced" when trying to dereference unknown type`() = checkByText(
+        """
         fn main() {
             let a = SomeUnknownType;
             let _ = *a;
         }
-    """)
+    """
+    )
 }

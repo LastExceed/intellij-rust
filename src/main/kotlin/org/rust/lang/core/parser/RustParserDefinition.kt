@@ -77,12 +77,18 @@ class RustParserDefinition : ParserDefinition {
     override fun createParser(project: Project?): PsiParser = RustParser()
 
     companion object {
-        @JvmField val BLOCK_COMMENT = RsTokenType("<BLOCK_COMMENT>")
-        @JvmField val EOL_COMMENT = RsTokenType("<EOL_COMMENT>")
-        @JvmField val INNER_BLOCK_DOC_COMMENT = RsTokenType("<INNER_BLOCK_DOC_COMMENT>")
-        @JvmField val OUTER_BLOCK_DOC_COMMENT = RsTokenType("<OUTER_BLOCK_DOC_COMMENT>")
-        @JvmField val INNER_EOL_DOC_COMMENT = RsTokenType("<INNER_EOL_DOC_COMMENT>")
-        @JvmField val OUTER_EOL_DOC_COMMENT = RsTokenType("<OUTER_EOL_DOC_COMMENT>")
+        @JvmField
+        val BLOCK_COMMENT = RsTokenType("<BLOCK_COMMENT>")
+        @JvmField
+        val EOL_COMMENT = RsTokenType("<EOL_COMMENT>")
+        @JvmField
+        val INNER_BLOCK_DOC_COMMENT = RsTokenType("<INNER_BLOCK_DOC_COMMENT>")
+        @JvmField
+        val OUTER_BLOCK_DOC_COMMENT = RsTokenType("<OUTER_BLOCK_DOC_COMMENT>")
+        @JvmField
+        val INNER_EOL_DOC_COMMENT = RsTokenType("<INNER_EOL_DOC_COMMENT>")
+        @JvmField
+        val OUTER_EOL_DOC_COMMENT = RsTokenType("<OUTER_EOL_DOC_COMMENT>")
 
         /**
          * Should be increased after any change of lexer rules

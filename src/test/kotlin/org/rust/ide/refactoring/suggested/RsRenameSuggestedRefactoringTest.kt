@@ -8,7 +8,8 @@ package org.rust.ide.refactoring.suggested
 import com.intellij.openapi.actionSystem.IdeActions
 
 class RsRenameSuggestedRefactoringTest : RsSuggestedRefactoringTestBase() {
-    fun `test rename local variable`() = doTestRename("""
+    fun `test rename local variable`() = doTestRename(
+        """
         fn foo() {
             let a/*caret*/ = 0;
             let b = a;
@@ -21,7 +22,8 @@ class RsRenameSuggestedRefactoringTest : RsSuggestedRefactoringTestBase() {
     """, "a", "ax"
     ) { myFixture.type("x") }
 
-    fun `test rename add number`() = doTestRename("""
+    fun `test rename add number`() = doTestRename(
+        """
         fn foo() {
             let a/*caret*/ = 0;
             let b = a;
@@ -34,7 +36,8 @@ class RsRenameSuggestedRefactoringTest : RsSuggestedRefactoringTestBase() {
     """, "a", "a5"
     ) { myFixture.type("5") }
 
-    fun `test delete and rename`() = doTestRename("""
+    fun `test delete and rename`() = doTestRename(
+        """
         fn foo() {
             let /*caret*/a = 0;
             let b = a;
@@ -50,17 +53,20 @@ class RsRenameSuggestedRefactoringTest : RsSuggestedRefactoringTestBase() {
         myFixture.type("x")
     }
 
-    fun `test delete and use invalid name`() = doUnavailableTest("""
+    fun `test delete and use invalid name`() = doUnavailableTest(
+        """
         fn foo() {
             let /*caret*/a = 0;
             let b = a;
         }
-    """) {
+    """
+    ) {
         myFixture.performEditorAction(IdeActions.ACTION_EDITOR_DELETE)
         myFixture.type("5")
     }
 
-    fun `test do not rename constant`() = doUnavailableTest("""
+    fun `test do not rename constant`() = doUnavailableTest(
+        """
         const C: i32 = 1;
         fn foo() {
             match 1 {
@@ -68,11 +74,13 @@ class RsRenameSuggestedRefactoringTest : RsSuggestedRefactoringTestBase() {
                 X => println!("{}", X)
             };
         }
-    """) {
+    """
+    ) {
         myFixture.type("1")
     }
 
-    fun `test rename nested binding`() = doTestRename("""
+    fun `test rename nested binding`() = doTestRename(
+        """
         fn foo() {
             let (a/*caret*/, b) = (0, 0);
             let b = a;
@@ -85,7 +93,8 @@ class RsRenameSuggestedRefactoringTest : RsSuggestedRefactoringTestBase() {
     """, "a", "ax"
     ) { myFixture.type("x") }
 
-    fun `test rename function`() = doTestRename("""
+    fun `test rename function`() = doTestRename(
+        """
         fn foo/*caret*/() {
             let a = 5;
         }
@@ -102,7 +111,8 @@ class RsRenameSuggestedRefactoringTest : RsSuggestedRefactoringTestBase() {
     """, "foo", "foox"
     ) { myFixture.type("x") }
 
-    fun `test rename struct`() = doTestRename("""
+    fun `test rename struct`() = doTestRename(
+        """
         struct S/*caret*/;
         fn bar(s: S) {}
     """, """
@@ -111,7 +121,8 @@ class RsRenameSuggestedRefactoringTest : RsSuggestedRefactoringTestBase() {
     """, "S", "Sx"
     ) { myFixture.type("x") }
 
-    fun `test rename struct field`() = doTestRename("""
+    fun `test rename struct field`() = doTestRename(
+        """
         struct S {
             a/*caret*/: u32
         }
@@ -128,7 +139,8 @@ class RsRenameSuggestedRefactoringTest : RsSuggestedRefactoringTestBase() {
     """, "a", "ax"
     ) { myFixture.type("x") }
 
-    fun `test rename trait`() = doTestRename("""
+    fun `test rename trait`() = doTestRename(
+        """
         trait Trait/*caret*/ {}
         fn bar<T: Trait>(t: T) {}
     """, """
@@ -137,7 +149,8 @@ class RsRenameSuggestedRefactoringTest : RsSuggestedRefactoringTestBase() {
     """, "Trait", "Traitx"
     ) { myFixture.type("x") }
 
-    fun `test rename macro`() = doTestRename("""
+    fun `test rename macro`() = doTestRename(
+        """
         macro_rules! foo/*caret*/ {
             () => {}
         }

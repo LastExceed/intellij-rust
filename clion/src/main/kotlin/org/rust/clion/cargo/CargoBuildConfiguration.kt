@@ -12,8 +12,7 @@ import org.rust.cargo.runconfig.buildtool.CargoBuildConfiguration
 import org.rust.cargo.runconfig.command.CargoCommandConfiguration
 
 @Suppress("UnstableApiUsage")
-class CLionCargoBuildConfiguration(configuration: CargoCommandConfiguration, environment: ExecutionEnvironment)
-    : CargoBuildConfiguration(configuration, environment), CidrBuildConfiguration {
+class CLionCargoBuildConfiguration(configuration: CargoCommandConfiguration, environment: ExecutionEnvironment) : CargoBuildConfiguration(configuration, environment), CidrBuildConfiguration {
     override val enabled: Boolean get() = true
 
     override fun getName(): String = "Cargo Build"

@@ -2,7 +2,7 @@
 
 fn main() {
     "1".parse::<i32>()?;
-    {x}?;
+    { x }?;
     x[y?]?;
     x???;
     Ok(true);

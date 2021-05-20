@@ -1,1 +1,2 @@
-#[macro_use] extern crate foo;
+#[macro_use]
+extern crate foo;

@@ -10,14 +10,17 @@ package org.rust.ide.inspections
  */
 class RsInspectionSuppressorTest : RsInspectionsTestBase(RsSelfConventionInspection::class) {
 
-    fun testWithoutSuppression() = checkByText("""
+    fun testWithoutSuppression() = checkByText(
+        """
         struct S;
         impl S {
             fn is_foo(<warning>s<caret>elf</warning>) { }
         }
-    """)
+    """
+    )
 
-    fun testSuppression() = checkByText("""
+    fun testSuppression() = checkByText(
+        """
         struct S;
         impl S {
             //noinspection RsSelfConvention
@@ -31,5 +34,6 @@ class RsInspectionSuppressorTest : RsInspectionsTestBase(RsSelfConventionInspect
             fn is_foo(self) { }
             fn is_bar(self) { }
         }
-    """)
+    """
+    )
 }

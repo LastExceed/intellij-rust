@@ -40,7 +40,8 @@ class RsMoveFileTest : RsMoveFileTestBase() {
         mod foo;
     //- mod2/foo.rs
         pub fn func() {}
-    """)
+    """
+    )
 
     fun `test parent modules are declared inline`() = doTest(
         "mod1/mod1_inner/foo.rs",
@@ -69,7 +70,8 @@ class RsMoveFileTest : RsMoveFileTestBase() {
     //- mod1/mod1_inner/.gitkeep
     //- mod2/mod2_inner/foo.rs
         pub fn func() {}
-    """)
+    """
+    )
 
     fun `test move mod declaration`() = doTest(
         "mod1/foo.rs",
@@ -96,7 +98,8 @@ class RsMoveFileTest : RsMoveFileTestBase() {
         pub mod foo;
     //- mod2/foo.rs
         pub fn func() {}
-    """)
+    """
+    )
 
     fun `test target directory does not exist`() = doTest(
         "mod1/foo.rs",
@@ -119,7 +122,8 @@ class RsMoveFileTest : RsMoveFileTestBase() {
         mod foo;
     //- mod2/foo.rs
         pub fn func() {}
-    """)
+    """
+    )
 
     fun `test move to root directory`() = doTest(
         "mod1/foo.rs",
@@ -138,7 +142,8 @@ class RsMoveFileTest : RsMoveFileTestBase() {
     //- mod1/mod.rs
     //- foo.rs
         pub fn func() {}
-    """)
+    """
+    )
 
     fun `test usages in other crates`() = doTest(
         "mod1/foo.rs",
@@ -185,7 +190,8 @@ class RsMoveFileTest : RsMoveFileTestBase() {
         pub mod foo;
     //- mod2/foo.rs
         pub fn func() {}
-    """)
+    """
+    )
 
     fun `test use relative path for inside references from parent mods`() = doTest(
         "mod1/foo.rs",
@@ -227,7 +233,8 @@ class RsMoveFileTest : RsMoveFileTestBase() {
             pub fn foo_inner_func() {}
         }
         pub fn func() {}
-    """)
+    """
+    )
 
     fun `test add 'self' prefix for paths if exists crate with same name`() = doTest(
         "mod1/foo.rs",
@@ -264,7 +271,8 @@ class RsMoveFileTest : RsMoveFileTestBase() {
         pub mod foo;
     //- inner/test_package/mod2/foo.rs
         pub fn func() {}
-    """)
+    """
+    )
 
     // test that we don't use `RsPath::text`, by adding comment containing :: inside `RsPath`
     // we keep existing reference style, so if we erroneously used `RsPath::text`,
@@ -302,7 +310,8 @@ class RsMoveFileTest : RsMoveFileTestBase() {
         pub mod foo;
     //- mod2/foo.rs
         pub fn func() {}
-    """)
+    """
+    )
 
     fun `test don't search for references`() = doTest(
         arrayOf("mod1/foo.rs"),
@@ -333,7 +342,8 @@ class RsMoveFileTest : RsMoveFileTestBase() {
     //- mod2/mod.rs
     //- mod2/foo.rs
         pub fn func() {}
-    """, searchForReferences = false)
+    """, searchForReferences = false
+    )
 
     fun `test fail if mod already exists`() = expect<IncorrectOperationException> {
         doTestExpectError(
@@ -349,7 +359,8 @@ class RsMoveFileTest : RsMoveFileTestBase() {
             mod foo { pub fn func_original() {} }
         //- mod1/foo.rs
             pub fn func() {}
-        """)
+        """
+        )
     }
 
     // in this case we run default processor
@@ -371,7 +382,8 @@ class RsMoveFileTest : RsMoveFileTestBase() {
             mod foo;
         //- mod2/foo.rs
             pub fn func() {}
-        """)
+        """
+        )
     }
 
     fun `test move multiple files`() = doTest(
@@ -401,7 +413,8 @@ class RsMoveFileTest : RsMoveFileTestBase() {
         pub fn func1() {}
     //- mod2/foo2.rs
         pub fn func2() {}
-    """)
+    """
+    )
 
     fun `test move directory containing one file`() = doTest(
         "foo",
@@ -420,7 +433,8 @@ class RsMoveFileTest : RsMoveFileTestBase() {
         mod foo;
     //- mod2/foo/mod.rs
         fn func() {}
-    """)
+    """
+    )
 
     fun `test move directory containing two files`() = doTest(
         "foo",
@@ -443,7 +457,8 @@ class RsMoveFileTest : RsMoveFileTestBase() {
         mod inner;
     //- mod2/foo/inner.rs
         fn inner_func() {}
-    """)
+    """
+    )
 
     fun `test move directory when owning file is outside`() = doTest(
         "foo",
@@ -466,7 +481,8 @@ class RsMoveFileTest : RsMoveFileTestBase() {
         mod inner;
     //- mod2/foo/inner.rs
         fn inner_func() {}
-    """)
+    """
+    )
 
     fun `test move file when it is outside owning directory`() = doTest(
         "foo",
@@ -489,7 +505,8 @@ class RsMoveFileTest : RsMoveFileTestBase() {
         mod inner;
     //- mod2/foo/inner.rs
         fn inner_func() {}
-    """)
+    """
+    )
 
     fun `test move both file and directory when file is outside owning directory`() = doTest(
         arrayOf("foo", "foo.rs"),
@@ -512,7 +529,8 @@ class RsMoveFileTest : RsMoveFileTestBase() {
         mod inner;
     //- mod2/foo/inner.rs
         fn inner_func() {}
-    """)
+    """
+    )
 
     fun `test self reference from child mod of moved file`() = doTest(
         "foo",
@@ -543,5 +561,6 @@ class RsMoveFileTest : RsMoveFileTestBase() {
             use crate::mod2::foo;
             foo::foo_func();
         }
-    """)
+    """
+    )
 }

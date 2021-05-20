@@ -8,24 +8,29 @@ package org.rust.ide.surroundWith.statement
 import org.rust.ide.surroundWith.RsSurrounderTestBase
 
 class RsWithForSurrounderTest : RsSurrounderTestBase(RsWithForSurrounder()) {
-    fun `test not applicable 1`() = doTestNotApplicable("""
+    fun `test not applicable 1`() = doTestNotApplicable(
+        """
         fn main() {
             let mut server <selection>= Nickel::new();
             server.get("**", hello_world);
             server.listen("127.0.0.1:6767").unwrap();</selection>
         }
-    """)
+    """
+    )
 
-    fun `test not applicable 2`() = doTestNotApplicable("""
+    fun `test not applicable 2`() = doTestNotApplicable(
+        """
         fn main() {
             <selection>#![cfg(test)]
             let mut server = Nickel::new();
             server.get("**", hello_world);
             server.listen("127.0.0.1:6767").unwrap();</selection>
         }
-    """)
+    """
+    )
 
-    fun `test not applicable 3`() = doTestNotApplicable("""
+    fun `test not applicable 3`() = doTestNotApplicable(
+        """
         fn main() {
             loop<selection> {
                 for 1 in 1..10 {
@@ -33,9 +38,11 @@ class RsWithForSurrounderTest : RsSurrounderTestBase(RsWithForSurrounder()) {
                 }
             }</selection>
         }
-    """)
+    """
+    )
 
-    fun `test applicable comment`() = doTest("""
+    fun `test applicable comment`() = doTest(
+        """
         fn main() {
             <selection>// comment
             let mut server = Nickel::new();
@@ -51,9 +58,11 @@ class RsWithForSurrounderTest : RsSurrounderTestBase(RsWithForSurrounder()) {
                 server.listen("127.0.0.1:6767").unwrap(); // comment
             }
         }
-    """, checkSyntaxErrors = false)
+    """, checkSyntaxErrors = false
+    )
 
-    fun `test simple 1`() = doTest("""
+    fun `test simple 1`() = doTest(
+        """
         fn main() {
             <selection>let mut server = Nickel::new();
             server.get("**", hello_world);
@@ -67,9 +76,11 @@ class RsWithForSurrounderTest : RsSurrounderTestBase(RsWithForSurrounder()) {
                 server.listen("127.0.0.1:6767").unwrap();
             }
         }
-    """, checkSyntaxErrors = false)
+    """, checkSyntaxErrors = false
+    )
 
-    fun `test simple 2`() = doTest("""
+    fun `test simple 2`() = doTest(
+        """
         fn main() {
             let mut server = Nickel::new();<selection>
             server.get("**", hello_world);
@@ -83,9 +94,11 @@ class RsWithForSurrounderTest : RsSurrounderTestBase(RsWithForSurrounder()) {
                 server.listen("127.0.0.1:6767").unwrap();
             }
         }
-    """, checkSyntaxErrors = false)
+    """, checkSyntaxErrors = false
+    )
 
-    fun `test simple 3`() = doTest("""
+    fun `test simple 3`() = doTest(
+        """
         fn main() {
             <selection>let mut server = Nickel::new();
             server.get("**", hello_world);</selection>
@@ -99,9 +112,11 @@ class RsWithForSurrounderTest : RsSurrounderTestBase(RsWithForSurrounder()) {
             }
             server.listen("127.0.0.1:6767").unwrap();
         }
-    """, checkSyntaxErrors = false)
+    """, checkSyntaxErrors = false
+    )
 
-    fun `test single line`() = doTest("""
+    fun `test single line`() = doTest(
+        """
         fn main() {
             let mut server = Nickel::new();
             server.get("**", hello_world)<caret>;
@@ -115,9 +130,11 @@ class RsWithForSurrounderTest : RsSurrounderTestBase(RsWithForSurrounder()) {
             }
             server.listen("127.0.0.1:6767").unwrap();
         }
-    """, checkSyntaxErrors = false)
+    """, checkSyntaxErrors = false
+    )
 
-    fun `test nested`() = doTest("""
+    fun `test nested`() = doTest(
+        """
         fn main() {
             <selection>loop {
                 println!("Hello");
@@ -131,5 +148,6 @@ class RsWithForSurrounderTest : RsSurrounderTestBase(RsWithForSurrounder()) {
                 }
             }
         }
-    """, checkSyntaxErrors = false)
+    """, checkSyntaxErrors = false
+    )
 }

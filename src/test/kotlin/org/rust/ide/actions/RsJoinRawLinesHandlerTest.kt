@@ -6,7 +6,8 @@
 package org.rust.ide.actions
 
 class RsJoinRawLinesHandlerTest : RsJoinLinesHandlerTestBase() {
-    fun `test block expression`() = doTest("""
+    fun `test block expression`() = doTest(
+        """
         fn main() {
             let _ = /*caret*/{
                 42
@@ -16,9 +17,11 @@ class RsJoinRawLinesHandlerTest : RsJoinLinesHandlerTestBase() {
         fn main() {
             let _ = /*caret*/42;
         }
-    """)
+    """
+    )
 
-    fun `test unsafe block expression`() = doTest("""
+    fun `test unsafe block expression`() = doTest(
+        """
         fn main() {
             let _ = unsafe /*caret*/{
                 42
@@ -29,9 +32,11 @@ class RsJoinRawLinesHandlerTest : RsJoinLinesHandlerTestBase() {
             let _ = unsafe {/*caret*/ 42
             };
         }
-    """)
+    """
+    )
 
-    fun `test async block expression`() = doTest("""
+    fun `test async block expression`() = doTest(
+        """
         fn main() {
             let _ = async /*caret*/{
                 42
@@ -42,9 +47,11 @@ class RsJoinRawLinesHandlerTest : RsJoinLinesHandlerTestBase() {
             let _ = async {/*caret*/ 42
             };
         }
-    """)
+    """
+    )
 
-    fun `test try block expression`() = doTest("""
+    fun `test try block expression`() = doTest(
+        """
         fn main() {
             let _ = try /*caret*/{
                 42
@@ -55,9 +62,11 @@ class RsJoinRawLinesHandlerTest : RsJoinLinesHandlerTestBase() {
             let _ = try {/*caret*/ 42
             };
         }
-    """)
+    """
+    )
 
-    fun `test match expression last arm`() = doTest("""
+    fun `test match expression last arm`() = doTest(
+        """
         fn main() {
             match n {
                 1 => /*caret*/{
@@ -77,14 +86,16 @@ class RsJoinRawLinesHandlerTest : RsJoinLinesHandlerTestBase() {
                 }
             }
         }
-    """)
+    """
+    )
 
-    fun `test match block arm with comma`() = doTest("""
+    fun `test match block arm with comma`() = doTest(
+        """
         fn main() {
             match current.parent() {
                 Some(p) => /*caret*/{
                     current = p
-                },
+                }
                 None => break,
             }
         }
@@ -95,9 +106,11 @@ class RsJoinRawLinesHandlerTest : RsJoinLinesHandlerTestBase() {
                 None => break,
             }
         }
-    """)
+    """
+    )
 
-    fun `test lambda expression`() = doTest("""
+    fun `test lambda expression`() = doTest(
+        """
         fn main() {
             let _: Vec<()> = xs.iter()
               /*caret*/.map(|x| {
@@ -109,9 +122,11 @@ class RsJoinRawLinesHandlerTest : RsJoinLinesHandlerTestBase() {
             let _: Vec<()> = xs.iter()
               .map(|x| /*caret*/x*x).collect();
         }
-    """)
+    """
+    )
 
-    fun `test don't loose comments`() = doTest("""
+    fun `test don't loose comments`() = doTest(
+        """
         fn main() {
             let _ = /*caret*/{
                 // The ultimate answer
@@ -124,9 +139,11 @@ class RsJoinRawLinesHandlerTest : RsJoinLinesHandlerTestBase() {
                 92
             };
         }
-    """)
+    """
+    )
 
-    fun `test if`() = doTest("""
+    fun `test if`() = doTest(
+        """
         fn main() {
             if true /*caret*/{
                 92
@@ -140,9 +157,11 @@ class RsJoinRawLinesHandlerTest : RsJoinLinesHandlerTestBase() {
                 62
             }
         }
-    """)
+    """
+    )
 
-    fun `test if else`() = doTest("""
+    fun `test if else`() = doTest(
+        """
         fn main() {
             if true /*caret*/{ 92 } else {
                 62

@@ -18,10 +18,10 @@ import org.rust.ide.refactoring.RsNamesValidator
 class RsCollectionElementNameMacro : MacroBase("rustCollectionElementName", "rustCollectionElementName()") {
     override fun calculateResult(params: Array<out Expression>, context: ExpressionContext, quick: Boolean): Result? {
         var param = getCollectionExprStr(params, context)
-                ?.removeSuffix(".iter()")
-                ?.removeSuffix(".iter_mut()")
-                ?.removeSuffix(".into_iter()")
-                ?: return null
+            ?.removeSuffix(".iter()")
+            ?.removeSuffix(".iter_mut()")
+            ?.removeSuffix(".into_iter()")
+            ?: return null
 
         val lastDot = param.lastIndexOf('.')
         if (lastDot >= 0) {

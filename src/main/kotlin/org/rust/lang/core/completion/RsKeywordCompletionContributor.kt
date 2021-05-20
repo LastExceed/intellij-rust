@@ -29,32 +29,58 @@ import org.rust.lang.core.psi.ext.*
 class RsKeywordCompletionContributor : CompletionContributor(), DumbAware {
 
     init {
-        extend(CompletionType.BASIC, declarationPattern(),
-            RsKeywordCompletionProvider("const", "enum", "extern", "fn", "impl", "mod", "pub", "static", "struct", "trait", "type", "union", "unsafe", "use"))
-        extend(CompletionType.BASIC, pubDeclarationPattern(),
-            RsKeywordCompletionProvider("const", "enum", "extern", "fn", "mod", "static", "struct", "trait", "type", "union", "unsafe", "use"))
-        extend(CompletionType.BASIC, externDeclarationPattern(),
-            RsKeywordCompletionProvider("crate", "fn"))
-        extend(CompletionType.BASIC, unsafeDeclarationPattern(),
-            RsKeywordCompletionProvider("fn", "impl", "trait", "extern"))
-        extend(CompletionType.BASIC, newCodeStatementPattern(),
-            RsKeywordCompletionProvider("return", "let"))
-        extend(CompletionType.BASIC, letPattern(),
-            RsKeywordCompletionProvider("mut"))
-        extend(CompletionType.BASIC, loopFlowCommandPattern(),
-            RsKeywordCompletionProvider("break", "continue"))
-        extend(CompletionType.BASIC, wherePattern(),
-            RsKeywordCompletionProvider("where"))
-        extend(CompletionType.BASIC, constParameterBeginningPattern(),
-            RsKeywordCompletionProvider("const"))
-        extend(CompletionType.BASIC, traitOrImplDeclarationPattern(),
-            RsKeywordCompletionProvider("const", "fn", "type", "unsafe"))
-        extend(CompletionType.BASIC, unsafeTraitOrImplDeclarationPattern(),
-            RsKeywordCompletionProvider("fn"))
-        extend(CompletionType.BASIC, inherentImplDeclarationPattern(),
-            RsKeywordCompletionProvider("pub"))
-        extend(CompletionType.BASIC, pubInherentImplDeclarationPattern(),
-            RsKeywordCompletionProvider("const", "fn", "type", "unsafe"))
+        extend(
+            CompletionType.BASIC, declarationPattern(),
+            RsKeywordCompletionProvider("const", "enum", "extern", "fn", "impl", "mod", "pub", "static", "struct", "trait", "type", "union", "unsafe", "use")
+        )
+        extend(
+            CompletionType.BASIC, pubDeclarationPattern(),
+            RsKeywordCompletionProvider("const", "enum", "extern", "fn", "mod", "static", "struct", "trait", "type", "union", "unsafe", "use")
+        )
+        extend(
+            CompletionType.BASIC, externDeclarationPattern(),
+            RsKeywordCompletionProvider("crate", "fn")
+        )
+        extend(
+            CompletionType.BASIC, unsafeDeclarationPattern(),
+            RsKeywordCompletionProvider("fn", "impl", "trait", "extern")
+        )
+        extend(
+            CompletionType.BASIC, newCodeStatementPattern(),
+            RsKeywordCompletionProvider("return", "let")
+        )
+        extend(
+            CompletionType.BASIC, letPattern(),
+            RsKeywordCompletionProvider("mut")
+        )
+        extend(
+            CompletionType.BASIC, loopFlowCommandPattern(),
+            RsKeywordCompletionProvider("break", "continue")
+        )
+        extend(
+            CompletionType.BASIC, wherePattern(),
+            RsKeywordCompletionProvider("where")
+        )
+        extend(
+            CompletionType.BASIC, constParameterBeginningPattern(),
+            RsKeywordCompletionProvider("const")
+        )
+        extend(
+            CompletionType.BASIC, traitOrImplDeclarationPattern(),
+            RsKeywordCompletionProvider("const", "fn", "type", "unsafe")
+        )
+        extend(
+            CompletionType.BASIC, unsafeTraitOrImplDeclarationPattern(),
+            RsKeywordCompletionProvider("fn")
+        )
+        extend(
+            CompletionType.BASIC, inherentImplDeclarationPattern(),
+            RsKeywordCompletionProvider("pub")
+        )
+        extend(
+            CompletionType.BASIC, pubInherentImplDeclarationPattern(),
+            RsKeywordCompletionProvider("const", "fn", "type", "unsafe")
+        )
 
         extend(CompletionType.BASIC, elsePattern(), object : CompletionProvider<CompletionParameters>() {
             override fun addCompletions(parameters: CompletionParameters, context: ProcessingContext, result: CompletionResultSet) {

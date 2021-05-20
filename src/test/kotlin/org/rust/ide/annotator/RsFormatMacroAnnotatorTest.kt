@@ -24,7 +24,8 @@ class RsFormatMacroAnnotatorTest : RsAnnotatorTestBase(RsFormatMacroAnnotator::c
         }
     """
 
-    fun `test missing argument`() = checkErrors("""
+    fun `test missing argument`() = checkErrors(
+        """
         $implDisplayI32
 
         fn main() {
@@ -35,9 +36,11 @@ class RsFormatMacroAnnotatorTest : RsAnnotatorTestBase(RsFormatMacroAnnotator::c
             println!("<FORMAT_SPECIFIER>{<error descr="There is no argument named `foo`">foo</error>}</FORMAT_SPECIFIER>");
             println!("Hello <FORMAT_SPECIFIER>{:<error descr="There is no argument named `foo`">foo${'$'}</error>}</FORMAT_SPECIFIER>", 1);
         }
-    """)
+    """
+    )
 
-    fun `test missing parameter`() = checkErrors("""
+    fun `test missing parameter`() = checkErrors(
+        """
         $implDisplayI32
 
         fn main() {
@@ -45,15 +48,19 @@ class RsFormatMacroAnnotatorTest : RsAnnotatorTestBase(RsFormatMacroAnnotator::c
             println!("<FORMAT_SPECIFIER>{<IDENTIFIER>0</IDENTIFIER>}</FORMAT_SPECIFIER>", 1, <error descr="Argument never used">1.2</error>);
             println!("", <error descr="Named argument never used">foo=1.2</error>);
         }
-    """)
+    """
+    )
 
-    fun `test invalid parameter type`() = checkErrors("""
+    fun `test invalid parameter type`() = checkErrors(
+        """
         fn main() {
             println!("<FORMAT_SPECIFIER>{:<error descr="Unknown format trait `u`">u</error>}</FORMAT_SPECIFIER>", 1);
         }
-    """)
+    """
+    )
 
-    fun `test argument matches parameter`() = checkErrors("""
+    fun `test argument matches parameter`() = checkErrors(
+        """
         $implDisplayI32
 
         struct Debug;
@@ -75,9 +82,11 @@ class RsFormatMacroAnnotatorTest : RsAnnotatorTestBase(RsFormatMacroAnnotator::c
             println!("<FORMAT_SPECIFIER>{<IDENTIFIER>bar</IDENTIFIER>:<FUNCTION>?</FUNCTION>}</FORMAT_SPECIFIER><FORMAT_SPECIFIER>{<IDENTIFIER>foo</IDENTIFIER>}</FORMAT_SPECIFIER>", foo=1, bar=Debug);
             println!("<FORMAT_SPECIFIER>{<IDENTIFIER>0</IDENTIFIER>}</FORMAT_SPECIFIER><FORMAT_SPECIFIER>{<IDENTIFIER>foo</IDENTIFIER>}</FORMAT_SPECIFIER>", foo=1);
         }
-    """)
+    """
+    )
 
-    fun `test invalid syntax 1`() = checkErrors("""
+    fun `test invalid syntax 1`() = checkErrors(
+        """
         fn main() {
             println!("<error descr="Invalid format string: } expected.
 If you intended to print `{` symbol, you can escape it using `{{`">{</error>");
@@ -107,9 +116,11 @@ If you intended to print `{` symbol, you can escape it using `{{`">{</error>"###
             <error descr="Invalid format string: unmatched '}'">}</error>
             "###);
             //~^^^ ERROR invalid format string: unmatched `}` found
-        }     """)
+        }     """
+    )
 
-    fun `test invalid syntax 2`() = checkErrors("""
+    fun `test invalid syntax 2`() = checkErrors(
+        """
         $implDisplayI32
 
         fn main() {
@@ -188,9 +199,11 @@ If you intended to print `{` symbol, you can escape it using `{{`">{</error>"###
         If you intended to print `{` symbol, you can escape it using `{{`">{</error>"#, 1);
             //~^ ERROR invalid format string: unmatched `}` found
         }
-    """)
+    """
+    )
 
-    fun `test invalid inner syntax`() = checkErrors("""
+    fun `test invalid inner syntax`() = checkErrors(
+        """
         fn main() {
             println!("<FORMAT_SPECIFIER>{3<error descr="Invalid format string">a</error>}</FORMAT_SPECIFIER>");
             println!("<FORMAT_SPECIFIER>{:<error descr="Invalid format string">|</error>}</FORMAT_SPECIFIER>");
@@ -198,9 +211,11 @@ If you intended to print `{` symbol, you can escape it using `{{`">{</error>"###
             println!("<FORMAT_SPECIFIER>{<error descr="Invalid format string">!:?</error>}</FORMAT_SPECIFIER>");
             println!("<FORMAT_SPECIFIER>{:?<error descr="Invalid format string">?</error>}</FORMAT_SPECIFIER>");
         }
-    """)
+    """
+    )
 
-    fun `test valid syntax`() = checkErrors("""
+    fun `test valid syntax`() = checkErrors(
+        """
         use std::fmt;
 
         struct S;
@@ -241,9 +256,11 @@ If you intended to print `{` symbol, you can escape it using `{{`">{</error>"###
             write!(&mut w, "<FORMAT_SPECIFIER>{}</FORMAT_SPECIFIER>", S);
             format_args!("<FORMAT_SPECIFIER>{}</FORMAT_SPECIFIER>", S);
         }
-    """)
+    """
+    )
 
-    fun `test format trait is not implemented`() = checkErrors("""
+    fun `test format trait is not implemented`() = checkErrors(
+        """
         struct S;
 
         fn main() {
@@ -261,9 +278,11 @@ If you intended to print `{` symbol, you can escape it using `{{`">{</error>"###
             println!("<FORMAT_SPECIFIER>{:<FUNCTION>e</FUNCTION>}</FORMAT_SPECIFIER>", <error descr="`S` doesn't implement `LowerExp` (required by {:e})">s</error>);
             println!("<FORMAT_SPECIFIER>{<IDENTIFIER>0</IDENTIFIER>:<FUNCTION>E</FUNCTION>}</FORMAT_SPECIFIER>", <error descr="`S` doesn't implement `UpperExp` (required by {0:E})">s</error>);
         }
-    """)
+    """
+    )
 
-    fun `test format trait is implemented`() = checkErrors("""
+    fun `test format trait is implemented`() = checkErrors(
+        """
         use std::fmt;
 
         struct S;
@@ -309,9 +328,11 @@ If you intended to print `{` symbol, you can escape it using `{{`">{</error>"###
             println!("<FORMAT_SPECIFIER>{:<FUNCTION>e</FUNCTION>}</FORMAT_SPECIFIER>", S);
             println!("<FORMAT_SPECIFIER>{:<FUNCTION>E</FUNCTION>}</FORMAT_SPECIFIER>", S);
         }
-    """)
+    """
+    )
 
-    fun `test format trait is implemented behind deref`() = checkErrors("""
+    fun `test format trait is implemented behind deref`() = checkErrors(
+        """
         use std::fmt;
         use std::ops::Deref;
 
@@ -330,18 +351,22 @@ If you intended to print `{` symbol, you can escape it using `{{`">{</error>"###
         fn main() {
             println!("<FORMAT_SPECIFIER>{}</FORMAT_SPECIFIER>", *W { s: S });
         }
-    """)
+    """
+    )
 
-    fun `test format trait is implemented behind reference`() = checkErrors("""
+    fun `test format trait is implemented behind reference`() = checkErrors(
+        """
         $implDisplayI32
 
         fn main() {
             let s = S;
             println!("<FORMAT_SPECIFIER>{}</FORMAT_SPECIFIER>", &1);
         }
-    """)
+    """
+    )
 
-    fun `test match format parameters`() = checkErrors("""
+    fun `test match format parameters`() = checkErrors(
+        """
         $implDisplayI32
 
         fn main() {
@@ -353,9 +378,11 @@ If you intended to print `{` symbol, you can escape it using `{{`">{</error>"###
             println!("Hello <FORMAT_SPECIFIER>{<IDENTIFIER>1</IDENTIFIER>:<IDENTIFIER>0${'$'}</IDENTIFIER>.<IDENTIFIER>2${'$'}</IDENTIFIER>}</FORMAT_SPECIFIER>!", 1, 1, 4);
             println!("Hello <FORMAT_SPECIFIER>{:<IDENTIFIER>width${'$'}</IDENTIFIER>}</FORMAT_SPECIFIER>!", 1, width = 5);
         }
-    """)
+    """
+    )
 
-    fun `test check format parameters type`() = checkErrors("""
+    fun `test check format parameters type`() = checkErrors(
+        """
         $implDisplayI32
 
         fn main() {
@@ -363,9 +390,11 @@ If you intended to print `{` symbol, you can escape it using `{{`">{</error>"###
             println!("Hello <FORMAT_SPECIFIER>{:.<IDENTIFIER>1${'$'}</IDENTIFIER>}</FORMAT_SPECIFIER>!", 1, <error descr="Precision specifier must be of type `usize`">2.0</error>);
             println!("Hello <FORMAT_SPECIFIER>{:<IDENTIFIER>1${'$'}</IDENTIFIER>.<IDENTIFIER>1${'$'}</IDENTIFIER>}</FORMAT_SPECIFIER>!", 1, <error descr="Precision specifier must be of type `usize`"><error descr="Width specifier must be of type `usize`">2.0</error></error>);
         }
-    """)
+    """
+    )
 
-    fun `test check precision asterisk`() = checkErrors("""
+    fun `test check precision asterisk`() = checkErrors(
+        """
         $implDisplayI32
 
         fn main() {
@@ -375,9 +404,11 @@ If you intended to print `{` symbol, you can escape it using `{{`">{</error>"###
             println!("<FORMAT_SPECIFIER>{}</FORMAT_SPECIFIER><FORMAT_SPECIFIER>{<IDENTIFIER>2</IDENTIFIER>:.<IDENTIFIER>*</IDENTIFIER>}</FORMAT_SPECIFIER>", 1, 5, 2);
             println!("<FORMAT_SPECIFIER>{:<IDENTIFIER>a${'$'}</IDENTIFIER>.<IDENTIFIER>*</IDENTIFIER>}</FORMAT_SPECIFIER>!", 5, 1, a=3);
         }
-    """)
+    """
+    )
 
-    fun `test check precision asterisk wrong parameter`() = checkErrors("""
+    fun `test check precision asterisk wrong parameter`() = checkErrors(
+        """
         use std::fmt;
 
         struct S;
@@ -389,9 +420,11 @@ If you intended to print `{` symbol, you can escape it using `{{`">{</error>"###
             println!("<FORMAT_SPECIFIER>{:.<IDENTIFIER>*</IDENTIFIER>}</FORMAT_SPECIFIER>!", <error descr="Precision specifier must be of type `usize`">"asd"</error>, S);
             println!("<FORMAT_SPECIFIER>{<IDENTIFIER>0</IDENTIFIER>:.<IDENTIFIER>*</IDENTIFIER>}</FORMAT_SPECIFIER>!", <error descr="Precision specifier must be of type `usize`">S</error>);
         }
-    """)
+    """
+    )
 
-    fun `test ignore unknown types`() = checkErrors("""
+    fun `test ignore unknown types`() = checkErrors(
+        """
         struct G<T>(T);
         impl<T> fmt::Display for G<T> {
             fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result { unimplemented!() }
@@ -402,17 +435,21 @@ If you intended to print `{` symbol, you can escape it using `{{`">{</error>"###
             println!("<FORMAT_SPECIFIER>{}</FORMAT_SPECIFIER>", S);
             println!("<FORMAT_SPECIFIER>{}</FORMAT_SPECIFIER>", g);
         }
-    """)
+    """
+    )
 
-    fun `test ignore never type`() = checkErrors("""
+    fun `test ignore never type`() = checkErrors(
+        """
         fn never() -> ! { unimplemented!() }
 
         fn main() {
             println!("<FORMAT_SPECIFIER>{}</FORMAT_SPECIFIER>", never());
         }
-    """)
+    """
+    )
 
-    fun `test do not highlight non stdlib macros`() = checkErrors("""
+    fun `test do not highlight non stdlib macros`() = checkErrors(
+        """
         macro_rules! println {
             ($ e:expr, $ i:ident) => {};
         }
@@ -420,9 +457,11 @@ If you intended to print `{` symbol, you can escape it using `{{`">{</error>"###
             println!("Hello", x);
             println!("{} Hello {}", x);
         }
-    """)
+    """
+    )
 
-    fun `test raw format string`() = checkErrors("""
+    fun `test raw format string`() = checkErrors(
+        """
         $implDisplayI32
 
         fn main() {
@@ -432,18 +471,22 @@ If you intended to print `{` symbol, you can escape it using `{{`">{</error>"###
 
             <error descr="Invalid reference to positional argument 1 (there is 1 argument)">{}</error>"##, 1);
         }
-    """)
+    """
+    )
 
-    fun `test ignore byte format string`() = checkErrors("""
+    fun `test ignore byte format string`() = checkErrors(
+        """
         fn main() {
             println!(b"format", 1);
             println!(br"format", 1);
             println!(br##"format"##, 1);
         }
-    """)
+    """
+    )
 
     @BatchMode
-    fun `test only errors in batch mode`() = checkErrors("""
+    fun `test only errors in batch mode`() = checkErrors(
+        """
         struct S;
 
         fn main() {
@@ -461,17 +504,21 @@ If you intended to print `{` symbol, you can escape it using `{{`">{</error>"###
             println!("{:e}", <error descr="`S` doesn't implement `LowerExp` (required by {:e})">s</error>);
             println!("{0:E}", <error descr="`S` doesn't implement `UpperExp` (required by {0:E})">s</error>);
         }
-    """)
+    """
+    )
 
-    fun `test ignore format string macro argument`() = checkErrors("""
+    fun `test ignore format string macro argument`() = checkErrors(
+        """
         struct S;
 
         fn main() {
             println!(concat!("{}", "{}", "{}"), S, S);
         }
-    """)
+    """
+    )
 
-    fun `test fqn macro call`() = checkErrors("""
+    fun `test fqn macro call`() = checkErrors(
+        """
         use std::fmt;
         struct S;
         impl fmt::Display for S {
@@ -482,9 +529,11 @@ If you intended to print `{` symbol, you can escape it using `{{`">{</error>"###
             std::println!("<FORMAT_SPECIFIER>{}</FORMAT_SPECIFIER> <error descr="Invalid reference to positional argument 1 (there is 1 argument)">{}</error>", S);
             std::println!("<FORMAT_SPECIFIER>{}</FORMAT_SPECIFIER>", S, <error descr="Argument never used">S</error>);
         }
-    """)
+    """
+    )
 
-    fun `test custom debug macro`() = checkErrors("""
+    fun `test custom debug macro`() = checkErrors(
+        """
         macro_rules! debug {
             (${'$'}a:expr, ${'$'}b:expr) => {}
         }
@@ -492,9 +541,11 @@ If you intended to print `{` symbol, you can escape it using `{{`">{</error>"###
         fn main() {
             debug!("{}", 1);
         }
-    """)
+    """
+    )
 
-    fun `test panic macro`() = checkErrors("""
+    fun `test panic macro`() = checkErrors(
+        """
         use std::fmt;
 
         struct S;
@@ -507,11 +558,14 @@ If you intended to print `{` symbol, you can escape it using `{{`">{</error>"###
             panic!("<FORMAT_SPECIFIER>{}</FORMAT_SPECIFIER> <error descr="Invalid reference to positional argument 1 (there is 1 argument)">{}</error>", S);
             panic!("<FORMAT_SPECIFIER>{}</FORMAT_SPECIFIER>", S, <error descr="Argument never used">S</error>);
         }
-    """)
+    """
+    )
 
-    fun `test panic with single literal`() = checkErrors("""
+    fun `test panic with single literal`() = checkErrors(
+        """
         fn main() {
             panic!("{}");
         }
-    """)
+    """
+    )
 }

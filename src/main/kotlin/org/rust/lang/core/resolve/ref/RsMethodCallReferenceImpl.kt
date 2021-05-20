@@ -68,6 +68,7 @@ fun resolveFieldLookupReferenceWithReceiverType(
 interface DotExprResolveVariant : ScopeEntry {
     /** The receiver type after possible derefs performed */
     val selfTy: Ty
+
     /** The number of `*` dereferences should be performed on receiver to match `selfTy` */
     val derefCount: Int
 }

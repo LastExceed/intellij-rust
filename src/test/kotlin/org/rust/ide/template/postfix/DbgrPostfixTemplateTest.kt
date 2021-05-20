@@ -7,7 +7,8 @@ package org.rust.ide.template.postfix
 
 class DbgrPostfixTemplateTest : RsPostfixTemplateTest(DbgrPostfixTemplate(RsPostfixTemplateProvider())) {
 
-    fun `test expr`() = doTest("""
+    fun `test expr`() = doTest(
+        """
         fn foo(slice: &[i32]) {
             let first = slice[0];
             first.dbgr/*caret*/;
@@ -17,11 +18,14 @@ class DbgrPostfixTemplateTest : RsPostfixTemplateTest(DbgrPostfixTemplate(RsPost
             let first = slice[0];
             dbg!(&first)/*caret*/;
         }
-    """)
+    """
+    )
 
-    fun `test not expr`() = doTestNotApplicable("""
+    fun `test not expr`() = doTestNotApplicable(
+        """
         fn main() {
             println!("Hello!");.dbgr/*caret*/
         }
-    """)
+    """
+    )
 }

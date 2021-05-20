@@ -6,15 +6,18 @@
 package org.rust.ide.intentions
 
 class MoveGuardToMatchArmIntentionTest : RsIntentionTestBase(MoveGuardToMatchArmIntention::class) {
-    fun `test unavailable without match arm`() = doUnavailableTest("""
+    fun `test unavailable without match arm`() = doUnavailableTest(
+        """
         fn main() {
             match 1 {
                 1 if /*caret*/ true =>
             }
         }
-    """)
+    """
+    )
 
-    fun `test block body`() = doAvailableTest("""
+    fun `test block body`() = doAvailableTest(
+        """
         fn main() {
             match 1 {
                 1 if /*caret*/true => {}
@@ -26,15 +29,17 @@ class MoveGuardToMatchArmIntentionTest : RsIntentionTestBase(MoveGuardToMatchArm
                 1 => if /*caret*/true {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test block body with comma`() = doAvailableTest("""
+    fun `test block body with comma`() = doAvailableTest(
+        """
         fn main() {
             match 1 {
                 1 if true/*caret*/ => {
                     let x = 92;
                     println!("{}", x);
-                },
+                }
             }
         }
     """, """
@@ -46,9 +51,11 @@ class MoveGuardToMatchArmIntentionTest : RsIntentionTestBase(MoveGuardToMatchArm
                 },
             }
         }
-    """)
+    """
+    )
 
-    fun `test expression body`() = doAvailableTest("""
+    fun `test expression body`() = doAvailableTest(
+        """
         fn main() {
             match 1 {
                 2 => 8,
@@ -62,9 +69,11 @@ class MoveGuardToMatchArmIntentionTest : RsIntentionTestBase(MoveGuardToMatchArm
                 1 => if 1 + 2 < 2 { 3 + 4 }
             }
         }
-    """)
+    """
+    )
 
-    fun `test expression body with comma`() = doAvailableTest("""
+    fun `test expression body with comma`() = doAvailableTest(
+        """
         fn main() {
             match 1 {
                 1 if /*caret*/ true => (),

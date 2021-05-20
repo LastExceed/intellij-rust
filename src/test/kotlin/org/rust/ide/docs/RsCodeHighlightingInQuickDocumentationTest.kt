@@ -11,7 +11,8 @@ import org.rust.WithStdlibRustProjectDescriptor
 
 class RsCodeHighlightingInQuickDocumentationTest : RsDocumentationProviderTest() {
 
-    fun `test code highlighting`() = doTest("""
+    fun `test code highlighting`() = doTest(
+        """
         /// Adds one to the number given.
         ///
         /// # Examples
@@ -37,11 +38,13 @@ class RsCodeHighlightingInQuickDocumentationTest : RsDocumentationProviderTest()
         <span style="...">assert_eq</span><span style="...">!(</span><span style="...">6</span><span style="...">, </span><span style="...">add_one</span><span style="...">(</span><span style="...">5</span><span style="...">));</span>
         </pre>
         </div>
-    """)
+    """
+    )
 
     // https://github.com/intellij-rust/intellij-rust/issues/495
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test issue495`() = doTest("""
+    fun `test issue495`() = doTest(
+        """
         /// A cheap, reference-to-reference conversion.
         ///
         /// `AsRef` is very similar to, but different than, `Borrow`. See
@@ -99,9 +102,11 @@ class RsCodeHighlightingInQuickDocumentationTest : RsDocumentationProviderTest()
         </pre>
         <h2>Generic Impls</h2><ul><li><code>AsRef</code> auto-dereference if the inner type is a reference or a mutable
         reference (eg: <code>foo.as_ref()</code> will work the same if <code>foo</code> has type <code>&amp;mut Foo</code> or <code>&amp;&amp;mut Foo</code>)</li></ul></div>
-    """)
+    """
+    )
 
-    fun `test process code lines start with #`() = doTest("""
+    fun `test process code lines start with #`() = doTest(
+        """
         /// Some doc.
         ///
         /// # Example
@@ -129,8 +134,8 @@ class RsCodeHighlightingInQuickDocumentationTest : RsDocumentationProviderTest()
            <span style="...">let </span><span style="...">foo4 </span><span style="...">= </span><span style="...">Foo</span><span style="...">;</span>
         </pre>
         </div>
-    """)
+    """
+    )
 
-    private fun doTest(@Language("Rust") code: String, @Language("Html") expected: String)
-        = doTest(code, expected) { element, context -> generateDoc(element, context)?.hideSpecificStyles() }
+    private fun doTest(@Language("Rust") code: String, @Language("Html") expected: String) = doTest(code, expected) { element, context -> generateDoc(element, context)?.hideSpecificStyles() }
 }

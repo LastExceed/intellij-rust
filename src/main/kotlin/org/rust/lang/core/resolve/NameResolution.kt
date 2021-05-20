@@ -825,8 +825,10 @@ fun processDeriveTraitResolveVariants(element: RsPath, traitName: String, proces
     }
 }
 
-fun processBinaryOpVariants(element: RsBinaryOp, operator: OverloadableBinaryOperator,
-                            processor: RsResolveProcessor): Boolean {
+fun processBinaryOpVariants(
+    element: RsBinaryOp, operator: OverloadableBinaryOperator,
+    processor: RsResolveProcessor
+): Boolean {
     val binaryExpr = element.ancestorStrict<RsBinaryExpr>() ?: return false
     val rhsType = binaryExpr.right?.type ?: return false
     val lhsType = binaryExpr.left.type
@@ -866,7 +868,8 @@ fun processMacroCallPathResolveVariants(path: RsPath, isCompletion: Boolean, pro
                         /* this code will be executed if new resolve can't be used */
                         val def = expandedFrom.resolveToMacro() ?: return@resolveToMacroAndProcessLocalInnerMacros null
                         if (!def.hasMacroExportLocalInnerMacros) return@resolveToMacroAndProcessLocalInnerMacros null
-                        val crateRoot = def.crateRoot as? RsFile ?: return@resolveToMacroAndProcessLocalInnerMacros false
+                        val crateRoot = def.crateRoot as? RsFile
+                            ?: return@resolveToMacroAndProcessLocalInnerMacros false
                         processAll(exportedMacros(crateRoot), processor)
                     }
                     ?.let { return it }

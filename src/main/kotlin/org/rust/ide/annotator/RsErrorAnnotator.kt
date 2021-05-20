@@ -130,7 +130,8 @@ class RsErrorAnnotator : AnnotatorBase(), HighlightRangeExtension {
                 val parameter = args.metaItemList.getOrNull(0) ?: return
                 checkCfgPredicate(holder, parameter)
             }
-            "version" -> { /* version is currently experimental */ }
+            "version" -> { /* version is currently experimental */
+            }
             else -> {
                 val path = item.path ?: return
                 val fixes = NameSuggestionFix.createApplicable(path, itemName, listOf("all", "any", "not"), 1) { name ->

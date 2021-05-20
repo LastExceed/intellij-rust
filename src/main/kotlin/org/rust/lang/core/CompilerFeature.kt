@@ -133,6 +133,7 @@ enum class FeatureState {
      * Such features can be used only with nightly compiler with the corresponding feature attribute
      */
     ACTIVE,
+
     /**
      * Those language feature has since been Accepted (it was once Active)
      * so such language features can be used with stable/beta compiler since some version

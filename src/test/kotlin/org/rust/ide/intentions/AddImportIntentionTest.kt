@@ -6,20 +6,25 @@
 package org.rust.ide.intentions
 
 class AddImportIntentionTest : RsIntentionTestBase(AddImportIntention::class) {
-    fun `test not available in use statements`() = doUnavailableTest("""
+    fun `test not available in use statements`() = doUnavailableTest(
+        """
         mod foo {
             pub struct Foo;
         }
         use foo::/*caret*/Foo;
-    """)
+    """
+    )
 
-    fun `test not available for unresolved paths`() = doUnavailableTest("""
+    fun `test not available for unresolved paths`() = doUnavailableTest(
+        """
         fn main() {
             foo::/*caret*/Foo;
         }
-    """)
+    """
+    )
 
-    fun `test not available for leaf paths 1`() = doUnavailableTest("""
+    fun `test not available for leaf paths 1`() = doUnavailableTest(
+        """
         mod foo {
             pub struct Foo;
         }
@@ -28,9 +33,11 @@ class AddImportIntentionTest : RsIntentionTestBase(AddImportIntention::class) {
         fn main() {
             /*caret*/Foo;
         }
-    """)
+    """
+    )
 
-    fun `test not available for leaf paths 2`() = doUnavailableTest("""
+    fun `test not available for leaf paths 2`() = doUnavailableTest(
+        """
         mod foo {
             pub struct Foo;
         }
@@ -38,9 +45,11 @@ class AddImportIntentionTest : RsIntentionTestBase(AddImportIntention::class) {
         fn main() {
             /*caret*/foo::Foo;
         }
-    """)
+    """
+    )
 
-    fun `test basic import`() = doAvailableTest("""
+    fun `test basic import`() = doAvailableTest(
+        """
         mod foo {
             pub struct Foo;
         }
@@ -58,9 +67,11 @@ class AddImportIntentionTest : RsIntentionTestBase(AddImportIntention::class) {
         fn main() {
             /*caret*/Foo;
         }
-    """)
+    """
+    )
 
-    fun `test keep type arguments`() = doAvailableTest("""
+    fun `test keep type arguments`() = doAvailableTest(
+        """
         mod foo {
             pub struct Foo<'a, T>(pub &'a T);
         }
@@ -78,9 +89,11 @@ class AddImportIntentionTest : RsIntentionTestBase(AddImportIntention::class) {
         fn main() {
             /*caret*/Foo::<'_, u32>(&1);
         }
-    """)
+    """
+    )
 
-    fun `test keep nested type`() = doAvailableTest("""
+    fun `test keep nested type`() = doAvailableTest(
+        """
         mod foo {
             pub struct Foo<T>(pub T);
         }
@@ -98,9 +111,11 @@ class AddImportIntentionTest : RsIntentionTestBase(AddImportIntention::class) {
         fn main() {
             /*caret*/Foo::<Foo<u32>>;
         }
-    """)
+    """
+    )
 
-    fun `test nested path 1`() = doAvailableTest("""
+    fun `test nested path 1`() = doAvailableTest(
+        """
         mod a {
             pub mod b {
                 pub mod c {
@@ -126,9 +141,11 @@ class AddImportIntentionTest : RsIntentionTestBase(AddImportIntention::class) {
         fn main() {
             /*caret*/Foo;
         }
-    """)
+    """
+    )
 
-    fun `test nested path 2`() = doAvailableTest("""
+    fun `test nested path 2`() = doAvailableTest(
+        """
         mod a {
             pub mod b {
                 pub mod c {
@@ -154,9 +171,11 @@ class AddImportIntentionTest : RsIntentionTestBase(AddImportIntention::class) {
         fn main() {
             /*caret*/c::Foo;
         }
-    """)
+    """
+    )
 
-    fun `test partial import`() = doAvailableTest("""
+    fun `test partial import`() = doAvailableTest(
+        """
         use a::b;
 
         mod a {
@@ -185,9 +204,11 @@ class AddImportIntentionTest : RsIntentionTestBase(AddImportIntention::class) {
         fn main() {
             /*caret*/Foo;
         }
-    """)
+    """
+    )
 
-    fun `test function call without an owner`() = doAvailableTest("""
+    fun `test function call without an owner`() = doAvailableTest(
+        """
         mod foo {
             pub fn new() {}
         }
@@ -205,9 +226,11 @@ class AddImportIntentionTest : RsIntentionTestBase(AddImportIntention::class) {
         fn main() {
             /*caret*/new();
         }
-    """)
+    """
+    )
 
-    fun `test function call with an owner`() = doAvailableTest("""
+    fun `test function call with an owner`() = doAvailableTest(
+        """
         mod foo {
             pub struct Foo;
             impl Foo {
@@ -231,9 +254,11 @@ class AddImportIntentionTest : RsIntentionTestBase(AddImportIntention::class) {
         fn main() {
             Foo::/*caret*/new();
         }
-    """)
+    """
+    )
 
-    fun `test mod`() = doAvailableTest("""
+    fun `test mod`() = doAvailableTest(
+        """
         mod a {
             pub mod b {
                 pub mod c {
@@ -259,9 +284,11 @@ class AddImportIntentionTest : RsIntentionTestBase(AddImportIntention::class) {
         fn main() {
             b::/*caret*/c;
         }
-    """)
+    """
+    )
 
-    fun `test constant`() = doAvailableTest("""
+    fun `test constant`() = doAvailableTest(
+        """
         mod a {
             pub const CONST: u32 = 0;
         }
@@ -279,9 +306,11 @@ class AddImportIntentionTest : RsIntentionTestBase(AddImportIntention::class) {
         fn main() {
             /*caret*/CONST;
         }
-    """)
+    """
+    )
 
-    fun `test trait`() = doAvailableTest("""
+    fun `test trait`() = doAvailableTest(
+        """
         mod a {
             pub trait Trait {}
         }
@@ -299,9 +328,11 @@ class AddImportIntentionTest : RsIntentionTestBase(AddImportIntention::class) {
         fn main() {
             let _: &/*caret*/Trait;
         }
-    """)
+    """
+    )
 
-    fun `test type alias`() = doAvailableTest("""
+    fun `test type alias`() = doAvailableTest(
+        """
         mod a {
             pub type Type = ();
         }
@@ -319,9 +350,11 @@ class AddImportIntentionTest : RsIntentionTestBase(AddImportIntention::class) {
         fn main() {
             let _: /*caret*/Type;
         }
-    """)
+    """
+    )
 
-    fun `test enum`() = doAvailableTest("""
+    fun `test enum`() = doAvailableTest(
+        """
         mod a {
             pub enum Enum { V1 }
         }
@@ -339,9 +372,11 @@ class AddImportIntentionTest : RsIntentionTestBase(AddImportIntention::class) {
         fn main() {
             let _: /*caret*/Enum;
         }
-    """)
+    """
+    )
 
-    fun `test enum variant`() = doAvailableTest("""
+    fun `test enum variant`() = doAvailableTest(
+        """
         mod a {
             pub enum Enum { V1 }
         }
@@ -359,9 +394,11 @@ class AddImportIntentionTest : RsIntentionTestBase(AddImportIntention::class) {
         fn main() {
             /*caret*/V1;
         }
-    """)
+    """
+    )
 
-    fun `test don't import if same name exists in scope`() = doUnavailableTest("""
+    fun `test don't import if same name exists in scope`() = doUnavailableTest(
+        """
         mod foo {
             pub struct Foo;
         }
@@ -371,9 +408,11 @@ class AddImportIntentionTest : RsIntentionTestBase(AddImportIntention::class) {
         fn main() {
             foo::/*caret*/Foo;
         }
-    """)
+    """
+    )
 
-    fun `test shorten path if import already exists`() = doAvailableTest("""
+    fun `test shorten path if import already exists`() = doAvailableTest(
+        """
         use foo::Foo;
 
         mod foo {
@@ -393,9 +432,11 @@ class AddImportIntentionTest : RsIntentionTestBase(AddImportIntention::class) {
         fn main() {
             /*caret*/Foo;
         }
-    """)
+    """
+    )
 
-    fun `test import if same name exists in a different namespace`() = doAvailableTest("""
+    fun `test import if same name exists in a different namespace`() = doAvailableTest(
+        """
         mod foo {
             pub const Foo: u32 = 0;
         }
@@ -417,9 +458,11 @@ class AddImportIntentionTest : RsIntentionTestBase(AddImportIntention::class) {
         fn main() {
             /*caret*/Foo;
         }
-    """)
+    """
+    )
 
-    fun `test replace usage`() = doAvailableTest("""
+    fun `test replace usage`() = doAvailableTest(
+        """
         mod foo {
             pub struct Foo;
         }
@@ -439,9 +482,11 @@ class AddImportIntentionTest : RsIntentionTestBase(AddImportIntention::class) {
             /*caret*/Foo;
             Foo;
         }
-    """)
+    """
+    )
 
-    fun `test replace usage inside module`() = doAvailableTest("""
+    fun `test replace usage inside module`() = doAvailableTest(
+        """
         mod foo {
             pub mod bar {
                 pub struct Bar;
@@ -477,9 +522,11 @@ class AddImportIntentionTest : RsIntentionTestBase(AddImportIntention::class) {
         fn f3() {
             foo::bar::Bar;
         }
-    """)
+    """
+    )
 
-    fun `test replace usage different path 1`() = doAvailableTest("""
+    fun `test replace usage different path 1`() = doAvailableTest(
+        """
         use foo::bar;
         use foo::bar::baz;
 
@@ -514,9 +561,11 @@ class AddImportIntentionTest : RsIntentionTestBase(AddImportIntention::class) {
             S;
             S;
         }
-    """)
+    """
+    )
 
-    fun `test replace usage different path 2`() = doAvailableTest("""
+    fun `test replace usage different path 2`() = doAvailableTest(
+        """
         use foo::bar;
         use foo::bar::baz;
 
@@ -550,5 +599,6 @@ class AddImportIntentionTest : RsIntentionTestBase(AddImportIntention::class) {
             baz::S;
             baz::S;
         }
-    """)
+    """
+    )
 }

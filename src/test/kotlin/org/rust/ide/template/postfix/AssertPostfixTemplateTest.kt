@@ -6,13 +6,16 @@
 package org.rust.ide.template.postfix
 
 class AssertPostfixTemplateTest : RsPostfixTemplateTest(AssertPostfixTemplate(RsPostfixTemplateProvider())) {
-    fun `test not boolean expr`() = doTestNotApplicable("""
+    fun `test not boolean expr`() = doTestNotApplicable(
+        """
         fn main() {
             1234.assert/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test boolean expr 1`() = doTest("""
+    fun `test boolean expr 1`() = doTest(
+        """
         fn main() {
             let a = true;
             a.assert/*caret*/
@@ -22,9 +25,11 @@ class AssertPostfixTemplateTest : RsPostfixTemplateTest(AssertPostfixTemplate(Rs
             let a = true;
             assert!(a);/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test boolean expr 2`() = doTest("""
+    fun `test boolean expr 2`() = doTest(
+        """
         fn foo(a: i32, b: i32) {
             a != b.assert/*caret*/
         }
@@ -32,9 +37,11 @@ class AssertPostfixTemplateTest : RsPostfixTemplateTest(AssertPostfixTemplate(Rs
         fn foo(a: i32, b: i32) {
             assert!(a != b);/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test equality expr`() = doTest("""
+    fun `test equality expr`() = doTest(
+        """
         fn foo(a: i32, b: i32) {
             a == b.assert/*caret*/
         }
@@ -42,5 +49,6 @@ class AssertPostfixTemplateTest : RsPostfixTemplateTest(AssertPostfixTemplate(Rs
         fn foo(a: i32, b: i32) {
             assert_eq!(a, b);/*caret*/
         }
-    """)
+    """
+    )
 }

@@ -41,7 +41,8 @@ class RsBareTraitObjectsInspection : RsLintInspection() {
                         override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
                             val target = descriptor.psiElement as RsTypeReference
                             val typeElement = target.skipParens()
-                            val traitText = (typeElement as? RsBaseType)?.path?.text ?: (typeElement as RsTraitType).text
+                            val traitText = (typeElement as? RsBaseType)?.path?.text
+                                ?: (typeElement as RsTraitType).text
                             val new = RsPsiFactory(project).createDynTraitType(traitText)
                             target.replace(new)
                         }

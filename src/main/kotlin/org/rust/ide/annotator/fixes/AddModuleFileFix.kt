@@ -33,6 +33,7 @@ class AddModuleFileFix(
          * Creates a module in the same directory. E.g. `mod foo` creates a file `foo.rs`
          */
         File,
+
         /**
          * Creates a module in a subdirectory. E.g. `mod foo` creates a file `foo/mod.rs`
          */

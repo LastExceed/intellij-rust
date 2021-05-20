@@ -11,19 +11,23 @@ class RunConfigurationTest : RunConfigurationTestBase() {
 
     fun `test application configuration`() {
         fileTree {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "hello"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
 
             dir("src") {
-                rust("main.rs", """
+                rust(
+                    "main.rs", """
                     fn main() {
                         println!("Hello, world!");
                     }
-                """)
+                """
+                )
             }
         }.create()
         val configuration = createConfiguration()
@@ -34,15 +38,18 @@ class RunConfigurationTest : RunConfigurationTestBase() {
 
     fun `test single test configuration 1`() {
         val testProject = fileTree {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "hello"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
 
             dir("src") {
-                rust("main.rs", """
+                rust(
+                    "main.rs", """
                     fn main() {
                         println!("Hello, world!");
                     }
@@ -51,7 +58,8 @@ class RunConfigurationTest : RunConfigurationTestBase() {
                     fn foo() {
                         /*caret*/
                     }
-                """)
+                """
+                )
             }
         }.create()
         myFixture.configureFromTempProjectFile(testProject.fileWithCaret)
@@ -63,15 +71,18 @@ class RunConfigurationTest : RunConfigurationTestBase() {
 
     fun `test single test configuration 2`() {
         val testProject = fileTree {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "hello"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
 
             dir("src") {
-                rust("main.rs", """
+                rust(
+                    "main.rs", """
                     fn main() {
                         println!("Hello, world!");
                     }
@@ -86,7 +97,8 @@ class RunConfigurationTest : RunConfigurationTestBase() {
                         #[test]
                         fn bar() {}
                     }
-                """)
+                """
+                )
             }
         }.create()
         myFixture.configureFromTempProjectFile(testProject.fileWithCaret)
@@ -99,15 +111,18 @@ class RunConfigurationTest : RunConfigurationTestBase() {
 
     fun `test mod test configuration`() {
         val testProject = fileTree {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "hello"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
 
             dir("src") {
-                rust("main.rs", """
+                rust(
+                    "main.rs", """
                     fn main() {
                         println!("Hello, world!");
                     }
@@ -121,7 +136,8 @@ class RunConfigurationTest : RunConfigurationTestBase() {
                         #[test]
                         fn bar() {}
                     }
-                """)
+                """
+                )
             }
         }.create()
         myFixture.configureFromTempProjectFile(testProject.fileWithCaret)
@@ -134,15 +150,18 @@ class RunConfigurationTest : RunConfigurationTestBase() {
 
     fun `test redirect input`() {
         fileTree {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "hello"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
 
             dir("src") {
-                rust("main.rs", """
+                rust(
+                    "main.rs", """
                     use std::io::{self, BufRead};
 
                     fn main() {
@@ -151,14 +170,17 @@ class RunConfigurationTest : RunConfigurationTestBase() {
                         println!("{}", iter.next().unwrap().unwrap());
                         println!("{}", iter.next().unwrap().unwrap());
                     }
-                """)
+                """
+                )
             }
 
-            file("in.txt", """
+            file(
+                "in.txt", """
                 1. aaa
                 2. bbb
                 3. ccc
-            """)
+            """
+            )
         }.create()
 
         val configuration = createConfiguration()

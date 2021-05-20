@@ -6,25 +6,31 @@
 package org.rust.ide.intentions
 
 class ToggleIgnoreTestIntentionTest : RsIntentionTestBase(ToggleIgnoreTestIntention::class) {
-    fun `test add ignore`() = doAvailableTest("""
+    fun `test add ignore`() = doAvailableTest(
+        """
         #[test]
         fn foo/*caret*/() {}
     """, """
         #[ignore]
         #[test]
         fn foo() {}
-    """)
+    """
+    )
 
-    fun `test remove ignore`() = doAvailableTest("""
+    fun `test remove ignore`() = doAvailableTest(
+        """
         #[ignore]
         #[test]
         fn foo/*caret*/() {}
     """, """
         #[test]
         fn foo() {}
-    """)
+    """
+    )
 
-    fun `test no ignore`() = doUnavailableTest("""
+    fun `test no ignore`() = doUnavailableTest(
+        """
         fn foo/*caret*/() {}
-    """)
+    """
+    )
 }

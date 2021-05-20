@@ -16,7 +16,7 @@ class WasmPackCommandRunState(
     runConfiguration: WasmPackCommandConfiguration,
     wasmPack: WasmPack,
     workingDirectory: File
-): WasmPackCommandRunStateBase(environment, runConfiguration, wasmPack, workingDirectory) {
+) : WasmPackCommandRunStateBase(environment, runConfiguration, wasmPack, workingDirectory) {
     init {
         val scope = GlobalSearchScopes.executionScope(environment.project, environment.runProfile)
         consoleBuilder = CargoConsoleBuilder(environment.project, scope)

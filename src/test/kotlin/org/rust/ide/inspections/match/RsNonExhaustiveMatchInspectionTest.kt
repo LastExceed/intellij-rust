@@ -13,7 +13,8 @@ import org.rust.ide.inspections.checkMatch.RsNonExhaustiveMatchInspection
 
 class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustiveMatchInspection::class) {
 
-    fun `test simple boolean exhaustive`() = checkFixByText("Add remaining patterns", """
+    fun `test simple boolean exhaustive`() = checkFixByText(
+        "Add remaining patterns", """
         fn main() {
             let a = true;
             <error descr="Match must be exhaustive [E0004]">match/*caret*/</error> a {
@@ -28,9 +29,11 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 false => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test simple int exhaustive`() = checkFixByText("Add _ pattern", """
+    fun `test simple int exhaustive`() = checkFixByText(
+        "Add _ pattern", """
         fn main() {
             let a = 3;
             <error descr="Match must be exhaustive [E0004]">match/*caret*/</error> a {
@@ -47,9 +50,11 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 _ => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test simple double exhaustive`() = checkFixByText("Add _ pattern", """
+    fun `test simple double exhaustive`() = checkFixByText(
+        "Add _ pattern", """
         fn main() {
             let a = 3.9;
             <error descr="Match must be exhaustive [E0004]">match/*caret*/</error> a {
@@ -66,9 +71,11 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 _ => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test simple string exhaustive`() = checkFixByText("Add remaining patterns", """
+    fun `test simple string exhaustive`() = checkFixByText(
+        "Add remaining patterns", """
         fn main() {
             let a = "str";
             <error descr="Match must be exhaustive [E0004]">match/*caret*/</error> a {
@@ -85,9 +92,11 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 &_ => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test simple char exhaustive`() = checkFixByText("Add _ pattern", """
+    fun `test simple char exhaustive`() = checkFixByText(
+        "Add _ pattern", """
         fn main() {
             let a = 'c';
             <error descr="Match must be exhaustive [E0004]">match/*caret*/</error> a {
@@ -104,9 +113,11 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 _ => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test simple path exhaustive`() = checkFixByText("Add remaining patterns", """
+    fun `test simple path exhaustive`() = checkFixByText(
+        "Add remaining patterns", """
         enum E { A, B, C }
         fn main() {
             let a = E::A;
@@ -124,9 +135,11 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 E::C => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test path with use exhaustive`() = checkFixByText("Add remaining patterns", """
+    fun `test path with use exhaustive`() = checkFixByText(
+        "Add remaining patterns", """
         enum E { A, B, C }
         fn main() {
             use E::*;
@@ -146,9 +159,11 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 C => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test pair of bool exhaustive`() = checkFixByText("Add remaining patterns", """
+    fun `test pair of bool exhaustive`() = checkFixByText(
+        "Add remaining patterns", """
         fn main() {
             let x = (true, true);
             <error descr="Match must be exhaustive [E0004]">match/*caret*/</error> x {
@@ -163,9 +178,11 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 (true, _) => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test pair of paths exhaustive`() = checkFixByText("Add remaining patterns", """
+    fun `test pair of paths exhaustive`() = checkFixByText(
+        "Add remaining patterns", """
         enum E { A, B, C }
         fn main() {
             let ab = (E::A, E::B);
@@ -183,9 +200,11 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 (E::C, _) => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test nested enum exhaustive`() = checkFixByText("Add remaining patterns", """
+    fun `test nested enum exhaustive`() = checkFixByText(
+        "Add remaining patterns", """
         enum Animal { Dog(Color), Cat(Color), Horse(Color) }
         enum Color { Black, White }
         fn main() {
@@ -205,9 +224,11 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 Animal::Horse(_) => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test enum pattern with guard exhaustive`() = checkFixByText("Add remaining patterns", """
+    fun `test enum pattern with guard exhaustive`() = checkFixByText(
+        "Add remaining patterns", """
         enum E { A(i32), B(i32), C }
         fn foo(e: E) {
             <error descr="Match must be exhaustive [E0004]">match/*caret*/</error> e {
@@ -224,9 +245,11 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 E::B(_) => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test match ergonomics exhaustive`() = checkFixByText("Add remaining patterns", """
+    fun `test match ergonomics exhaustive`() = checkFixByText(
+        "Add remaining patterns", """
         enum E { A(i32), B }
         use E::*;
         fn foo(e: &E) {
@@ -243,9 +266,11 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 A(_) => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test match reference exhaustive`() = checkFixByText("Add remaining patterns", """
+    fun `test match reference exhaustive`() = checkFixByText(
+        "Add remaining patterns", """
         enum E { A(i32), B }
         use E::*;
         fn foo(e: &E) {
@@ -262,10 +287,12 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 &A(_) => {}
             }
         }
-    """)
+    """
+    )
 
     // https://github.com/intellij-rust/intellij-rust/issues/3776
-    fun `test tuple with multiple types exhaustiveness`() = checkByText("""
+    fun `test tuple with multiple types exhaustiveness`() = checkByText(
+        """
         enum E { A }
 
         fn main() {
@@ -274,9 +301,11 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 (E::A, false) => {}
             }
         }
-        """)
+        """
+    )
 
-    fun `test struct with multiple types exhaustiveness`() = checkByText("""
+    fun `test struct with multiple types exhaustiveness`() = checkByText(
+        """
         enum E { A }
         struct S { e: E, x: bool }
 
@@ -286,9 +315,11 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 S { e: E::A, x: false } => {}
             }
         }
-        """)
+        """
+    )
 
-    fun `test tuple with different types remaining`() = checkFixByText("Add remaining patterns", """
+    fun `test tuple with different types remaining`() = checkFixByText(
+        "Add remaining patterns", """
         enum E { A, B }
 
         fn main() {
@@ -309,9 +340,11 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 (E::B, false) => {}
             }
         }
-        """)
+        """
+    )
 
-    fun `test struct with unknown type parameter`() = checkByText("""
+    fun `test struct with unknown type parameter`() = checkByText(
+        """
         struct S<T> { x: T }
 
         fn foo(s: S<MyBool>) {
@@ -319,9 +352,11 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 S { x: true } => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test enum with type parameters`() = checkByText("""
+    fun `test enum with type parameters`() = checkByText(
+        """
         enum E { A(F<i32>) }
         enum F<T> { B(T), C }
 
@@ -331,9 +366,11 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 E::A(F::C) => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test enum with type parameters exhaustive`() = checkFixByText("Add remaining patterns", """
+    fun `test enum with type parameters exhaustive`() = checkFixByText(
+        "Add remaining patterns", """
         enum E<T> { A(T), B }
 
         fn bar(e: E<bool>) {
@@ -347,14 +384,16 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
 
         fn bar(e: E<bool>) {
             match e {
-                E::A(true) => {},
-                E::B => {},
+                E::A(true) => {}
+                E::B => {}
                 E::A(false) => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test struct with type parameters exhaustive`() = checkFixByText("Add remaining patterns", """
+    fun `test struct with type parameters exhaustive`() = checkFixByText(
+        "Add remaining patterns", """
         enum E<T> { A(S<T>), B }
         struct S<T> { x: T}
 
@@ -370,14 +409,16 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
 
         fn bar(e: E<bool>) {
             match e {
-                E::A(S { x: true }) => {},
-                E::B => {},
+                E::A(S { x: true }) => {}
+                E::B => {}
                 E::A(S { x: false }) => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test full and shorthand pat fields`() = checkByText("""
+    fun `test full and shorthand pat fields`() = checkByText(
+        """
         struct S { x: bool, y: i32 }
 
         fn foo(s: S) {
@@ -386,18 +427,22 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 S { x: false, y: _ } => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test empty enum`() = checkByText("""
+    fun `test empty enum`() = checkByText(
+        """
         enum E {}
 
         fn foo(e: E) {
             match e {
             }
         }
-    """)
+    """
+    )
 
-    fun `test ignored fields 1`() = checkByText("""
+    fun `test ignored fields 1`() = checkByText(
+        """
         struct S { x: bool, y: i32 }
 
         fn foo(s: S) {
@@ -406,10 +451,12 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 S { x: false, .. } => {}
             }
         }
-    """)
+    """
+    )
 
     // https://github.com/intellij-rust/intellij-rust/issues/3958
-    fun `test ignored fields 2`() = checkByText("""
+    fun `test ignored fields 2`() = checkByText(
+        """
         struct S { s: String, e: E }
         enum E { A, B }
 
@@ -419,9 +466,11 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 S { e: E::B, .. } => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test ignored fields 3`() = checkFixByText("Add remaining patterns", """
+    fun `test ignored fields 3`() = checkFixByText(
+        "Add remaining patterns", """
         struct S { a: bool, b: bool, c: bool }
 
         fn foo(s: S) {
@@ -440,9 +489,11 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 S { a: false, b: false, c: _ } => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test import unresolved type`() = checkFixByText("Add remaining patterns", """
+    fun `test import unresolved type`() = checkFixByText(
+        "Add remaining patterns", """
         use a::foo;
         use a::E::A;
 
@@ -471,16 +522,20 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 E::B => {}
             };
         }
-    """)
+    """
+    )
 
-    fun `test no add _ pattern for empty match`() = checkFixIsUnavailable("Add _ pattern", """
+    fun `test no add _ pattern for empty match`() = checkFixIsUnavailable(
+        "Add _ pattern", """
         fn main() {
             let test = true;
             <error descr="Match must be exhaustive [E0004]">match/*caret*/</error> test {}
         }
-    """)
+    """
+    )
 
-    fun `test add _ pattern for no expression in match`() = checkFixByText("Add _ pattern", """
+    fun `test add _ pattern for no expression in match`() = checkFixByText(
+        "Add _ pattern", """
         fn main() {
             let test = true;
             <error descr="Match must be exhaustive [E0004]">match/*caret*/</error> test {
@@ -495,9 +550,11 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 _ => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test add _ pattern for unit expression in match`() = checkFixByText("Add _ pattern", """
+    fun `test add _ pattern for unit expression in match`() = checkFixByText(
+        "Add _ pattern", """
         fn main() {
             let test = true;
             <error descr="Match must be exhaustive [E0004]">match/*caret*/</error> test {
@@ -512,9 +569,11 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 _ => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test add _ pattern for macro expression in match`() = checkFixByText("Add _ pattern", """
+    fun `test add _ pattern for macro expression in match`() = checkFixByText(
+        "Add _ pattern", """
         fn main() {
             let test = true;
             <error descr="Match must be exhaustive [E0004]">match/*caret*/</error> test {
@@ -529,9 +588,11 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 _ => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test add _ pattern for dot expression in match`() = checkFixByText("Add _ pattern", """
+    fun `test add _ pattern for dot expression in match`() = checkFixByText(
+        "Add _ pattern", """
         fn main() {
             let test = true;
             <error descr="Match must be exhaustive [E0004]">match/*caret*/</error> test {
@@ -546,9 +607,11 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 _ => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test add _ pattern for call expression in match`() = checkFixByText("Add _ pattern", """
+    fun `test add _ pattern for call expression in match`() = checkFixByText(
+        "Add _ pattern", """
         fn test_fun() {}
 
         fn main() {
@@ -567,9 +630,11 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 _ => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test add _ pattern for block expression in match`() = checkFixByText("Add _ pattern", """
+    fun `test add _ pattern for block expression in match`() = checkFixByText(
+        "Add _ pattern", """
         fn main() {
             let test = true;
             <error descr="Match must be exhaustive [E0004]">match/*caret*/</error> test {
@@ -584,9 +649,11 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 _ => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test add remaining patterns for no expression in match`() = checkFixByText("Add remaining patterns", """
+    fun `test add remaining patterns for no expression in match`() = checkFixByText(
+        "Add remaining patterns", """
         fn main() {
             let test = true;
             <error descr="Match must be exhaustive [E0004]">match/*caret*/</error> test {
@@ -601,9 +668,11 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 false => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test add remaining patterns for unit expression in match`() = checkFixByText("Add remaining patterns", """
+    fun `test add remaining patterns for unit expression in match`() = checkFixByText(
+        "Add remaining patterns", """
         fn main() {
             let test = true;
             <error descr="Match must be exhaustive [E0004]">match/*caret*/</error> test {
@@ -618,9 +687,11 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 false => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test add remaining patterns for macro expression in match`() = checkFixByText("Add remaining patterns", """
+    fun `test add remaining patterns for macro expression in match`() = checkFixByText(
+        "Add remaining patterns", """
         fn main() {
             let test = true;
             <error descr="Match must be exhaustive [E0004]">match/*caret*/</error> test {
@@ -635,9 +706,11 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 false => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test add remaining patterns for dot expression in match`() = checkFixByText("Add remaining patterns", """
+    fun `test add remaining patterns for dot expression in match`() = checkFixByText(
+        "Add remaining patterns", """
         fn main() {
             let test = true;
             <error descr="Match must be exhaustive [E0004]">match/*caret*/</error> test {
@@ -652,9 +725,11 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 false => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test add remaining patterns for call expression in match`() = checkFixByText("Add remaining patterns", """
+    fun `test add remaining patterns for call expression in match`() = checkFixByText(
+        "Add remaining patterns", """
         fn test_fun() {}
 
         fn main() {
@@ -673,9 +748,11 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 false => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test add remaining patterns for block expression in match`() = checkFixByText("Add remaining patterns", """
+    fun `test add remaining patterns for block expression in match`() = checkFixByText(
+        "Add remaining patterns", """
         fn main() {
             let test = true;
             <error descr="Match must be exhaustive [E0004]">match/*caret*/</error> test {
@@ -690,9 +767,11 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 false => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test non-exhaustive enum match in same crate`() = checkByText("""
+    fun `test non-exhaustive enum match in same crate`() = checkByText(
+        """
         #[non_exhaustive]
         enum Error {
             Variant
@@ -705,10 +784,12 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 Error::Variant => println!("Variant")
             }
         }
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithDependencyRustProjectDescriptor::class)
-    fun `test non-exhaustive enum match in different crate`() = checkByFileTree("""
+    fun `test non-exhaustive enum match in different crate`() = checkByFileTree(
+        """
         //- dep-lib/lib.rs
         #[non_exhaustive]
         pub enum Error {
@@ -726,9 +807,11 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 Error::Variant => println!("Variant")
             }
         }
-    """)
+    """
+    )
 
-    fun `test empty match simple enum variants`() = checkFixByText("Add remaining patterns", """
+    fun `test empty match simple enum variants`() = checkFixByText(
+        "Add remaining patterns", """
         enum FooBar { Foo, Bar }
 
         fn foo(x: FooBar) {
@@ -743,9 +826,11 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 FooBar::Bar => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test empty match ergonomics`() = checkFixByText("Add remaining patterns", """
+    fun `test empty match ergonomics`() = checkFixByText(
+        "Add remaining patterns", """
         enum E { A, B }
         fn foo(x: &E) {
             <error descr="Match must be exhaustive [E0004]">match/*caret*/</error> x {}
@@ -758,9 +843,11 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 E::B => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test empty match struct enum variants`() = checkFixByText("Add remaining patterns", """
+    fun `test empty match struct enum variants`() = checkFixByText(
+        "Add remaining patterns", """
         enum FooBar {
             Foo { foo: i32 },
             Bar { bar1: bool, bar2: f64 }
@@ -781,9 +868,11 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 FooBar::Bar { .. } => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test empty match different enum variants`() = checkFixByText("Add remaining patterns", """
+    fun `test empty match different enum variants`() = checkFixByText(
+        "Add remaining patterns", """
         enum Foo {
             X,
             Y(i32),
@@ -807,9 +896,11 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 Foo::Z { .. } => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test empty match don't remove comments`() = checkFixByText("Add remaining patterns", """
+    fun `test empty match don't remove comments`() = checkFixByText(
+        "Add remaining patterns", """
         enum FooBar {
             Foo,
             Bar
@@ -833,10 +924,12 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 FooBar::Bar => {}
             }
         }
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test empty match Option enum`() = checkFixByText("Add remaining patterns", """
+    fun `test empty match Option enum`() = checkFixByText(
+        "Add remaining patterns", """
         fn foo(x: Option<i32>) {
             <error descr="Match must be exhaustive [E0004]">match/*caret*/</error> x {}
         }
@@ -847,10 +940,12 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 Some(_) => {}
             }
         }
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test empty match Result enum`() = checkFixByText("Add remaining patterns", """
+    fun `test empty match Result enum`() = checkFixByText(
+        "Add remaining patterns", """
         fn foo(x: Result<i32, bool>) {
             <error descr="Match must be exhaustive [E0004]">match/*caret*/</error> x {}
         }
@@ -861,9 +956,11 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 Err(_) => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test empty match one variant is in scope`() = checkFixByText("Add remaining patterns", """
+    fun `test empty match one variant is in scope`() = checkFixByText(
+        "Add remaining patterns", """
         mod foo {
             enum E { A, B }
         }
@@ -884,9 +981,11 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 E::B => {}
             }
         }
-    """)
+    """
+    )
 
-    fun `test empty match import unresolved type`() = checkFixByText("Add remaining patterns", """
+    fun `test empty match import unresolved type`() = checkFixByText(
+        "Add remaining patterns", """
         use a::foo;
 
         mod a {
@@ -911,10 +1010,12 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 FooBar::Bar => {}
             };
         }
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test pair of Options`() = checkByText("""
+    fun `test pair of Options`() = checkByText(
+        """
         fn foo(a: Option<bool>, b: Option<bool>) {
             match (a, b) {
                 (None, None) => {}
@@ -922,10 +1023,12 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 (Some(false), _) | (_, Some(false)) => {}
             }
         }
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test no error on pair of Options match ergonomics`() = checkByText("""
+    fun `test no error on pair of Options match ergonomics`() = checkByText(
+        """
         fn foo(a: Option<bool>, b: &Option<bool>) {
             match (a, b) {
                 (None, None) => {}
@@ -933,10 +1036,12 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 (Some(false), _) | (_, Some(false)) => {}
             }
         }
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test no error on pair of Options match ergonomics different refs`() = checkByText("""
+    fun `test no error on pair of Options match ergonomics different refs`() = checkByText(
+        """
         fn foo(a: &Option<bool>) {
             match a {
                 None => {}
@@ -944,11 +1049,13 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 Some(false) => {}
             }
         }
-    """)
+    """
+    )
 
     // TODO: better support of match ergonomics
     fun `test match ergonomics different refs`() = expect<AssertionError> {
-        checkFixByText("Add remaining patterns", """
+        checkFixByText(
+            "Add remaining patterns", """
         enum E { A(i32), B, C }
         use E::*;
         fn foo(e: &E) {
@@ -967,10 +1074,12 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 A(_) => {}
             }
         }
-    """)
+    """
+        )
     }
 
-    fun `test no error on different expr and arm types`() = checkByText("""
+    fun `test no error on different expr and arm types`() = checkByText(
+        """
         enum E1 { A, B }
         enum E2 { C, D }
         fn foo(a: E1) {
@@ -978,10 +1087,12 @@ class RsNonExhaustiveMatchInspectionTest : RsInspectionsTestBase(RsNonExhaustive
                 E2::C => {}
             }
         }
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test no error on Fn call`() = checkByText("""
+    fun `test no error on Fn call`() = checkByText(
+        """
         fn foo(f: &dyn Fn() -> Option<bool>) {
             match f() {
                 Some(_) => {}

@@ -13,13 +13,17 @@ class TomlTodoTest : TodoItemsTestCase() {
     override fun supportsCStyleMultiLineComments(): Boolean = false
     override fun supportsCStyleSingleLineComments(): Boolean = false
 
-    fun `test single todo`() = testTodos("""
+    fun `test single todo`() = testTodos(
+        """
         # [TODO first line]
         # second line
-    """)
+    """
+    )
 
-    fun `test multiline todo`() = testTodos("""
+    fun `test multiline todo`() = testTodos(
+        """
         # [TODO first line]
         #  [second line]
-    """)
+    """
+    )
 }

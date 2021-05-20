@@ -18,9 +18,11 @@ import java.nio.file.Paths
  * A service needed to store [UserDisabledFeatures] separately from [CargoProjectsServiceImpl].
  * Needed to make it possible to store them in different XML files ([Storage]s)
  */
-@State(name = "CargoProjectFeatures", storages = [
+@State(
+    name = "CargoProjectFeatures", storages = [
     Storage(StoragePathMacros.WORKSPACE_FILE, roamingType = RoamingType.DISABLED)
-])
+]
+)
 @Service
 class UserDisabledFeaturesHolder(private val project: Project) : PersistentStateComponent<Element> {
     private var loadedUserDisabledFeatures: Map<Path, UserDisabledFeatures> = emptyMap()

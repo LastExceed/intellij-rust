@@ -10,7 +10,8 @@ import org.rust.cargo.project.workspace.CargoWorkspace
 import org.rust.lang.core.types.infer.TypeInferenceMarks
 
 class RsPreciseTraitMatchingTest : RsResolveTestBase() {
-    fun `test method in specialized trait impl for struct`() = checkByCode("""
+    fun `test method in specialized trait impl for struct`() = checkByCode(
+        """
         trait Tr { fn some_fn(&self); }
         struct S<T> { value: T }
         impl Tr for S<u8> {
@@ -25,9 +26,11 @@ class RsPreciseTraitMatchingTest : RsResolveTestBase() {
             v.some_fn();
             //^
         }
-    """)
+    """
+    )
 
-    fun `test method in specialized trait impl for struct 2`() = checkByCode("""
+    fun `test method in specialized trait impl for struct 2`() = checkByCode(
+        """
         trait Tr { fn some_fn(&self); }
         struct S<T1, T2> { value1: T1, value2: T2 }
         impl Tr for S<u8, u8> {
@@ -48,9 +51,11 @@ class RsPreciseTraitMatchingTest : RsResolveTestBase() {
             v.some_fn();
             //^
         }
-    """)
+    """
+    )
 
-    fun `test method in specialized trait impl for tuple struct`() = checkByCode("""
+    fun `test method in specialized trait impl for tuple struct`() = checkByCode(
+        """
         trait Tr { fn some_fn(&self); }
         struct S<T> (T);
         impl Tr for S<u8> {
@@ -65,9 +70,11 @@ class RsPreciseTraitMatchingTest : RsResolveTestBase() {
             v.some_fn();
             //^
         }
-    """)
+    """
+    )
 
-    fun `test method in specialized trait impl for enum`() = checkByCode("""
+    fun `test method in specialized trait impl for enum`() = checkByCode(
+        """
         trait Tr { fn some_fn(&self); }
         enum S<T> { Var1{value: T}, Var2 }
         impl Tr for S<u8> {
@@ -82,9 +89,11 @@ class RsPreciseTraitMatchingTest : RsResolveTestBase() {
             v.some_fn();
             //^
         }
-    """)
+    """
+    )
 
-    fun `test method in specialized trait impl for tuple enum`() = checkByCode("""
+    fun `test method in specialized trait impl for tuple enum`() = checkByCode(
+        """
         trait Tr { fn some_fn(&self); }
         enum S<T> { Var1(T), Var2  }
         impl Tr for S<u8> {
@@ -99,9 +108,11 @@ class RsPreciseTraitMatchingTest : RsResolveTestBase() {
             v.some_fn();
             //^
         }
-    """)
+    """
+    )
 
-    fun `test method in specialized impl for struct`() = checkByCode("""
+    fun `test method in specialized impl for struct`() = checkByCode(
+        """
         struct S<T> { value: T }
         impl S<u8> {
             fn some_fn(&self) { }
@@ -114,9 +125,11 @@ class RsPreciseTraitMatchingTest : RsResolveTestBase() {
             v.some_fn();
             //^
         }
-    """)
+    """
+    )
 
-    fun `test trait bound satisfied for struct`() = checkByCode("""
+    fun `test trait bound satisfied for struct`() = checkByCode(
+        """
         trait Tr1 { fn some_fn(&self) {} }
         trait Tr2 { fn some_fn(&self) {} }
                      //X
@@ -131,9 +144,11 @@ class RsPreciseTraitMatchingTest : RsResolveTestBase() {
             v.some_fn();
             //^
         }
-    """, TypeInferenceMarks.methodPickCheckBounds)
+    """, TypeInferenceMarks.methodPickCheckBounds
+    )
 
-    fun `test trait bound satisfied for trait`() = checkByCode("""
+    fun `test trait bound satisfied for trait`() = checkByCode(
+        """
         #[lang = "sized"]
         trait Sized {}
         trait Tr1 { fn some_fn(&self) {} }
@@ -149,9 +164,11 @@ class RsPreciseTraitMatchingTest : RsResolveTestBase() {
             v.some_fn();
             //^
         }
-    """, TypeInferenceMarks.methodPickCheckBounds)
+    """, TypeInferenceMarks.methodPickCheckBounds
+    )
 
-    fun `test trait bound satisfied for other bound`() = checkByCode("""
+    fun `test trait bound satisfied for other bound`() = checkByCode(
+        """
         trait Tr1 { fn some_fn(&self) {} }
         trait Tr2 { fn some_fn(&self) {} }
                      //X
@@ -168,9 +185,11 @@ class RsPreciseTraitMatchingTest : RsResolveTestBase() {
                 //^
             }
         }
-    """, TypeInferenceMarks.methodPickCheckBounds)
+    """, TypeInferenceMarks.methodPickCheckBounds
+    )
 
-    fun `test allow ambiguous trait bounds for postponed selection`() = checkByCode("""
+    fun `test allow ambiguous trait bounds for postponed selection`() = checkByCode(
+        """
         trait Into<A> { fn into(&self) -> A; }
         trait From<B> { fn from(_: B) -> Self; }
         impl<T, U> Into<U> for T where U: From<T>
@@ -187,9 +206,11 @@ class RsPreciseTraitMatchingTest : RsResolveTestBase() {
                         //^
             let _: S2 = a;
         }
-    """)
+    """
+    )
 
-    fun `test method defined in out of scope trait 1`() = checkByCode("""
+    fun `test method defined in out of scope trait 1`() = checkByCode(
+        """
         struct S;
 
         mod a {
@@ -209,9 +230,11 @@ class RsPreciseTraitMatchingTest : RsResolveTestBase() {
             use a::A;
             S.foo();
         }   //^
-    """, TypeInferenceMarks.methodPickTraitScope)
+    """, TypeInferenceMarks.methodPickTraitScope
+    )
 
-    fun `test method defined in out of scope trait 2`() = checkByCode("""
+    fun `test method defined in out of scope trait 2`() = checkByCode(
+        """
         struct S;
 
         mod a {
@@ -231,9 +254,11 @@ class RsPreciseTraitMatchingTest : RsResolveTestBase() {
             use b::B;
             S.foo();
         }   //^
-    """, TypeInferenceMarks.methodPickTraitScope)
+    """, TypeInferenceMarks.methodPickTraitScope
+    )
 
-    fun `test method defined in out of scope trait (with aliased import)`() = checkByCode("""
+    fun `test method defined in out of scope trait (with aliased import)`() = checkByCode(
+        """
         struct S;
 
         mod a {
@@ -253,9 +278,11 @@ class RsPreciseTraitMatchingTest : RsResolveTestBase() {
             use a::A as _A;
             S.foo();
         }   //^
-    """, TypeInferenceMarks.methodPickTraitScope)
+    """, TypeInferenceMarks.methodPickTraitScope
+    )
 
-    fun `test method defined in out of scope trait (with underscore import)`() = checkByCode("""
+    fun `test method defined in out of scope trait (with underscore import)`() = checkByCode(
+        """
         struct S;
 
         mod a {
@@ -275,9 +302,11 @@ class RsPreciseTraitMatchingTest : RsResolveTestBase() {
             use a::A as _;
             S.foo();
         }   //^
-    """, TypeInferenceMarks.methodPickTraitScope)
+    """, TypeInferenceMarks.methodPickTraitScope
+    )
 
-    fun `test method defined in out of scope trait (with underscore re-export)`() = checkByCode("""
+    fun `test method defined in out of scope trait (with underscore re-export)`() = checkByCode(
+        """
         struct S;
 
         mod a {
@@ -301,9 +330,11 @@ class RsPreciseTraitMatchingTest : RsResolveTestBase() {
             use c::*;
             S.foo();
         }   //^
-    """, TypeInferenceMarks.methodPickTraitScope)
+    """, TypeInferenceMarks.methodPickTraitScope
+    )
 
-    fun `test method defined in out of scope trait (inside impl)`() = checkByCode("""
+    fun `test method defined in out of scope trait (inside impl)`() = checkByCode(
+        """
         mod foo {
             pub trait Foo { fn foo(&self) {} }
             pub trait Bar { fn foo(&self) {} }
@@ -319,9 +350,11 @@ class RsPreciseTraitMatchingTest : RsResolveTestBase() {
                 self.0.foo()
             }        //^
         }
-    """, TypeInferenceMarks.methodPickTraitScope)
+    """, TypeInferenceMarks.methodPickTraitScope
+    )
 
-    fun `test specialization simple`() = checkByCode("""
+    fun `test specialization simple`() = checkByCode(
+        """
         trait Tr { fn foo(&self); }
         struct S;
         impl<T> Tr for T { fn foo(&self) {} }
@@ -330,9 +363,11 @@ class RsPreciseTraitMatchingTest : RsResolveTestBase() {
         fn main() {
             S.foo();
         }   //^
-    """, TypeInferenceMarks.traitSelectionSpecialization)
+    """, TypeInferenceMarks.traitSelectionSpecialization
+    )
 
-    fun `test pick correct method from out of scope traits`() = checkByCode("""
+    fun `test pick correct method from out of scope traits`() = checkByCode(
+        """
         struct Foo;
         struct Bar;
 
@@ -363,9 +398,11 @@ class RsPreciseTraitMatchingTest : RsResolveTestBase() {
             Bar.do_x();
                //^
         }
-    """, TypeInferenceMarks.methodPickTraitsOutOfScope)
+    """, TypeInferenceMarks.methodPickTraitsOutOfScope
+    )
 
-    fun `test filter associated functions by trait visibility`() = checkByCode("""
+    fun `test filter associated functions by trait visibility`() = checkByCode(
+        """
         struct S;
 
         mod foo {
@@ -385,9 +422,11 @@ class RsPreciseTraitMatchingTest : RsResolveTestBase() {
         fn main () {
             S::new();
         }    //^
-    """)
+    """
+    )
 
-    fun `test filter associated constants by trait visibility`() = checkByCode("""
+    fun `test filter associated constants by trait visibility`() = checkByCode(
+        """
         struct S;
 
         mod foo {
@@ -407,9 +446,11 @@ class RsPreciseTraitMatchingTest : RsResolveTestBase() {
         fn main () {
             let a = S::C;
         }            //^
-    """)
+    """
+    )
 
-    fun `test filter associated functions by trait bounds`() = checkByCode("""
+    fun `test filter associated functions by trait bounds`() = checkByCode(
+        """
         struct S;
         trait Bound1 {}
         trait Bound2 {}
@@ -427,9 +468,11 @@ class RsPreciseTraitMatchingTest : RsResolveTestBase() {
         fn main () {
             S::new();
         }    //^
-    """)
+    """
+    )
 
-    fun `test filter associated constants by trait bounds`() = checkByCode("""
+    fun `test filter associated constants by trait bounds`() = checkByCode(
+        """
         struct S;
         trait Bound1 {}
         trait Bound2 {}
@@ -447,36 +490,44 @@ class RsPreciseTraitMatchingTest : RsResolveTestBase() {
         fn main () {
             let a = S::C;
         }            //^
-    """)
+    """
+    )
 
-    fun `test bound for type parameter wins over blanket impl (type-related path)`() = checkByCode("""
+    fun `test bound for type parameter wins over blanket impl (type-related path)`() = checkByCode(
+        """
         trait Foo { fn foo(&self); }
                      //X
         impl<T> Foo for T { fn foo(&self) {} }
         fn asd<T: Foo>(t: T) {
             T::foo(&t);
         }    //^
-    """)
+    """
+    )
 
-    fun `test bound for type parameter wins over blanket impl (UFCS path)`() = checkByCode("""
+    fun `test bound for type parameter wins over blanket impl (UFCS path)`() = checkByCode(
+        """
         trait Foo { fn foo(&self); }
                      //X
         impl<T> Foo for T { fn foo(&self) {} }
         fn asd<T: Foo>(t: T) {
             <T as Foo>::foo(&t);
         }             //^
-    """)
+    """
+    )
 
-    fun `test bound for type parameter wins over blanket impl (method call)`() = checkByCode("""
+    fun `test bound for type parameter wins over blanket impl (method call)`() = checkByCode(
+        """
         trait Foo { fn foo(&self); }
                      //X
         impl<T> Foo for T { fn foo(&self) {} }
         fn asd<T: Foo>(t: T) {
             t.foo()
         }    //^
-    """)
+    """
+    )
 
-    fun `test trait in scope wins for trait bounds (type-related path) 1`() = checkByCode("""
+    fun `test trait in scope wins for trait bounds (type-related path) 1`() = checkByCode(
+        """
         mod a {
             pub trait Foo { fn foo(&self) {} }
             pub trait Bar { fn foo(&self) {} }
@@ -487,9 +538,11 @@ class RsPreciseTraitMatchingTest : RsResolveTestBase() {
         fn foo<T>(a: S<T>) where S<T>: a::Foo {
             <S<T>>::foo(&a);
         }         //^
-    """)
+    """
+    )
 
-    fun `test trait in scope wins for trait bounds (type-related path) 2`() = checkByCode("""
+    fun `test trait in scope wins for trait bounds (type-related path) 2`() = checkByCode(
+        """
         mod a {
             pub trait Foo { fn foo(&self) {} }
             pub trait Bar { fn foo(&self) {} }
@@ -502,9 +555,11 @@ class RsPreciseTraitMatchingTest : RsResolveTestBase() {
         {
             <S<T>>::foo(&a);
         }         //^
-    """)
+    """
+    )
 
-    fun `test trait in scope wins for trait bounds (method call) 1`() = checkByCode("""
+    fun `test trait in scope wins for trait bounds (method call) 1`() = checkByCode(
+        """
         mod a {
             pub trait Foo { fn foo(&self) {} }
             pub trait Bar { fn foo(&self) {} }
@@ -515,9 +570,11 @@ class RsPreciseTraitMatchingTest : RsResolveTestBase() {
         fn foo<T>(a: S<T>) where S<T>: a::Foo {
             a.foo();
         }   //^
-    """)
+    """
+    )
 
-    fun `test trait in scope wins for trait bounds (method call) 2`() = checkByCode("""
+    fun `test trait in scope wins for trait bounds (method call) 2`() = checkByCode(
+        """
         mod a {
             pub trait Foo { fn foo(&self) {} }
             pub trait Bar { fn foo(&self) {} }
@@ -530,10 +587,12 @@ class RsPreciseTraitMatchingTest : RsResolveTestBase() {
         {
             a.foo();
         }   //^
-    """)
+    """
+    )
 
     @MockEdition(CargoWorkspace.Edition.EDITION_2018)
-    fun `test cycle using glob-imports (and underscore trait re-export)`() = checkByCode("""
+    fun `test cycle using glob-imports (and underscore trait re-export)`() = checkByCode(
+        """
         mod a {
             pub use crate::b::*;
             pub use crate::c::T1 as _;
@@ -553,9 +612,11 @@ class RsPreciseTraitMatchingTest : RsResolveTestBase() {
             use b::*;
             S.foo();
         }      //^
-    """)
+    """
+    )
 
-    fun `test trait method and private inherent method`() = checkByCode("""
+    fun `test trait method and private inherent method`() = checkByCode(
+        """
         use foo::{Foo, Trait};
 
         mod foo {
@@ -578,5 +639,6 @@ class RsPreciseTraitMatchingTest : RsResolveTestBase() {
             f.get();
             //^
         }
-    """)
+    """
+    )
 }

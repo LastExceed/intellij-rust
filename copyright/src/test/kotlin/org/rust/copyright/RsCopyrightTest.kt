@@ -13,7 +13,8 @@ import java.util.*
 
 class RsCopyrightTest : RsTestBase() {
 
-    fun `test insert copyright`() = doTest("""
+    fun `test insert copyright`() = doTest(
+        """
         fn main() {}
     """, """
         /*
@@ -22,9 +23,11 @@ class RsCopyrightTest : RsTestBase() {
          */
 
         fn main() {}
-    """)
+    """
+    )
 
-    fun `test update copyright`() = doTest("""
+    fun `test update copyright`() = doTest(
+        """
         /*
          * Copyright 2017
          * All rights reserved
@@ -38,7 +41,8 @@ class RsCopyrightTest : RsTestBase() {
          */
 
         fn main() {}
-    """)
+    """
+    )
 
     private fun doTest(@Language("Rust") before: String, @Language("Rust") after: String) {
         InlineFile(before.trimIndent())
@@ -54,8 +58,10 @@ class RsCopyrightTest : RsTestBase() {
             keyword = "Copyright"
             allowReplaceRegexp = "Copyright"
         }
-        val updateCopyright = UpdateCopyrightFactory.createUpdateCopyright(myFixture.project, myFixture.module,
-            myFixture.file, options) ?: error("Failed to create copyright update")
+        val updateCopyright = UpdateCopyrightFactory.createUpdateCopyright(
+            myFixture.project, myFixture.module,
+            myFixture.file, options
+        ) ?: error("Failed to create copyright update")
         updateCopyright.prepare()
         updateCopyright.complete()
     }

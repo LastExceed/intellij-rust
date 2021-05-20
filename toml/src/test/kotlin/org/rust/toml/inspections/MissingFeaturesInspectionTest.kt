@@ -22,13 +22,16 @@ class MissingFeaturesInspectionTest : RsWithToolchainInspectionTestBase<Context>
         featureName = "feature_bar",
         fileToCheck = "foo/src/main.rs"
     ) {
-        toml("Cargo.toml", """
+        toml(
+            "Cargo.toml", """
             [workspace]
             members = ["foo", "bar"]
-        """)
+        """
+        )
 
         dir("foo") {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "foo"
                 version = "0.1.0"
@@ -36,16 +39,20 @@ class MissingFeaturesInspectionTest : RsWithToolchainInspectionTestBase<Context>
 
                 [dependencies]
                 bar = { path = "../bar", features = ["feature_bar"] }
-            """)
+            """
+            )
             dir("src") {
-                rust("main.rs", """
+                rust(
+                    "main.rs", """
                     fn main() {}
-                """)
+                """
+                )
             }
         }
 
         dir("bar") {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "bar"
                 version = "0.1.0"
@@ -53,7 +60,8 @@ class MissingFeaturesInspectionTest : RsWithToolchainInspectionTestBase<Context>
 
                 [features]
                 feature_bar = [] # disabled
-            """)
+            """
+            )
             dir("src") {
                 rust("lib.rs", "")
             }
@@ -65,7 +73,8 @@ class MissingFeaturesInspectionTest : RsWithToolchainInspectionTestBase<Context>
         featureName = "feature_hello",
         fileToCheck = "src/main.rs"
     ) {
-        toml("Cargo.toml", """
+        toml(
+            "Cargo.toml", """
             [package]
             name = "hello"
             version = "0.1.0"
@@ -80,11 +89,14 @@ class MissingFeaturesInspectionTest : RsWithToolchainInspectionTestBase<Context>
             feature_hello = []
 
             [dependencies]
-        """)
+        """
+        )
         dir("src") {
-            rust("main.rs", """
+            rust(
+                "main.rs", """
                 fn main() {}
-            """)
+            """
+            )
             rust("lib.rs", "")
         }
     }
@@ -94,13 +106,16 @@ class MissingFeaturesInspectionTest : RsWithToolchainInspectionTestBase<Context>
         featureName = "feature_bar",
         fileToCheck = "foo/Cargo.toml"
     ) {
-        toml("Cargo.toml", """
+        toml(
+            "Cargo.toml", """
             [workspace]
             members = ["foo", "bar"]
-        """)
+        """
+        )
 
         dir("foo") {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "foo"
                 version = "0.1.0"
@@ -108,16 +123,20 @@ class MissingFeaturesInspectionTest : RsWithToolchainInspectionTestBase<Context>
 
                 [dependencies]
                 bar = { path = "../bar", features = ["feature_bar"] }
-            """)
+            """
+            )
             dir("src") {
-                rust("main.rs", """
+                rust(
+                    "main.rs", """
                     fn main() {}
-                """)
+                """
+                )
             }
         }
 
         dir("bar") {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "bar"
                 version = "0.1.0"
@@ -125,7 +144,8 @@ class MissingFeaturesInspectionTest : RsWithToolchainInspectionTestBase<Context>
 
                 [features]
                 feature_bar = [] # disabled
-            """)
+            """
+            )
             dir("src") {
                 rust("lib.rs", "")
             }

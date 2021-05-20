@@ -22,7 +22,7 @@ import org.rust.lang.RsLanguage
 abstract class RsParsingTestCaseBase(@NonNls dataPath: String) : ParsingTestCase(
     "org/rust/lang/core/parser/fixtures/$dataPath",
     "rs",
-    /*lowerCaseFirstLetter = */ true ,
+    /*lowerCaseFirstLetter = */ true,
     RustParserDefinition()
 ), RsTestCase {
 

@@ -12,7 +12,8 @@ import org.rust.ide.annotator.RsAnnotatorTestBase
 import org.rust.ide.annotator.RsExpressionAnnotator
 
 class AddStructFieldsFixTest : RsAnnotatorTestBase(RsExpressionAnnotator::class) {
-    fun `test no named fields`() = checkBothQuickFix("""
+    fun `test no named fields`() = checkBothQuickFix(
+        """
         struct S { foo: i32, bar: f64 }
 
         fn main() {
@@ -24,9 +25,11 @@ class AddStructFieldsFixTest : RsAnnotatorTestBase(RsExpressionAnnotator::class)
         fn main() {
             let _ = S { foo: 0/*caret*/, bar: 0.0 };
         }
-    """)
+    """
+    )
 
-    fun `test no positional fields`() = checkBothQuickFix("""
+    fun `test no positional fields`() = checkBothQuickFix(
+        """
         struct S(i32, f64);
 
         fn main() {
@@ -38,9 +41,11 @@ class AddStructFieldsFixTest : RsAnnotatorTestBase(RsExpressionAnnotator::class)
         fn main() {
             let _ = S { 0: 0/*caret*/, 1: 0.0 };
         }
-    """)
+    """
+    )
 
-    fun `test aliased struct`() = checkBothQuickFix("""
+    fun `test aliased struct`() = checkBothQuickFix(
+        """
         struct S { foo: i32, bar: f64 }
         type T = S;
 
@@ -54,10 +59,12 @@ class AddStructFieldsFixTest : RsAnnotatorTestBase(RsExpressionAnnotator::class)
         fn main() {
             let _ = T { foo: 0/*caret*/, bar: 0.0 };
         }
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test no comma`() = checkBothQuickFix("""
+    fun `test no comma`() = checkBothQuickFix(
+        """
         struct S { a: i32, b: String }
 
         fn main() {
@@ -69,10 +76,12 @@ class AddStructFieldsFixTest : RsAnnotatorTestBase(RsExpressionAnnotator::class)
         fn main() {
             S { a: 92, b: "".to_string()/*caret*/ };
         }
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test with comma`() = checkBothQuickFix("""
+    fun `test with comma`() = checkBothQuickFix(
+        """
         struct S { a: i32, b: String }
 
         fn main() {
@@ -84,9 +93,11 @@ class AddStructFieldsFixTest : RsAnnotatorTestBase(RsExpressionAnnotator::class)
         fn main() {
             S { a: 92, b: "".to_string()/*caret*/ };
         }
-    """)
+    """
+    )
 
-    fun `test some existing fields`() = checkBothQuickFix("""
+    fun `test some existing fields`() = checkBothQuickFix(
+        """
         struct S(i32, i32, i32, i32);
 
         fn main() {
@@ -106,9 +117,11 @@ class AddStructFieldsFixTest : RsAnnotatorTestBase(RsExpressionAnnotator::class)
                 3: 0
             };
         }
-    """)
+    """
+    )
 
-    fun `test first field is added first`() = checkBothQuickFix("""
+    fun `test first field is added first`() = checkBothQuickFix(
+        """
         struct S { a: i32, b: i32 }
 
         fn main() {
@@ -120,9 +133,11 @@ class AddStructFieldsFixTest : RsAnnotatorTestBase(RsExpressionAnnotator::class)
         fn main() {
             let _ = S { a: 0/*caret*/, b: 0, };
         }
-    """)
+    """
+    )
 
-    fun `test last field is added last`() = checkBothQuickFix("""
+    fun `test last field is added last`() = checkBothQuickFix(
+        """
         struct S { a: i32, b: i32 }
 
         fn main() {
@@ -134,9 +149,11 @@ class AddStructFieldsFixTest : RsAnnotatorTestBase(RsExpressionAnnotator::class)
         fn main() {
             let _ = S { a: 0, b: 0/*caret*/ };
         }
-    """)
+    """
+    )
 
-    fun `test preserves order`() = checkBothQuickFix("""
+    fun `test preserves order`() = checkBothQuickFix(
+        """
         struct S { a: i32, b: i32, c: i32, d: i32, e: i32}
 
         fn main() {
@@ -148,10 +165,12 @@ class AddStructFieldsFixTest : RsAnnotatorTestBase(RsExpressionAnnotator::class)
         fn main() {
             let _ = S { a: 0, b: 0/*caret*/, c: 1, d: 0, e: 2 };
         }
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test issue 980`() = checkBothQuickFix("""
+    fun `test issue 980`() = checkBothQuickFix(
+        """
         struct Mesh {
             pub name: String,
             pub vertices: Vec<Vector3>,
@@ -178,10 +197,12 @@ class AddStructFieldsFixTest : RsAnnotatorTestBase(RsExpressionAnnotator::class)
                 material: None
             };
         }
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test many type fields`() = checkBothQuickFix("""
+    fun `test many type fields`() = checkBothQuickFix(
+        """
         type AliasedString = String;
         struct TrivialStruct;
         struct EmptyTupleStruct();
@@ -287,10 +308,12 @@ class AddStructFieldsFixTest : RsAnnotatorTestBase(RsExpressionAnnotator::class)
                 unsupported_type_field: ()
             };
         }
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test smart pointers`() = checkBothQuickFix("""
+    fun `test smart pointers`() = checkBothQuickFix(
+        """
         use std::rc::Rc;
         use std::sync::{Arc, Mutex};
         use std::cell::{Cell, RefCell, UnsafeCell};
@@ -334,10 +357,12 @@ class AddStructFieldsFixTest : RsAnnotatorTestBase(RsExpressionAnnotator::class)
                 g: Mutex::new("".to_string())
             };
         }
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test default`() = checkBothQuickFix("""
+    fun `test default`() = checkBothQuickFix(
+        """
         #[derive(Default)]
         struct A {
             a: u64
@@ -385,10 +410,12 @@ class AddStructFieldsFixTest : RsAnnotatorTestBase(RsExpressionAnnotator::class)
         fn main() {
             S{ a: Default::default(), b: Default::default() };
         }
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test local variable`() = checkBothQuickFix("""
+    fun `test local variable`() = checkBothQuickFix(
+        """
         struct A {
             x: u64
         }
@@ -448,10 +475,12 @@ class AddStructFieldsFixTest : RsAnnotatorTestBase(RsExpressionAnnotator::class)
                 obj
             };
         }
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test local variable recursive`() = checkRecursiveQuickFix("""
+    fun `test local variable recursive`() = checkRecursiveQuickFix(
+        """
         struct A {
             a: u64
         }
@@ -477,10 +506,12 @@ class AddStructFieldsFixTest : RsAnnotatorTestBase(RsExpressionAnnotator::class)
             let a: u64 = 5;
             B{ a: A { a } };
         }
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test 1-level recursively fill struct`() = checkRecursiveQuickFix("""
+    fun `test 1-level recursively fill struct`() = checkRecursiveQuickFix(
+        """
         union Union {
             a: i32,
             b: f32
@@ -561,10 +592,12 @@ class AddStructFieldsFixTest : RsAnnotatorTestBase(RsExpressionAnnotator::class)
                 tupleStruct: TupleStruct(0, 0)
             };
         }
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test 2-level recursively fill struct`() = checkRecursiveQuickFix("""
+    fun `test 2-level recursively fill struct`() = checkRecursiveQuickFix(
+        """
         struct ToolInfo {
             name: String,
             toolVersion: String,
@@ -623,9 +656,11 @@ class AddStructFieldsFixTest : RsAnnotatorTestBase(RsExpressionAnnotator::class)
                 }
             };
         }
-    """)
+    """
+    )
 
-    fun `test we don't filling struct that can't be instantiated (has private fields)`() = checkRecursiveQuickFix("""
+    fun `test we don't filling struct that can't be instantiated (has private fields)`() = checkRecursiveQuickFix(
+        """
         mod foo {
             pub struct Outer {
                 pub inner: Inner,
@@ -657,9 +692,11 @@ class AddStructFieldsFixTest : RsAnnotatorTestBase(RsExpressionAnnotator::class)
         fn main() {
             foo::Outer { inner: (), field2: 0 };
         }
-    """)
+    """
+    )
 
-    fun `test raw identifier field`() = checkBothQuickFix("""
+    fun `test raw identifier field`() = checkBothQuickFix(
+        """
         struct S { r#type: i32 }
 
         fn main() {
@@ -671,9 +708,11 @@ class AddStructFieldsFixTest : RsAnnotatorTestBase(RsExpressionAnnotator::class)
         fn main() {
             S { r#type: 0/*caret*/ };
         }
-    """)
+    """
+    )
 
-    fun `test raw identifier field local variable`() = checkBothQuickFix("""
+    fun `test raw identifier field local variable`() = checkBothQuickFix(
+        """
         struct S { r#type: i32 }
 
         fn main() {
@@ -687,9 +726,11 @@ class AddStructFieldsFixTest : RsAnnotatorTestBase(RsExpressionAnnotator::class)
             let r#type: i32 = 0;
             S { r#type };
         }
-    """)
+    """
+    )
 
-    fun `test raw identifier field unnecessary escape`() = checkBothQuickFix("""
+    fun `test raw identifier field unnecessary escape`() = checkBothQuickFix(
+        """
         struct S { r#foo: i32, bar: i32 }
 
         fn main() {
@@ -705,7 +746,8 @@ class AddStructFieldsFixTest : RsAnnotatorTestBase(RsExpressionAnnotator::class)
             let r#bar: i32 = 0;
             S { foo, bar };
         }
-    """)
+    """
+    )
 
     private fun checkBothQuickFix(@Language("Rust") before: String, @Language("Rust") after: String) {
         checkFixByText("Add missing fields", before, after)

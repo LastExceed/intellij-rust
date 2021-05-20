@@ -19,7 +19,7 @@ class RsTypingEmptyFileFuzzyTest : RsTypingTestBase() {
                 doTest(ch, "<caret>", "$ch<caret>")
                 backspace = true
                 doTest('\b', "$ch<caret>", "<caret>")
-            } catch(e: Throwable) {
+            } catch (e: Throwable) {
                 print("Fuzzy test failed for character '${StringUtil.escapeStringCharacters(ch.toString())}'")
                 if (backspace) print(" when performing backspace")
                 println("!")

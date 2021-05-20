@@ -25,17 +25,21 @@ class CargoBuildManagerTest : CargoBuildTest() {
 
     fun `test build successful`() {
         fileTree {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "project"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
 
             dir("src") {
-                rust("main.rs", """
+                rust(
+                    "main.rs", """
                     fn main() {}
-                """)
+                """
+                )
             }
         }.create()
         val buildResult = buildProject()
@@ -80,17 +84,21 @@ class CargoBuildManagerTest : CargoBuildTest() {
 
     fun `test build successful with warning`() {
         fileTree {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "project"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
 
             dir("src") {
-                rust("lib.rs", """
+                rust(
+                    "lib.rs", """
                     fn foo() {}
-                """)
+                """
+                )
             }
         }.create()
         val buildResult = buildProject()
@@ -140,17 +148,21 @@ class CargoBuildManagerTest : CargoBuildTest() {
 
     fun `test build failed`() {
         fileTree {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "project"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
 
             dir("src") {
-                rust("lib.rs", """
+                rust(
+                    "lib.rs", """
                     fn foo() { 0 }
-                """)
+                """
+                )
             }
         }.create()
         val buildResult = buildProject()
@@ -200,21 +212,25 @@ class CargoBuildManagerTest : CargoBuildTest() {
 
     fun `test build failed (multiple errors)`() {
         fileTree {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "project"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
 
             dir("src") {
-                rust("lib.rs", """
+                rust(
+                    "lib.rs", """
                     fn foo() {
                         1 + "1";
                         2 + "2";
                         3 + "3";
                     }
-                """)
+                """
+                )
             }
         }.create()
         val buildResult = buildProject()
@@ -274,17 +290,21 @@ class CargoBuildManagerTest : CargoBuildTest() {
 
     fun `test build canceled`() {
         fileTree {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "project"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
 
             dir("src") {
-                rust("lib.rs", """
+                rust(
+                    "lib.rs", """
                     fn _foo() {}
-                """)
+                """
+                )
             }
         }.create()
         mockProgressIndicator?.cancel()
@@ -309,24 +329,32 @@ class CargoBuildManagerTest : CargoBuildTest() {
 
     fun `test build errors in multiple files`() {
         fileTree {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "project"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
 
             dir("src") {
-                rust("foo.rs", """
+                rust(
+                    "foo.rs", """
                     fn foo() { 0 }
-                """)
-                rust("bar.rs", """
+                """
+                )
+                rust(
+                    "bar.rs", """
                     fn bar() { 0 }
-                """)
-                rust("lib.rs", """
+                """
+                )
+                rust(
+                    "lib.rs", """
                     mod foo;
                     mod bar;
-                """)
+                """
+                )
             }
         }.create()
         val buildResult = buildProject()
@@ -381,20 +409,26 @@ class CargoBuildManagerTest : CargoBuildTest() {
 
     fun `test build lib successful bin successful`() {
         fileTree {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "project"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
 
             dir("src") {
-                rust("lib.rs", """
+                rust(
+                    "lib.rs", """
                     fn _foo() {}
-                """)
-                rust("main.rs", """
+                """
+                )
+                rust(
+                    "main.rs", """
                     fn main() {}
-                """)
+                """
+                )
             }
         }.create()
         val buildResult = buildProject()
@@ -440,20 +474,26 @@ class CargoBuildManagerTest : CargoBuildTest() {
 
     fun `test build lib successful bin failed`() {
         fileTree {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "project"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
 
             dir("src") {
-                rust("lib.rs", """
+                rust(
+                    "lib.rs", """
                     fn _foo() {}
-                """)
-                rust("main.rs", """
+                """
+                )
+                rust(
+                    "main.rs", """
                     fn main() { 0 }
-                """)
+                """
+                )
             }
         }.create()
         val buildResult = buildProject()
@@ -504,20 +544,26 @@ class CargoBuildManagerTest : CargoBuildTest() {
 
     fun `test build lib failed bin skipped`() {
         fileTree {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "project"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
 
             dir("src") {
-                rust("lib.rs", """
+                rust(
+                    "lib.rs", """
                     fn foo() { 0 }
-                """)
-                rust("main.rs", """
+                """
+                )
+                rust(
+                    "main.rs", """
                     fn main() { 0 }
-                """)
+                """
+                )
             }
         }.create()
         val buildResult = buildProject()
@@ -567,31 +613,38 @@ class CargoBuildManagerTest : CargoBuildTest() {
 
     fun `test build multiple packages first successful second successful`() {
         fileTree {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [workspace]
                 members = [
                     "first",
                     "second",
                 ]
-            """)
+            """
+            )
 
             dir("first") {
-                toml("Cargo.toml", """
+                toml(
+                    "Cargo.toml", """
                     [package]
                     name = "first"
                     version = "0.1.0"
                     authors = []
-                """)
+                """
+                )
 
                 dir("src") {
-                    rust("lib.rs", """
+                    rust(
+                        "lib.rs", """
                     fn _foo() {}
-                """)
+                """
+                    )
                 }
             }
 
             dir("second") {
-                toml("Cargo.toml", """
+                toml(
+                    "Cargo.toml", """
                     [package]
                     name = "second"
                     version = "0.1.0"
@@ -599,12 +652,15 @@ class CargoBuildManagerTest : CargoBuildTest() {
 
                     [dependencies]
                     first = { path = "../first" }
-                """)
+                """
+                )
 
                 dir("src") {
-                    rust("lib.rs", """
+                    rust(
+                        "lib.rs", """
                     fn _bar() {}
-                """)
+                """
+                    )
                 }
             }
         }.create()
@@ -663,31 +719,38 @@ class CargoBuildManagerTest : CargoBuildTest() {
 
     fun `test build multiple packages first successful second failed`() {
         fileTree {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [workspace]
                 members = [
                     "first",
                     "second",
                 ]
-            """)
+            """
+            )
 
             dir("first") {
-                toml("Cargo.toml", """
+                toml(
+                    "Cargo.toml", """
                     [package]
                     name = "first"
                     version = "0.1.0"
                     authors = []
-                """)
+                """
+                )
 
                 dir("src") {
-                    rust("lib.rs", """
+                    rust(
+                        "lib.rs", """
                     fn _foo() {}
-                """)
+                """
+                    )
                 }
             }
 
             dir("second") {
-                toml("Cargo.toml", """
+                toml(
+                    "Cargo.toml", """
                     [package]
                     name = "second"
                     version = "0.1.0"
@@ -695,12 +758,15 @@ class CargoBuildManagerTest : CargoBuildTest() {
 
                     [dependencies]
                     first = { path = "../first" }
-                """)
+                """
+                )
 
                 dir("src") {
-                    rust("lib.rs", """
+                    rust(
+                        "lib.rs", """
                     fn _bar() { 0 }
-                """)
+                """
+                    )
                 }
             }
         }.create()
@@ -764,31 +830,38 @@ class CargoBuildManagerTest : CargoBuildTest() {
 
     fun `test build multiple packages first failed second skipped`() {
         fileTree {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [workspace]
                 members = [
                     "first",
                     "second",
                 ]
-            """)
+            """
+            )
 
             dir("first") {
-                toml("Cargo.toml", """
+                toml(
+                    "Cargo.toml", """
                     [package]
                     name = "first"
                     version = "0.1.0"
                     authors = []
-                """)
+                """
+                )
 
                 dir("src") {
-                    rust("lib.rs", """
+                    rust(
+                        "lib.rs", """
                     fn foo() { 0 }
-                """)
+                """
+                    )
                 }
             }
 
             dir("second") {
-                toml("Cargo.toml", """
+                toml(
+                    "Cargo.toml", """
                     [package]
                     name = "second"
                     version = "0.1.0"
@@ -796,12 +869,15 @@ class CargoBuildManagerTest : CargoBuildTest() {
 
                     [dependencies]
                     first = { path = "../first" }
-                """)
+                """
+                )
 
                 dir("src") {
-                    rust("lib.rs", """
+                    rust(
+                        "lib.rs", """
                     fn _bar() { 0 }
-                """)
+                """
+                    )
                 }
             }
         }.create()
@@ -852,17 +928,21 @@ class CargoBuildManagerTest : CargoBuildTest() {
 
     fun `test check successful with warning`() {
         fileTree {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "project"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
 
             dir("src") {
-                rust("lib.rs", """
+                rust(
+                    "lib.rs", """
                     fn foo() {}
-                """)
+                """
+                )
             }
         }.create()
         val buildResult = buildProject("check")
@@ -912,17 +992,21 @@ class CargoBuildManagerTest : CargoBuildTest() {
 
     fun `test check (clippy) successful with warning`() {
         fileTree {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "project"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
 
             dir("src") {
-                rust("lib.rs", """
+                rust(
+                    "lib.rs", """
                     fn _foo<'a>() {}
-                """)
+                """
+                )
             }
         }.create()
         val buildResult = buildProject("clippy")

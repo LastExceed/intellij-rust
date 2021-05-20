@@ -104,7 +104,7 @@ abstract class RsLazyBlockStubCreationTestBase : RsTestBase() {
             TestCase.assertEquals(DebugUtil.stubTreeToString(stub1), DebugUtil.stubTreeToString(stub2))
         }
 
-        println("Blocks: $numBlocks, parsed: $numParsedBlocks (${(numParsedBlocks * 1000 / numBlocks)/10.0}%)")
+        println("Blocks: $numBlocks, parsed: $numParsedBlocks (${(numParsedBlocks * 1000 / numBlocks) / 10.0}%)")
     }
 
     private fun parseFile(psi: RsFile) { // profiler hint

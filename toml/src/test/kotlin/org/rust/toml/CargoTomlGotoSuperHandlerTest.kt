@@ -13,23 +13,27 @@ import org.rust.openapiext.virtualFile
 class CargoTomlGotoSuperHandlerTest : RsTestBase() {
 
     // Test for `RsGotoSuperHandler`
-    fun `test go from a crate root to cargo toml`() = checkNavigationInFiles("""
+    fun `test go from a crate root to cargo toml`() = checkNavigationInFiles(
+        """
     //- main.rs
         /*caret*/fn main() {}
 
     //- Cargo.toml
         [package]
         name = "example"
-    """, "Cargo.toml")
+    """, "Cargo.toml"
+    )
 
     // Test for CargoTomlGotoSuperHandler
-    fun `test go from package cargo toml to workspace cargo toml`() = checkNavigationInFiles("""
+    fun `test go from package cargo toml to workspace cargo toml`() = checkNavigationInFiles(
+        """
     //- Cargo.toml
         /*caret*/[package]
         name = "example"
     //- workspace/Cargo.toml
         [workspace]
-    """, "workspace/Cargo.toml")
+    """, "workspace/Cargo.toml"
+    )
 
     private fun checkNavigationInFiles(fileTreeText: String, expectedFilePath: String) {
         fileTreeFromText(fileTreeText).createAndOpenFileWithCaretMarker()

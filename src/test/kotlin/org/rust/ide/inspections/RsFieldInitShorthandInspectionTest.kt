@@ -7,13 +7,16 @@ package org.rust.ide.inspections
 
 class RsFieldInitShorthandInspectionTest : RsInspectionsTestBase(RsFieldInitShorthandInspection::class) {
 
-    fun `test not applicable`() = checkFixIsUnavailable("Use initialization shorthand", """
+    fun `test not applicable`() = checkFixIsUnavailable(
+        "Use initialization shorthand", """
         fn main() {
             let _ = S { foo: bar/*caret*/, baz: &baz };
         }
-    """, checkWeakWarn = true)
+    """, checkWeakWarn = true
+    )
 
-    fun `test fix`() = checkFixByText("Use initialization shorthand", """
+    fun `test fix`() = checkFixByText(
+        "Use initialization shorthand", """
         fn main() {
             let _ = S { <weak_warning descr="Expression can be simplified">foo: foo/*caret*/</weak_warning>, baz: quux };
         }
@@ -21,5 +24,6 @@ class RsFieldInitShorthandInspectionTest : RsInspectionsTestBase(RsFieldInitShor
         fn main() {
             let _ = S { foo/*caret*/, baz: quux };
         }
-    """, checkWeakWarn = true)
+    """, checkWeakWarn = true
+    )
 }

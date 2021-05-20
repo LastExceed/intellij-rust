@@ -65,7 +65,7 @@ class ConvertToRefTyFix(expr: RsExpr, ty: Ty) : ConvertToTyUsingTraitMethodFix(e
 /**
  * For the given `expr` converts it to the owned type with `to_owned()` method.
  */
-class ConvertToOwnedTyFix(expr: RsExpr, ty: Ty): ConvertToTyUsingTraitMethodFix(expr, ty, "ToOwned", "to_owned")
+class ConvertToOwnedTyFix(expr: RsExpr, ty: Ty) : ConvertToTyUsingTraitMethodFix(expr, ty, "ToOwned", "to_owned")
 
 /**
  * For the given `expr` adds `to_string()` call. Note the fix doesn't attempt to check if adding the function call

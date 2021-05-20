@@ -7,7 +7,8 @@ package org.rust.lang.core.type
 
 class RsStubOnlyTypeInferenceTest : RsTypificationTestBase() {
 
-    fun `test const expr`() = stubOnlyTypeInfer("""
+    fun `test const expr`() = stubOnlyTypeInfer(
+        """
     //- foo.rs
         const COUNT: usize = 2;
         pub fn foo(a: i32) -> [i32; (2 * COUNT + 3) << (4 / 2)] { unimplemented!() }
@@ -20,9 +21,11 @@ class RsStubOnlyTypeInferenceTest : RsTypificationTestBase() {
             x;
           //^ [i32; 28]
         }
-    """)
+    """
+    )
 
-    fun `test const expr 2`() = stubOnlyTypeInfer("""
+    fun `test const expr 2`() = stubOnlyTypeInfer(
+        """
     //- foo.rs
         const COUNT: usize = 2;
         pub fn foo(a: i32, b: [i32; (2 * COUNT + 3) << (4 / 2)]) { unimplemented!() }
@@ -35,9 +38,11 @@ class RsStubOnlyTypeInferenceTest : RsTypificationTestBase() {
             x;
           //^ ()
         }
-    """)
+    """
+    )
 
-    fun `test const expr in a macro`() = stubOnlyTypeInfer("""
+    fun `test const expr in a macro`() = stubOnlyTypeInfer(
+        """
     //- foo.rs
         macro_rules! foo { ($ i:item) => { $ i }; }
         const COUNT: usize = 2;
@@ -51,9 +56,11 @@ class RsStubOnlyTypeInferenceTest : RsTypificationTestBase() {
             x;
           //^ [i32; 2]
         }
-    """)
+    """
+    )
 
-    fun `test const generic in path (explicit)`() = stubOnlyTypeInfer("""
+    fun `test const generic in path (explicit)`() = stubOnlyTypeInfer(
+        """
     //- foo.rs
         #![feature(const_generics)]
 
@@ -69,9 +76,11 @@ class RsStubOnlyTypeInferenceTest : RsTypificationTestBase() {
             x;
           //^ S<0>
         }
-    """)
+    """
+    )
 
-    fun `test const generic in path (implicit)`() = stubOnlyTypeInfer("""
+    fun `test const generic in path (implicit)`() = stubOnlyTypeInfer(
+        """
     //- foo.rs
         #![feature(const_generics)]
 
@@ -90,9 +99,11 @@ class RsStubOnlyTypeInferenceTest : RsTypificationTestBase() {
             x;
           //^ S<0>
         }
-    """)
+    """
+    )
 
-    fun `test const generic in path (not inferred)`() = stubOnlyTypeInfer("""
+    fun `test const generic in path (not inferred)`() = stubOnlyTypeInfer(
+        """
     //- foo.rs
         #![feature(const_generics)]
 
@@ -111,9 +122,11 @@ class RsStubOnlyTypeInferenceTest : RsTypificationTestBase() {
             x;
           //^ S<<unknown>>
         }
-    """)
+    """
+    )
 
-    fun `test const generic in path (wrong arguments order)`() = stubOnlyTypeInfer("""
+    fun `test const generic in path (wrong arguments order)`() = stubOnlyTypeInfer(
+        """
     //- foo.rs
         #![feature(const_generics)]
 
@@ -129,9 +142,11 @@ class RsStubOnlyTypeInferenceTest : RsTypificationTestBase() {
             x;
           //^ S<usize, 0>
         }
-    """)
+    """
+    )
 
-    fun `test const generic (block expr) 1`() = stubOnlyTypeInfer("""
+    fun `test const generic (block expr) 1`() = stubOnlyTypeInfer(
+        """
     //- foo.rs
         #![feature(const_generics)]
 
@@ -145,9 +160,11 @@ class RsStubOnlyTypeInferenceTest : RsTypificationTestBase() {
             x;
           //^ S<0>
         }
-    """)
+    """
+    )
 
-    fun `test const generic (block expr) 2`() = stubOnlyTypeInfer("""
+    fun `test const generic (block expr) 2`() = stubOnlyTypeInfer(
+        """
     //- foo.rs
         #![feature(const_generics)]
 
@@ -161,9 +178,11 @@ class RsStubOnlyTypeInferenceTest : RsTypificationTestBase() {
             x;
           //^ S<2>
         }
-    """)
+    """
+    )
 
-    fun `test const generic (block expr) 3`() = stubOnlyTypeInfer("""
+    fun `test const generic (block expr) 3`() = stubOnlyTypeInfer(
+        """
     //- foo.rs
         #![feature(const_generics)]
 
@@ -179,9 +198,11 @@ class RsStubOnlyTypeInferenceTest : RsTypificationTestBase() {
             x;
           //^ S<2>
         }
-    """)
+    """
+    )
 
-    fun `test const generic in method call (explicit)`() = stubOnlyTypeInfer("""
+    fun `test const generic in method call (explicit)`() = stubOnlyTypeInfer(
+        """
     //- foo.rs
         #![feature(const_generics)]
 
@@ -200,9 +221,11 @@ class RsStubOnlyTypeInferenceTest : RsTypificationTestBase() {
             x;
           //^ S2<0, 1>
         }
-    """)
+    """
+    )
 
-    fun `test const generic in method call (implicit)`() = stubOnlyTypeInfer("""
+    fun `test const generic in method call (implicit)`() = stubOnlyTypeInfer(
+        """
     //- foo.rs
         #![feature(const_generics)]
 
@@ -226,9 +249,11 @@ class RsStubOnlyTypeInferenceTest : RsTypificationTestBase() {
             x;
           //^ S2<0, 1>
         }
-    """)
+    """
+    )
 
-    fun `test const generic in base type`() = stubOnlyTypeInfer("""
+    fun `test const generic in base type`() = stubOnlyTypeInfer(
+        """
     //- foo.rs
         #![feature(const_generics)]
 
@@ -239,9 +264,11 @@ class RsStubOnlyTypeInferenceTest : RsTypificationTestBase() {
 
         fn bar<const N2: usize>() -> foo::S<{ N2 }> { foo::S }
                                              //^ usize
-    """)
+    """
+    )
 
-    fun `test const generic in trait ref`() = stubOnlyTypeInfer("""
+    fun `test const generic in trait ref`() = stubOnlyTypeInfer(
+        """
     //- foo.rs
         #![feature(const_generics)]
 
@@ -254,9 +281,11 @@ class RsStubOnlyTypeInferenceTest : RsTypificationTestBase() {
 
         impl <const N2: usize> foo::T<{ N2 }> for foo::S {}
                                        //^ usize
-    """)
+    """
+    )
 
-    fun `test const generic rendering order`() = stubOnlyTypeInfer("""
+    fun `test const generic rendering order`() = stubOnlyTypeInfer(
+        """
     //- foo.rs
         #![feature(const_generics)]
 
@@ -281,5 +310,6 @@ class RsStubOnlyTypeInferenceTest : RsTypificationTestBase() {
           //^ S<1, i32, 1, u32, 1, u32>
         }
 
-    """)
+    """
+    )
 }

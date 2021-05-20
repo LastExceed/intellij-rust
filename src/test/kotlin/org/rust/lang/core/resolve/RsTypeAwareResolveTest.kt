@@ -8,7 +8,8 @@ package org.rust.lang.core.resolve
 import org.rust.lang.core.psi.RsTupleFieldDecl
 
 class RsTypeAwareResolveTest : RsResolveTestBase() {
-    fun `test self method call expr`() = checkByCode("""
+    fun `test self method call expr`() = checkByCode(
+        """
         struct S;
 
         impl S {
@@ -18,9 +19,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
             fn foo(self) { self.bar() }
                               //^
         }
-    """)
+    """
+    )
 
-    fun `test trait impl method`() = checkByCode("""
+    fun `test trait impl method`() = checkByCode(
+        """
         trait T { fn foo(&self); }
         struct S;
         impl T for S { fn foo(&self) {} }
@@ -28,12 +31,16 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
         fn foo(s: S) {
             s.foo()
         }    //^
-    """)
+    """
+    )
 
     fun `test trait impl for various types`() {
-        for (type in listOf("bool", "char", "&str", "u32", "f32", "f64", "()", "(i32)", "(i16,)", "(u32, u16)",
-            "[u8; 1]", "&[u16]", "*const u8", "*const i8", "fn(u32) -> u8", "!")) {
-            checkByCode("""
+        for (type in listOf(
+            "bool", "char", "&str", "u32", "f32", "f64", "()", "(i32)", "(i16,)", "(u32, u16)",
+            "[u8; 1]", "&[u16]", "*const u8", "*const i8", "fn(u32) -> u8", "!"
+        )) {
+            checkByCode(
+                """
             trait T { fn foo(&self) {} }
 
             impl T for $type {
@@ -43,11 +50,13 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
             fn test(s: $type) {
                 s.foo()
             }    //^
-        """)
+        """
+            )
         }
     }
 
-    fun `test trait default method`() = checkByCode("""
+    fun `test trait default method`() = checkByCode(
+        """
         trait T { fn foo(&self) {} }
                     //X
         struct S;
@@ -56,9 +65,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
         fn foo(s: S) {
             s.foo()
         }    //^
-    """)
+    """
+    )
 
-    fun `test trait overridden default method`() = checkByCode("""
+    fun `test trait overridden default method`() = checkByCode(
+        """
         trait T { fn foo(&self) {} }
 
         struct S;
@@ -67,9 +78,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
         fn foo(s: S) {
             s.foo()
         }    //^
-    """)
+    """
+    )
 
-    fun `test method reference`() = checkByCode("""
+    fun `test method reference`() = checkByCode(
+        """
     //- main.rs
         mod x;
         use self::x::Stdin;
@@ -86,9 +99,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
             pub fn read_line(&self) { }
                    //X
         }
-    """)
+    """
+    )
 
-    fun `test method call on trait object`() = stubOnlyResolve("""
+    fun `test method call on trait object`() = stubOnlyResolve(
+        """
     //- main.rs
         mod aux;
         use aux::T;
@@ -100,9 +115,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
         pub trait T {
             fn virtual_function(&self) {}
         }
-    """)
+    """
+    )
 
-    fun `test method inherent vs trait conflict`() = checkByCode("""
+    fun `test method inherent vs trait conflict`() = checkByCode(
+        """
         struct Foo;
         impl Foo {
             fn bar(&self) {}
@@ -121,9 +138,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
             foo.bar();
                //^
         }
-    """)
+    """
+    )
 
-    fun `test self field expr`() = checkByCode("""
+    fun `test self field expr`() = checkByCode(
+        """
         struct S { x: f32 }
                  //X
 
@@ -131,9 +150,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
             fn foo(&self) { self.x; }
                                //^
         }
-    """)
+    """
+    )
 
-    fun `test field expr`() = stubOnlyResolve("""
+    fun `test field expr`() = stubOnlyResolve(
+        """
     //- main.rs
         mod aux;
         use aux::S;
@@ -145,9 +166,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
 
     //- aux.rs
         pub struct S { pub x: f32 }
-    """)
+    """
+    )
 
-    fun `test tuple field expr`() = checkByCode("""
+    fun `test tuple field expr`() = checkByCode(
+        """
         struct T;
         impl T { fn foo(&self) {} }
                   //X
@@ -161,9 +184,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
                    //^
             }
         }
-    """)
+    """
+    )
 
-    fun `test tuple field expr out of bounds`() = checkByCode("""
+    fun `test tuple field expr out of bounds`() = checkByCode(
+        """
         struct S(f64);
 
         impl S {
@@ -173,9 +198,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
                 //^ unresolved
             }
         }
-    """)
+    """
+    )
 
-    fun `test tuple field expr suffix`() = checkByCode("""
+    fun `test tuple field expr suffix`() = checkByCode(
+        """
         struct S(f64);
 
         impl S {
@@ -185,9 +212,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
                 //^ unresolved
             }
         }
-    """)
+    """
+    )
 
-    fun `test nested field expr`() = checkByCode("""
+    fun `test nested field expr`() = checkByCode(
+        """
         struct Foo { bar: Bar }
 
         struct Bar { baz: i32 }
@@ -198,9 +227,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
             foo.bar.baz;
                   //^
         }
-    """)
+    """
+    )
 
-    fun `test let decl call expr`() = checkByCode("""
+    fun `test let decl call expr`() = checkByCode(
+        """
         struct S { x: f32 }
                  //X
 
@@ -214,9 +245,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
                 //^
             }
         }
-    """)
+    """
+    )
 
-    fun `test let decl method call expr`() = checkByCode("""
+    fun `test let decl method call expr`() = checkByCode(
+        """
         struct S { x: f32 }
                  //X
 
@@ -228,9 +261,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
                 //^
             }
         }
-    """)
+    """
+    )
 
-    fun `test let decl pat ident expr`() = checkByCode("""
+    fun `test let decl pat ident expr`() = checkByCode(
+        """
         struct S { x: f32 }
                  //X
 
@@ -242,9 +277,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
                 //^
             }
         }
-    """)
+    """
+    )
 
-    fun `test let decl pat tup expr`() = checkByCode("""
+    fun `test let decl pat tup expr`() = checkByCode(
+        """
         struct S { x: f32 }
                  //X
         impl S {
@@ -255,9 +292,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
                 //^
             }
         }
-    """)
+    """
+    )
 
-    fun `test let decl pat struct expr`() = checkByCode("""
+    fun `test let decl pat struct expr`() = checkByCode(
+        """
         struct S { x: f32 }
 
         impl S {
@@ -268,9 +307,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
               //^
             }
         }
-    """)
+    """
+    )
 
-    fun `test let struct literal field`() = checkByCode("""
+    fun `test let struct literal field`() = checkByCode(
+        """
         struct S { x: f32 }
                  //X
         impl S {
@@ -280,9 +321,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
                 x;
             }
         }
-    """)
+    """
+    )
 
-    fun `test let decl pat struct field`() = checkByCode("""
+    fun `test let decl pat struct field`() = checkByCode(
+        """
         struct S { x: f32 }
                  //X
         impl S {
@@ -292,9 +335,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
                 x;
             }
         }
-    """)
+    """
+    )
 
-    fun `test let tuple literal field`() = checkByCodeGeneric<RsTupleFieldDecl>("""
+    fun `test let tuple literal field`() = checkByCodeGeneric<RsTupleFieldDecl>(
+        """
         struct S (f32);
                  //X
         fn foo() {
@@ -302,9 +347,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
                                //^
             x;
         }
-    """)
+    """
+    )
 
-    fun `test let decl pat tuple field`() = checkByCodeGeneric<RsTupleFieldDecl>("""
+    fun `test let decl pat tuple field`() = checkByCodeGeneric<RsTupleFieldDecl>(
+        """
         struct S (f32);
                 //X
         fn foo() {
@@ -312,9 +359,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
                   //^
             x;
         }
-    """)
+    """
+    )
 
-    fun `test let decl pat struct expr complex`() = checkByCode("""
+    fun `test let decl pat struct expr complex`() = checkByCode(
+        """
         struct S { x: f32 }
                  //X
 
@@ -327,9 +376,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
                 //^
             }
         }
-    """)
+    """
+    )
 
-    fun `test associated fn from inherent impl`() = checkByCode("""
+    fun `test associated fn from inherent impl`() = checkByCode(
+        """
         struct S;
 
         impl S { fn test() { } }
@@ -337,9 +388,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
 
         fn main() { S::test(); }
                       //^
-    """)
+    """
+    )
 
-    fun `test associated function inherent vs trait conflict`() = checkByCode("""
+    fun `test associated function inherent vs trait conflict`() = checkByCode(
+        """
         struct Foo;
         impl Foo {
             fn bar() {}
@@ -357,9 +410,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
             Foo::bar();
                 //^
         }
-    """)
+    """
+    )
 
-    fun `test hidden inherent impl`() = checkByCode("""
+    fun `test hidden inherent impl`() = checkByCode(
+        """
         struct S;
 
         fn main() {
@@ -374,9 +429,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
             impl S { pub fn transmogrify(self) -> S { S } }
                             //X
         }
-    """)
+    """
+    )
 
-    fun `test wrong inherent impl`() = checkByCode("""
+    fun `test wrong inherent impl`() = checkByCode(
+        """
         struct S;
 
         fn main() {
@@ -391,9 +448,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
 
             impl S { pub fn transmogrify(self) -> S { S } }
         }
-    """)
+    """
+    )
 
-    fun `test non inherent impl 1`() = checkByCode("""
+    fun `test non inherent impl 1`() = checkByCode(
+        """
         struct S;
 
         mod m {
@@ -414,9 +473,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
             let _ = S::foo();
                      //^
         }
-    """)
+    """
+    )
 
-    fun `test self implements trait`() = checkByCode("""
+    fun `test self implements trait`() = checkByCode(
+        """
         trait Foo {
             fn foo(&self);
               //X
@@ -424,9 +485,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
             fn bar(&self) { self.foo(); }
                                 //^
         }
-    """)
+    """
+    )
 
-    fun `test self implements trait from bound`() = checkByCode("""
+    fun `test self implements trait from bound`() = checkByCode(
+        """
         trait Bar {
             fn bar(&self);
              //X
@@ -435,9 +498,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
             fn foo(&self) { self.bar(); }
                                 //^
         }
-    """)
+    """
+    )
 
-    fun `test self implements trait from where clause bound`() = checkByCode("""
+    fun `test self implements trait from where clause bound`() = checkByCode(
+        """
         trait Bar {
             fn bar(&self);
              //X
@@ -445,9 +510,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
         trait Foo where Self : Bar {
             fn foo(&self) { self.bar(); }
         }                      //^
-    """)
+    """
+    )
 
-    fun `test match enum tuple variant`() = checkByCode("""
+    fun `test match enum tuple variant`() = checkByCode(
+        """
         enum E { V(S) }
         struct S;
 
@@ -460,9 +527,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
                 }                   //^
             }
         }
-    """)
+    """
+    )
 
-    fun `test static`() = checkByCode("""
+    fun `test static`() = checkByCode(
+        """
         struct S { field: i32 }
                     //X
         const FOO: S = S { field: 92 };
@@ -470,9 +539,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
         fn main() {
             FOO.field;
         }       //^
-    """)
+    """
+    )
 
-    fun `test string slice resolve`() = checkByCode("""
+    fun `test string slice resolve`() = checkByCode(
+        """
         impl<T> &str {
             fn foo(&self) {}
               //X
@@ -482,9 +553,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
             "test".foo();
                   //^
         }
-    """)
+    """
+    )
 
-    fun `test slice resolve`() = checkByCode("""
+    fun `test slice resolve`() = checkByCode(
+        """
         impl<T> [T] {
             fn foo(&self) {}
               //X
@@ -495,9 +568,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
             x.foo();
              //^
         }
-    """)
+    """
+    )
 
-    fun `test slice resolve UFCS`() = checkByCode("""
+    fun `test slice resolve UFCS`() = checkByCode(
+        """
         impl<T> [T] {
             fn foo(&self) {}
               //X
@@ -508,9 +583,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
             <[i32]>::foo(x);
                     //^
         }
-    """)
+    """
+    )
 
-    fun `test array coercing to slice resolve`() = checkByCode("""
+    fun `test array coercing to slice resolve`() = checkByCode(
+        """
         impl<T> [T] {
             fn foo(&self) {}
               //X
@@ -521,10 +598,12 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
             x.foo();
              //^
         }
-    """)
+    """
+    )
 
     // https://github.com/intellij-rust/intellij-rust/issues/1269
-    fun `test tuple field`() = checkByCode("""
+    fun `test tuple field`() = checkByCode(
+        """
         struct Foo;
         impl Foo {
             fn foo(&self) { unimplemented!() }
@@ -535,9 +614,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
             t.1.foo();
                //^
         }
-    """)
+    """
+    )
 
-    fun `test array to slice`() = checkByCode("""
+    fun `test array to slice`() = checkByCode(
+        """
         struct Foo;
         impl Foo {
             fn foo(&self) { unimplemented!() }
@@ -549,9 +630,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
             x.foo()
              //^
         }
-    """)
+    """
+    )
 
-    fun `test tuple paren cast 1`() = checkByCode("""
+    fun `test tuple paren cast 1`() = checkByCode(
+        """
         struct Foo;
         impl Foo { fn foo(&self) {} }
                      //X
@@ -559,9 +642,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
             let foo = unimplemented!() as (Foo);
             foo.foo();
         }      //^
-    """)
+    """
+    )
 
-    fun `test tuple paren cast 2`() = checkByCode("""
+    fun `test tuple paren cast 2`() = checkByCode(
+        """
         struct Foo;
         impl Foo { fn foo(&self) {} }
 
@@ -569,10 +654,12 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
             let foo = unimplemented!() as (Foo,);
             foo.foo();
         }      //^ unresolved
-    """)
+    """
+    )
 
     // https://github.com/intellij-rust/intellij-rust/issues/1549
-    fun `test Self type in assoc function`() = checkByCode("""
+    fun `test Self type in assoc function`() = checkByCode(
+        """
         struct Foo;
         impl Foo {
             fn new() -> Self { unimplemented!() }
@@ -584,9 +671,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
             foo.bar();
                //^
         }
-    """)
+    """
+    )
 
-    fun `test incomplete dot expr`() = checkByCode("""
+    fun `test incomplete dot expr`() = checkByCode(
+        """
         struct Foo;
         impl Foo {
             fn foo(&self) {}
@@ -596,9 +685,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
             Foo.foo().
                //^
         }
-    """)
+    """
+    )
 
-    fun `test impl trait for mutable reference`() = checkByCode("""
+    fun `test impl trait for mutable reference`() = checkByCode(
+        """
         struct Foo;
         trait T { fn foo(self); }
         impl<'a> T for &'a Foo { fn foo(self) {} }
@@ -609,9 +700,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
             let foo = &mut Foo {};
             foo.foo();
         }      //^
-    """)
+    """
+    )
 
-    fun `test impl trait for mutable pointer`() = checkByCode("""
+    fun `test impl trait for mutable pointer`() = checkByCode(
+        """
         struct Foo;
         trait T { fn foo(self); }
         impl T for *const Foo { fn foo(self) {} }
@@ -622,36 +715,44 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
             let foo = &mut Foo {} as *mut Foo;
             foo.foo();
         }      //^
-    """)
+    """
+    )
 
-    fun `test impl trait for integer`() = checkByCode("""
+    fun `test impl trait for integer`() = checkByCode(
+        """
         trait T { fn foo(self); }
         impl T for u8 { fn foo(self) {} }
                          //X
         fn main() {
             0.foo();
         }   //^
-    """)
+    """
+    )
 
-    fun `test impl trait for float`() = checkByCode("""
+    fun `test impl trait for float`() = checkByCode(
+        """
         trait T { fn foo(self); }
         impl T for f32 { fn foo(self) {} }
                           //X
         fn main() {
             0.0.foo();
         }     //^
-    """)
+    """
+    )
 
-    fun `test impl trait for integer reference`() = checkByCode("""
+    fun `test impl trait for integer reference`() = checkByCode(
+        """
         trait T { fn foo(self); }
         impl T for &u8 { fn foo(self) {} }
                          //X
         fn main() {
             (&0).foo();
         }      //^
-    """)
+    """
+    )
 
-    fun `test multiple impl trait for integer`() = checkByCode("""
+    fun `test multiple impl trait for integer`() = checkByCode(
+        """
         trait T { fn foo(self); }
         impl T for u8 { fn foo(self) {} }
         impl T for i32 { fn foo(self) {} }
@@ -659,9 +760,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
         fn main() {
             0.foo();
         }   //^
-    """)
+    """
+    )
 
-    fun `test resolve UFCS method call`() = checkByCode("""
+    fun `test resolve UFCS method call`() = checkByCode(
+        """
         struct S;
         trait T { fn foo(&self); }
         impl T for S { fn foo(&self) {} }
@@ -669,9 +772,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
         fn main() {
             T::foo(&S);
         }    //^
-    """)
+    """
+    )
 
-    fun `test resolve trait associated function`() = checkByCode("""
+    fun `test resolve trait associated function`() = checkByCode(
+        """
         struct S;
         trait T { fn foo() -> Self; }
         impl T for S { fn foo() -> Self { unimplemented!() } }
@@ -679,9 +784,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
         fn main() {
             let a: S = T::foo();
         }               //^
-    """)
+    """
+    )
 
-    fun `test resolve impl Trait method`() = checkByCode("""
+    fun `test resolve impl Trait method`() = checkByCode(
+        """
         trait Trait {
             fn bar(self);
         }     //X
@@ -689,9 +796,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
         fn main() {
             foo().bar();
         }       //^
-    """)
+    """
+    )
 
-    fun `test resolve impl Trait1+Trait2 method of Trait1`() = checkByCode("""
+    fun `test resolve impl Trait1+Trait2 method of Trait1`() = checkByCode(
+        """
         trait Trait1 {
             fn bar(self);
         }     //X
@@ -701,9 +810,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
             foo().bar();
                 //^
         }
-    """)
+    """
+    )
 
-    fun `test resolve impl Trait1+Trait2 method of Trait2`() = checkByCode("""
+    fun `test resolve impl Trait1+Trait2 method of Trait2`() = checkByCode(
+        """
         trait Trait1 { fn bar(self); }
         trait Trait2 {
             fn baz(self);
@@ -713,9 +824,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
             foo().baz();
                 //^
         }
-    """)
+    """
+    )
 
-    fun `test trait object inherent impl`() = checkByCode("""
+    fun `test trait object inherent impl`() = checkByCode(
+        """
         trait Test{}
         impl dyn Test{
             fn test(&self){}
@@ -726,9 +839,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
             a.test()
              //^
         }
-    """)
+    """
+    )
 
-    fun `test trait object method wins over non-inherent trait impl`() = checkByCode("""
+    fun `test trait object method wins over non-inherent trait impl`() = checkByCode(
+        """
         trait Foo { fn bar(&self) {} }
                      //X
         trait Bar { fn bar(&self); }
@@ -736,9 +851,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
         fn foo(a: &(dyn Foo + 'static)) {
             (*a).bar()
         }      //^
-    """)
+    """
+    )
 
-    fun `test filter methods from dangling (not attached to some crate) rust files`() = stubOnlyResolve("""
+    fun `test filter methods from dangling (not attached to some crate) rust files`() = stubOnlyResolve(
+        """
     //- dangling.rs
         trait Tr { fn foo(self); }
         impl Tr for u8 { fn foo(self){} }
@@ -746,9 +863,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
         fn main() {
             0u8.foo();
         }     //^ unresolved
-    """)
+    """
+    )
 
-    fun `test dbg macro`() = checkByCode("""
+    fun `test dbg macro`() = checkByCode(
+        """
         struct Foo;
         impl Foo {
             fn foo(&self) {}
@@ -758,9 +877,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
             dbg!(Foo).foo();
                      //^
         }
-    """)
+    """
+    )
 
-    fun `test Self-qualified path in trait impl is resolved to assoc type of current impl`() = checkByCode("""
+    fun `test Self-qualified path in trait impl is resolved to assoc type of current impl`() = checkByCode(
+        """
         struct S;
         trait Trait {
             type Item;
@@ -772,9 +893,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
                 //X
             fn foo() -> Self::Item { unreachable!() }
         }                    //^
-    """, NameResolutionTestmarks.selfRelatedTypeSpecialCase)
+    """, NameResolutionTestmarks.selfRelatedTypeSpecialCase
+    )
 
-    fun `test Self-qualified path in trait impl is not resolved to assoc type of another trait`() = checkByCode("""
+    fun `test Self-qualified path in trait impl is not resolved to assoc type of another trait`() = checkByCode(
+        """
         struct S;
         trait Trait1 { type Item; }
         trait Trait2 { fn foo() -> i32; }
@@ -786,9 +909,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
         impl Trait2 for S {
             fn foo() -> Self::Item { unreachable!() }
         }                    //^ unresolved
-    """, NameResolutionTestmarks.selfRelatedTypeSpecialCase)
+    """, NameResolutionTestmarks.selfRelatedTypeSpecialCase
+    )
 
-    fun `test Self-qualified path in trait impl is resolved to assoc type of super trait`() = checkByCode("""
+    fun `test Self-qualified path in trait impl is resolved to assoc type of super trait`() = checkByCode(
+        """
         struct S;
         trait Trait1 { type Item; }
         trait Trait2: Trait1 { fn foo() -> i32; }
@@ -800,9 +925,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
         impl Trait2 for S {
             fn foo() -> Self::Item { unreachable!() }
         }                    //^
-    """, NameResolutionTestmarks.selfRelatedTypeSpecialCase)
+    """, NameResolutionTestmarks.selfRelatedTypeSpecialCase
+    )
 
-    fun `test Self-qualified path in trait impl is resolved to assoc type of super trait (generic trait 1)`() = checkByCode("""
+    fun `test Self-qualified path in trait impl is resolved to assoc type of super trait (generic trait 1)`() = checkByCode(
+        """
         struct S;
         trait Trait1<T> { type Item; }
         trait Trait2<T>: Trait1<T> { fn foo() -> i32; }
@@ -816,9 +943,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
         impl Trait2<i32> for S {
             fn foo() -> Self::Item { unreachable!() }
         }                   //^
-    """, NameResolutionTestmarks.selfRelatedTypeSpecialCase)
+    """, NameResolutionTestmarks.selfRelatedTypeSpecialCase
+    )
 
-    fun `test Self-qualified path in trait impl is resolved to assoc type of super trait (generic trait 2)`() = checkByCode("""
+    fun `test Self-qualified path in trait impl is resolved to assoc type of super trait (generic trait 2)`() = checkByCode(
+        """
         struct S;
         trait Trait1<T=u8> { type Item; }
         trait Trait2<T>: Trait1<T> { fn foo() -> i32; }
@@ -832,9 +961,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
         impl Trait2<i32> for S {
             fn foo() -> Self::Item { unreachable!() }
         }                   //^
-    """, NameResolutionTestmarks.selfRelatedTypeSpecialCase)
+    """, NameResolutionTestmarks.selfRelatedTypeSpecialCase
+    )
 
-    fun `test explicit UFCS-like type-qualified path`() = checkByCode("""
+    fun `test explicit UFCS-like type-qualified path`() = checkByCode(
+        """
         struct S;
         impl S {
             fn foo() {}
@@ -842,9 +973,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
         fn main () {
             <S>::foo;
         }      //^
-    """)
+    """
+    )
 
-    fun `test module wins over primitive type`() = checkByCode("""
+    fun `test module wins over primitive type`() = checkByCode(
+        """
         mod f64 {
             pub const INFINITY: f64 = 0.0;
         }            //X
@@ -853,9 +986,11 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
         fn main() {
             let a = f64::INFINITY;
         }              //^
-    """)
+    """
+    )
 
-    fun `test impl for alias`() = checkByCode("""
+    fun `test impl for alias`() = checkByCode(
+        """
         struct X;
         type Y = X;
         impl Y { fn foo(&self) {} }
@@ -863,5 +998,6 @@ class RsTypeAwareResolveTest : RsResolveTestBase() {
         fn main() {
             X.foo();
         }   //^
-    """)
+    """
+    )
 }

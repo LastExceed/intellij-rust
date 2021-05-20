@@ -79,8 +79,7 @@ fun RsToolchainBase.cargoOrWrapper(cargoProjectDirectory: Path?): Cargo {
  * It is impossible to guarantee that paths to the project or executables are valid,
  * because the user can always just `rm ~/.cargo/bin -rf`.
  */
-class Cargo(toolchain: RsToolchainBase, useWrapper: Boolean = false)
-    : RustupComponent(if (useWrapper) WRAPPER_NAME else NAME, toolchain) {
+class Cargo(toolchain: RsToolchainBase, useWrapper: Boolean = false) : RustupComponent(if (useWrapper) WRAPPER_NAME else NAME, toolchain) {
 
     data class BinaryCrate(val name: String, val version: SemVer? = null) {
         companion object {
@@ -461,7 +460,8 @@ class Cargo(toolchain: RsToolchainBase, useWrapper: Boolean = false)
             if (requiredFeatures && command in FEATURES_ACCEPTING_COMMANDS) {
                 run {
                     val cargoProject = findCargoProject(project, additionalArguments, workingDirectory) ?: return@run
-                    val cargoPackage = findCargoPackage(cargoProject, additionalArguments, workingDirectory) ?: return@run
+                    val cargoPackage = findCargoPackage(cargoProject, additionalArguments, workingDirectory)
+                        ?: return@run
                     if (workingDirectory != cargoPackage.rootDirectory) {
                         val manifestIdx = pre.indexOf("--manifest-path")
                         val packageIdx = pre.indexOf("--package")

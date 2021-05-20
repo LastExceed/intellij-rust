@@ -17,7 +17,8 @@ import org.rust.lang.core.macros.MacroExpansionScope
 @WithExperimentalFeatures(EVALUATE_BUILD_SCRIPTS, PROC_MACROS)
 @ProjectDescriptor(WithProcMacroRustProjectDescriptor::class)
 class RsProcMacroExpansionResolveTest : RsResolveTestBase() {
-    fun `test simple function-like macro`() = checkByCode("""
+    fun `test simple function-like macro`() = checkByCode(
+        """
         use test_proc_macros::function_like_as_is;
 
         struct Foo;
@@ -32,10 +33,12 @@ class RsProcMacroExpansionResolveTest : RsResolveTestBase() {
         fn main() {
             foo().bar()
         }       //^
-    """)
+    """
+    )
 
     @UseNewResolve
-    fun `test custom derive`() = checkByCode("""
+    fun `test custom derive`() = checkByCode(
+        """
         use test_proc_macros::DeriveImplForFoo;
 
         #[derive(DeriveImplForFoo)] // impl Foo { fn foo(&self) -> Bar {} }
@@ -48,10 +51,12 @@ class RsProcMacroExpansionResolveTest : RsResolveTestBase() {
         fn main() {
             Foo.foo().bar()
         }           //^
-    """)
+    """
+    )
 
     @UseNewResolve
-    fun `test custom derive dollar crate`() = checkByCode("""
+    fun `test custom derive dollar crate`() = checkByCode(
+        """
         use test_proc_macros::DeriveImplForFoo;
 
         macro_rules! foo {
@@ -69,11 +74,13 @@ class RsProcMacroExpansionResolveTest : RsResolveTestBase() {
         fn main() {
             Foo.foo().bar()
         }           //^
-    """)
+    """
+    )
 
     @UseNewResolve
     @MockAdditionalCfgOptions("intellij_rust")
-    fun `test custom derive in enabled cfg_attr attribute`() = checkByCode("""
+    fun `test custom derive in enabled cfg_attr attribute`() = checkByCode(
+        """
         use test_proc_macros::DeriveImplForFoo;
 
         #[cfg_attr(intellij_rust, derive(DeriveImplForFoo))] // impl Foo { fn foo(&self) -> Bar {} }
@@ -86,11 +93,13 @@ class RsProcMacroExpansionResolveTest : RsResolveTestBase() {
         fn main() {
             Foo.foo().bar()
         }           //^
-    """)
+    """
+    )
 
     @UseNewResolve
     @MockAdditionalCfgOptions("intellij_rust")
-    fun `test custom derive in disabled cfg_attr attribute`() = checkByCode("""
+    fun `test custom derive in disabled cfg_attr attribute`() = checkByCode(
+        """
         use test_proc_macros::DeriveImplForFoo;
 
         #[cfg_attr(not(intellij_rust), derive(DeriveImplForFoo))] // impl Foo { fn foo(&self) -> Bar {} }
@@ -103,10 +112,12 @@ class RsProcMacroExpansionResolveTest : RsResolveTestBase() {
         fn main() {
             Foo.foo().bar()
         }           //^ unresolved
-    """)
+    """
+    )
 
     @UseNewResolve
-    fun `test not expanded if not a custom derive macro is used in custom derive position`() = checkByCode("""
+    fun `test not expanded if not a custom derive macro is used in custom derive position`() = checkByCode(
+        """
         use test_proc_macros::function_like_generates_impl_for_foo;
 
         #[derive(function_like_generates_impl_for_foo)] // Not a custom derive
@@ -119,5 +130,6 @@ class RsProcMacroExpansionResolveTest : RsResolveTestBase() {
         fn main() {
             Foo.foo().bar()
         }           //^ unresolved
-    """)
+    """
+    )
 }

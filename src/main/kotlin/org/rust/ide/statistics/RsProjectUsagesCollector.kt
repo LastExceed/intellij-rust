@@ -34,7 +34,7 @@ class RsProjectUsagesCollector : ProjectUsagesCollector() {
                 }
                 info.packageCount += 1
                 for (target in pkg.targets) {
-                    when  {
+                    when {
                         target.kind.isCustomBuild -> info.buildScriptCount += 1
                         target.kind.isProcMacro -> info.procMacroLibCount += 1
                     }
@@ -67,7 +67,8 @@ class RsProjectUsagesCollector : ProjectUsagesCollector() {
 
         private val CARGO_PROJECTS_EVENT = GROUP.registerEvent("cargo_projects", EventFields.Count)
 
-        private val PACKAGES = GROUP.registerEvent("packages",
+        private val PACKAGES = GROUP.registerEvent(
+            "packages",
             EventFields.Int("workspace"),
             EventFields.Int("dependency")
         )
@@ -77,7 +78,8 @@ class RsProjectUsagesCollector : ProjectUsagesCollector() {
         private val BUILD_SCRIPT_WORKSPACE = EventFields.Int("build_script_workspace")
         private val BUILD_SCRIPT_DEPENDENCY = EventFields.Int("build_script_dependency")
 
-        private val COMPILE_TIME_TARGETS = GROUP.registerVarargEvent("compile_time_targets",
+        private val COMPILE_TIME_TARGETS = GROUP.registerVarargEvent(
+            "compile_time_targets",
             BUILD_SCRIPT_WORKSPACE,
             BUILD_SCRIPT_DEPENDENCY,
             PROC_MACRO_WORKSPACE,

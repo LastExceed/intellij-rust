@@ -55,7 +55,8 @@ class RsMoveFileReexportTest : RsMoveFileTestBase() {
         fn func() {
             mod1::mod1_func();
         }
-    """)
+    """
+    )
 
     // moved file has function `func`,
     // which can't be directly accessed from 'usages' mod
@@ -97,7 +98,8 @@ class RsMoveFileReexportTest : RsMoveFileTestBase() {
         pub mod foo;
     //- inner/mod2/foo.rs
         pub fn func() {}
-    """)
+    """
+    )
 
     fun `test moved file under reexport after move`() = doTest(
         "inner/mod1/foo.rs",
@@ -139,7 +141,8 @@ class RsMoveFileReexportTest : RsMoveFileTestBase() {
         pub fn mod2_func() {}
     //- inner/mod2/foo.rs
         pub fn func() {}
-    """)
+    """
+    )
 
     fun `test both parent modules under reexport`() = doTest(
         "inner1/inner2/mod1/foo.rs",
@@ -182,7 +185,8 @@ class RsMoveFileReexportTest : RsMoveFileTestBase() {
         pub mod foo;
     //- inner1/inner2/mod2/foo.rs
         pub fn func() {}
-    """)
+    """
+    )
 
     fun `test outside references to item in old parent mod`() = doTest(
         "mod1/foo.rs",
@@ -255,7 +259,8 @@ class RsMoveFileReexportTest : RsMoveFileTestBase() {
             use crate::mod1::inner1::*;
             inner2_func();
         }
-    """)
+    """
+    )
 
     fun `test outside references to item in new parent mod`() = doTest(
         "mod1/foo.rs",
@@ -304,5 +309,6 @@ class RsMoveFileReexportTest : RsMoveFileTestBase() {
             crate::mod2::inner1::inner1_func();
             crate::mod2::inner1::inner2_func();
         }
-    """)
+    """
+    )
 }

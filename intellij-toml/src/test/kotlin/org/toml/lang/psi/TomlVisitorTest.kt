@@ -12,43 +12,61 @@ import kotlin.reflect.KClass
 
 class TomlVisitorTest : TomlTestBase() {
 
-    fun `test visit key segment`() = doTest<TomlKeySegment>("""
+    fun `test visit key segment`() = doTest<TomlKeySegment>(
+        """
         <caret>a = 5
-    """)
+    """
+    )
 
-    fun `test visit key`() = doTest<TomlKey>("""
+    fun `test visit key`() = doTest<TomlKey>(
+        """
         <caret>a = 5
-    """)
+    """
+    )
 
-    fun `test visit literal`() = doTest<TomlLiteral>("""
+    fun `test visit literal`() = doTest<TomlLiteral>(
+        """
         a = <caret>5
-    """, TomlValue::class)
+    """, TomlValue::class
+    )
 
-    fun `test visit key value`() = doTest<TomlKeyValue>("""
+    fun `test visit key value`() = doTest<TomlKeyValue>(
+        """
         <caret>a = 5
-    """)
+    """
+    )
 
-    fun `test visit array`() = doTest<TomlArray>("""
+    fun `test visit array`() = doTest<TomlArray>(
+        """
         a = <caret>[5]
-    """, TomlValue::class)
+    """, TomlValue::class
+    )
 
-    fun `test visit table`() = doTest<TomlTable>("""
+    fun `test visit table`() = doTest<TomlTable>(
+        """
         <caret>[foo]
-    """, TomlKeyValueOwner::class)
+    """, TomlKeyValueOwner::class
+    )
 
-    fun `test visit table header`() = doTest<TomlTableHeader>("""
+    fun `test visit table header`() = doTest<TomlTableHeader>(
+        """
         [<caret>foo]
-    """)
+    """
+    )
 
-    fun `test visit inline table`() = doTest<TomlInlineTable>("""
+    fun `test visit inline table`() = doTest<TomlInlineTable>(
+        """
         a = { b = <caret>5 }
-    """, TomlKeyValueOwner::class)
+    """, TomlKeyValueOwner::class
+    )
 
-    fun `test visit array table`() = doTest<TomlArrayTable>("""
+    fun `test visit array table`() = doTest<TomlArrayTable>(
+        """
         [[<caret>foo]]
-    """, TomlKeyValueOwner::class)
+    """, TomlKeyValueOwner::class
+    )
 
-    private inline fun <reified T: TomlElement> doTest(
+    private inline fun <reified T : TomlElement> doTest(
         @Language("TOML") code: String,
         vararg additionalVisits: KClass<out TomlElement>
     ) {

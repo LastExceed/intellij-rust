@@ -15,7 +15,8 @@ import org.rust.singleProject
 class CargoProjectDeduplicationTest : RsWithToolchainTestBase() {
     fun `test subproject is removed when become a member of attached workspace`() = fileTree {
         dir("root-project") {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 #[workspace]
                 #members = ["subproject"]
 
@@ -23,17 +24,20 @@ class CargoProjectDeduplicationTest : RsWithToolchainTestBase() {
                 name = "root-project"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
 
             dir("src") { rust("lib.rs", "") }
 
             dir("subproject") {
-                toml("Cargo.toml", """
+                toml(
+                    "Cargo.toml", """
                     [package]
                     name = "subproject"
                     version = "0.1.0"
                     authors = []
-                """)
+                """
+                )
 
                 dir("src") { rust("lib.rs", "") }
             }
@@ -53,29 +57,35 @@ class CargoProjectDeduplicationTest : RsWithToolchainTestBase() {
 
     fun `test 2 subprojects are removed when become members of attached workspace`() = fileTree {
         dir("root-project") {
-            toml("__Cargo.toml", """
+            toml(
+                "__Cargo.toml", """
                 [workspace]
                 members = ["subproject_1", "subproject_2"]
-            """)
+            """
+            )
 
             dir("subproject_1") {
-                toml("Cargo.toml", """
+                toml(
+                    "Cargo.toml", """
                     [package]
                     name = "subproject_1"
                     version = "0.1.0"
                     authors = []
-                """)
+                """
+                )
 
                 dir("src") { rust("lib.rs", "") }
             }
 
             dir("subproject_2") {
-                toml("Cargo.toml", """
+                toml(
+                    "Cargo.toml", """
                     [package]
                     name = "subproject_2"
                     version = "0.1.0"
                     authors = []
-                """)
+                """
+                )
 
                 dir("src") { rust("lib.rs", "") }
             }
@@ -96,7 +106,8 @@ class CargoProjectDeduplicationTest : RsWithToolchainTestBase() {
 
     fun `test one subproject is removed and one is excluded when become members of attached workspace`() = fileTree {
         dir("root-project") {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 #[workspace]
                 #members = ["subproject_1"]
                 #exclude = ["subproject_2"]
@@ -105,28 +116,33 @@ class CargoProjectDeduplicationTest : RsWithToolchainTestBase() {
                 name = "root-project"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
 
             dir("src") { rust("lib.rs", "") }
 
             dir("subproject_1") {
-                toml("Cargo.toml", """
+                toml(
+                    "Cargo.toml", """
                     [package]
                     name = "subproject_1"
                     version = "0.1.0"
                     authors = []
-                """)
+                """
+                )
 
                 dir("src") { rust("lib.rs", "") }
             }
 
             dir("subproject_2") {
-                toml("Cargo.toml", """
+                toml(
+                    "Cargo.toml", """
                     [package]
                     name = "subproject_2"
                     version = "0.1.0"
                     authors = []
-                """)
+                """
+                )
 
                 dir("src") { rust("lib.rs", "") }
             }
@@ -155,7 +171,8 @@ class CargoProjectDeduplicationTest : RsWithToolchainTestBase() {
 
     fun `test subproject is not removed is added as an external dependency to another project`() = fileTree {
         dir("root-project") {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "root-project"
                 version = "0.1.0"
@@ -163,17 +180,20 @@ class CargoProjectDeduplicationTest : RsWithToolchainTestBase() {
 
                 #[dependencies]
                 #subproject = { path = "./subproject" }
-            """)
+            """
+            )
 
             dir("src") { rust("lib.rs", "") }
 
             dir("subproject") {
-                toml("Cargo.toml", """
+                toml(
+                    "Cargo.toml", """
                     [package]
                     name = "subproject"
                     version = "0.1.0"
                     authors = []
-                """)
+                """
+                )
 
                 dir("src") { rust("lib.rs", "") }
             }

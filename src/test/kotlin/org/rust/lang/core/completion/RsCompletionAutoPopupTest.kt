@@ -23,12 +23,14 @@ class RsCompletionAutoPopupTest : RsCompletionTestBase() {
     override fun runInDispatchThread(): Boolean = false
 
     fun `test path auto popup`() {
-        myFixture.configureByText("main.rs", """
+        myFixture.configureByText(
+            "main.rs", """
             enum Foo { Bar, Baz}
             fn main() {
                 let _ = Foo<caret>
             }
-        """)
+        """
+        )
         tester.typeWithPauses("::")
 
         // TODO: find out why this test fails

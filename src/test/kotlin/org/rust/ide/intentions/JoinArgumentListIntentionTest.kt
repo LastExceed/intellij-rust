@@ -6,7 +6,8 @@
 package org.rust.ide.intentions
 
 class JoinArgumentListIntentionTest : RsIntentionTestBase(JoinArgumentListIntention::class) {
-    fun `test one parameter`() = doAvailableTest("""
+    fun `test one parameter`() = doAvailableTest(
+        """
         fn foo(p1: i32) {}
         fn main() {
             foo(
@@ -18,9 +19,11 @@ class JoinArgumentListIntentionTest : RsIntentionTestBase(JoinArgumentListIntent
         fn main() {
             foo(1);
         }
-    """)
+    """
+    )
 
-    fun `test two parameter`() = doAvailableTest("""
+    fun `test two parameter`() = doAvailableTest(
+        """
         fn foo(p1: i32, p2: i32) {}
         fn main() {
             foo(
@@ -33,16 +36,20 @@ class JoinArgumentListIntentionTest : RsIntentionTestBase(JoinArgumentListIntent
         fn main() {
             foo(1, 2);
         }
-    """)
+    """
+    )
 
-    fun `test no line breaks`() = doUnavailableTest("""
+    fun `test no line breaks`() = doUnavailableTest(
+        """
         fn foo(p1: i32, p2: i32, p3: i32) {}
         fn main() {
             foo(/*caret*/1, 2, 3);
         }
-    """)
+    """
+    )
 
-    fun `test has some line breaks`() = doAvailableTest("""
+    fun `test has some line breaks`() = doAvailableTest(
+        """
         fn foo(p1: i32, p2: i32, p3: i32) {}
         fn main() {
             foo(1, /*caret*/2,
@@ -54,9 +61,11 @@ class JoinArgumentListIntentionTest : RsIntentionTestBase(JoinArgumentListIntent
         fn main() {
             foo(1, 2, 3);
         }
-    """)
+    """
+    )
 
-    fun `test has some line breaks 2`() = doAvailableTest("""
+    fun `test has some line breaks 2`() = doAvailableTest(
+        """
         fn foo(p1: i32, p2: i32, p3: i32) {}
         fn main() {
             foo(
@@ -68,16 +77,20 @@ class JoinArgumentListIntentionTest : RsIntentionTestBase(JoinArgumentListIntent
         fn main() {
             foo(1, 2, 3);
         }
-    """)
+    """
+    )
 
-    fun `test has comment`() = doUnavailableTest("""
+    fun `test has comment`() = doUnavailableTest(
+        """
         fn foo(p1: i32, p2: i32, p3: i32) {}
         fn main() {
             foo(/*caret*/1, /* comment */ 2, 3);
         }
-    """)
+    """
+    )
 
-    fun `test has comment 2`() = doAvailableTest("""
+    fun `test has comment 2`() = doAvailableTest(
+        """
         fn foo(p1: i32, p2: i32, p3: i32) {}
         fn main() {
             foo(/*caret*/1, /*
@@ -92,9 +105,11 @@ class JoinArgumentListIntentionTest : RsIntentionTestBase(JoinArgumentListIntent
                 comment
                 */ 2, 3);
         }
-    """)
+    """
+    )
 
-    fun `test has end-of-line comments`() = doUnavailableTest("""
+    fun `test has end-of-line comments`() = doUnavailableTest(
+        """
         fn foo(p1: i32, p2: i32) {}
         fn main() {
             foo(
@@ -102,5 +117,6 @@ class JoinArgumentListIntentionTest : RsIntentionTestBase(JoinArgumentListIntent
                 2
             );
         }
-    """)
+    """
+    )
 }

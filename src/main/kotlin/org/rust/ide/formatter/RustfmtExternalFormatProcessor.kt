@@ -115,7 +115,7 @@ abstract class RustfmtExternalFormatProcessorBase : ExternalFormatProcessor {
             val project = source.project
 
             var text: String? = null
-           ApplicationManagerEx.getApplicationEx().runWriteActionWithCancellableProgressInDispatchThread("title", project, null) {
+            ApplicationManagerEx.getApplicationEx().runWriteActionWithCancellableProgressInDispatchThread("title", project, null) {
                 if (checkNeedInstallRustfmt(project, cargoProject.workingDirectory)) {
                     return@runWriteActionWithCancellableProgressInDispatchThread
                 }

@@ -35,7 +35,8 @@ class MissingFeaturesInspection : LocalInspectionTool() {
 
     private fun checkCargoTomlFile(file: PsiFile, manager: InspectionManager, isOnTheFly: Boolean): Array<ProblemDescriptor?>? {
         val cargoProject = file.findCargoProject() ?: return null
-        val pkg = file.findCargoPackage()?.takeIf { it.rootDirectory == file.virtualFile?.parent?.pathAsPath } ?: return null
+        val pkg = file.findCargoPackage()?.takeIf { it.rootDirectory == file.virtualFile?.parent?.pathAsPath }
+            ?: return null
         val missingFeatures = collectMissingFeaturesForPackage(pkg)
 
         return createProblemDescriptors(missingFeatures, manager, file, isOnTheFly, cargoProject)

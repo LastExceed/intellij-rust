@@ -81,68 +81,259 @@ private class FakeEditorEx(
     override fun getDocument(): DocumentEx = super.getDocument() as DocumentEx
     override fun getSettings(): EditorSettings = editor.settings
     override fun getHighlighter(): EditorHighlighter = highlighter
-    override fun getMarkupModel(): MarkupModelEx { throw notImplemented() }
-    override fun getFoldingModel(): FoldingModelEx { throw notImplemented() }
-    override fun getScrollingModel(): ScrollingModelEx { throw notImplemented() }
-    override fun getSoftWrapModel(): SoftWrapModelEx { throw notImplemented() }
-    override fun getFilteredDocumentMarkupModel(): MarkupModelEx { throw notImplemented() }
-    override fun getGutterComponentEx(): EditorGutterComponentEx { throw notImplemented() }
-    override fun getPermanentHeaderComponent(): JComponent { throw notImplemented() }
-    override fun setViewer(isViewer: Boolean) { throw notImplemented() }
-    override fun setPermanentHeaderComponent(component: JComponent?) { throw notImplemented() }
-    override fun setHighlighter(highlighter: EditorHighlighter) { throw notImplemented() }
-    override fun setColorsScheme(scheme: EditorColorsScheme) { throw notImplemented() }
-    override fun setInsertMode(`val`: Boolean) { throw notImplemented() }
-    override fun setColumnMode(`val`: Boolean) { throw notImplemented() }
-    override fun setVerticalScrollbarOrientation(type: Int) { throw notImplemented() }
-    override fun getVerticalScrollbarOrientation(): Int { throw notImplemented() }
-    override fun setVerticalScrollbarVisible(b: Boolean) { throw notImplemented() }
-    override fun setHorizontalScrollbarVisible(b: Boolean) { throw notImplemented() }
-    override fun getCutProvider(): CutProvider { throw notImplemented() }
-    override fun getCopyProvider(): CopyProvider { throw notImplemented() }
-    override fun getPasteProvider(): PasteProvider { throw notImplemented() }
-    override fun getDeleteProvider(): DeleteProvider { throw notImplemented() }
-    override fun repaint(startOffset: Int, endOffset: Int) { throw notImplemented() }
-    override fun reinitSettings() { throw notImplemented() }
-    override fun addPropertyChangeListener(listener: PropertyChangeListener, parentDisposable: Disposable) { throw notImplemented() }
-    override fun addPropertyChangeListener(listener: PropertyChangeListener) { throw notImplemented() }
-    override fun removePropertyChangeListener(listener: PropertyChangeListener) { throw notImplemented() }
-    override fun getMaxWidthInRange(startOffset: Int, endOffset: Int): Int { throw notImplemented() }
-    override fun setCaretVisible(b: Boolean): Boolean { throw notImplemented() }
-    override fun setCaretEnabled(enabled: Boolean): Boolean { throw notImplemented() }
-    override fun addFocusListener(listener: FocusChangeListener) { throw notImplemented() }
-    override fun addFocusListener(listener: FocusChangeListener, parentDisposable: Disposable) { throw notImplemented() }
-    override fun setOneLineMode(b: Boolean) { throw notImplemented() }
-    override fun getScrollPane(): JScrollPane { throw notImplemented() }
-    override fun isRendererMode(): Boolean { throw notImplemented() }
-    override fun setRendererMode(isRendererMode: Boolean) { throw notImplemented() }
-    override fun setFile(vFile: VirtualFile?) { throw notImplemented() }
-    override fun getDataContext(): DataContext { throw notImplemented() }
-    override fun processKeyTyped(e: KeyEvent): Boolean { throw notImplemented() }
-    override fun setFontSize(fontSize: Int) { throw notImplemented() }
-    override fun getBackgroundColor(): Color { throw notImplemented() }
-    override fun setBackgroundColor(color: Color?) { throw notImplemented() }
-    override fun getContentSize(): Dimension { throw notImplemented() }
-    override fun isEmbeddedIntoDialogWrapper(): Boolean { throw notImplemented() }
-    override fun setEmbeddedIntoDialogWrapper(b: Boolean) { throw notImplemented() }
-    override fun getVirtualFile(): VirtualFile { throw notImplemented() }
-    override fun getTextDrawingCallback(): TextDrawingCallback { throw notImplemented() }
-    override fun createBoundColorSchemeDelegate(customGlobalScheme: EditorColorsScheme?): EditorColorsScheme { throw notImplemented() }
-    override fun setPlaceholder(text: CharSequence?) { throw notImplemented() }
-    override fun setPlaceholderAttributes(attributes: TextAttributes?) { throw notImplemented() }
-    override fun setShowPlaceholderWhenFocused(show: Boolean) { throw notImplemented() }
-    override fun isStickySelection(): Boolean { throw notImplemented() }
-    override fun setStickySelection(enable: Boolean) { throw notImplemented() }
-    override fun getPrefixTextWidthInPixels(): Int { throw notImplemented() }
-    override fun setPrefixTextAndAttributes(prefixText: String?, attributes: TextAttributes?) { throw notImplemented() }
-    override fun isPurePaintingMode(): Boolean { throw notImplemented() }
-    override fun setPurePaintingMode(enabled: Boolean) { throw notImplemented() }
-    override fun registerLineExtensionPainter(lineExtensionPainter: LineExtensionPainter) { throw notImplemented() }
-    override fun registerScrollBarRepaintCallback(callback: ButtonlessScrollBarUI.ScrollbarRepaintCallback?) { throw notImplemented() }
-    override fun getExpectedCaretOffset(): Int { throw notImplemented() }
-    override fun setContextMenuGroupId(groupId: String?) { throw notImplemented() }
-    override fun getContextMenuGroupId(): String? { throw notImplemented() }
-    override fun installPopupHandler(popupHandler: EditorPopupHandler) { throw notImplemented() }
-    override fun uninstallPopupHandler(popupHandler: EditorPopupHandler) { throw notImplemented() }
-    override fun setCustomCursor(requestor: Any, cursor: Cursor?) { throw notImplemented() }
+    override fun getMarkupModel(): MarkupModelEx {
+        throw notImplemented()
+    }
+
+    override fun getFoldingModel(): FoldingModelEx {
+        throw notImplemented()
+    }
+
+    override fun getScrollingModel(): ScrollingModelEx {
+        throw notImplemented()
+    }
+
+    override fun getSoftWrapModel(): SoftWrapModelEx {
+        throw notImplemented()
+    }
+
+    override fun getFilteredDocumentMarkupModel(): MarkupModelEx {
+        throw notImplemented()
+    }
+
+    override fun getGutterComponentEx(): EditorGutterComponentEx {
+        throw notImplemented()
+    }
+
+    override fun getPermanentHeaderComponent(): JComponent {
+        throw notImplemented()
+    }
+
+    override fun setViewer(isViewer: Boolean) {
+        throw notImplemented()
+    }
+
+    override fun setPermanentHeaderComponent(component: JComponent?) {
+        throw notImplemented()
+    }
+
+    override fun setHighlighter(highlighter: EditorHighlighter) {
+        throw notImplemented()
+    }
+
+    override fun setColorsScheme(scheme: EditorColorsScheme) {
+        throw notImplemented()
+    }
+
+    override fun setInsertMode(`val`: Boolean) {
+        throw notImplemented()
+    }
+
+    override fun setColumnMode(`val`: Boolean) {
+        throw notImplemented()
+    }
+
+    override fun setVerticalScrollbarOrientation(type: Int) {
+        throw notImplemented()
+    }
+
+    override fun getVerticalScrollbarOrientation(): Int {
+        throw notImplemented()
+    }
+
+    override fun setVerticalScrollbarVisible(b: Boolean) {
+        throw notImplemented()
+    }
+
+    override fun setHorizontalScrollbarVisible(b: Boolean) {
+        throw notImplemented()
+    }
+
+    override fun getCutProvider(): CutProvider {
+        throw notImplemented()
+    }
+
+    override fun getCopyProvider(): CopyProvider {
+        throw notImplemented()
+    }
+
+    override fun getPasteProvider(): PasteProvider {
+        throw notImplemented()
+    }
+
+    override fun getDeleteProvider(): DeleteProvider {
+        throw notImplemented()
+    }
+
+    override fun repaint(startOffset: Int, endOffset: Int) {
+        throw notImplemented()
+    }
+
+    override fun reinitSettings() {
+        throw notImplemented()
+    }
+
+    override fun addPropertyChangeListener(listener: PropertyChangeListener, parentDisposable: Disposable) {
+        throw notImplemented()
+    }
+
+    override fun addPropertyChangeListener(listener: PropertyChangeListener) {
+        throw notImplemented()
+    }
+
+    override fun removePropertyChangeListener(listener: PropertyChangeListener) {
+        throw notImplemented()
+    }
+
+    override fun getMaxWidthInRange(startOffset: Int, endOffset: Int): Int {
+        throw notImplemented()
+    }
+
+    override fun setCaretVisible(b: Boolean): Boolean {
+        throw notImplemented()
+    }
+
+    override fun setCaretEnabled(enabled: Boolean): Boolean {
+        throw notImplemented()
+    }
+
+    override fun addFocusListener(listener: FocusChangeListener) {
+        throw notImplemented()
+    }
+
+    override fun addFocusListener(listener: FocusChangeListener, parentDisposable: Disposable) {
+        throw notImplemented()
+    }
+
+    override fun setOneLineMode(b: Boolean) {
+        throw notImplemented()
+    }
+
+    override fun getScrollPane(): JScrollPane {
+        throw notImplemented()
+    }
+
+    override fun isRendererMode(): Boolean {
+        throw notImplemented()
+    }
+
+    override fun setRendererMode(isRendererMode: Boolean) {
+        throw notImplemented()
+    }
+
+    override fun setFile(vFile: VirtualFile?) {
+        throw notImplemented()
+    }
+
+    override fun getDataContext(): DataContext {
+        throw notImplemented()
+    }
+
+    override fun processKeyTyped(e: KeyEvent): Boolean {
+        throw notImplemented()
+    }
+
+    override fun setFontSize(fontSize: Int) {
+        throw notImplemented()
+    }
+
+    override fun getBackgroundColor(): Color {
+        throw notImplemented()
+    }
+
+    override fun setBackgroundColor(color: Color?) {
+        throw notImplemented()
+    }
+
+    override fun getContentSize(): Dimension {
+        throw notImplemented()
+    }
+
+    override fun isEmbeddedIntoDialogWrapper(): Boolean {
+        throw notImplemented()
+    }
+
+    override fun setEmbeddedIntoDialogWrapper(b: Boolean) {
+        throw notImplemented()
+    }
+
+    override fun getVirtualFile(): VirtualFile {
+        throw notImplemented()
+    }
+
+    override fun getTextDrawingCallback(): TextDrawingCallback {
+        throw notImplemented()
+    }
+
+    override fun createBoundColorSchemeDelegate(customGlobalScheme: EditorColorsScheme?): EditorColorsScheme {
+        throw notImplemented()
+    }
+
+    override fun setPlaceholder(text: CharSequence?) {
+        throw notImplemented()
+    }
+
+    override fun setPlaceholderAttributes(attributes: TextAttributes?) {
+        throw notImplemented()
+    }
+
+    override fun setShowPlaceholderWhenFocused(show: Boolean) {
+        throw notImplemented()
+    }
+
+    override fun isStickySelection(): Boolean {
+        throw notImplemented()
+    }
+
+    override fun setStickySelection(enable: Boolean) {
+        throw notImplemented()
+    }
+
+    override fun getPrefixTextWidthInPixels(): Int {
+        throw notImplemented()
+    }
+
+    override fun setPrefixTextAndAttributes(prefixText: String?, attributes: TextAttributes?) {
+        throw notImplemented()
+    }
+
+    override fun isPurePaintingMode(): Boolean {
+        throw notImplemented()
+    }
+
+    override fun setPurePaintingMode(enabled: Boolean) {
+        throw notImplemented()
+    }
+
+    override fun registerLineExtensionPainter(lineExtensionPainter: LineExtensionPainter) {
+        throw notImplemented()
+    }
+
+    override fun registerScrollBarRepaintCallback(callback: ButtonlessScrollBarUI.ScrollbarRepaintCallback?) {
+        throw notImplemented()
+    }
+
+    override fun getExpectedCaretOffset(): Int {
+        throw notImplemented()
+    }
+
+    override fun setContextMenuGroupId(groupId: String?) {
+        throw notImplemented()
+    }
+
+    override fun getContextMenuGroupId(): String? {
+        throw notImplemented()
+    }
+
+    override fun installPopupHandler(popupHandler: EditorPopupHandler) {
+        throw notImplemented()
+    }
+
+    override fun uninstallPopupHandler(popupHandler: EditorPopupHandler) {
+        throw notImplemented()
+    }
+
+    override fun setCustomCursor(requestor: Any, cursor: Cursor?) {
+        throw notImplemented()
+    }
 }

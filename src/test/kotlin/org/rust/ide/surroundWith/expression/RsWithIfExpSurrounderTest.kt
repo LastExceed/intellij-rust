@@ -8,7 +8,8 @@ package org.rust.ide.surroundWith.expression
 import org.rust.ide.surroundWith.RsSurrounderTestBase
 
 class RsWithIfExpSurrounderTest : RsSurrounderTestBase(RsWithIfExpSurrounder()) {
-    fun `test simple`() = doTest("""
+    fun `test simple`() = doTest(
+        """
         fn main() {
             <selection>true</selection>
         }
@@ -16,9 +17,11 @@ class RsWithIfExpSurrounderTest : RsSurrounderTestBase(RsWithIfExpSurrounder()) 
         fn main() {
             if true {<caret>}
         }
-    """)
+    """
+    )
 
-    fun `test call`() = doTest("""
+    fun `test call`() = doTest(
+        """
         fn func() -> bool {
             false
         }
@@ -34,9 +37,11 @@ class RsWithIfExpSurrounderTest : RsSurrounderTestBase(RsWithIfExpSurrounder()) 
         fn main() {
             if func() {<caret>}
         }
-    """)
+    """
+    )
 
-    fun `test correct post process`() = doTest("""
+    fun `test correct post process`() = doTest(
+        """
         fn main() {
             <selection>true</selection>
             1;
@@ -46,15 +51,19 @@ class RsWithIfExpSurrounderTest : RsSurrounderTestBase(RsWithIfExpSurrounder()) 
             if true {<caret>}
             1;
         }
-    """)
+    """
+    )
 
-    fun `test number`() = doTestNotApplicable("""
+    fun `test number`() = doTestNotApplicable(
+        """
         fn main() {
             <selection>1234</selection>
         }
-    """)
+    """
+    )
 
-    fun `test number call`() = doTestNotApplicable("""
+    fun `test number call`() = doTestNotApplicable(
+        """
         fn func() -> i32 {
             1234
         }
@@ -62,5 +71,6 @@ class RsWithIfExpSurrounderTest : RsSurrounderTestBase(RsWithIfExpSurrounder()) 
         fn main() {
             <selection>func()</selection>
         }
-    """)
+    """
+    )
 }

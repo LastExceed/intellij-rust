@@ -134,8 +134,10 @@ private class RsElementCellRenderer : DefaultPsiElementCellRenderer() {
     }
 
     private inner class LibraryCellRender : DefaultListCellRenderer() {
-        override fun getListCellRendererComponent(list: JList<*>, value: Any?, index: Int,
-                                                  isSelected: Boolean, cellHasFocus: Boolean): Component {
+        override fun getListCellRendererComponent(
+            list: JList<*>, value: Any?, index: Int,
+            isSelected: Boolean, cellHasFocus: Boolean
+        ): Component {
             val component = super.getListCellRendererComponent(list, null, index, isSelected, cellHasFocus)
             val textWithIcon = textWithIcon()
             if (textWithIcon != null) {

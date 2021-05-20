@@ -72,6 +72,7 @@ private class ParamIntroducer(
     private val editor: Editor
 ) {
     private val psiFactory = RsPsiFactory(project)
+
     /**
      * Introduces a new parameter to the chosen function and replaces chosen expression occurrences with a newly introduced
      * param.

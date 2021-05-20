@@ -1,14 +1,14 @@
-fn foo()<fold text=' { '> {
-    </fold>println!("Hello World");<fold text=' }'>
-}</fold>
+fn foo() < fold text=' { '> {
+< / fold > println ! ("Hello World");< fold text = ' }'>
+} < / fold>
 
 fn bar()
-<fold text='{...}'>{
+< fold text='{...}'>{
 
-    println!("Hello World");
+println ! ("Hello World");
 
-}</fold>
+} < / fold>
 
-fn long() <fold text='{...}'>{
-    println!("This line is too long to fit into the line margin after collapsing, so it will fully collapse as a large block");
-}</fold>
+fn long() < fold text='{...}'>{
+println ! ("This line is too long to fit into the line margin after collapsing, so it will fully collapse as a large block");
+} < / fold>

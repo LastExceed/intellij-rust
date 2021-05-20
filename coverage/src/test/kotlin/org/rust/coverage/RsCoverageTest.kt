@@ -37,32 +37,39 @@ class RsCoverageTest : RunConfigurationTestBase() {
     override fun createRustupFixture(): RustupTestFixture = CoverageRustupTestFixture(project)
 
     fun `test main`() = doTest {
-        toml("Cargo.toml", """
+        toml(
+            "Cargo.toml", """
             [package]
             name = "hello"
             version = "0.1.0"
             authors = []
-        """)
+        """
+        )
 
         dir("src") {
-            rust("main.rs", """
+            rust(
+                "main.rs", """
                 fn main() {                     // Hits: 1
                     println!("Hello, world!");  // Hits: 1
                 }                               // Hits: 1
-            """)
+            """
+            )
         }
     }
 
     fun `test function call`() = doTest {
-        toml("Cargo.toml", """
+        toml(
+            "Cargo.toml", """
             [package]
             name = "hello"
             version = "0.1.0"
             authors = []
-        """)
+        """
+        )
 
         dir("src") {
-            rust("main.rs", """
+            rust(
+                "main.rs", """
                 fn foo() {                      // Hits: 1
                     println!("Hello, world!");  // Hits: 1
                 }                               // Hits: 1
@@ -70,65 +77,79 @@ class RsCoverageTest : RunConfigurationTestBase() {
                 fn main() {                     // Hits: 1
                     foo();                      // Hits: 1
                 }                               // Hits: 1
-            """)
+            """
+            )
         }
     }
 
     fun `test function call from lib`() = doTest {
-        toml("Cargo.toml", """
+        toml(
+            "Cargo.toml", """
             [package]
             name = "hello"
             version = "0.1.0"
             authors = []
             edition = "2018"
-        """)
+        """
+        )
 
         dir("src") {
-            rust("lib.rs", """
+            rust(
+                "lib.rs", """
                 pub fn foo() {                  // Hits: 1
                     println!("Hello, world!");  // Hits: 1
                 }                               // Hits: 1
-            """)
+            """
+            )
 
-            rust("main.rs", """
+            rust(
+                "main.rs", """
                 use hello::foo;
 
                 fn main() {                     // Hits: 1
                     foo();                      // Hits: 1
                 }                               // Hits: 1
-            """)
+            """
+            )
         }
     }
 
     fun `test for`() = doTest {
-        toml("Cargo.toml", """
+        toml(
+            "Cargo.toml", """
             [package]
             name = "hello"
             version = "0.1.0"
             authors = []
-        """)
+        """
+        )
 
         dir("src") {
-            rust("main.rs", """
+            rust(
+                "main.rs", """
                 fn main() {                         // Hits: 1
                     for i in 1..5 {                 // Hits: 5
                         println!("Hello, world!");  // Hits: 4
                     }
                 }                                   // Hits: 1
-            """)
+            """
+            )
         }
     }
 
     fun `test for function call`() = doTest {
-        toml("Cargo.toml", """
+        toml(
+            "Cargo.toml", """
             [package]
             name = "hello"
             version = "0.1.0"
             authors = []
-        """)
+        """
+        )
 
         dir("src") {
-            rust("main.rs", """
+            rust(
+                "main.rs", """
                 fn foo() {                      // Hits: 4
                     println!("Hello, world!");  // Hits: 4
                 }                               // Hits: 4
@@ -138,7 +159,8 @@ class RsCoverageTest : RunConfigurationTestBase() {
                         foo();                  // Hits: 4
                     }
                 }                               // Hits: 1
-            """)
+            """
+            )
         }
     }
 
@@ -146,15 +168,18 @@ class RsCoverageTest : RunConfigurationTestBase() {
         if (SystemInfo.isWindows) return // https://github.com/mozilla/grcov/issues/462
 
         doTest(runTests = true) {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "hello"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
 
             dir("src") {
-                rust("lib.rs", """
+                rust(
+                    "lib.rs", """
                     fn foo() {                      // Hits: 2
                         println!("Hello, world!");  // Hits: 2
                     }                               // Hits: 2
@@ -168,7 +193,8 @@ class RsCoverageTest : RunConfigurationTestBase() {
                     fn test2() {                    // Hits: 2
                         foo();                      // Hits: 1
                     }                               // Hits: 2
-                """)
+                """
+                )
             }
         }
     }
@@ -177,7 +203,8 @@ class RsCoverageTest : RunConfigurationTestBase() {
         if (SystemInfo.isWindows) return // https://github.com/mozilla/grcov/issues/462
 
         doTest(runTests = true) {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "hello"
                 version = "0.1.0"
@@ -185,10 +212,12 @@ class RsCoverageTest : RunConfigurationTestBase() {
 
                 [lib]
                 proc-macro = true
-            """)
+            """
+            )
 
             dir("src") {
-                rust("lib.rs", """
+                rust(
+                    "lib.rs", """
                     fn foo() {                      // Hits: 2
                         println!("Hello, world!");  // Hits: 2
                     }                               // Hits: 2
@@ -202,28 +231,33 @@ class RsCoverageTest : RunConfigurationTestBase() {
                     fn test2() {                    // Hits: 2
                         foo();                      // Hits: 1
                     }                               // Hits: 2
-                """)
+                """
+                )
             }
         }
     }
 
     fun `test panic`() = doTest {
-        toml("Cargo.toml", """
+        toml(
+            "Cargo.toml", """
             [package]
             name = "hello"
             version = "0.1.0"
             authors = []
-        """)
+        """
+        )
 
         dir("src") {
-            rust("main.rs", """
+            rust(
+                "main.rs", """
                 fn main() {          // Hits: 1
                     let x = 1;       // Hits: 1
                     let y = 2;       // Hits: 1
                     panic!("fail");  // Hits: 1
                     let z = 3;
                 }
-            """)
+            """
+            )
         }
     }
 

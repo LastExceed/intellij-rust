@@ -47,10 +47,12 @@ class RsCompilerSourcesPerformance : RsTestBase() {
         val fileLength: Int
     )
 
-    private fun parseRustFiles(directory: VirtualFile,
-                               ignored: Collection<String>,
-                               expectedNumberOfFiles: Int,
-                               checkForErrors: Boolean) {
+    private fun parseRustFiles(
+        directory: VirtualFile,
+        ignored: Collection<String>,
+        expectedNumberOfFiles: Int,
+        checkForErrors: Boolean
+    ) {
         val processed = mutableListOf<FileStats>()
         val errors = mutableListOf<String>()
         val totalTime = measureTimeMillis {
@@ -86,9 +88,11 @@ class RsCompilerSourcesPerformance : RsTestBase() {
 
         reportTeamCityMetric("$name totalTime", totalTime)
 
-        println("\n$name " +
-            "\nTotal: ${totalTime}ms" +
-            "\nFileTree: ${processed.size}")
+        println(
+            "\n$name " +
+                "\nTotal: ${totalTime}ms" +
+                "\nFileTree: ${processed.size}"
+        )
         val slowest = processed.sortedByDescending { it.time }.take(5)
         println("\nSlowest files")
         for ((path, time, fileLength) in slowest) {

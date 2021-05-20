@@ -11,16 +11,22 @@ import org.rust.ide.lineMarkers.RsLineMarkerProviderTestBase
 
 @ProjectDescriptor(WithStdlibAndDependencyRustProjectDescriptor::class)
 class RsCrateDocLineMarkerProviderTest : RsLineMarkerProviderTestBase() {
-    fun `test documentation link`() = doTestByText("""
+    fun `test documentation link`() = doTestByText(
+        """
         #[cfg(not(windows))]
         extern crate dep_lib_target;             // - Open documentation for `dep_lib`
-    """)
+    """
+    )
 
-    fun `test documentation link with alias`() = doTestByText("""
+    fun `test documentation link with alias`() = doTestByText(
+        """
         extern crate dep_lib_target as dlib;     // - Open documentation for `dep_lib`
-    """)
+    """
+    )
 
-    fun `test no documentation link`() = doTestByText("""
+    fun `test no documentation link`() = doTestByText(
+        """
         extern crate nosrc_lib;                  // It's a package name, no documentation
-    """)
+    """
+    )
 }

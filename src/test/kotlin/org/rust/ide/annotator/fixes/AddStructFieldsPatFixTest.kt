@@ -10,7 +10,8 @@ import org.rust.ide.annotator.RsAnnotatorTestBase
 import org.rust.ide.annotator.RsErrorAnnotator
 
 class AddStructFieldsPatFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
-    fun `test one field missing`() = checkFixByText("Add missing fields", """
+    fun `test one field missing`() = checkFixByText(
+        "Add missing fields", """
         struct Foo {
             a: i32,
             b: i32,
@@ -31,7 +32,8 @@ class AddStructFieldsPatFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
         """
     )
 
-    fun `test one field missing with trailing comma`() = checkFixByText("Add missing fields", """
+    fun `test one field missing with trailing comma`() = checkFixByText(
+        "Add missing fields", """
         struct Foo {
             a: i32,
             b: i32,
@@ -52,7 +54,8 @@ class AddStructFieldsPatFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
         """
     )
 
-    fun `test missing fields with extra fields existing`() = checkFixByText("Add missing fields", """
+    fun `test missing fields with extra fields existing`() = checkFixByText(
+        "Add missing fields", """
         struct Foo {
             a: i32,
             b: i32,
@@ -75,7 +78,8 @@ class AddStructFieldsPatFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
         """
     )
 
-    fun `test filling order between 2 last fields existing`() = checkFixByText("Add missing fields", """
+    fun `test filling order between 2 last fields existing`() = checkFixByText(
+        "Add missing fields", """
         struct Foo {
             a: i32,
             b: i32,
@@ -98,7 +102,8 @@ class AddStructFieldsPatFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
         """
     )
 
-    fun `test filling order between first and last fields existing`() = checkFixByText("Add missing fields", """
+    fun `test filling order between first and last fields existing`() = checkFixByText(
+        "Add missing fields", """
         struct Foo {
             a: i32,
             b: i32,
@@ -121,7 +126,8 @@ class AddStructFieldsPatFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
         """
     )
 
-    fun `test filling order with the first field existing`() = checkFixByText("Add missing fields", """
+    fun `test filling order with the first field existing`() = checkFixByText(
+        "Add missing fields", """
         struct Foo {
             a: i32,
             b: i32,
@@ -144,7 +150,8 @@ class AddStructFieldsPatFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
         """
     )
 
-    fun `test filling order with the second field existing`() = checkFixByText("Add missing fields", """
+    fun `test filling order with the second field existing`() = checkFixByText(
+        "Add missing fields", """
         struct Foo {
             a: i32,
             b: i32,
@@ -167,7 +174,8 @@ class AddStructFieldsPatFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
         """
     )
 
-    fun `test filling order with the third field existing`() = checkFixByText("Add missing fields", """
+    fun `test filling order with the third field existing`() = checkFixByText(
+        "Add missing fields", """
         struct Foo {
             a: i32,
             b: i32,
@@ -190,7 +198,8 @@ class AddStructFieldsPatFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
         """
     )
 
-    fun `test one field missing in tuple`() = checkFixByText("Add missing fields", """
+    fun `test one field missing in tuple`() = checkFixByText(
+        "Add missing fields", """
         enum Foo {
             Bar(i32, i32, i32)
         }
@@ -213,7 +222,8 @@ class AddStructFieldsPatFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
         """
     )
 
-    fun `test tuple with no fields`() = checkFixByText("Add missing fields", """
+    fun `test tuple with no fields`() = checkFixByText(
+        "Add missing fields", """
         enum Foo {
             Bar(i32, i32, i32)
         }
@@ -236,7 +246,8 @@ class AddStructFieldsPatFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
         """
     )
 
-    fun `test tuple with one field with comma`() = checkFixByText("Add missing fields", """
+    fun `test tuple with one field with comma`() = checkFixByText(
+        "Add missing fields", """
         enum Foo {
             Bar(i32, i32, i32)
         }
@@ -259,7 +270,8 @@ class AddStructFieldsPatFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
         """
     )
 
-    fun `test tuple with one field without comma`() = checkFixByText("Add missing fields", """
+    fun `test tuple with one field without comma`() = checkFixByText(
+        "Add missing fields", """
         enum Foo {
             Bar(i32, i32, i32)
         }
@@ -283,7 +295,8 @@ class AddStructFieldsPatFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
     )
 
     @MockAdditionalCfgOptions("intellij_rust")
-    fun `test 123`() = checkFixByText("Add missing fields", """
+    fun `test 123`() = checkFixByText(
+        "Add missing fields", """
         struct Foo {
             a: i32,
             #[cfg(intellij_rust)]

@@ -10,7 +10,8 @@ import org.rust.WithStdlibRustProjectDescriptor
 
 @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
 class PrintlnPostfixTemplateTests : RsPostfixTemplateTest(PrintlnPostfixTemplate(RsPostfixTemplateProvider())) {
-    fun `test string`() = doTest("""
+    fun `test string`() = doTest(
+        """
        fn main() {
            "Arbitrary string".println/*caret*/
        }
@@ -18,9 +19,11 @@ class PrintlnPostfixTemplateTests : RsPostfixTemplateTest(PrintlnPostfixTemplate
        fn main() {
            println!("Arbitrary string");/*caret*/
        }
-    """)
+    """
+    )
 
-    fun `test byte string`() = doTest("""
+    fun `test byte string`() = doTest(
+        """
        fn main() {
            b"Arbitrary string".println/*caret*/
        }
@@ -28,9 +31,11 @@ class PrintlnPostfixTemplateTests : RsPostfixTemplateTest(PrintlnPostfixTemplate
        fn main() {
            println!("{:?}", b"Arbitrary string");/*caret*/
        }
-    """)
+    """
+    )
 
-    fun `test raw string`() = doTest("""
+    fun `test raw string`() = doTest(
+        """
        fn main() {
            r#"Arbitrary string"#.println/*caret*/
        }
@@ -38,9 +43,11 @@ class PrintlnPostfixTemplateTests : RsPostfixTemplateTest(PrintlnPostfixTemplate
        fn main() {
            println!(r#"Arbitrary string"#);/*caret*/
        }
-    """)
+    """
+    )
 
-    fun `test raw byte string`() = doTest("""
+    fun `test raw byte string`() = doTest(
+        """
        fn main() {
            br#"Arbitrary string"#.println/*caret*/
        }
@@ -48,9 +55,11 @@ class PrintlnPostfixTemplateTests : RsPostfixTemplateTest(PrintlnPostfixTemplate
        fn main() {
            println!("{:?}", br#"Arbitrary string"#);/*caret*/
        }
-    """)
+    """
+    )
 
-    fun `test string variable`() = doTest("""
+    fun `test string variable`() = doTest(
+        """
        fn main() {
            let s = "Arbitrary string";
            s.println/*caret*/
@@ -60,9 +69,11 @@ class PrintlnPostfixTemplateTests : RsPostfixTemplateTest(PrintlnPostfixTemplate
            let s = "Arbitrary string";
            println!("{}", s);/*caret*/
        }
-    """)
+    """
+    )
 
-    fun `test byte string variable`() = doTest("""
+    fun `test byte string variable`() = doTest(
+        """
        fn main() {
            let s = b"Arbitrary string";
            s.println/*caret*/
@@ -72,9 +83,11 @@ class PrintlnPostfixTemplateTests : RsPostfixTemplateTest(PrintlnPostfixTemplate
            let s = b"Arbitrary string";
            println!("{:?}", s);/*caret*/
        }
-    """)
+    """
+    )
 
-    fun `test raw string variable`() = doTest("""
+    fun `test raw string variable`() = doTest(
+        """
        fn main() {
            let s = r#"Arbitrary string"#;
            s.println/*caret*/
@@ -84,9 +97,11 @@ class PrintlnPostfixTemplateTests : RsPostfixTemplateTest(PrintlnPostfixTemplate
            let s = r#"Arbitrary string"#;
            println!("{}", s);/*caret*/
        }
-    """)
+    """
+    )
 
-    fun `test raw byte string variable`() = doTest("""
+    fun `test raw byte string variable`() = doTest(
+        """
        fn main() {
            let s = br#"Arbitrary string"#;
            s.println/*caret*/
@@ -96,9 +111,11 @@ class PrintlnPostfixTemplateTests : RsPostfixTemplateTest(PrintlnPostfixTemplate
            let s = br#"Arbitrary string"#;
            println!("{:?}", s);/*caret*/
        }
-    """)
+    """
+    )
 
-    fun `test method returning Debug`() = doTest("""
+    fun `test method returning Debug`() = doTest(
+        """
         #[derive(Debug)]
         enum E { A }
 
@@ -116,9 +133,11 @@ class PrintlnPostfixTemplateTests : RsPostfixTemplateTest(PrintlnPostfixTemplate
         fn main() {
             println!("{:?}", test());/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test method returning no Debug`() = doTestNotApplicable("""
+    fun `test method returning no Debug`() = doTestNotApplicable(
+        """
         struct S {}
 
         fn test() -> S { S {} }
@@ -126,9 +145,11 @@ class PrintlnPostfixTemplateTests : RsPostfixTemplateTest(PrintlnPostfixTemplate
         fn main() {
             test().println/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test macro`() = doTest("""
+    fun `test macro`() = doTest(
+        """
         fn main() {
             assert_eq!(2, 2).println/*caret*/
         }
@@ -136,9 +157,11 @@ class PrintlnPostfixTemplateTests : RsPostfixTemplateTest(PrintlnPostfixTemplate
         fn main() {
             println!("{:?}", assert_eq!(2, 2));/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test struct implementing Display`() = doTest("""
+    fun `test struct implementing Display`() = doTest(
+        """
         use std::fmt::Display;
         use std::fmt::Formatter;
         use std::fmt::Error;
@@ -160,15 +183,19 @@ class PrintlnPostfixTemplateTests : RsPostfixTemplateTest(PrintlnPostfixTemplate
         fn main() {
             println!("{}", &&S {});/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test ignored let expression`() = doTestNotApplicable("""
+    fun `test ignored let expression`() = doTestNotApplicable(
+        """
         fn main() {
             let _ = 4.println/*caret*/;
         }
-    """)
+    """
+    )
 
-    fun `test let expression`() = doTest("""
+    fun `test let expression`() = doTest(
+        """
         fn main() {
             let test = 4.println/*caret*/;
         }
@@ -177,9 +204,11 @@ class PrintlnPostfixTemplateTests : RsPostfixTemplateTest(PrintlnPostfixTemplate
             let test = 4;
             println!("{:?}", test);/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test let expression without semicolon`() = doTest("""
+    fun `test let expression without semicolon`() = doTest(
+        """
         fn main() {
             let test = 4.println/*caret*/
         }
@@ -188,9 +217,11 @@ class PrintlnPostfixTemplateTests : RsPostfixTemplateTest(PrintlnPostfixTemplate
             let test = 4;
             println!("{:?}", test);/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test let expression with a comment not in the end of a block`() = doTest("""
+    fun `test let expression with a comment not in the end of a block`() = doTest(
+        """
         fn main() {
             let a = 123;
             let b = a - 42 * 3.println/*caret*/; // this is a comment
@@ -203,9 +234,11 @@ class PrintlnPostfixTemplateTests : RsPostfixTemplateTest(PrintlnPostfixTemplate
             println!("{:?}", b);/*caret*/
             let c = a + b;
         }
-    """)
+    """
+    )
 
-    fun `test inner println in the let expression`() = doTest("""
+    fun `test inner println in the let expression`() = doTest(
+        """
         fn main() {
             let a = 123;
             let b = a - 42.println/*caret*/ * 3; // this is a comment
@@ -218,9 +251,11 @@ class PrintlnPostfixTemplateTests : RsPostfixTemplateTest(PrintlnPostfixTemplate
             println!("{:?}", 42);/*caret*/
             let c = a + b;
         }
-    """)
+    """
+    )
 
-    fun `test inner println in the match expression`() = doTest("""
+    fun `test inner println in the match expression`() = doTest(
+        """
         enum E<T> { A(T), B }
 
         fn main() {
@@ -243,9 +278,11 @@ class PrintlnPostfixTemplateTests : RsPostfixTemplateTest(PrintlnPostfixTemplate
                 _ => -1
             };
         }
-    """)
+    """
+    )
 
-    fun `test match expression`() = doTest("""
+    fun `test match expression`() = doTest(
+        """
         enum E<T> { A(T), B }
 
         fn main() {
@@ -263,9 +300,11 @@ class PrintlnPostfixTemplateTests : RsPostfixTemplateTest(PrintlnPostfixTemplate
                 _ => -1
             });/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test multi line match arm`() = doTest("""
+    fun `test multi line match arm`() = doTest(
+        """
         enum E<T> { A(T), B }
 
         fn main() {
@@ -287,9 +326,11 @@ class PrintlnPostfixTemplateTests : RsPostfixTemplateTest(PrintlnPostfixTemplate
                 _ => ()
             }
         }
-    """)
+    """
+    )
 
-    fun `test match arm with not empty type`() = doTest("""
+    fun `test match arm with not empty type`() = doTest(
+        """
         enum E<T> { A(T), B }
 
         fn main() {
@@ -310,9 +351,11 @@ class PrintlnPostfixTemplateTests : RsPostfixTemplateTest(PrintlnPostfixTemplate
                 _ => -1
             };
         }
-    """)
+    """
+    )
 
-    fun `test match arm with empty type`() = doTest("""
+    fun `test match arm with empty type`() = doTest(
+        """
         enum E<T> { A(T), B }
 
         fn main() {
@@ -330,15 +373,19 @@ class PrintlnPostfixTemplateTests : RsPostfixTemplateTest(PrintlnPostfixTemplate
                 _ => ()
             };
         }
-    """)
+    """
+    )
 
-    fun `test generic parameter with no Debug`() = doTestNotApplicable("""
+    fun `test generic parameter with no Debug`() = doTestNotApplicable(
+        """
         fn test<T>(variable: T) {
             variable.println/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test generic parameter with Debug + Display`() = doTest("""
+    fun `test generic parameter with Debug + Display`() = doTest(
+        """
         use std::fmt::Debug;
         use std::fmt::Display;
 
@@ -352,5 +399,6 @@ class PrintlnPostfixTemplateTests : RsPostfixTemplateTest(PrintlnPostfixTemplate
         fn test<T>(variable: T) where T: Debug + Display {
             println!("{}", variable);/*caret*/
         }
-    """)
+    """
+    )
 }

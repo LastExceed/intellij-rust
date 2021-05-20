@@ -63,7 +63,8 @@ class RsFmtBlock(
                     alignment = alignment.getAlignment(childNode, node, childCtx),
                     indent = computeIndent(childNode, childCtx),
                     wrap = null,
-                    ctx = childCtx)
+                    ctx = childCtx
+                )
             }
 
         // Create fake `.sth` block here, so child indentation will
@@ -78,7 +79,8 @@ class RsFmtBlock(
                 val syntheticBlock = SyntheticRsFmtBlock(
                     representative = dotBlock,
                     subBlocks = children.subList(dotIndex, children.size),
-                    ctx = ctx)
+                    ctx = ctx
+                )
                 return children.subList(0, dotIndex).plusElement(syntheticBlock)
             }
         }
@@ -98,9 +100,9 @@ class RsFmtBlock(
         }
 
         val indent = when {
-        // Flat brace blocks do not have separate PSI node for content blocks
-        // so we have to manually decide whether new child is before (no indent)
-        // or after (normal indent) left brace node.
+            // Flat brace blocks do not have separate PSI node for content blocks
+            // so we have to manually decide whether new child is before (no indent)
+            // or after (normal indent) left brace node.
             node.isFlatBraceBlock -> {
                 val lbraceIndex = subBlocks.indexOfFirst { it is ASTBlock && it.node?.elementType == LBRACE }
                 if (lbraceIndex != -1 && lbraceIndex < newChildIndex) {
@@ -110,13 +112,13 @@ class RsFmtBlock(
                 }
             }
 
-        // We are inside some kind of {...}, [...], (...) or <...> block
+            // We are inside some kind of {...}, [...], (...) or <...> block
             node.isDelimitedBlock -> Indent.getNormalIndent()
 
-        // Indent expressions (chain calls, binary expressions, ...)
+            // Indent expressions (chain calls, binary expressions, ...)
             node.psi is RsExpr -> Indent.getContinuationWithoutFirstIndent()
 
-        // Otherwise we don't want any indentation (null means continuation indent)
+            // Otherwise we don't want any indentation (null means continuation indent)
             else -> Indent.getNoneIndent()
         }
         return ChildAttributes(indent, null)

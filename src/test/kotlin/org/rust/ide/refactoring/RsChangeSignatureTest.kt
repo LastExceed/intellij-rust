@@ -21,35 +21,44 @@ import org.rust.stdext.removeLast
 
 class RsChangeSignatureTest : RsTestBase() {
     @MockAdditionalCfgOptions("intellij_rust")
-    fun `test unavailable if a parameter is cfg-disabled`() = checkError("""
+    fun `test unavailable if a parameter is cfg-disabled`() = checkError(
+        """
         fn foo/*caret*/(#[cfg(not(intellij_rust))] a: u32) {}
     """, """Cannot perform refactoring.
-Cannot change signature of function with cfg-disabled parameters""")
+Cannot change signature of function with cfg-disabled parameters"""
+    )
 
-    fun `test unavailable inside function`() = checkError("""
+    fun `test unavailable inside function`() = checkError(
+        """
         fn foo() {
             let a/*caret*/ = 5;
         }
-    """, "The caret should be positioned at a function or method")
+    """, "The caret should be positioned at a function or method"
+    )
 
 
-    fun `test unavailable on unresolved function call`() = checkError("""
+    fun `test unavailable on unresolved function call`() = checkError(
+        """
         fn bar(a: u32) {}
         fn baz() {
             bar(foo(/*caret*/));
         }
-    """, "The caret should be positioned at a function or method")
+    """, "The caret should be positioned at a function or method"
+    )
 
     @MockAdditionalCfgOptions("intellij_rust")
-    fun `test available if a parameter is cfg-enabled`() = doTest("""
+    fun `test available if a parameter is cfg-enabled`() = doTest(
+        """
         fn foo/*caret*/(#[cfg(intellij_rust)] a: u32) {}
     """, """
         fn bar(#[cfg(intellij_rust)] a: u32) {}
-    """) {
+    """
+    ) {
         name = "bar"
     }
 
-    fun `test do not change anything`() = doTest("""
+    fun `test do not change anything`() = doTest(
+        """
         async unsafe fn foo/*caret*/(a: u32, b: bool) -> u32 { 0 }
         fn bar() {
             unsafe { foo(1, true); }
@@ -59,9 +68,11 @@ Cannot change signature of function with cfg-disabled parameters""")
         fn bar() {
             unsafe { foo(1, true); }
         }
-    """) {}
+    """
+    ) {}
 
-    fun `test rename function reference`() = doTest("""
+    fun `test rename function reference`() = doTest(
+        """
         fn foo/*caret*/() {}
         fn id<T>(t: T) {}
 
@@ -75,11 +86,13 @@ Cannot change signature of function with cfg-disabled parameters""")
         fn baz() {
             id(bar)
         }
-    """) {
+    """
+    ) {
         name = "bar"
     }
 
-    fun `test rename function import`() = doTest("""
+    fun `test rename function import`() = doTest(
+        """
         mod bar {
             pub fn foo/*caret*/() {}
         }
@@ -89,19 +102,23 @@ Cannot change signature of function with cfg-disabled parameters""")
             pub fn baz/*caret*/() {}
         }
         use bar::{baz};
-    """) {
+    """
+    ) {
         name = "baz"
     }
 
-    fun `test rename function`() = doTest("""
+    fun `test rename function`() = doTest(
+        """
         fn foo/*caret*/() {}
     """, """
         fn bar() {}
-    """) {
+    """
+    ) {
         name = "bar"
     }
 
-    fun `test rename function change usage`() = doTest("""
+    fun `test rename function change usage`() = doTest(
+        """
         fn foo/*caret*/() {}
         fn test() {
             foo()
@@ -111,11 +128,13 @@ Cannot change signature of function with cfg-disabled parameters""")
         fn test() {
             bar()
         }
-    """) {
+    """
+    ) {
         name = "bar"
     }
 
-    fun `test rename function change complex path usage`() = doTest("""
+    fun `test rename function change complex path usage`() = doTest(
+        """
         mod inner {
             pub fn foo/*caret*/() {}
         }
@@ -129,11 +148,13 @@ Cannot change signature of function with cfg-disabled parameters""")
         fn test() {
             inner::bar()
         }
-    """) {
+    """
+    ) {
         name = "bar"
     }
 
-    fun `test rename method change usage`() = doTest("""
+    fun `test rename method change usage`() = doTest(
+        """
         struct S;
         impl S {
             fn foo/*caret*/(&self) {}
@@ -151,47 +172,57 @@ Cannot change signature of function with cfg-disabled parameters""")
         fn test(s: S) {
             s.bar();
         }
-    """) {
+    """
+    ) {
         name = "bar"
     }
 
-    fun `test change visibility`() = doTest("""
+    fun `test change visibility`() = doTest(
+        """
         pub fn foo/*caret*/() {}
     """, """
         pub(crate) fn foo() {}
-    """) {
+    """
+    ) {
         visibility = createVisibility("pub(crate)")
     }
 
-    fun `test remove visibility`() = doTest("""
+    fun `test remove visibility`() = doTest(
+        """
         pub fn foo/*caret*/() {}
     """, """
         fn foo() {}
-    """) {
+    """
+    ) {
         visibility = null
     }
 
-    fun `test add visibility with attribute`() = doTest("""
+    fun `test add visibility with attribute`() = doTest(
+        """
         #[attr]
         fn foo/*caret*/() {}
     """, """
         #[attr]
         pub fn foo() {}
-    """) {
+    """
+    ) {
         visibility = createVisibility("pub")
     }
 
-    fun `test add visibility with comment`() = doTest("""
+    fun `test add visibility with comment`() = doTest(
+        """
         // comment
         fn foo/*caret*/() {}
     """, """
         // comment
         pub fn foo() {}
-    """) {
+    """
+    ) {
         visibility = createVisibility("pub")
     }
 
-    fun `test add visibility with attribute and comment`() = doTest("""
+    fun `test add visibility with attribute and comment`() = doTest(
+        """
         // comment
         #[attr]
         fn foo/*caret*/() {}
@@ -199,45 +230,55 @@ Cannot change signature of function with cfg-disabled parameters""")
         // comment
         #[attr]
         pub fn foo() {}
-    """) {
+    """
+    ) {
         visibility = createVisibility("pub")
     }
 
-    fun `test change return type`() = doTest("""
+    fun `test change return type`() = doTest(
+        """
         fn foo/*caret*/() -> i32 { 0 }
     """, """
         fn foo() -> u32 { 0 }
-    """) {
+    """
+    ) {
         returnTypeDisplay = createType("u32")
     }
 
-    fun `test change return type lifetime`() = doTest("""
+    fun `test change return type lifetime`() = doTest(
+        """
         fn foo<'a, 'b>/*caret*/(a: &'a u32, b: &'b u32) -> &'a i32 { 0 }
     """, """
         fn foo<'a, 'b>(a: &'a u32, b: &'b u32) -> &'b i32 { 0 }
-    """) {
+    """
+    ) {
         returnTypeDisplay = createType("&'b i32")
     }
 
-    fun `test add return type`() = doTest("""
+    fun `test add return type`() = doTest(
+        """
         fn foo/*caret*/() {}
     """, """
         fn foo() -> u32 {}
-    """) {
+    """
+    ) {
         returnTypeDisplay = createType("u32")
     }
 
-    fun `test add return type with lifetime`() = doTest("""
+    fun `test add return type with lifetime`() = doTest(
+        """
         fn foo/*caret*/<'a>(a: &'a u32) { a }
                           //^
     """, """
         fn foo/*caret*/<'a>(a: &'a u32) -> &'a u32 { a }
                           //^
-    """) {
+    """
+    ) {
         returnTypeDisplay = createType("&'a u32")
     }
 
-    fun `test add return type with default type arguments`() = doTest("""
+    fun `test add return type with default type arguments`() = doTest(
+        """
         struct S<T, R=u32>(T, R);
         fn foo/*caret*/(s: S<bool>) { unimplemented!() }
                       //^
@@ -245,20 +286,24 @@ Cannot change signature of function with cfg-disabled parameters""")
         struct S<T, R=u32>(T, R);
         fn foo/*caret*/(s: S<bool>) -> S<bool> { unimplemented!() }
                       //^
-    """) {
+    """
+    ) {
         val parameter = findElementInEditor<RsValueParameter>()
         returnTypeDisplay = parameter.typeReference!!
     }
 
-    fun `test remove return type`() = doTest("""
+    fun `test remove return type`() = doTest(
+        """
         fn foo/*caret*/() -> u32 { 0 }
     """, """
         fn foo() { 0 }
-    """) {
+    """
+    ) {
         returnTypeDisplay = createType("()")
     }
 
-    fun `test remove return type without block`() = doTest("""
+    fun `test remove return type without block`() = doTest(
+        """
         trait Trait {
             fn foo/*caret*/() -> i32;
         }
@@ -266,11 +311,13 @@ Cannot change signature of function with cfg-disabled parameters""")
         trait Trait {
             fn foo() -> u32;
         }
-    """) {
+    """
+    ) {
         returnTypeDisplay = createType("u32")
     }
 
-    fun `test remove only parameter`() = doTest("""
+    fun `test remove only parameter`() = doTest(
+        """
         fn foo/*caret*/(a: u32) {
             let c = a;
         }
@@ -284,11 +331,13 @@ Cannot change signature of function with cfg-disabled parameters""")
         fn bar() {
             foo();
         }
-    """) {
+    """
+    ) {
         parameters.removeAt(0)
     }
 
-    fun `test remove first parameter`() = doTest("""
+    fun `test remove first parameter`() = doTest(
+        """
         fn foo/*caret*/(a: u32, b: u32) {
             let c = a;
         }
@@ -302,11 +351,13 @@ Cannot change signature of function with cfg-disabled parameters""")
         fn bar() {
             foo(1);
         }
-    """) {
+    """
+    ) {
         parameters.removeAt(0)
     }
 
-    fun `test remove middle parameter`() = doTest("""
+    fun `test remove middle parameter`() = doTest(
+        """
         fn foo/*caret*/(a: u32, b: u32, c: u32) {
             let c = a;
         }
@@ -320,11 +371,13 @@ Cannot change signature of function with cfg-disabled parameters""")
         fn bar() {
             foo(0, 2);
         }
-    """) {
+    """
+    ) {
         parameters.removeAt(1)
     }
 
-    fun `test remove last parameter`() = doTest("""
+    fun `test remove last parameter`() = doTest(
+        """
         fn foo/*caret*/(a: u32, b: u32) {}
         fn bar() {
             foo(0, 1);
@@ -334,11 +387,13 @@ Cannot change signature of function with cfg-disabled parameters""")
         fn bar() {
             foo(0);
         }
-    """) {
+    """
+    ) {
         parameters.removeLast()
     }
 
-    fun `test remove last parameter (multiline)`() = doTest("""
+    fun `test remove last parameter (multiline)`() = doTest(
+        """
         fn foo/*caret*/(
             a: u32,
             b: u32,
@@ -354,11 +409,13 @@ Cannot change signature of function with cfg-disabled parameters""")
         fn bar() {
             foo(0);
         }
-    """) {
+    """
+    ) {
         parameters.removeLast()
     }
 
-    fun `test remove last method parameter (multiline)`() = doTest("""
+    fun `test remove last method parameter (multiline)`() = doTest(
+        """
         struct S;
         impl S {
             fn foo/*caret*/(
@@ -379,19 +436,23 @@ Cannot change signature of function with cfg-disabled parameters""")
         fn bar(s: S) {
             s.foo();
         }
-    """) {
+    """
+    ) {
         parameters.removeLast()
     }
 
-    fun `test remove parameter trailing comma`() = doTest("""
+    fun `test remove parameter trailing comma`() = doTest(
+        """
         fn foo/*caret*/(a: u32, b: u32,) {}
     """, """
         fn foo(a: u32) {}
-    """) {
+    """
+    ) {
         parameters.removeLast()
     }
 
-    fun `test remove method parameter trailing comma`() = doTest("""
+    fun `test remove method parameter trailing comma`() = doTest(
+        """
         struct S;
         impl S {
             fn foo/*caret*/(&self, a: u32, b: u32,) {}
@@ -401,19 +462,23 @@ Cannot change signature of function with cfg-disabled parameters""")
         impl S {
             fn foo/*caret*/(&self, a: u32) {}
         }
-    """) {
+    """
+    ) {
         parameters.removeLast()
     }
 
-    fun `test remove last parameter trailing comma`() = doTest("""
+    fun `test remove last parameter trailing comma`() = doTest(
+        """
         fn foo/*caret*/(a: u32,) {}
     """, """
         fn foo() {}
-    """) {
+    """
+    ) {
         parameters.clear()
     }
 
-    fun `test remove last method parameter trailing comma`() = doTest("""
+    fun `test remove last method parameter trailing comma`() = doTest(
+        """
         struct S;
         impl S {
             fn foo/*caret*/(&self, a: u32,) {}
@@ -423,11 +488,13 @@ Cannot change signature of function with cfg-disabled parameters""")
         impl S {
             fn foo/*caret*/(&self) {}
         }
-    """) {
+    """
+    ) {
         parameters.clear()
     }
 
-    fun `test add only parameter`() = doTest("""
+    fun `test add only parameter`() = doTest(
+        """
         fn foo/*caret*/() {}
         fn bar() {
             foo();
@@ -437,11 +504,13 @@ Cannot change signature of function with cfg-disabled parameters""")
         fn bar() {
             foo();
         }
-    """) {
+    """
+    ) {
         parameters.add(parameter("a", "u32"))
     }
 
-    fun `test add last parameter`() = doTest("""
+    fun `test add last parameter`() = doTest(
+        """
         fn foo/*caret*/(a: u32) {}
         fn bar() {
             foo(0);
@@ -451,11 +520,13 @@ Cannot change signature of function with cfg-disabled parameters""")
         fn bar() {
             foo(0, );
         }
-    """) {
+    """
+    ) {
         parameters.add(parameter("b", "u32"))
     }
 
-    fun `test add parameter in the middle (multiline)`() = doTest("""
+    fun `test add parameter in the middle (multiline)`() = doTest(
+        """
         fn foo/*caret*/(
             a: u32,
             c: u32,
@@ -479,11 +550,13 @@ Cannot change signature of function with cfg-disabled parameters""")
                 1,
             );
         }
-    """) {
+    """
+    ) {
         parameters.add(1, parameter("b", "u32"))
     }
 
-    fun `test add multiple parameters`() = doTest("""
+    fun `test add multiple parameters`() = doTest(
+        """
         fn foo/*caret*/(a: u32) {}
         fn bar() {
             foo(0);
@@ -493,23 +566,27 @@ Cannot change signature of function with cfg-disabled parameters""")
         fn bar() {
             foo(0, , );
         }
-    """) {
+    """
+    ) {
         parameters.add(parameter("b", "u32"))
         parameters.add(parameter("c", "u32"))
     }
 
-    fun `test add parameter with lifetime`() = doTest("""
+    fun `test add parameter with lifetime`() = doTest(
+        """
         fn foo/*caret*/<'a>(a: &'a u32) {}
                           //^
     """, """
         fn foo/*caret*/<'a>(a: &'a u32, b: &'a u32) {}
                           //^
-    """) {
+    """
+    ) {
         val parameter = findElementInEditor<RsValueParameter>()
         parameters.add(parameter("b", parameter.typeReference!!))
     }
 
-    fun `test add parameter with default type arguments`() = doTest("""
+    fun `test add parameter with default type arguments`() = doTest(
+        """
         struct S<T, R=u32>(T, R);
         fn foo/*caret*/(a: S<bool>) { unimplemented!() }
                       //^
@@ -517,12 +594,14 @@ Cannot change signature of function with cfg-disabled parameters""")
         struct S<T, R=u32>(T, R);
         fn foo/*caret*/(a: S<bool>, b: S<bool>) { unimplemented!() }
                       //^
-    """) {
+    """
+    ) {
         val parameter = findElementInEditor<RsValueParameter>()
         parameters.add(parameter("b", parameter.typeReference!!))
     }
 
-    fun `test add parameter to method`() = doTest("""
+    fun `test add parameter to method`() = doTest(
+        """
         struct S;
         impl S {
             fn foo/*caret*/(&self) {}
@@ -538,11 +617,13 @@ Cannot change signature of function with cfg-disabled parameters""")
         fn bar(s: S) {
             s.foo();
         }
-    """) {
+    """
+    ) {
         parameters.add(parameter("a", "u32"))
     }
 
-    fun `test add only parameter with default value`() = doTest("""
+    fun `test add only parameter with default value`() = doTest(
+        """
         fn foo/*caret*/() {}
         fn bar() {
             foo();
@@ -552,11 +633,13 @@ Cannot change signature of function with cfg-disabled parameters""")
         fn bar() {
             foo(10);
         }
-    """) {
+    """
+    ) {
         parameters.add(parameter("a", "u32", defaultValue = createExpr("10")))
     }
 
-    fun `test add last parameter with default value`() = doTest("""
+    fun `test add last parameter with default value`() = doTest(
+        """
         fn foo/*caret*/(a: u32) {}
         fn bar() {
             foo(0);
@@ -566,11 +649,13 @@ Cannot change signature of function with cfg-disabled parameters""")
         fn bar() {
             foo(0, 10);
         }
-    """) {
+    """
+    ) {
         parameters.add(parameter("b", "u32", defaultValue = createExpr("10")))
     }
 
-    fun `test import default value type`() = doTest("""
+    fun `test import default value type`() = doTest(
+        """
         mod foo {
             pub struct S(u32);
             pub fn bar/*caret*/(a: u32) {}
@@ -592,11 +677,13 @@ Cannot change signature of function with cfg-disabled parameters""")
         fn baz() {
             foo::bar(0, S(1));
         }
-    """) {
+    """
+    ) {
         parameters.add(parameter("b", "S", defaultValue = createExprWithContext("S(1)", function)))
     }
 
-    fun `test import default value type inside path`() = doTest("""
+    fun `test import default value type inside path`() = doTest(
+        """
         mod foo {
             pub enum Option<T> {
                 Some(T),
@@ -630,11 +717,13 @@ Cannot change signature of function with cfg-disabled parameters""")
         fn baz() {
             foo::bar(0, S1::<S2>(Option::None));
         }
-    """) {
+    """
+    ) {
         parameters.add(parameter("b", "S1<S2>", defaultValue = createExprWithContext("S1::<S2>(Option::None)", function)))
     }
 
-    fun `test swap parameters`() = doTest("""
+    fun `test swap parameters`() = doTest(
+        """
         fn foo/*caret*/(a: u32, b: u32) {}
         fn bar() {
             foo(0, 1);
@@ -644,11 +733,13 @@ Cannot change signature of function with cfg-disabled parameters""")
         fn bar() {
             foo(1, 0);
         }
-    """) {
+    """
+    ) {
         swapParameters(0, 1)
     }
 
-    fun `test swap method parameters`() = doTest("""
+    fun `test swap method parameters`() = doTest(
+        """
         struct S;
         impl S {
             fn foo/*caret*/(&self, a: u32, b: u32) {}
@@ -664,11 +755,13 @@ Cannot change signature of function with cfg-disabled parameters""")
         fn bar(s: S) {
             s.foo(1, 0);
         }
-    """) {
+    """
+    ) {
         swapParameters(0, 1)
     }
 
-    fun `test remove only method parameter`() = doTest("""
+    fun `test remove only method parameter`() = doTest(
+        """
         struct S;
         impl S {
             fn foo/*caret*/(&self, a: u32) {}
@@ -684,11 +777,13 @@ Cannot change signature of function with cfg-disabled parameters""")
         fn bar(s: S) {
             S::foo(&s);
         }
-    """) {
+    """
+    ) {
         parameters.clear()
     }
 
-    fun `test swap method parameters UFCS`() = doTest("""
+    fun `test swap method parameters UFCS`() = doTest(
+        """
         struct S;
         impl S {
             fn foo/*caret*/(&self, a: u32, b: u32) {}
@@ -704,11 +799,13 @@ Cannot change signature of function with cfg-disabled parameters""")
         fn bar(s: S) {
             S::foo(&s, 1, 0);
         }
-    """) {
+    """
+    ) {
         swapParameters(0, 1)
     }
 
-    fun `test add method parameter UFCS`() = doTest("""
+    fun `test add method parameter UFCS`() = doTest(
+        """
         struct S;
         impl S {
             fn foo/*caret*/(&self) {}
@@ -724,11 +821,13 @@ Cannot change signature of function with cfg-disabled parameters""")
         fn bar(s: S) {
             S::foo(&s, );
         }
-    """) {
+    """
+    ) {
         parameters.add(parameter("a", "u32"))
     }
 
-    fun `test delete method parameter UFCS`() = doTest("""
+    fun `test delete method parameter UFCS`() = doTest(
+        """
         struct S;
         impl S {
             fn foo/*caret*/(&self, a: u32, b: u32) {}
@@ -744,11 +843,13 @@ Cannot change signature of function with cfg-disabled parameters""")
         fn bar(s: S) {
             S::foo(&s, 1);
         }
-    """) {
+    """
+    ) {
         parameters.removeAt(0)
     }
 
-    fun `test swap parameters with comments`() = doTest("""
+    fun `test swap parameters with comments`() = doTest(
+        """
         fn foo/*caret*/( /*a0*/ a /*a1*/ : u32 /*a2*/ , /*b0*/ b: u32 /*b1*/ ) {}
         fn bar() {
             foo(0, 1);
@@ -758,11 +859,13 @@ Cannot change signature of function with cfg-disabled parameters""")
         fn bar() {
             foo(1, 0);
         }
-    """) {
+    """
+    ) {
         swapParameters(0, 1)
     }
 
-    fun `test swap arguments with comments`() = doTest("""
+    fun `test swap arguments with comments`() = doTest(
+        """
         fn foo/*caret*/(a: u32, b: u32) {}
         fn bar() {
             foo( /*a0*/ 0 /*a1*/  /*a2*/ , /*b0*/ 1 /*b1*/ );
@@ -772,11 +875,13 @@ Cannot change signature of function with cfg-disabled parameters""")
         fn bar() {
             foo(/*b0*/ 1 /*b1*/, /*a0*/ 0 /*a1*/  /*a2*/);
         }
-    """) {
+    """
+    ) {
         swapParameters(0, 1)
     }
 
-    fun `test multiple move`() = doTest("""
+    fun `test multiple move`() = doTest(
+        """
         fn foo/*caret*/(a: u32, b: u32, c: u32) {}
         fn bar() {
             foo(0, 1, 2);
@@ -786,12 +891,14 @@ Cannot change signature of function with cfg-disabled parameters""")
         fn bar() {
             foo(1, 2, 0);
         }
-    """) {
+    """
+    ) {
         swapParameters(0, 1)
         swapParameters(1, 2)
     }
 
-    fun `test swap back`() = doTest("""
+    fun `test swap back`() = doTest(
+        """
         fn foo/*caret*/(a: u32, b: u32, c: u32) {}
         fn bar() {
             foo(0, 1, 2);
@@ -801,12 +908,14 @@ Cannot change signature of function with cfg-disabled parameters""")
         fn bar() {
             foo(0, 1, 2);
         }
-    """) {
+    """
+    ) {
         swapParameters(0, 1)
         swapParameters(1, 0)
     }
 
-    fun `test move and add parameter`() = doTest("""
+    fun `test move and add parameter`() = doTest(
+        """
         fn foo/*caret*/(a: u32, b: u32) {}
         fn bar() {
             foo(0, 1);
@@ -816,12 +925,14 @@ Cannot change signature of function with cfg-disabled parameters""")
         fn bar() {
             foo(1, );
         }
-    """) {
+    """
+    ) {
         parameters[0] = parameters[1]
         parameters[1] = parameter("a", "u32")
     }
 
-    fun `test rename parameter ident with ident`() = doTest("""
+    fun `test rename parameter ident with ident`() = doTest(
+        """
         fn foo/*caret*/(a: u32) {
             let _ = a;
             let _ = a + 1;
@@ -831,11 +942,13 @@ Cannot change signature of function with cfg-disabled parameters""")
             let _ = b;
             let _ = b + 1;
         }
-    """) {
+    """
+    ) {
         parameters[0].patText = "b"
     }
 
-    fun `test rename parameter complex pat with ident`() = doTest("""
+    fun `test rename parameter complex pat with ident`() = doTest(
+        """
         fn foo/*caret*/((a, b): (u32, u32)) {
             let _ = a;
         }
@@ -843,11 +956,13 @@ Cannot change signature of function with cfg-disabled parameters""")
         fn foo(x: (u32, u32)) {
             let _ = a;
         }
-    """) {
+    """
+    ) {
         parameters[0].patText = "x"
     }
 
-    fun `test rename parameter ident with complex pat`() = doTest("""
+    fun `test rename parameter ident with complex pat`() = doTest(
+        """
         fn foo/*caret*/(a: (u32, u32)) {
             let _ = a;
         }
@@ -855,19 +970,23 @@ Cannot change signature of function with cfg-disabled parameters""")
         fn foo((x, y): (u32, u32)) {
             let _ = a;
         }
-    """) {
+    """
+    ) {
         parameters[0].patText = "(x, y)"
     }
 
-    fun `test change parameter type`() = doTest("""
+    fun `test change parameter type`() = doTest(
+        """
         fn foo/*caret*/(a: u32) {}
     """, """
         fn foo(a: i32) {}
-    """) {
+    """
+    ) {
         parameters[0].type = createParamType("i32")
     }
 
-    fun `test wrong argument count`() = doTest("""
+    fun `test wrong argument count`() = doTest(
+        """
         fn foo/*caret*/(a: u32) {}
         fn bar() {
             foo(1, 2, 3)
@@ -877,54 +996,66 @@ Cannot change signature of function with cfg-disabled parameters""")
         fn bar() {
             foo(1, 2, 3)
         }
-    """) {
+    """
+    ) {
         parameters.clear()
     }
 
-    fun `test add async`() = doTest("""
+    fun `test add async`() = doTest(
+        """
         fn foo/*caret*/(a: u32) {}
     """, """
         async fn foo(a: u32) {}
-    """) {
+    """
+    ) {
         isAsync = true
     }
 
-    fun `test remove async`() = doTest("""
+    fun `test remove async`() = doTest(
+        """
         async fn foo/*caret*/(a: u32) {}
     """, """
         fn foo(a: u32) {}
-    """) {
+    """
+    ) {
         isAsync = false
     }
 
-    fun `test add unsafe`() = doTest("""
+    fun `test add unsafe`() = doTest(
+        """
         fn foo/*caret*/(a: u32) {}
     """, """
         unsafe fn foo(a: u32) {}
-    """) {
+    """
+    ) {
         isUnsafe = true
     }
 
-    fun `test remove unsafe`() = doTest("""
+    fun `test remove unsafe`() = doTest(
+        """
         unsafe fn foo/*caret*/(a: u32) {}
     """, """
         fn foo(a: u32) {}
-    """) {
+    """
+    ) {
         isUnsafe = false
     }
 
-    fun `test add async unsafe and visibility`() = doTest("""
+    fun `test add async unsafe and visibility`() = doTest(
+        """
         fn foo/*caret*/(a: u32) {}
     """, """
         pub async unsafe fn foo(a: u32) {}
-    """) {
+    """
+    ) {
         isAsync = true
         isUnsafe = true
         visibility = createVisibility("pub")
     }
 
     @MockEdition(CargoWorkspace.Edition.EDITION_2018)
-    fun `test import return type in different module`() = doTest("""
+    fun `test import return type in different module`() = doTest(
+        """
         mod foo {
             pub struct S;
                      //^
@@ -942,12 +1073,14 @@ Cannot change signature of function with cfg-disabled parameters""")
 
             fn baz/*caret*/() -> S {}
         }
-    """) {
+    """
+    ) {
         returnTypeDisplay = referToType("S", findElementInEditor<RsStructItem>())
     }
 
     @MockEdition(CargoWorkspace.Edition.EDITION_2018)
-    fun `test import new parameter type in different module`() = doTest("""
+    fun `test import new parameter type in different module`() = doTest(
+        """
         mod foo {
             pub struct S;
                      //^
@@ -965,12 +1098,14 @@ Cannot change signature of function with cfg-disabled parameters""")
 
             fn baz/*caret*/(s: S) {}
         }
-    """) {
+    """
+    ) {
         parameters.add(parameter("s", referToType("S", findElementInEditor<RsStructItem>())))
     }
 
     @MockEdition(CargoWorkspace.Edition.EDITION_2018)
-    fun `test import changed parameter type in different module`() = doTest("""
+    fun `test import changed parameter type in different module`() = doTest(
+        """
         mod foo {
             pub struct S;
                      //^
@@ -988,50 +1123,60 @@ Cannot change signature of function with cfg-disabled parameters""")
 
             fn baz/*caret*/(s: S) {}
         }
-    """) {
+    """
+    ) {
         parameters[0].type = ParameterProperty.Valid(referToType("S", findElementInEditor<RsStructItem>()))
     }
 
-    fun `test name conflict module`() = checkConflicts("""
+    fun `test name conflict module`() = checkConflicts(
+        """
         fn foo/*caret*/() {}
         fn bar() {}
-    """, setOf("The name bar conflicts with an existing item in main.rs (in test_package)")) {
+    """, setOf("The name bar conflicts with an existing item in main.rs (in test_package)")
+    ) {
         name = "bar"
     }
 
-    fun `test name conflict impl`() = checkConflicts("""
+    fun `test name conflict impl`() = checkConflicts(
+        """
         struct S;
 
         impl S {
             fn foo/*caret*/() {}
             fn bar() {}
         }
-    """, setOf("The name bar conflicts with an existing item in impl S (in test_package)")) {
+    """, setOf("The name bar conflicts with an existing item in impl S (in test_package)")
+    ) {
         name = "bar"
     }
 
-    fun `test name conflict trait`() = checkConflicts("""
+    fun `test name conflict trait`() = checkConflicts(
+        """
         struct S;
         trait Trait {
             fn foo/*caret*/();
             fn bar();
         }
-    """, setOf("The name bar conflicts with an existing item in Trait (in test_package)")) {
+    """, setOf("The name bar conflicts with an existing item in Trait (in test_package)")
+    ) {
         name = "bar"
     }
 
-    fun `test visibility conflict function call`() = checkConflicts("""
+    fun `test visibility conflict function call`() = checkConflicts(
+        """
         mod foo {
             pub fn bar/*caret*/() {}
         }
         fn baz() {
             foo::bar();
         }
-    """, setOf("The function will not be visible from test_package after the refactoring")) {
+    """, setOf("The function will not be visible from test_package after the refactoring")
+    ) {
         visibility = null
     }
 
-    fun `test visibility conflict method call`() = checkConflicts("""
+    fun `test visibility conflict method call`() = checkConflicts(
+        """
         mod foo {
             pub struct S;
             impl S {
@@ -1043,20 +1188,24 @@ Cannot change signature of function with cfg-disabled parameters""")
                 s.bar();
             }
         }
-    """, setOf("The function will not be visible from test_package::foo2 after the refactoring")) {
+    """, setOf("The function will not be visible from test_package::foo2 after the refactoring")
+    ) {
         visibility = null
     }
 
-    fun `test no visibility conflict module`() = doTest("""
+    fun `test no visibility conflict module`() = doTest(
+        """
         mod foo {}
         fn foo/*caret*/() {}
     """, """
         mod foo {}
         fn foo/*caret*/() {}
-    """) {}
+    """
+    ) {}
 
     @MockAdditionalCfgOptions("intellij_rust")
-    fun `test no visibility conflict disabled function`() = doTest("""
+    fun `test no visibility conflict disabled function`() = doTest(
+        """
         fn bar/*caret*/() {}
 
         #[cfg(not(intellij_rust))]
@@ -1066,11 +1215,13 @@ Cannot change signature of function with cfg-disabled parameters""")
 
         #[cfg(not(intellij_rust))]
         fn foo() {}
-    """) {
+    """
+    ) {
         name = "foo"
     }
 
-    fun `test no visibility conflict restricted mod`() = doTest("""
+    fun `test no visibility conflict restricted mod`() = doTest(
+        """
         mod foo2 {
             mod foo {
                 fn bar/*caret*/() {}
@@ -1090,7 +1241,8 @@ Cannot change signature of function with cfg-disabled parameters""")
             }
         }
 
-    """) {
+    """
+    ) {
         visibility = createVisibility("pub(in super)")
     }
 
@@ -1152,7 +1304,8 @@ Cannot change signature of function with cfg-disabled parameters""")
         returnTypeDisplay = createType("u32")
     }
 
-    fun `test change called function`() = doTest("""
+    fun `test change called function`() = doTest(
+        """
         fn foo() {}
         fn baz() {
             foo/*caret*/();
@@ -1162,11 +1315,13 @@ Cannot change signature of function with cfg-disabled parameters""")
         fn baz() {
             foo2();
         }
-    """) {
+    """
+    ) {
         name = "foo2"
     }
 
-    fun `test change nested called function`() = doTest("""
+    fun `test change nested called function`() = doTest(
+        """
         fn foo() -> u32 { 0 }
         fn bar(a: u32) {}
         fn baz() {
@@ -1178,11 +1333,13 @@ Cannot change signature of function with cfg-disabled parameters""")
         fn baz() {
             bar(foo2());
         }
-    """) {
+    """
+    ) {
         name = "foo2"
     }
 
-    fun `test change called method`() = doTest("""
+    fun `test change called method`() = doTest(
+        """
         struct S;
         impl S {
             fn foo(&self) {}
@@ -1198,11 +1355,13 @@ Cannot change signature of function with cfg-disabled parameters""")
         fn baz(s: S) {
             s.foo2();
         }
-    """) {
+    """
+    ) {
         name = "foo2"
     }
 
-    fun `test do not import default type arguments`() = doTest("""
+    fun `test do not import default type arguments`() = doTest(
+        """
         mod foo {
             pub struct S;
             pub struct Vec<T = S>(T);
@@ -1224,7 +1383,8 @@ Cannot change signature of function with cfg-disabled parameters""")
         }
 
         fn bar/*caret*/(a: Vec) -> Vec {}
-    """) {
+    """
+    ) {
         val vec = findElementInEditor<RsTypeReference>()
         parameters.add(parameter("a", vec))
         returnTypeDisplay = vec
@@ -1240,26 +1400,25 @@ Cannot change signature of function with cfg-disabled parameters""")
     private fun createType(text: String): RsTypeReference = RsPsiFactory(project).createType(text)
     private fun createExpr(text: String): RsExpr = RsPsiFactory(project).createExpression(text)
     private fun createParamType(text: String): ParameterProperty<RsTypeReference> = ParameterProperty.Valid(createType(text))
-    private fun parameter(patText: String, type: String, defaultValue: RsExpr? = null): Parameter
-        = parameter(patText, createType(type), defaultValue = defaultValue)
+    private fun parameter(patText: String, type: String, defaultValue: RsExpr? = null): Parameter = parameter(patText, createType(type), defaultValue = defaultValue)
     private fun parameter(patText: String, type: RsTypeReference, defaultValue: RsExpr? = null): Parameter {
         val parameterDefaultValue = if (defaultValue != null) {
             ParameterProperty.Valid(defaultValue)
         } else {
             ParameterProperty.Empty()
         }
-        return Parameter(RsPsiFactory(project), patText, ParameterProperty.Valid(type),
-            defaultValue = parameterDefaultValue)
+        return Parameter(
+            RsPsiFactory(project), patText, ParameterProperty.Valid(type),
+            defaultValue = parameterDefaultValue
+        )
     }
 
     /**
      * Refer to existing type in the test code snippet.
      */
-    private fun referToType(text: String, context: RsElement): RsTypeReference
-        = RsTypeReferenceCodeFragment(myFixture.project, text, context).typeReference!!
+    private fun referToType(text: String, context: RsElement): RsTypeReference = RsTypeReferenceCodeFragment(myFixture.project, text, context).typeReference!!
 
-    private fun createExprWithContext(text: String, context: RsElement): RsExpr
-        = RsExpressionCodeFragment(myFixture.project, text, context).expr!!
+    private fun createExprWithContext(text: String, context: RsElement): RsExpr = RsExpressionCodeFragment(myFixture.project, text, context).expr!!
 
     private fun doTest(
         @Language("Rust") code: String,
@@ -1283,8 +1442,7 @@ Cannot change signature of function with cfg-disabled parameters""")
             if (expectedConflicts.isNotEmpty()) {
                 error("No conflicts found, expected $expectedConflicts")
             }
-        }
-        catch (e: BaseRefactoringProcessor.ConflictsInTestsException) {
+        } catch (e: BaseRefactoringProcessor.ConflictsInTestsException) {
             assertEquals(expectedConflicts, e.messages.toSet())
         }
     }

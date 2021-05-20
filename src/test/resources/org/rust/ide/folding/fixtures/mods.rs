@@ -1,4 +1,4 @@
-<fold text='/* mods */'>#[macro_use]
+<fold text='/ * mods * / '>#[macro_use]
 mod macros;
 mod convert;
 mod callbacks;
@@ -11,4 +11,4 @@ mod layout;
 mod render;
 mod wayland;
 mod modes;
-mod awesome;</fold>
+mod awesome;< / fold>

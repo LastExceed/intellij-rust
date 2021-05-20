@@ -29,10 +29,12 @@ import org.rust.lang.core.resolve2.defMapService
 
 private const val serviceName: String = "RustProjectSettings"
 
-@com.intellij.openapi.components.State(name = serviceName, storages = [
+@com.intellij.openapi.components.State(
+    name = serviceName, storages = [
     Storage(StoragePathMacros.WORKSPACE_FILE),
     Storage("misc.xml", deprecated = true)
-])
+]
+)
 class RustProjectSettingsServiceImpl(
     private val project: Project
 ) : PersistentStateComponent<Element>, RustProjectSettingsService {

@@ -53,10 +53,11 @@ abstract class RsImplItemImplMixin : RsStubbedElementImpl<RsImplItemStub>, RsImp
 
     override fun getTextOffset(): Int = typeReference?.textOffset ?: impl.textOffset
 
-    override val implementedTrait: BoundElement<RsTraitItem>? get() {
-        val (trait, subst) = traitRef?.resolveToBoundTrait() ?: return null
-        return BoundElement(trait, subst)
-    }
+    override val implementedTrait: BoundElement<RsTraitItem>?
+        get() {
+            val (trait, subst) = traitRef?.resolveToBoundTrait() ?: return null
+            return BoundElement(trait, subst)
+        }
 
     override val associatedTypesTransitively: Collection<RsTypeAlias>
         get() = CachedValuesManager.getCachedValue(this) {

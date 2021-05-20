@@ -17,32 +17,39 @@ import org.rust.lang.core.macros.RsExpandedElement
 
 class RsShowMacroExpansionActionsTest : RsTestBase() {
 
-    fun `test no expansion available when macro is not under caret`() = testNoExpansionHappens("""
+    fun `test no expansion available when macro is not under caret`() = testNoExpansionHappens(
+        """
         fn main() {
             let a = /*caret*/boo();
             foo!();
         }
-    """)
+    """
+    )
 
-    fun `test single level expansion is performed by recursive action`() = testRecursiveExpansion("""
+    fun `test single level expansion is performed by recursive action`() = testRecursiveExpansion(
+        """
         macro_rules! foo {
             () => { println!(); }
         }
         /*caret*/foo!();
     """, """
         println!();
-    """)
+    """
+    )
 
-    fun `test single level expansion is performed by single step action`() = testSingleStepExpansion("""
+    fun `test single level expansion is performed by single step action`() = testSingleStepExpansion(
+        """
             macro_rules! foo {
                 () => { println!(); }
             }
             /*caret*/foo!();
         """, """
             println!();
-        """)
+        """
+    )
 
-    fun `test two leveled expansion is preformed with recursive expansion`() = testRecursiveExpansion("""
+    fun `test two leveled expansion is preformed with recursive expansion`() = testRecursiveExpansion(
+        """
         macro_rules! boo {
             () => { println!(); }
         }
@@ -54,9 +61,11 @@ class RsShowMacroExpansionActionsTest : RsTestBase() {
         /*caret*/foo!();
     """, """
         println!();
-    """)
+    """
+    )
 
-    fun `test no second level expansion is preformed with single step expansion`() = testSingleStepExpansion("""
+    fun `test no second level expansion is preformed with single step expansion`() = testSingleStepExpansion(
+        """
         macro_rules! boo {
             () => { println!(); }
         }
@@ -68,9 +77,11 @@ class RsShowMacroExpansionActionsTest : RsTestBase() {
         /*caret*/foo!();
     """, """
         boo!();
-    """)
+    """
+    )
 
-    fun `test macros correctly recursively expands to itself`() = testRecursiveExpansion("""
+    fun `test macros correctly recursively expands to itself`() = testRecursiveExpansion(
+        """
         macro_rules! foo {
             () => { println!(); }
             ($ i: expr) => { foo!(); }
@@ -79,9 +90,11 @@ class RsShowMacroExpansionActionsTest : RsTestBase() {
         /*caret*/foo!(boo);
     """, """
         println!();
-    """)
+    """
+    )
 
-    fun `test dollar crate replacement`() = testSingleStepExpansion("""
+    fun `test dollar crate replacement`() = testSingleStepExpansion(
+        """
         macro_rules! foo {
             () => { $ crate::foobar(); }
         }
@@ -89,19 +102,25 @@ class RsShowMacroExpansionActionsTest : RsTestBase() {
         fn main() { /*caret*/foo!(); }
     """, """
         ::test_package::foobar();
-    """)
+    """
+    )
 
-    fun `test that recursive expansion of macro without body is just its name`() = testMacroExpansionFail("""
+    fun `test that recursive expansion of macro without body is just its name`() = testMacroExpansionFail(
+        """
             /*caret*/foo!();
-        """, expandRecursively = true)
+        """, expandRecursively = true
+    )
 
-    fun `test that single step expansion of macro without body is just its name`() = testMacroExpansionFail("""
+    fun `test that single step expansion of macro without body is just its name`() = testMacroExpansionFail(
+        """
         /*caret*/foo!();
-    """, expandRecursively = false)
+    """, expandRecursively = false
+    )
 
     @MinRustcVersion("1.37.0")
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test recursive expansion does not expand compile_error!()`() = testRecursiveExpansion("""
+    fun `test recursive expansion does not expand compile_error!()`() = testRecursiveExpansion(
+        """
         fn foo() {
             macro_rules! foo {
                 () => { compile_error!(""); }
@@ -110,7 +129,8 @@ class RsShowMacroExpansionActionsTest : RsTestBase() {
         }
     """, """
         compile_error!("");
-    """)
+    """
+    )
 
     private fun testNoExpansionHappens(@Language("Rust") code: String) {
         InlineFile(code)

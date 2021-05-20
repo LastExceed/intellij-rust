@@ -124,7 +124,8 @@ abstract class RsCompletionTestBase : RsTestBase() {
         while (text.length < target.length) {
             text = if (direction == Direction.LEFT) el.text + text else text + el.text
             if (text == target) return true
-            el = (if (direction == Direction.LEFT) PsiTreeUtil.prevVisibleLeaf(el) else PsiTreeUtil.nextVisibleLeaf(el)) ?: break
+            el = (if (direction == Direction.LEFT) PsiTreeUtil.prevVisibleLeaf(el) else PsiTreeUtil.nextVisibleLeaf(el))
+                ?: break
         }
         return false
     }

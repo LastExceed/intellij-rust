@@ -34,18 +34,24 @@ class RsDefMapUpdateCreateNewFileTest : RsDefMapUpdateTestBase() {
         doTest(createFile(root, fileToCreate), shouldChange)
     }
 
-    fun `test create file for mod decl`() = doTest("foo.rs", """
+    fun `test create file for mod decl`() = doTest(
+        "foo.rs", """
     //- main.rs
         mod foo;
-    """)
+    """
+    )
 
-    fun `test create file for include! macro`() = doTest("foo.rs", """
+    fun `test create file for include! macro`() = doTest(
+        "foo.rs", """
     //- main.rs
         include!("foo.rs");
-    """)
+    """
+    )
 
-    fun `test create non relevant file`() = doTest("foo.rs", """
+    fun `test create non relevant file`() = doTest(
+        "foo.rs", """
     //- main.rs
         fn main() {}
-    """, shouldChange = false)
+    """, shouldChange = false
+    )
 }

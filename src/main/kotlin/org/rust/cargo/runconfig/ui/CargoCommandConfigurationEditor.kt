@@ -37,8 +37,7 @@ import org.rust.openapiext.pathTextField
 import javax.swing.JCheckBox
 import javax.swing.JComponent
 
-class CargoCommandConfigurationEditor(project: Project)
-    : RsCommandConfigurationEditor<CargoCommandConfiguration>(project) {
+class CargoCommandConfigurationEditor(project: Project) : RsCommandConfigurationEditor<CargoCommandConfiguration>(project) {
 
     override val command = RsCommandLineEditor(
         project, CargoCommandCompletionProvider(project.cargoProjects) { currentWorkspace() }

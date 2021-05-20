@@ -10,7 +10,8 @@ import com.intellij.codeInsight.daemon.DaemonCodeAnalyzerSettings
 class RsMethodLineSeparatorProviderTest : RsLineMarkerProviderTestBase() {
 
     fun `test impl`() {
-        doTest("""
+        doTest(
+            """
             struct Foo {} // - Has implementations
             impl Foo {
                 const C1: i32 = 1;
@@ -21,11 +22,13 @@ class RsMethodLineSeparatorProviderTest : RsLineMarkerProviderTestBase() {
                 fn f4() { // - null
                 }
                 fn f5() {} // - null
-        """)
+        """
+        )
     }
 
     fun `test trait`() {
-        doTest("""
+        doTest(
+            """
             trait Foo { // - Has implementations
                 const C1: i32 = 1; // - Has implementations
                 fn f1(); // - null,Has implementations
@@ -36,21 +39,25 @@ class RsMethodLineSeparatorProviderTest : RsLineMarkerProviderTestBase() {
                 }
                 fn f5(); // - null,Has implementations
             }
-        """)
+        """
+        )
     }
 
     fun `test extern`() {
-        doTest("""
+        doTest(
+            """
             extern {
                 fn f1();
                 fn f2();
                 fn f3();
             }
-        """)
+        """
+        )
     }
 
     fun `test top level`() {
-        doTest("""
+        doTest(
+            """
             const C1: i32 = 1;
             fn f1() {}
             fn f2() {}
@@ -59,11 +66,13 @@ class RsMethodLineSeparatorProviderTest : RsLineMarkerProviderTestBase() {
             fn f4() { // - null
             }
             fn f5() {} // - null
-        """)
+        """
+        )
     }
 
     fun `test not show`() {
-        doTest("""
+        doTest(
+            """
             const C1: i32 = 1;
             fn f1() {}
             fn f2() {}
@@ -72,7 +81,8 @@ class RsMethodLineSeparatorProviderTest : RsLineMarkerProviderTestBase() {
             fn f4() {
             }
             fn f5() {}
-        """, false)
+        """, false
+        )
     }
 
     private fun doTest(source: String, showMethodSeparator: Boolean = true) {

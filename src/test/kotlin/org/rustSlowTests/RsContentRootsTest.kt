@@ -19,7 +19,8 @@ class RsContentRootsTest : RsWithToolchainTestBase() {
 
     fun `test project with subproject`() {
         val project = buildProject {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "intellij-rust-test"
                 version = "0.1.0"
@@ -27,7 +28,8 @@ class RsContentRootsTest : RsWithToolchainTestBase() {
 
                 [workspace]
                 members = ["subproject"]
-            """)
+            """
+            )
             dir("src") {
                 rust("main.rs", "")
             }
@@ -37,12 +39,14 @@ class RsContentRootsTest : RsWithToolchainTestBase() {
             dir("target") {}
 
             dir("subproject") {
-                toml("Cargo.toml", """
+                toml(
+                    "Cargo.toml", """
                     [package]
                     name = "subproject"
                     version = "0.1.0"
                     authors = []
-                """)
+                """
+                )
                 dir("src") {
                     rust("main.rs", "")
                 }
@@ -71,12 +75,14 @@ class RsContentRootsTest : RsWithToolchainTestBase() {
 
     fun `test do not add non existing roots`() {
         val project = buildProject {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "intellij-rust-test"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
             dir("src") {
                 rust("main.rs", "")
             }
@@ -95,19 +101,23 @@ class RsContentRootsTest : RsWithToolchainTestBase() {
 
     fun `test workspace without root package`() {
         val project = buildProject {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [workspace]
                 members = ["package1", "package2"]
-            """)
+            """
+            )
             dir("target") {}
 
             dir("package1") {
-                toml("Cargo.toml", """
+                toml(
+                    "Cargo.toml", """
                     [package]
                     name = "package1"
                     version = "0.1.0"
                     authors = []
-                """)
+                """
+                )
                 dir("src") {
                     rust("main.rs", "")
                 }
@@ -117,12 +127,14 @@ class RsContentRootsTest : RsWithToolchainTestBase() {
                 dir("target") {}
             }
             dir("package2") {
-                toml("Cargo.toml", """
+                toml(
+                    "Cargo.toml", """
                     [package]
                     name = "package2"
                     version = "0.1.0"
                     authors = []
-                """)
+                """
+                )
                 dir("src") {
                     rust("main.rs", "")
                 }
@@ -154,17 +166,20 @@ class RsContentRootsTest : RsWithToolchainTestBase() {
 
     fun `test several modules in workspace`() {
         val testProject = fileTree {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [workspace]
                 members = [
                     "a",
                     "b",
                 ]
-            """)
+            """
+            )
 
             dir("target") {}
             dir("a") {
-                toml("Cargo.toml", """
+                toml(
+                    "Cargo.toml", """
                     [package]
                     name = "a"
                     version = "0.1.0"
@@ -172,7 +187,8 @@ class RsContentRootsTest : RsWithToolchainTestBase() {
 
                     [dependencies]
                     b = { path = "../b" }
-                """)
+                """
+                )
                 dir("src") {
                     rust("lib.rs", "")
                 }
@@ -182,12 +198,14 @@ class RsContentRootsTest : RsWithToolchainTestBase() {
                 dir("target") {}
             }
             dir("b") {
-                toml("Cargo.toml", """
+                toml(
+                    "Cargo.toml", """
                     [package]
                     name = "b"
                     version = "0.1.0"
                     authors = []
-                """)
+                """
+                )
                 dir("src") {
                     rust("lib.rs", "")
                 }
@@ -204,20 +222,24 @@ class RsContentRootsTest : RsWithToolchainTestBase() {
         project.testCargoProjects.discoverAndRefreshSync()
 
         check(myModule, listOf(ProjectFolder.Excluded(testProject.file("target"))))
-        check(moduleA, listOf(
+        check(
+            moduleA, listOf(
             ProjectFolder.Source(testProject.file("a/src"), false),
             ProjectFolder.Source(testProject.file("a/examples"), false),
             ProjectFolder.Source(testProject.file("a/tests"), true),
             ProjectFolder.Source(testProject.file("a/benches"), true),
             ProjectFolder.Excluded(testProject.file("a/target")),
-        ))
-        check(moduleB, listOf(
+        )
+        )
+        check(
+            moduleB, listOf(
             ProjectFolder.Source(testProject.file("b/src"), false),
             ProjectFolder.Source(testProject.file("b/examples"), false),
             ProjectFolder.Source(testProject.file("b/tests"), true),
             ProjectFolder.Source(testProject.file("b/benches"), true),
             ProjectFolder.Excluded(testProject.file("b/target"))
-        ))
+        )
+        )
     }
 
     private fun check(module: Module, projectFolders: List<ProjectFolder>) {

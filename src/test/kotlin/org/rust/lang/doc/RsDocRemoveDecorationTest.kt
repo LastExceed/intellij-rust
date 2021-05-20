@@ -24,29 +24,37 @@ class RsDocRemoveDecorationTest(
         val commentNorm = StringUtil.convertLineSeparators(comment)
         val contentNorm = StringUtil.convertLineSeparators(content)
 
-        assertEquals(contentNorm,
-            kind.removeDecoration(commentNorm.splitToSequence('\n')).joinToString("\n").trim())
+        assertEquals(
+            contentNorm,
+            kind.removeDecoration(commentNorm.splitToSequence('\n')).joinToString("\n").trim()
+        )
     }
 
     companion object {
         @Parameterized.Parameters(name = "{index}: {0} \"{1}\" → \"{2}\"")
-        @JvmStatic fun data(): Collection<Array<Any>> = listOf(
+        @JvmStatic
+        fun data(): Collection<Array<Any>> = listOf(
             arrayOf(InnerEol, "//! foo", "foo"),
             arrayOf(OuterEol, "/// foo", "foo"),
 
-            arrayOf(OuterEol,
+            arrayOf(
+                OuterEol,
                 //language=Rust
                 """/// foo
                    /// bar""",
-                "foo\nbar"),
+                "foo\nbar"
+            ),
 
-            arrayOf(OuterEol,
+            arrayOf(
+                OuterEol,
                 //language=Rust
                 """///   foo
                    ///   bar""",
-                "foo\nbar"),
+                "foo\nbar"
+            ),
 
-            arrayOf(OuterEol,
+            arrayOf(
+                OuterEol,
                 //language=Rust
                 """/// foo
                    /// ```
@@ -59,9 +67,11 @@ class RsDocRemoveDecorationTest(
 code {
     bar
 }
-```"""),
+```"""
+            ),
 
-            arrayOf(OuterEol,
+            arrayOf(
+                OuterEol,
                 //language=Rust
                 """///   foo
                    ///   ```
@@ -74,23 +84,29 @@ code {
 code {
     bar
 }
-```"""),
+```"""
+            ),
 
-            arrayOf(OuterBlock,
+            arrayOf(
+                OuterBlock,
                 //language=Rust
                 """/** foo
                     *  bar
                     */""",
-                "foo\nbar"),
+                "foo\nbar"
+            ),
 
-            arrayOf(InnerBlock,
+            arrayOf(
+                InnerBlock,
                 //language=Rust
                 """/*! foo
                     *  bar
                     */""",
-                "foo\nbar"),
+                "foo\nbar"
+            ),
 
-            arrayOf(OuterBlock,
+            arrayOf(
+                OuterBlock,
                 //language=Rust
                 """/** foo
                     *  ```
@@ -104,9 +120,11 @@ code {
 code {
     bar
 }
-```"""),
+```"""
+            ),
 
-            arrayOf(OuterBlock,
+            arrayOf(
+                OuterBlock,
                 //language=Rust
                 """/**   foo
                     *    ```
@@ -120,25 +138,32 @@ code {
 code {
     bar
 }
-```"""),
+```"""
+            ),
 
-            arrayOf(OuterBlock,
+            arrayOf(
+                OuterBlock,
                 //language=Rust
                 "/** foo */",
-                "foo"),
+                "foo"
+            ),
 
-            arrayOf(OuterBlock,
+            arrayOf(
+                OuterBlock,
                 //language=Rust
                 """/** foo
                     *  bar */""",
-                "foo\nbar"),
+                "foo\nbar"
+            ),
 
-            arrayOf(OuterBlock,
+            arrayOf(
+                OuterBlock,
                 //language=Rust
                 """/** foo
                    |bar * bar
                    |*/""".trimMargin(),
-                "foo\nbar * bar"),
+                "foo\nbar * bar"
+            ),
 
             arrayOf(Attr, "foo\nbar", "foo\nbar"),
             arrayOf(Attr, " *foo1", "*foo1"),

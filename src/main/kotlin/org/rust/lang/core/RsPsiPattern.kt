@@ -60,8 +60,10 @@ object RsPsiPattern {
 
     val onMacro: PsiElementPattern.Capture<PsiElement> = onItem<RsMacro>()
 
-    val onTupleStruct: PsiElementPattern.Capture<PsiElement> = onItem(psiElement<RsStructItem>()
-        .withChild(psiElement<RsTupleFields>()))
+    val onTupleStruct: PsiElementPattern.Capture<PsiElement> = onItem(
+        psiElement<RsStructItem>()
+            .withChild(psiElement<RsTupleFields>())
+    )
 
     val onCrate: PsiElementPattern.Capture<PsiElement> = onItem<RsFile>()
         .with("onCrateCondition") { e ->
@@ -82,8 +84,10 @@ object RsPsiPattern {
 
     val onTrait: PsiElementPattern.Capture<PsiElement> = onItem<RsTraitItem>()
 
-    val onTestFn: PsiElementPattern.Capture<PsiElement> = onItem(psiElement<RsFunction>()
-        .withChild(psiElement<RsOuterAttr>().withText("#[test]")))
+    val onTestFn: PsiElementPattern.Capture<PsiElement> = onItem(
+        psiElement<RsFunction>()
+            .withChild(psiElement<RsOuterAttr>().withText("#[test]"))
+    )
 
     val onStructLike: PsiElementPattern.Capture<PsiElement> = onStruct or onEnum or onEnumVariant
 

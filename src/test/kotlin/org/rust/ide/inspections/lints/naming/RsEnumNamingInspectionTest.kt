@@ -9,17 +9,22 @@ import org.rust.ide.inspections.RsInspectionsTestBase
 import org.rust.ide.inspections.lints.RsEnumNamingInspection
 
 class RsEnumNamingInspectionTest : RsInspectionsTestBase(RsEnumNamingInspection::class) {
-    fun `test enums`() = checkByText("""
+    fun `test enums`() = checkByText(
+        """
         enum EnumOk {}
         enum <warning descr="Type `enum_foo` should have a camel case name such as `EnumFoo`">enum_foo</warning> {}
-    """)
+    """
+    )
 
-    fun `test enums suppression`() = checkByText("""
+    fun `test enums suppression`() = checkByText(
+        """
         #[allow(non_camel_case_types)]
         enum enum_foo {}
-    """)
+    """
+    )
 
-    fun `test enums fix`() = checkFixByText("Rename to `EnumFoo`", """
+    fun `test enums fix`() = checkFixByText(
+        "Rename to `EnumFoo`", """
         enum <warning descr="Type `enum_foo` should have a camel case name such as `EnumFoo`">enum_f<caret>oo</warning> { Var }
         fn enum_use() {
             let a = enum_foo::Var;
@@ -29,9 +34,12 @@ class RsEnumNamingInspectionTest : RsInspectionsTestBase(RsEnumNamingInspection:
         fn enum_use() {
             let a = EnumFoo::Var;
         }
-    """)
+    """
+    )
 
-    fun `test enum not support case`() = checkByText("""
+    fun `test enum not support case`() = checkByText(
+        """
         enum 枚举 {}
-    """)
+    """
+    )
 }

@@ -1,3 +1,3 @@
 mod m {
-   #    !    [ cfg ( test ) ]
+    #![cfg(test)]
 }

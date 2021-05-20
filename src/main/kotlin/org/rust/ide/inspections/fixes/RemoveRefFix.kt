@@ -38,7 +38,7 @@ class RemoveRefFix private constructor(
 
     companion object {
         fun createIfCompatible(expr: RsExpr): RemoveRefFix? {
-            return if(expr is RsUnaryExpr && expr.operatorType in listOf(UnaryOperator.REF, UnaryOperator.REF_MUT)) {
+            return if (expr is RsUnaryExpr && expr.operatorType in listOf(UnaryOperator.REF, UnaryOperator.REF_MUT)) {
                 RemoveRefFix(expr)
             } else {
                 null

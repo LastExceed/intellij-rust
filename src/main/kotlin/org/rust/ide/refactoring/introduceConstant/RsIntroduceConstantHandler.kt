@@ -27,10 +27,11 @@ class RsIntroduceConstantHandler : RefactoringActionHandler {
 
         when (exprs.size) {
             0 -> {
-                val message = RefactoringBundle.message(if (editor.selectionModel.hasSelection())
-                    "selected.block.should.represent.an.expression"
-                else
-                    "refactoring.introduce.selection.error"
+                val message = RefactoringBundle.message(
+                    if (editor.selectionModel.hasSelection())
+                        "selected.block.should.represent.an.expression"
+                    else
+                        "refactoring.introduce.selection.error"
                 )
                 val title = RefactoringBundle.message("introduce.constant.title")
                 val helpId = "refactoring.extractConstant"
@@ -79,8 +80,10 @@ private fun replaceWithConstant(expr: RsExpr, occurrences: List<RsExpr>, candida
             element
         }
 
-        editor.caretModel.moveToOffset(insertedConstant.identifier?.textRange?.startOffset
-            ?: error("Impossible because we just created a constant with a name"))
+        editor.caretModel.moveToOffset(
+            insertedConstant.identifier?.textRange?.startOffset
+                ?: error("Impossible because we just created a constant with a name")
+        )
 
         PsiDocumentManager.getInstance(project).doPostponedOperationsAndUnblockDocument(editor.document)
         RsInPlaceVariableIntroducer(insertedConstant, editor, project, "Choose a constant name", replaced)

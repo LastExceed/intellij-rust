@@ -27,7 +27,7 @@ abstract class RsRunAnythingProvider : RunAnythingProviderBase<String>() {
 
     abstract fun run(command: String, params: List<String>, workingDirectory: Path, cargoProject: CargoProject)
 
-    abstract fun getCompletionProvider(project: Project, dataContext: DataContext) : RsCommandCompletionProvider
+    abstract fun getCompletionProvider(project: Project, dataContext: DataContext): RsCommandCompletionProvider
 
     override fun findMatchingValue(dataContext: DataContext, pattern: String): String? =
         if (pattern.startsWith(helpCommand)) getCommand(pattern) else null

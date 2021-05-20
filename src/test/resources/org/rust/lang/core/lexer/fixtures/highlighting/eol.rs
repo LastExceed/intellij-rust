@@ -3,4 +3,4 @@ let a = "foobar";
 let b = "foo\
          bar";
 
-assert_eq!(a,b);
+assert_eq!(a, b);

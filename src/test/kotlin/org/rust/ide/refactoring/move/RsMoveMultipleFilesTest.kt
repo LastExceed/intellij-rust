@@ -37,7 +37,8 @@ class RsMoveMultipleFilesTest : RsMoveFileTestBase() {
         fn func1() {}
     //- mod2/foo2.rs
         fn func2() {}
-    """)
+    """
+    )
 
     fun `test move directory and file`() = doTest(
         arrayOf("mod1/foo1", "mod1/foo2.rs"),
@@ -66,7 +67,8 @@ class RsMoveMultipleFilesTest : RsMoveFileTestBase() {
         fn func1() {}
     //- mod2/foo2.rs
         fn func2() {}
-    """)
+    """
+    )
 
     fun `test move files with cross self references`() = doTest(
         arrayOf("mod1/foo1.rs", "mod1/foo2.rs"),
@@ -103,7 +105,8 @@ class RsMoveMultipleFilesTest : RsMoveFileTestBase() {
         pub fn func2() {
             crate::mod2::foo1::func1();
         }
-    """)
+    """
+    )
 
     fun `test can't move non-rust file`() = checkCantMove(
         arrayOf("foo.txt"),
@@ -111,7 +114,8 @@ class RsMoveMultipleFilesTest : RsMoveFileTestBase() {
         """
     //- foo.txt
         // foo content
-    """)
+    """
+    )
 
     // TODO: Actually would be nice to handle such move somehow
     fun `test can't move rust file along with non-rust file`() = checkCantMove(
@@ -128,7 +132,8 @@ class RsMoveMultipleFilesTest : RsMoveFileTestBase() {
         fn func1() {}
     //- mod1/foo2.txt
         // foo2 content
-    """)
+    """
+    )
 
     // default move processor will be used when our processor can't be used
     private fun checkCantMove(

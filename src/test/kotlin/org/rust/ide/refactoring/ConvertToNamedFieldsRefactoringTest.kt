@@ -11,22 +11,27 @@ import org.rust.launchAction
 
 class ConvertToNamedFieldsRefactoringTest : RsTestBase() {
 
-    fun `test simple`() = doAvailableTest("""
+    fun `test simple`() = doAvailableTest(
+        """
         struct Test (pub usize,/*caret*/ i32);
     """, """
         struct Test {
             pub _0: usize,
             _1: i32,
         }
-    """)
+    """
+    )
 
-    fun `test empty`() = doAvailableTest("""
+    fun `test empty`() = doAvailableTest(
+        """
         struct Test (/*caret*/);
     """, """
         struct Test {}
-    """)
+    """
+    )
 
-    fun `test simple enum`() = doAvailableTest("""
+    fun `test simple enum`() = doAvailableTest(
+        """
         enum Test{
             A(usize,/*caret*/ i32),
             B
@@ -45,9 +50,11 @@ class ConvertToNamedFieldsRefactoringTest : RsTestBase() {
                 _1: 0
             };
         }
-    """)
+    """
+    )
 
-    fun `test convert tuple literal`() = doAvailableTest("""
+    fun `test convert tuple literal`() = doAvailableTest(
+        """
         struct Test(pub usize,/*caret*/ i32);
         fn main (){
             let a = Test(0, 0);
@@ -66,9 +73,11 @@ class ConvertToNamedFieldsRefactoringTest : RsTestBase() {
             };
             let Test{ _0: a, _1: b}= Test{ _0: 0, _1: 0};
         }
-    """)
+    """
+    )
 
-    fun `test convert field access`() = doAvailableTest("""
+    fun `test convert field access`() = doAvailableTest(
+        """
         struct Test(pub usize,/*caret*/ i32);
         fn main (){
             let var = Test(0, 0);
@@ -89,9 +98,11 @@ class ConvertToNamedFieldsRefactoringTest : RsTestBase() {
             let x = var._0;
             let x = var._1;
         }
-    """)
+    """
+    )
 
-    fun `test convert destructuring`() = doAvailableTest("""
+    fun `test convert destructuring`() = doAvailableTest(
+        """
         struct Test(pub usize,/*caret*/ i32);
         fn main (){
             let var = Test(0, 0);
@@ -120,10 +131,12 @@ class ConvertToNamedFieldsRefactoringTest : RsTestBase() {
             let Test { _1: b, .. } = &var;
             let Test { _0: _, _1: b } = &var;
         }
-    """)
+    """
+    )
 
     // https://github.com/intellij-rust/intellij-rust/issues/5017
-    fun `test convert function call`() = doAvailableTest("""
+    fun `test convert function call`() = doAvailableTest(
+        """
         struct S(/*caret*/u32);
         impl S {
             fn new(v: u32) -> S {
@@ -148,9 +161,11 @@ class ConvertToNamedFieldsRefactoringTest : RsTestBase() {
         fn main() {
             let s = S::new(0);
         }
-    """)
+    """
+    )
 
-    fun `test convert function call in mod`() = doAvailableTest("""
+    fun `test convert function call in mod`() = doAvailableTest(
+        """
         mod nested {
             pub struct S(/*caret*/pub u32);
             impl S {
@@ -181,9 +196,11 @@ class ConvertToNamedFieldsRefactoringTest : RsTestBase() {
             let s1 = nested::S { _0: 1 };
             let s2 = nested::S::new(0);
         }
-    """)
+    """
+    )
 
-    fun `test where clause`() = doAvailableTest("""
+    fun `test where clause`() = doAvailableTest(
+        """
         trait Trait {}
         struct Test/*caret*/<T>(T) where T: Trait ;
     """, """
@@ -191,9 +208,11 @@ class ConvertToNamedFieldsRefactoringTest : RsTestBase() {
         struct Test<T> where T: Trait {
             _0: T,
         }
-    """)
+    """
+    )
 
-    fun `test where clause (multiline)`() = doAvailableTest("""
+    fun `test where clause (multiline)`() = doAvailableTest(
+        """
         trait Trait {}
         struct Test/*caret*/<T1, T2>(T1, T2)
             where
@@ -209,7 +228,8 @@ class ConvertToNamedFieldsRefactoringTest : RsTestBase() {
             _0: T1,
             _1: T2,
         }
-    """)
+    """
+    )
 
     private fun doAvailableTest(@Language("Rust") before: String, @Language("Rust") after: String) {
         InlineFile(before.trimIndent()).withCaret()

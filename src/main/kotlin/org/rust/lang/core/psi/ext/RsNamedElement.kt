@@ -43,7 +43,7 @@ abstract class RsNamedElementImpl(node: ASTNode) : RsElementImpl(node),
 
 abstract class RsStubbedNamedElementImpl<StubT> : RsStubbedElementImpl<StubT>,
                                                   RsNameIdentifierOwner
-where StubT : RsNamedStub, StubT : StubElement<*> {
+    where StubT : RsNamedStub, StubT : StubElement<*> {
 
     constructor(node: ASTNode) : super(node)
 

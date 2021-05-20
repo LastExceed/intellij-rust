@@ -101,7 +101,8 @@ class MissingToolchainNotificationProvider(project: Project) : RsNotificationPro
             text = RsBundle.message("notification.can.not.attach.stdlib.sources")
             createActionLabel(RsBundle.message("notification.action.attach.manually.text")) {
                 val descriptor = FileChooserDescriptorFactory.createSingleFolderDescriptor()
-                val stdlib = FileChooser.chooseFile(descriptor, this, this@MissingToolchainNotificationProvider.project, null) ?: return@createActionLabel
+                val stdlib = FileChooser.chooseFile(descriptor, this, this@MissingToolchainNotificationProvider.project, null)
+                    ?: return@createActionLabel
                 if (StandardLibrary.fromFile(project, stdlib, rustcInfo) != null) {
                     this@MissingToolchainNotificationProvider.project.rustSettings.modify { it.explicitPathToStdlib = stdlib.path }
                 } else {

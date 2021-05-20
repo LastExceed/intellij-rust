@@ -7,11 +7,12 @@ package org.rust.ide.formatter
 
 class RsMatchArmCommaFormatProcessorTest : RsFormatterTestBase() {
     // https://internals.rust-lang.org/t/syntax-of-block-like-expressions-in-match-arms/5025
-    fun `test removes commas in match arms with blocks`() = doTextTest("""
+    fun `test removes commas in match arms with blocks`() = doTextTest(
+        """
         fn main() {
             match x {
                 1 => 1,
-                2 => { 2 },
+                2 => { 2 }
                 3 => { 3 }
                 92 => unsafe { 3 },
                 4 => loop {},

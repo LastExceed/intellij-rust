@@ -1,4 +1,5 @@
 async fn foo() {}
+
 async fn bar() {}
 
 trait T {

@@ -21,13 +21,15 @@ class RsCodeFragmentFactoryTest : RsTestBase() {
     }
 
     fun `test resolve local variable by name`() {
-        InlineFile("""
+        InlineFile(
+            """
             fn foo() {
                 let x = 92;
                 loop { println!("", x) }
                 //^
             }
-        """)
+        """
+        )
         val loop = findElementInEditor<RsLoopExpr>()
         val path = RsCodeFragmentFactory(project).createPath("x", loop)
         val declaration = path!!.reference!!.resolve()

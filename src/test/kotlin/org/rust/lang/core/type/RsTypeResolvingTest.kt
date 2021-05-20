@@ -13,49 +13,60 @@ import org.rust.lang.core.type.RsTypeResolvingTest.RenderMode.*
 import org.rust.lang.core.types.type
 
 class RsTypeResolvingTest : RsTypificationTestBase() {
-    fun `test path`() = testType("""
+    fun `test path`() = testType(
+        """
         struct Spam;
 
         fn main() {
             let _: Spam = Spam;
                  //^ Spam
         }
-    """)
+    """
+    )
 
-    fun `test unit`() = testType("""
+    fun `test unit`() = testType(
+        """
         fn main() {
             let _: () = ();
                  //^ ()
         }
-    """)
+    """
+    )
 
-    fun `test tuple`() = testType("""
+    fun `test tuple`() = testType(
+        """
         struct S;
         struct T;
         fn main() {
             let _: (S, T) = (S, T);
                  //^ (S, T)
         }
-    """)
+    """
+    )
 
-    fun `test type in parens`() = testType("""
+    fun `test type in parens`() = testType(
+        """
         struct S;
         fn main() {
             let _: ((S));
                  //^ S
         }
-    """)
+    """
+    )
 
-    fun `test type of unclosed paren`() = testType("""
+    fun `test type of unclosed paren`() = testType(
+        """
         struct S;
         fn main() {
             let _: (;
                  //^ <unknown>
         }
-    """)
+    """
+    )
 
     // TODO `<S as T>::Assoc` should be unified to `S`
-    fun `test qualified path`() = testType("""
+    fun `test qualified path`() = testType(
+        """
         trait T {
             type Assoc;
         }
@@ -70,18 +81,22 @@ class RsTypeResolvingTest : RsTypificationTestBase() {
             let _: <S as T>::Assoc = S;
                  //^ S
         }
-    """)
+    """
+    )
 
-    fun `test enum`() = testType("""
+    fun `test enum`() = testType(
+        """
         enum E { X }
 
         fn main() {
             let _: E = E::X;
                  //^ E
         }
-    """)
+    """
+    )
 
-    fun `test type item`() = testType("""
+    fun `test type item`() = testType(
+        """
         enum E { X }
 
         type A = E;
@@ -90,157 +105,213 @@ class RsTypeResolvingTest : RsTypificationTestBase() {
             let _: E = A::X;
                  //^ E
         }
-    """)
+    """
+    )
 
-    fun `test Self type`() = testType("""
+    fun `test Self type`() = testType(
+        """
         struct S;
         trait T { fn new() -> Self; }
 
         impl T for S { fn new() -> Self { S } }
                                   //^ S
-    """)
+    """
+    )
 
-    fun `test Self type inside impl for primitive type`() = testType("""
+    fun `test Self type inside impl for primitive type`() = testType(
+        """
         trait Clone { fn clone(&self) -> Self; }
         impl Clone for i32 {
             fn clone(&self) -> Self { *self }
         }                    //^ i32
-    """)
+    """
+    )
 
-    fun `test primitive bool`() = testType("""
+    fun `test primitive bool`() = testType(
+        """
         type T = bool;
                   //^ bool
-    """)
+    """
+    )
 
-    fun `test primitive char`() = testType("""
+    fun `test primitive char`() = testType(
+        """
         type T = char;
                   //^ char
-    """)
+    """
+    )
 
-    fun `test primitive f32`() = testType("""
+    fun `test primitive f32`() = testType(
+        """
         type T = f32;
                  //^ f32
-    """)
+    """
+    )
 
-    fun `test primitive f64`() = testType("""
+    fun `test primitive f64`() = testType(
+        """
         type T = f64;
                  //^ f64
-    """)
+    """
+    )
 
-    fun `test primitive i8`() = testType("""
+    fun `test primitive i8`() = testType(
+        """
         type T = i8;
                 //^ i8
-    """)
+    """
+    )
 
-    fun `test primitive i16`() = testType("""
+    fun `test primitive i16`() = testType(
+        """
         type T = i16;
                  //^ i16
-    """)
+    """
+    )
 
-    fun `test primitive i32`() = testType("""
+    fun `test primitive i32`() = testType(
+        """
         type T = i32;
                  //^ i32
-    """)
+    """
+    )
 
-    fun `test primitive i64`() = testType("""
+    fun `test primitive i64`() = testType(
+        """
         type T = i64;
                  //^ i64
-    """)
+    """
+    )
 
-    fun `test primitive isize`() = testType("""
+    fun `test primitive isize`() = testType(
+        """
         type T = isize;
                    //^ isize
-    """)
+    """
+    )
 
-    fun `test primitive u8`() = testType("""
+    fun `test primitive u8`() = testType(
+        """
         type T = u8;
                 //^ u8
-    """)
+    """
+    )
 
-    fun `test primitive u16`() = testType("""
+    fun `test primitive u16`() = testType(
+        """
         type T = u16;
                  //^ u16
-    """)
+    """
+    )
 
-    fun `test primitive u32`() = testType("""
+    fun `test primitive u32`() = testType(
+        """
         type T = u32;
                  //^ u32
-    """)
+    """
+    )
 
-    fun `test primitive u64`() = testType("""
+    fun `test primitive u64`() = testType(
+        """
         type T = u64;
                  //^ u64
-    """)
+    """
+    )
 
-    fun `test primitive usize`() = testType("""
+    fun `test primitive usize`() = testType(
+        """
         type T = usize;
                    //^ usize
-    """)
+    """
+    )
 
-    fun `test primitive str`() = testType("""
+    fun `test primitive str`() = testType(
+        """
         type T = str;
                  //^ str
-    """)
+    """
+    )
 
-    fun `test primitive str ref`() = testType("""
+    fun `test primitive str ref`() = testType(
+        """
         type T = &'static str;
                  //^ &str
-    """)
+    """
+    )
 
-    fun `test fn pointer`() = testType("""
+    fun `test fn pointer`() = testType(
+        """
         type T = fn(i32) -> i32;
                //^ fn(i32) -> i32
-    """)
+    """
+    )
 
-    fun `test array`() = testType("""
+    fun `test array`() = testType(
+        """
         type T = [i32; 2];
                //^ [i32; 2]
-    """)
+    """
+    )
 
-    fun `test array with expr`() = testType("""
+    fun `test array with expr`() = testType(
+        """
         type T = [i32; 2 + 2];
                //^ [i32; 4]
-    """)
+    """
+    )
 
-    fun `test array with const`() = testType("""
+    fun `test array with const`() = testType(
+        """
         const COUNT: usize = 2;
         type T = [i32; COUNT];
                //^ [i32; 2]
-    """)
+    """
+    )
 
-    fun `test array with complex size`() = testType("""
+    fun `test array with complex size`() = testType(
+        """
         const COUNT: usize = 2;
         type T = [i32; (2 * COUNT + 3) << (4 / 2)];
                //^ [i32; 28]
-    """)
+    """
+    )
 
-    fun `test array with negative size`() = testType("""
+    fun `test array with negative size`() = testType(
+        """
         type T = [i32; 2 - 3];
                //^ [i32; <unknown>]
-    """)
+    """
+    )
 
-    fun `test array with not usize size expr`() = testType("""
+    fun `test array with not usize size expr`() = testType(
+        """
         const COUNT: i32 = 2;
         type T = [i32; COUNT];
                //^ [i32; <unknown>]
-    """)
+    """
+    )
 
-    fun `test array with recursive expr`() = testType("""
+    fun `test array with recursive expr`() = testType(
+        """
         const COUNT: usize = 2 + COUNT;
         type T = [i32; COUNT];
                //^ [i32; <unknown>]
-    """)
+    """
+    )
 
-    fun `test associated type`() = testType("""
+    fun `test associated type`() = testType(
+        """
         trait Trait<T> {
             type Item;
         }
         fn foo<B: Trait<u8>>(_: B) {
             let a: B::Item;
         }           //^ <B as Trait<u8>>::Item
-    """)
+    """
+    )
 
-    fun `test associated types for impl`() = testType("""
+    fun `test associated types for impl`() = testType(
+        """
         trait A {
             type Item;
             fn foo(self) -> Self::Item;
@@ -250,9 +321,11 @@ class RsTypeResolvingTest : RsTypificationTestBase() {
             type Item = S;
             fn foo(self) -> Self::Item { S }
         }                         //^ S
-    """)
+    """
+    )
 
-    fun `test inherited associated types for impl`() = testType("""
+    fun `test inherited associated types for impl`() = testType(
+        """
         trait A { type Item; }
         trait B: A {
             fn foo(self) -> Self::Item;
@@ -262,79 +335,105 @@ class RsTypeResolvingTest : RsTypificationTestBase() {
         impl B for S {
             fn foo(self) -> Self::Item { S }
         }                         //^ S
-    """)
+    """
+    )
 
-    fun `test generic trait object`() = testType("""
+    fun `test generic trait object`() = testType(
+        """
         trait Trait<A> {}
         fn foo(_: &Trait<u8>) { unimplemented!() }
                   //^ dyn Trait<u8>
-    """)
+    """
+    )
 
-    fun `test generic 'dyn Trait' trait object`() = testType("""
+    fun `test generic 'dyn Trait' trait object`() = testType(
+        """
         trait Trait<A> {}
         fn foo(_: &dyn Trait<u8>) { unimplemented!() }
                   //^ dyn Trait<u8>
-    """)
+    """
+    )
 
-    fun `test trait object with bound associated type`() = testType("""
+    fun `test trait object with bound associated type`() = testType(
+        """
         trait Trait { type Item; }
         fn foo(_: &Trait<Item=u8>) { unimplemented!() }
                   //^ dyn Trait<Item=u8>
-    """)
+    """
+    )
 
-    fun `test impl Trait`() = testType("""
+    fun `test impl Trait`() = testType(
+        """
         trait Trait {}
         fn foo() -> impl Trait { unimplemented!() }
                   //^ impl Trait
-    """)
+    """
+    )
 
-    fun `test generic impl Trait`() = testType("""
+    fun `test generic impl Trait`() = testType(
+        """
         trait Trait<T> {}
         fn foo() -> impl Trait<u8> { unimplemented!() }
                   //^ impl Trait<u8>
-    """)
+    """
+    )
 
-    fun `test 'impl Trait' with bound associated type`() = testType("""
+    fun `test 'impl Trait' with bound associated type`() = testType(
+        """
         trait Trait { type Item; }
         fn foo() -> impl Trait<Item=u8> { unimplemented!() }
                   //^ impl Trait<Item=u8>
-    """)
+    """
+    )
 
-    fun `test impl Trait1+Trait2`() = testType("""
+    fun `test impl Trait1+Trait2`() = testType(
+        """
         trait Trait1 {}
         trait Trait2 {}
 
         fn foo() -> impl Trait1+Trait2 { unimplemented!() }
                   //^ impl Trait1+Trait2
-    """)
+    """
+    )
 
-    fun `test primitive str ref with lifetime`() = testType("""
+    fun `test primitive str ref with lifetime`() = testType(
+        """
         type T = &'static str;
                 //^ &'static str
-    """, WITH_LIFETIMES)
+    """, WITH_LIFETIMES
+    )
 
-    fun `test str ref with lifetime`() = testType("""
+    fun `test str ref with lifetime`() = testType(
+        """
         type T<'a> = &'a str;
                     //^ &'a str
-    """, WITH_LIFETIMES)
+    """, WITH_LIFETIMES
+    )
 
-    fun `test str mut ref with lifetime`() = testType("""
+    fun `test str mut ref with lifetime`() = testType(
+        """
         type T<'a> = &'a mut str;
                     //^ &'a mut str
-    """, WITH_LIFETIMES)
+    """, WITH_LIFETIMES
+    )
 
-    fun `test struct with lifetime`() = testType("""
+    fun `test struct with lifetime`() = testType(
+        """
         struct Struct<'a> {
             field: &'a i32,
         }         //^ &'a i32
-    """, WITH_LIFETIMES)
+    """, WITH_LIFETIMES
+    )
 
-    fun `test function with lifetime`() = testType("""
+    fun `test function with lifetime`() = testType(
+        """
         fn id<'a>(x: &'a str) -> &'a str { x }
                     //^ &'a str
-    """, WITH_LIFETIMES)
+    """, WITH_LIFETIMES
+    )
 
-    fun `test impl trait with lifetime`() = testType("""
+    fun `test impl trait with lifetime`() = testType(
+        """
         trait Trait<'a> {
             fn foo(x: &'a str);
         }
@@ -344,84 +443,111 @@ class RsTypeResolvingTest : RsTypificationTestBase() {
                      //^ &'b str
             }
         }
-    """, WITH_LIFETIMES)
+    """, WITH_LIFETIMES
+    )
 
-    fun `test deep generic struct with lifetime`() = testType("""
+    fun `test deep generic struct with lifetime`() = testType(
+        """
         struct Struct<'a, T>(&'a Struct<'a, Struct<'a, &'a str>>);
                             //^ &'a Struct<'a, Struct<'a, &'a str>>
-    """, WITH_LIFETIMES)
+    """, WITH_LIFETIMES
+    )
 
-    fun `test deep generic struct with static lifetime`() = testType("""
+    fun `test deep generic struct with static lifetime`() = testType(
+        """
         struct Struct<'a, T>(&'static Struct<'static, Struct<'static, &'a str>>);
                             //^ &'static Struct<'static, Struct<'static, &'a str>>
-    """, WITH_LIFETIMES)
+    """, WITH_LIFETIMES
+    )
 
-    fun `test deep generic struct with undeclared lifetime`() = testType("""
+    fun `test deep generic struct with undeclared lifetime`() = testType(
+        """
         struct Struct<'a, T>(&'b Struct<'b, Struct<'b, &'a str>>);
                             //^ &Struct<'_, Struct<'_, &'a str>>
-    """, WITH_LIFETIMES)
+    """, WITH_LIFETIMES
+    )
 
-    fun `test no infinite recursion on "impl Self 1"`() = testType("""
+    fun `test no infinite recursion on "impl Self 1"`() = testType(
+        """
         impl Self {}
            //^ <unknown>
-    """)
+    """
+    )
 
-    fun `test no infinite recursion on "impl Self 2"`() = testType("""
+    fun `test no infinite recursion on "impl Self 2"`() = testType(
+        """
         struct S<T>(T);
         impl S<Self> {}
            //^ S<<unknown>>
-    """)
+    """
+    )
 
-    fun `test no infinite recursion on cyclic type`() = testType("""
+    fun `test no infinite recursion on cyclic type`() = testType(
+        """
         type A = B;
         type B = A;
                //^ <unknown>
-    """)
+    """
+    )
 
-    fun `test no infinite recursion on cyclic type array`() = testType("""
+    fun `test no infinite recursion on cyclic type array`() = testType(
+        """
         type A = [B; 2];
         type B = A;
                //^ [<unknown>; 2]
-    """)
+    """
+    )
 
-    fun `test no infinite recursion on cyclic type tuple`() = testType("""
+    fun `test no infinite recursion on cyclic type tuple`() = testType(
+        """
         type A = (B, B);
         type B = A;
                //^ (<unknown>, <unknown>)
-    """)
+    """
+    )
 
-    fun `test no infinite recursion on cyclic type fn pointer`() = testType("""
+    fun `test no infinite recursion on cyclic type fn pointer`() = testType(
+        """
         type A = fn(B);
         type B = A;
                //^ fn(<unknown>)
-    """)
+    """
+    )
 
-    fun `test no infinite recursion on cyclic type with type argument`() = testType("""
+    fun `test no infinite recursion on cyclic type with type argument`() = testType(
+        """
         struct S<T>(T);
         type A = S<B>;
         type B = A;
                //^ S<<unknown>>
-    """)
+    """
+    )
 
-    fun `test alias for T`() = testType("""
+    fun `test alias for T`() = testType(
+        """
         type S<T> = T;
         type A = S<u8>;
                //^ u8
-    """)
+    """
+    )
 
-    fun `test render alias name`() = testType("""
+    fun `test render alias name`() = testType(
+        """
         struct S;
         type Foo = S;
         type Bar = Foo;
                  //^ Foo
-    """, WITH_ALIAS_NAMES)
+    """, WITH_ALIAS_NAMES
+    )
 
-    fun `test render alias name with generics`() = testType("""
+    fun `test render alias name with generics`() = testType(
+        """
         struct S<A, B>(A, B);
         type Foo<T> = S<T, u8>;
         type Bar = Foo<i32>;
                  //^ Foo<i32>
-    """, WITH_ALIAS_NAMES)
+    """, WITH_ALIAS_NAMES
+    )
 
     /**
      * Checks the type of the element in [code] pointed to by `//^` marker.

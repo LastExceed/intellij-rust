@@ -19,10 +19,12 @@ class RsMacroErrorTestBase : RsTestBase() {
     }
 
     // https://github.com/intellij-rust/intellij-rust/pull/2583
-    fun `test empty group definition`() = checkNotExpanded("""
+    fun `test empty group definition`() = checkNotExpanded(
+        """
         macro_rules! foo {
             ($()* $ i:tt) => {  }
         }
         foo! { bar baz }
-    """)
+    """
+    )
 }

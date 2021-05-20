@@ -13,7 +13,8 @@ import org.rust.lang.core.macros.proc.ProcMacroJsonParser
 import org.rust.lang.core.parser.createRustPsiBuilder
 
 class TokenTreeJsonTest : RsTestBase() {
-    fun `test 1`() = doTest(".", """
+    fun `test 1`() = doTest(
+        ".", """
         {
           "delimiter": null,
           "token_trees": [
@@ -28,9 +29,11 @@ class TokenTreeJsonTest : RsTestBase() {
             }
           ]
         }
-    """)
+    """
+    )
 
-    fun `test 2`() = doTest("..", """
+    fun `test 2`() = doTest(
+        "..", """
         {
           "delimiter": null,
           "token_trees": [
@@ -54,9 +57,11 @@ class TokenTreeJsonTest : RsTestBase() {
             }
           ]
         }
-    """)
+    """
+    )
 
-    fun `test 3`() = doTest(".foo", """
+    fun `test 3`() = doTest(
+        ".foo", """
         {
           "delimiter": null,
           "token_trees": [
@@ -79,9 +84,11 @@ class TokenTreeJsonTest : RsTestBase() {
             }
           ]
         }
-    """)
+    """
+    )
 
-    fun `test 4`() = doTest(":::", """
+    fun `test 4`() = doTest(
+        ":::", """
         {
           "delimiter": null,
           "token_trees": [
@@ -114,9 +121,11 @@ class TokenTreeJsonTest : RsTestBase() {
             }
           ]
         }
-    """)
+    """
+    )
 
-    fun `test 5`() = doTest(". asd .. \"asd\" ...", """
+    fun `test 5`() = doTest(
+        ". asd .. \"asd\" ...", """
         {
           "delimiter": null,
           "token_trees": [
@@ -192,9 +201,11 @@ class TokenTreeJsonTest : RsTestBase() {
             }
           ]
         }
-    """)
+    """
+    )
 
-    fun `test 6`() = doTest("{}", """
+    fun `test 6`() = doTest(
+        "{}", """
         {
           "delimiter": {
             "id": 0,
@@ -202,9 +213,11 @@ class TokenTreeJsonTest : RsTestBase() {
           },
           "token_trees": [ ]
         }
-    """)
+    """
+    )
 
-    fun `test 7`() = doTest("[]", """
+    fun `test 7`() = doTest(
+        "[]", """
         {
           "delimiter": {
             "id": 0,
@@ -212,9 +225,11 @@ class TokenTreeJsonTest : RsTestBase() {
           },
           "token_trees": [ ]
         }
-    """)
+    """
+    )
 
-    fun `test 8`() = doTest("()", """
+    fun `test 8`() = doTest(
+        "()", """
         {
           "delimiter": {
             "id": 0,
@@ -222,9 +237,11 @@ class TokenTreeJsonTest : RsTestBase() {
           },
           "token_trees": [ ]
         }
-    """)
+    """
+    )
 
-    fun `test 9`() = doTest("(..)", """
+    fun `test 9`() = doTest(
+        "(..)", """
         {
           "delimiter": {
             "id": 0,
@@ -251,9 +268,11 @@ class TokenTreeJsonTest : RsTestBase() {
             }
           ]
         }
-    """)
+    """
+    )
 
-    fun `test 10`() = doTest("([{.}])", """
+    fun `test 10`() = doTest(
+        "([{.}])", """
         {
           "delimiter": {
             "id": 0,
@@ -291,7 +310,8 @@ class TokenTreeJsonTest : RsTestBase() {
             }
           ]
         }
-    """)
+    """
+    )
 
     fun doTest(code: String, @Language("Json") expectedJson: String) {
         val expectedJson2 = expectedJson

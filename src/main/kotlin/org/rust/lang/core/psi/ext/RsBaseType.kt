@@ -30,19 +30,20 @@ sealed class RsBaseTypeKind {
 
 private val RS_BASE_TYPE_KINDS = tokenSetOf(LPAREN, EXCL, UNDERSCORE, PATH)
 
-val RsBaseType.stubKind: RsBaseTypeStubKind get() {
-    val stub = greenStub
-    if (stub is RsBaseTypeStub) return stub.kind
+val RsBaseType.stubKind: RsBaseTypeStubKind
+    get() {
+        val stub = greenStub
+        if (stub is RsBaseTypeStub) return stub.kind
 
-    val child = node.findChildByType(RS_BASE_TYPE_KINDS)
-    return when (child?.elementType) {
-        LPAREN -> RsBaseTypeStubKind.UNIT
-        EXCL -> RsBaseTypeStubKind.NEVER
-        UNDERSCORE -> RsBaseTypeStubKind.UNDERSCORE
-        PATH -> RsBaseTypeStubKind.PATH
-        else -> error("Malformed RsBaseType element: `$text`")
+        val child = node.findChildByType(RS_BASE_TYPE_KINDS)
+        return when (child?.elementType) {
+            LPAREN -> RsBaseTypeStubKind.UNIT
+            EXCL -> RsBaseTypeStubKind.NEVER
+            UNDERSCORE -> RsBaseTypeStubKind.UNDERSCORE
+            PATH -> RsBaseTypeStubKind.PATH
+            else -> error("Malformed RsBaseType element: `$text`")
+        }
     }
-}
 
 enum class RsBaseTypeStubKind {
     UNIT, NEVER, UNDERSCORE, PATH;

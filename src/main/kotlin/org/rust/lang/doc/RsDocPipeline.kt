@@ -202,8 +202,10 @@ private class RsCodeFenceProvider(
 
         // TODO: use scheme of concrete editor instead of global one because they may differ
         val scheme = EditorColorsManager.getInstance().globalScheme
-        htmlCodeText = htmlCodeText.replaceFirst("<pre>",
-            "<pre style=\"text-indent: ${CODE_SNIPPET_INDENT}px;\">")
+        htmlCodeText = htmlCodeText.replaceFirst(
+            "<pre>",
+            "<pre style=\"text-indent: ${CODE_SNIPPET_INDENT}px;\">"
+        )
 
         return when (renderMode) {
             RsDocRenderMode.INLINE_DOC_COMMENT -> htmlCodeText.dimColors(scheme)

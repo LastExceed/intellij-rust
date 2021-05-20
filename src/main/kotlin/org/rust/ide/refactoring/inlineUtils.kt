@@ -78,13 +78,17 @@ abstract class RsInlineDialog(
 
 class RsInlineUsageViewDescriptor(val element: PsiElement, val header: String) : UsageViewDescriptor {
     override fun getCommentReferencesText(usagesCount: Int, filesCount: Int) =
-        RefactoringBundle.message("comments.elements.header",
-            UsageViewBundle.getOccurencesString(usagesCount, filesCount))
+        RefactoringBundle.message(
+            "comments.elements.header",
+            UsageViewBundle.getOccurencesString(usagesCount, filesCount)
+        )
 
     @Suppress("InvalidBundleOrProperty")
     override fun getCodeReferencesText(usagesCount: Int, filesCount: Int) =
-        RefactoringBundle.message("invocations.to.be.inlined",
-            UsageViewBundle.getReferencesString(usagesCount, filesCount))
+        RefactoringBundle.message(
+            "invocations.to.be.inlined",
+            UsageViewBundle.getReferencesString(usagesCount, filesCount)
+        )
 
     override fun getElements() = arrayOf(element)
 

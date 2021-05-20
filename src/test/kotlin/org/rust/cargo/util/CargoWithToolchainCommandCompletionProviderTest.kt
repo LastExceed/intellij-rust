@@ -11,17 +11,21 @@ import org.rust.cargo.project.model.cargoProjects
 class CargoWithToolchainCommandCompletionProviderTest : RsWithToolchainTestBase() {
     fun `test target triple completion includes popular targets`() {
         val testProject = buildProject {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "hello"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
 
             dir("src") {
-                rust("main.rs", """
+                rust(
+                    "main.rs", """
                     fn main() {}
-                """)
+                """
+                )
             }
         }
 

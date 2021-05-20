@@ -22,10 +22,11 @@ class RsConvertToNamedFieldsProcessor(
     val element: RsFieldsOwner,
     private val convertUsages: Boolean
 ) : BaseRefactoringProcessor(project) {
-    constructor(project: Project,
-                element: RsFieldsOwner,
-                convertUsages: Boolean,
-                newNames: List<String>
+    constructor(
+        project: Project,
+        element: RsFieldsOwner,
+        convertUsages: Boolean,
+        newNames: List<String>
     ) : this(project, element, convertUsages) {
         this.newNames = newNames
     }

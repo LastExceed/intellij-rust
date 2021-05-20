@@ -39,7 +39,7 @@ data class RsDTraceNavigatableNativeCall(private val nativeCall: NativeCall) : B
         private val LOG = logger<RsDTraceNavigatableNativeCall>()
 
         fun read(string: String, interner: Interner<String>? = null): RsDTraceNavigatableNativeCall? {
-             return NativeCall.read(string, interner)?.let(::RsDTraceNavigatableNativeCall)
+            return NativeCall.read(string, interner)?.let(::RsDTraceNavigatableNativeCall)
         }
 
     }

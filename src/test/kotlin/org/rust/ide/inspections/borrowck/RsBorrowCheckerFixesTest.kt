@@ -12,7 +12,8 @@ import org.rust.ide.inspections.RsInspectionsTestBase
 
 class RsBorrowCheckerFixesTest : RsInspectionsTestBase(RsBorrowCheckerInspection::class) {
 
-    fun `test derive copy on struct`() = checkFixByText("Derive Copy trait", """
+    fun `test derive copy on struct`() = checkFixByText(
+        "Derive Copy trait", """
         struct S;
 
         fn main() {
@@ -29,9 +30,11 @@ class RsBorrowCheckerFixesTest : RsInspectionsTestBase(RsBorrowCheckerInspection
             let y = x;
             x;
         }
-    """, checkWarn = false)
+    """, checkWarn = false
+    )
 
-    fun `test derive copy on struct with attr`() = checkFixByText("Derive Copy trait", """
+    fun `test derive copy on struct with attr`() = checkFixByText(
+        "Derive Copy trait", """
         #[derive(PartialOrd, /* come comment */ PartialEq)]
         struct S;
 
@@ -49,9 +52,11 @@ class RsBorrowCheckerFixesTest : RsInspectionsTestBase(RsBorrowCheckerInspection
             let y = x;
             x;
         }
-    """, checkWarn = false)
+    """, checkWarn = false
+    )
 
-    fun `test derive copy on enum`() = checkFixByText("Derive Copy trait", """
+    fun `test derive copy on enum`() = checkFixByText(
+        "Derive Copy trait", """
         enum E { One }
 
         fn main() {
@@ -68,9 +73,11 @@ class RsBorrowCheckerFixesTest : RsInspectionsTestBase(RsBorrowCheckerInspection
             let y = x;
             x;
         }
-    """, checkWarn = false)
+    """, checkWarn = false
+    )
 
-    fun `test derive copy is unavailable on non-copyable enum`() = checkFixIsUnavailable("Derive Copy trait", """
+    fun `test derive copy is unavailable on non-copyable enum`() = checkFixIsUnavailable(
+        "Derive Copy trait", """
         struct S;
         enum E { One, Two(S) }
 
@@ -79,9 +86,11 @@ class RsBorrowCheckerFixesTest : RsInspectionsTestBase(RsBorrowCheckerInspection
             let y = x;
             <error descr="Use of moved value">x<caret></error>;
         }
-    """, checkWarn = false)
+    """, checkWarn = false
+    )
 
-    fun `test derive copy is unavailable on non-copyable struct`() = checkFixIsUnavailable("Derive Copy trait", """
+    fun `test derive copy is unavailable on non-copyable struct`() = checkFixIsUnavailable(
+        "Derive Copy trait", """
         struct T;
         struct S { data: T }
 
@@ -90,10 +99,12 @@ class RsBorrowCheckerFixesTest : RsInspectionsTestBase(RsBorrowCheckerInspection
             x.data;
             <error descr="Use of moved value">x.data</error><caret>;
         }
-    """, checkWarn = false)
+    """, checkWarn = false
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test derive copy on struct with impl clone`() = checkFixByText("Derive Copy trait", """
+    fun `test derive copy on struct with impl clone`() = checkFixByText(
+        "Derive Copy trait", """
         struct S;
         impl Clone for S { fn clone(&self) -> S { unimplemented!() } }
 
@@ -112,5 +123,6 @@ class RsBorrowCheckerFixesTest : RsInspectionsTestBase(RsBorrowCheckerInspection
             let y = x;
             x;
         }
-    """, checkWarn = false)
+    """, checkWarn = false
+    )
 }

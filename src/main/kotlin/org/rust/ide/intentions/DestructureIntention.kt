@@ -107,7 +107,8 @@ class DestructureIntention : RsElementBaseIntentionAction<DestructureIntention.C
                     val newStruct = factory.createPatStruct(struct, typeName)
                     val replaced = ctx.patIdent.replace(newStruct) as RsPatStruct
 
-                    val fieldNames = allocateStructFieldNames(bindings, replaced, toRename,
+                    val fieldNames = allocateStructFieldNames(
+                        bindings, replaced, toRename,
                         struct.blockFields?.namedFieldDeclList?.mapNotNull {
                             it.name
                         }.orEmpty()

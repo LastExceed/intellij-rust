@@ -13,7 +13,8 @@ import org.rust.lang.core.resolve.withDependencies
 
 @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
 class RsDeriveCompletionProviderTest : RsCompletionTestBase() {
-    fun `test complete on struct`() = doSingleCompletion("""
+    fun `test complete on struct`() = doSingleCompletion(
+        """
         #[derive(Debu/*caret*/)]
         struct Test {
             foo: u8
@@ -23,9 +24,11 @@ class RsDeriveCompletionProviderTest : RsCompletionTestBase() {
         struct Test {
             foo: u8
         }
-    """)
+    """
+    )
 
-    fun `test complete on enum`() = doSingleCompletion("""
+    fun `test complete on enum`() = doSingleCompletion(
+        """
         #[derive(Debu/*caret*/)]
         enum Test {
             Something
@@ -35,28 +38,34 @@ class RsDeriveCompletionProviderTest : RsCompletionTestBase() {
         enum Test {
             Something
         }
-    """)
+    """
+    )
 
     fun `test complete with dependencies`() {
         KnownDerivableTrait.values()
             .filter { it.dependencies.isNotEmpty() }
             .forEach {
-                checkContainsCompletion(it.withDependencies.joinToString(", "), """
+                checkContainsCompletion(
+                    it.withDependencies.joinToString(", "), """
                     #[lang = "failure::Fail"]
                     trait Fail {}
 
                     #[derive(${it.name.dropLast(1)}/*caret*/)]
                     struct Foo;
-                """)
+                """
+                )
             }
     }
 
-    fun `test complete with partially implemented dependencies`() = checkContainsCompletion("Ord, Eq, PartialEq", """
+    fun `test complete with partially implemented dependencies`() = checkContainsCompletion(
+        "Ord, Eq, PartialEq", """
         #[derive(PartialOrd, Or/*caret*/)]
         struct Foo;
-    """)
+    """
+    )
 
-    fun `test complete with manually implemented dependencies`() = doSingleCompletion("""
+    fun `test complete with manually implemented dependencies`() = doSingleCompletion(
+        """
         #[derive(Cop/*caret*/)]
         enum Foo { Something }
 
@@ -70,44 +79,58 @@ class RsDeriveCompletionProviderTest : RsCompletionTestBase() {
         impl Clone for Foo {
             fn clone(&self) -> Foo { Foo::Something }
         }
-    """)
+    """
+    )
 
-    fun `test doesnt complete on fn`() = checkNoCompletion("""
+    fun `test doesnt complete on fn`() = checkNoCompletion(
+        """
         #[foo(PartialE/*caret*/)]
         fn foo() { }
-    """)
+    """
+    )
 
-    fun `test doesnt complete on mod`() = checkNoCompletion("""
+    fun `test doesnt complete on mod`() = checkNoCompletion(
+        """
         #[foo(PartialE/*caret*/)]
         mod foo { }
-    """)
+    """
+    )
 
-    fun `test doesnt complete non derive attr`() = checkNoCompletion("""
+    fun `test doesnt complete non derive attr`() = checkNoCompletion(
+        """
         #[foo(PartialE/*caret*/)]
         enum Test { Something }
-    """)
+    """
+    )
 
-    fun `test doesnt complete inner attr`() = checkNoCompletion("""
+    fun `test doesnt complete inner attr`() = checkNoCompletion(
+        """
         mod bar {
             #![derive(PartialE/*caret*/)]
         }
-    """)
+    """
+    )
 
-    fun `test doesnt complete already derived`() = checkNoCompletion("""
+    fun `test doesnt complete already derived`() = checkNoCompletion(
+        """
         #[derive(Debug, Debu/*caret*/)]
         enum Test { Something }
-    """)
+    """
+    )
 
-    fun `test doesn't complete already derived`() = checkNoCompletion("""
+    fun `test doesn't complete already derived`() = checkNoCompletion(
+        """
         #[derive(Clon/*caret*/)]
         enum Foo { Something }
 
         impl Clone for Foo {
             fn clone(&self) -> Foo { Foo::Something }
         }
-    """)
+    """
+    )
 
-    fun `test serde Serialize`() = doSingleCompletion("""
+    fun `test serde Serialize`() = doSingleCompletion(
+        """
         #[lang = "serde::Serialize"]
         trait Serialize {}
         #[derive(Ser/*caret*/)]
@@ -117,20 +140,26 @@ class RsDeriveCompletionProviderTest : RsCompletionTestBase() {
         trait Serialize {}
         #[derive(Serialize/*caret*/)]
         struct S;
-    """)
+    """
+    )
 
-    fun `test no serde Serialize completion if no serde traits`() = checkNoCompletion("""
+    fun `test no serde Serialize completion if no serde traits`() = checkNoCompletion(
+        """
         trait Serialize {}
         #[derive(Ser/*caret*/)]
         struct S;
-    """)
+    """
+    )
 
-    fun `test no completion in non primitive path`() = checkNoCompletion("""
+    fun `test no completion in non primitive path`() = checkNoCompletion(
+        """
         #[derive(std::marker::Clo/*caret*/)]
         struct S;
-    """)
+    """
+    )
 
-    fun `test complete in cfg_attr`() = doSingleCompletion("""
+    fun `test complete in cfg_attr`() = doSingleCompletion(
+        """
         #[cfg_attr(windows, derive(Debu/*caret*/))]
         struct Test {
             foo: u8
@@ -140,14 +169,17 @@ class RsDeriveCompletionProviderTest : RsCompletionTestBase() {
         struct Test {
             foo: u8
         }
-    """)
+    """
+    )
 
     @MockAdditionalCfgOptions("intellij_rust")
-    fun `test no completion if already derived under cfg_attr`() = checkNoCompletion("""
+    fun `test no completion if already derived under cfg_attr`() = checkNoCompletion(
+        """
         #[cfg_attr(intellij_rust, derive(Debug))]
         #[cfg_attr(intellij_rust, derive(Debu/*caret*/))]
         struct Test {
             foo: u8
         }
-    """)
+    """
+    )
 }

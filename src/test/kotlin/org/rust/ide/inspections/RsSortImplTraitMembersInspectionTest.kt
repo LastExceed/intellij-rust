@@ -7,7 +7,8 @@ package org.rust.ide.inspections
 
 class RsSortImplTraitMembersInspectionTest : RsInspectionsTestBase(RsSortImplTraitMembersInspection::class) {
 
-    fun `test same order`() = checkFixIsUnavailable("Apply same member order", """
+    fun `test same order`() = checkFixIsUnavailable(
+        "Apply same member order", """
         struct Struct {
             i: i32
         }
@@ -39,44 +40,54 @@ class RsSortImplTraitMembersInspectionTest : RsInspectionsTestBase(RsSortImplTra
                 self.i * 3
             }
         }
-    """)
+    """
+    )
 
-    fun `test empty`() = checkFixIsUnavailable("Apply same member order", """
+    fun `test empty`() = checkFixIsUnavailable(
+        "Apply same member order", """
         trait Foo {
         }
 
         /*caret*/impl Foo for () {
         }
-    """)
+    """
+    )
 
-    fun `test empty impl`() = checkFixIsUnavailable("Apply same member order", """
+    fun `test empty impl`() = checkFixIsUnavailable(
+        "Apply same member order", """
         trait Foo {
             type x;
         }
 
         /*caret*/impl Foo for () {
         }
-    """)
+    """
+    )
 
-    fun `test empty trait`() = checkFixIsUnavailable("Apply same member order", """
+    fun `test empty trait`() = checkFixIsUnavailable(
+        "Apply same member order", """
         trait Foo {
         }
 
         /*caret*/impl Foo for () {
             type x = ();
         }
-    """)
+    """
+    )
 
-    fun `test different impl`() = checkFixIsUnavailable("Apply same member order", """
+    fun `test different impl`() = checkFixIsUnavailable(
+        "Apply same member order", """
         trait Foo {
             type x;
         }
         /*caret*/impl Foo for () {
             type y = ();
         }
-    """)
+    """
+    )
 
-    fun `test impl with unknown members`() = checkFixIsUnavailable("Apply same member order", """
+    fun `test impl with unknown members`() = checkFixIsUnavailable(
+        "Apply same member order", """
         trait Foo {
             fn f();
             fn g();
@@ -86,9 +97,11 @@ class RsSortImplTraitMembersInspectionTest : RsInspectionsTestBase(RsSortImplTra
             fn f() {}
             fn h() {}
         }
-    """, testmark = RsSortImplTraitMembersInspection.Testmarks.implMemberNotInTrait)
+    """, testmark = RsSortImplTraitMembersInspection.Testmarks.implMemberNotInTrait
+    )
 
-    fun `test different order`() = checkFixByText("Apply same member order", """
+    fun `test different order`() = checkFixByText(
+        "Apply same member order", """
         struct Struct {
             i: i32
         }
@@ -152,10 +165,12 @@ class RsSortImplTraitMembersInspectionTest : RsInspectionsTestBase(RsSortImplTra
                 self.i * 3
             }
         }
-    """, checkWeakWarn = true)
+    """, checkWeakWarn = true
+    )
 
 
-    fun `test different order with same name`() = checkFixByText("Apply same member order", """
+    fun `test different order with same name`() = checkFixByText(
+        "Apply same member order", """
         trait Foo {
             type bar;
             fn bar();
@@ -177,9 +192,11 @@ class RsSortImplTraitMembersInspectionTest : RsInspectionsTestBase(RsSortImplTra
             fn bar() {
             }
         }
-    """, checkWeakWarn = true)
+    """, checkWeakWarn = true
+    )
 
-    fun `test highlight unsafe keyword`() = checkByText("""
+    fun `test highlight unsafe keyword`() = checkByText(
+        """
         unsafe trait Foo {
             fn foo();
             fn bar();
@@ -191,9 +208,11 @@ class RsSortImplTraitMembersInspectionTest : RsInspectionsTestBase(RsSortImplTra
             fn foo() {
             }
         }
-    """, checkWeakWarn = true)
+    """, checkWeakWarn = true
+    )
 
-    fun `test highlight default keyword`() = checkByText("""
+    fun `test highlight default keyword`() = checkByText(
+        """
         unsafe trait Foo {
             fn foo();
             fn bar();
@@ -205,9 +224,11 @@ class RsSortImplTraitMembersInspectionTest : RsInspectionsTestBase(RsSortImplTra
             fn foo() {
             }
         }
-    """, checkWeakWarn = true)
+    """, checkWeakWarn = true
+    )
 
-    fun `test do not highlight comments and attributes for impl`() = checkByText("""
+    fun `test do not highlight comments and attributes for impl`() = checkByText(
+        """
         trait Foo {
             fn foo();
             fn bar();
@@ -221,9 +242,11 @@ class RsSortImplTraitMembersInspectionTest : RsInspectionsTestBase(RsSortImplTra
             fn foo() {
             }
         }
-    """, checkWeakWarn = true)
+    """, checkWeakWarn = true
+    )
 
-    fun `test different order with different files`() = checkFixByFileTree("Apply same member order", """
+    fun `test different order with different files`() = checkFixByFileTree(
+        "Apply same member order", """
         //- foo.rs
         pub trait Trait {
             const ID1: i32;
@@ -288,9 +311,11 @@ class RsSortImplTraitMembersInspectionTest : RsInspectionsTestBase(RsSortImplTra
                 self.i * 3
             }
         }
-    """, checkWeakWarn = true)
+    """, checkWeakWarn = true
+    )
 
-    fun `test does the right thing when the impl is missing some of the members`() = checkFixByText("Apply same member order", """
+    fun `test does the right thing when the impl is missing some of the members`() = checkFixByText(
+        "Apply same member order", """
         trait Foo {
             type T;
             const C: i32;
@@ -316,5 +341,6 @@ class RsSortImplTraitMembersInspectionTest : RsInspectionsTestBase(RsSortImplTra
             const C: i32 = unimplemented!();
             fn foo() { unimplemented!() }
         }
-    """, checkWeakWarn = true)
+    """, checkWeakWarn = true
+    )
 }

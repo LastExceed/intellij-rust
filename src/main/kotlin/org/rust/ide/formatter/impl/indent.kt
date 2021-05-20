@@ -22,20 +22,20 @@ fun RsFmtBlock.computeIndent(child: ASTNode, childCtx: RsFmtContext): Indent? {
     val childType = child.elementType
     val childPsi = child.psi
     return when {
-    // fn moo(...)
-    // -> ...
-    // where ... {}
-    // =>
-    // fn moo(...)
-    //     -> ...
-    //     where ... {}
+        // fn moo(...)
+        // -> ...
+        // where ... {}
+        // =>
+        // fn moo(...)
+        //     -> ...
+        //     where ... {}
         childType == RET_TYPE ||
             (childType == WHERE_CLAUSE && ctx.rustSettings.INDENT_WHERE_CLAUSE) -> Indent.getNormalIndent()
 
-    // Indent blocks excluding braces
+        // Indent blocks excluding braces
         node.isDelimitedBlock -> getIndentIfNotDelim(child, node)
 
-    // Indent flat block contents, excluding closing brace
+        // Indent flat block contents, excluding closing brace
         node.isFlatBlock ->
             if (childCtx.metLBrace) {
                 getIndentIfNotDelim(child, node)
@@ -43,33 +43,33 @@ fun RsFmtBlock.computeIndent(child: ASTNode, childCtx: RsFmtContext): Indent? {
                 Indent.getNoneIndent()
             }
 
-    //  Indent let declarations
+        //  Indent let declarations
         parentType == LET_DECL -> Indent.getContinuationWithoutFirstIndent()
 
-    //     let _ =
-    //     92;
-    // =>
-    //     let _ =>
-    //         92;
+        //     let _ =
+        //     92;
+        // =>
+        //     let _ =>
+        //         92;
         childPsi is RsExpr && (parentType == MATCH_ARM || parentType == CONSTANT) ->
             Indent.getNormalIndent()
 
-    // Indent if-expressions
+        // Indent if-expressions
         parentPsi is RsIfExpr -> Indent.getNoneIndent()
 
-    // Indent loop-expressions
+        // Indent loop-expressions
         parentPsi is RsLooplikeExpr -> Indent.getNoneIndent()
 
-    // Indent match-expressions
+        // Indent match-expressions
         parentPsi is RsMatchExpr -> Indent.getNoneIndent()
 
-    // Indent struct literals
+        // Indent struct literals
         parentPsi is RsStructLiteral -> Indent.getNoneIndent()
 
-    // Indent other expressions (chain calls, binary expressions, ...)
+        // Indent other expressions (chain calls, binary expressions, ...)
         parentPsi is RsExpr -> Indent.getContinuationWithoutFirstIndent()
 
-    // Where clause bounds
+        // Where clause bounds
         childType == WHERE_PRED -> Indent.getContinuationWithoutFirstIndent()
 
         else -> Indent.getNoneIndent()

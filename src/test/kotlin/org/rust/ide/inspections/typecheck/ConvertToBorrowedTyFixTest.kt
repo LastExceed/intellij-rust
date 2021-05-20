@@ -6,4 +6,5 @@
 package org.rust.ide.inspections.typecheck
 
 class ConvertToBorrowedTyFixTest : ConvertToTyUsingTraitMethodFixTestBase(
-    false, "Borrow", "borrow", "use std::borrow::Borrow;")
+    false, "Borrow", "borrow", "use std::borrow::Borrow;"
+)

@@ -9,7 +9,8 @@ import org.rust.lang.core.macros.RsMacroExpansionTestBase
 
 class RsErrorChainMacroExpansionTest : RsMacroExpansionTestBase() {
     // TODO: fix comment indents
-    fun `test test error_chain`() = doTest("""
+    fun `test test error_chain`() = doTest(
+        """
         macro_rules! impl_error_chain_kind {
             (   $ (#[$ meta:meta])*
                 pub enum $ name:ident { $ ($ chunks:tt)* }
@@ -1167,5 +1168,6 @@ class RsErrorChainMacroExpansionTest : RsMacroExpansionTestBase() {
          /// Convenient wrapper around `std::Result`.
         #[allow(unused)]
         pub type Result<T> = ::std::result::Result<T, Error>;
-    """)
+    """
+    )
 }

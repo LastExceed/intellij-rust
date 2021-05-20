@@ -13,7 +13,8 @@ import org.rust.RsTestBase
 
 class RsQuickDefinitionTest : RsTestBase() {
 
-    fun `test struct`() = doTest("""
+    fun `test struct`() = doTest(
+        """
         struct Foo {
             bar: i32
         }
@@ -23,9 +24,11 @@ class RsQuickDefinitionTest : RsTestBase() {
         struct Foo {
             bar: i32
         }
-    """)
+    """
+    )
 
-    fun `test enum`() = doTest("""
+    fun `test enum`() = doTest(
+        """
         enum Foo {
             L,
             R(i32)
@@ -37,9 +40,11 @@ class RsQuickDefinitionTest : RsTestBase() {
             L,
             R(i32)
         }
-    """)
+    """
+    )
 
-    fun `test trait`() = doTest("""
+    fun `test trait`() = doTest(
+        """
         trait Foo {
             fn bar(&self);
         }
@@ -49,17 +54,21 @@ class RsQuickDefinitionTest : RsTestBase() {
         trait Foo {
             fn bar(&self);
         }
-    """)
+    """
+    )
 
-    fun `test type alias`() = doTest("""
+    fun `test type alias`() = doTest(
+        """
         type Foo = &'static str;
 
         fn bar(foo: Foo/*caret*/) {}
     """, """
         type Foo = &'static str;
-    """)
+    """
+    )
 
-    fun `test const`() = doTest("""
+    fun `test const`() = doTest(
+        """
         const FOO: &'static [&str] = [
             "some test text",
             "another test text"
@@ -73,9 +82,11 @@ class RsQuickDefinitionTest : RsTestBase() {
             "some test text",
             "another test text"
         ];
-    """)
+    """
+    )
 
-    fun `test function`() = doTest("""
+    fun `test function`() = doTest(
+        """
         fn foo() {
         }
 
@@ -85,9 +96,11 @@ class RsQuickDefinitionTest : RsTestBase() {
     """, """
         fn foo() {
         }
-    """)
+    """
+    )
 
-    fun `test method`() = doTest("""
+    fun `test method`() = doTest(
+        """
         struct Foo;
 
         impl Foo {
@@ -101,9 +114,11 @@ class RsQuickDefinitionTest : RsTestBase() {
     """, """
             fn foo(&self) {
             }
-    """)
+    """
+    )
 
-    fun `test field`() = doTest("""
+    fun `test field`() = doTest(
+        """
         struct Foo {
             bar: i32
         }
@@ -113,9 +128,11 @@ class RsQuickDefinitionTest : RsTestBase() {
         }
     """, """
             bar: i32
-    """)
+    """
+    )
 
-    fun `test let binding`() = doTest("""
+    fun `test let binding`() = doTest(
+        """
         fn main() {
             let a = "
                 Some text
@@ -126,9 +143,11 @@ class RsQuickDefinitionTest : RsTestBase() {
             let a = "
                 Some text
             ";
-    """)
+    """
+    )
 
-    fun `test destructuring let binding`() = doTest("""
+    fun `test destructuring let binding`() = doTest(
+        """
         fn main() {
             let (a, b) = ("
                 Some text
@@ -139,9 +158,11 @@ class RsQuickDefinitionTest : RsTestBase() {
             let (a, b) = ("
                 Some text
             ", 123);
-    """)
+    """
+    )
 
-    fun `test match arm`() = doTest("""
+    fun `test match arm`() = doTest(
+        """
         enum Foo {
             L,
             R(i32)
@@ -149,7 +170,7 @@ class RsQuickDefinitionTest : RsTestBase() {
 
         fn bar(foo: Foo) {
             match foo {
-                L => {},
+                L => {}
                 R(x) => {
                     x/*caret*/;
                 }
@@ -159,7 +180,8 @@ class RsQuickDefinitionTest : RsTestBase() {
                 R(x) => {
                     x;
                 }
-    """)
+    """
+    )
 
     private fun doTest(@Language("Rust") code: String, expectedRaw: String) {
         InlineFile(code)

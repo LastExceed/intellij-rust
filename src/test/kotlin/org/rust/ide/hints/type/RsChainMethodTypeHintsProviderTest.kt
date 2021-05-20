@@ -28,7 +28,8 @@ class RsChainMethodTypeHintsProviderTest : RsInlayTypeHintsTestBase(RsChainMetho
     """
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test result and option`() = doTest("""
+    fun `test result and option`() = doTest(
+        """
         fn main() {
             let foo: Result<Option<i32>, &str> = Ok(Some(10i32));
             foo
@@ -37,9 +38,11 @@ class RsChainMethodTypeHintsProviderTest : RsInlayTypeHintsTestBase(RsChainMetho
               .and_then(|_| Some("foo"))/*hint text="[:  [Option [< [& str] >]]]"*/
               .unwrap();
         }
-    """)
+    """
+    )
 
-    fun `test show only last type on a line`() = doTest("""
+    fun `test show only last type on a line`() = doTest(
+        """
         $types
 
         fn main() {
@@ -49,9 +52,11 @@ class RsChainMethodTypeHintsProviderTest : RsInlayTypeHintsTestBase(RsChainMetho
               .clone().change()/*hint text="[:  B]"*/
               .clone();
         }
-    """)
+    """
+    )
 
-    fun `test show only last type on a line with comment`() = doTest("""
+    fun `test show only last type on a line with comment`() = doTest(
+        """
         $types
 
         fn main() {
@@ -63,9 +68,11 @@ class RsChainMethodTypeHintsProviderTest : RsInlayTypeHintsTestBase(RsChainMetho
               .change().change()/*hint text="[:  A]"*///
               .clone();
         }
-    """, showSameConsecutiveTypes = true)
+    """, showSameConsecutiveTypes = true
+    )
 
-    fun `test respect last type on a previous line`() = doTest("""
+    fun `test respect last type on a previous line`() = doTest(
+        """
         $types
 
         fn main() {
@@ -76,9 +83,11 @@ class RsChainMethodTypeHintsProviderTest : RsInlayTypeHintsTestBase(RsChainMetho
               .change()/*hint text="[:  B]"*/
               .change();
         }
-    """, showSameConsecutiveTypes = false)
+    """, showSameConsecutiveTypes = false
+    )
 
-    fun `test ignore repeated types`() = doTest("""
+    fun `test ignore repeated types`() = doTest(
+        """
         $types
 
         fn main() {
@@ -90,9 +99,11 @@ class RsChainMethodTypeHintsProviderTest : RsInlayTypeHintsTestBase(RsChainMetho
               .clone()
               .change();
         }
-    """, showSameConsecutiveTypes = false)
+    """, showSameConsecutiveTypes = false
+    )
 
-    fun `test do not show hints for a single method call`() = doTest("""
+    fun `test do not show hints for a single method call`() = doTest(
+        """
         struct S;
         impl S {
             fn foo(): u32 { 0 }
@@ -102,18 +113,22 @@ class RsChainMethodTypeHintsProviderTest : RsInlayTypeHintsTestBase(RsChainMetho
             let s = S;
             s.foo();
         }
-    """)
+    """
+    )
 
-    fun `test do not show hints for unknown type`() = doTest("""
+    fun `test do not show hints for unknown type`() = doTest(
+        """
         fn main() {
             let s = S;
             s.bar()
              .foo();
         }
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test iterator special case`() = doTest("""
+    fun `test iterator special case`() = doTest(
+        """
         fn main() {
             vec![1, 2, 3]
                 .into_iter()/*hint text="[:  [impl  [Iterator [< [Item = i32] >]] ]]"*/
@@ -123,10 +138,12 @@ class RsChainMethodTypeHintsProviderTest : RsInlayTypeHintsTestBase(RsChainMetho
                 .for_each(|x| {})
             ;
         }
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test iterator consecutive types`() = doTest("""
+    fun `test iterator consecutive types`() = doTest(
+        """
         struct S<T>(T);
 
         impl<T> std::iter::Iterator for S<T> {
@@ -147,7 +164,8 @@ class RsChainMethodTypeHintsProviderTest : RsInlayTypeHintsTestBase(RsChainMetho
                 .foo();
             ;
         }
-    """, showSameConsecutiveTypes = false)
+    """, showSameConsecutiveTypes = false
+    )
 
     @Suppress("UnstableApiUsage")
     private fun doTest(@Language("Rust") code: String, showSameConsecutiveTypes: Boolean = true) {

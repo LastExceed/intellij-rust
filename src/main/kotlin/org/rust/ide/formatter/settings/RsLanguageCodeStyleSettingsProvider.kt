@@ -47,19 +47,24 @@ class RsLanguageCodeStyleSettingsProvider : LanguageCodeStyleSettingsProvider() 
             BLANK_LINES_SETTINGS -> {
                 consumer.showStandardOptions(
                     BlankLinesOption.KEEP_BLANK_LINES_IN_DECLARATIONS.name,
-                    BlankLinesOption.KEEP_BLANK_LINES_IN_CODE.name)
+                    BlankLinesOption.KEEP_BLANK_LINES_IN_CODE.name
+                )
 
-                consumer.showCustomOption(RsCodeStyleSettings::class.java,
+                consumer.showCustomOption(
+                    RsCodeStyleSettings::class.java,
                     "MIN_NUMBER_OF_BLANKS_BETWEEN_ITEMS",
                     "Between declarations:",
-                    CodeStyleSettingsCustomizableOptions.getInstance().BLANK_LINES)
+                    CodeStyleSettingsCustomizableOptions.getInstance().BLANK_LINES
+                )
             }
 
             SPACING_SETTINGS -> {
-                consumer.showCustomOption(RsCodeStyleSettings::class.java,
+                consumer.showCustomOption(
+                    RsCodeStyleSettings::class.java,
                     "SPACE_AROUND_ASSOC_TYPE_BINDING",
                     "Around associated type bindings",
-                    CodeStyleSettingsCustomizableOptions.getInstance().SPACES_IN_TYPE_PARAMETERS)
+                    CodeStyleSettingsCustomizableOptions.getInstance().SPACES_IN_TYPE_PARAMETERS
+                )
             }
 
             WRAPPING_AND_BRACES_SETTINGS -> {
@@ -68,50 +73,67 @@ class RsLanguageCodeStyleSettingsProvider : LanguageCodeStyleSettingsProvider() 
                     WrappingOrBraceOption.RIGHT_MARGIN.name,
                     WrappingOrBraceOption.ALIGN_MULTILINE_CHAINED_METHODS.name,
                     WrappingOrBraceOption.ALIGN_MULTILINE_PARAMETERS.name,
-                    WrappingOrBraceOption.ALIGN_MULTILINE_PARAMETERS_IN_CALLS.name)
+                    WrappingOrBraceOption.ALIGN_MULTILINE_PARAMETERS_IN_CALLS.name
+                )
 
-                consumer.showCustomOption(RsCodeStyleSettings::class.java,
+                consumer.showCustomOption(
+                    RsCodeStyleSettings::class.java,
                     "ALLOW_ONE_LINE_MATCH",
                     "Match expressions in one line",
-                    CodeStyleSettingsCustomizableOptions.getInstance().WRAPPING_KEEP)
+                    CodeStyleSettingsCustomizableOptions.getInstance().WRAPPING_KEEP
+                )
 
-                consumer.showCustomOption(RsCodeStyleSettings::class.java,
+                consumer.showCustomOption(
+                    RsCodeStyleSettings::class.java,
                     "PRESERVE_PUNCTUATION",
                     "Punctuation",
-                    CodeStyleSettingsCustomizableOptions.getInstance().WRAPPING_KEEP)
+                    CodeStyleSettingsCustomizableOptions.getInstance().WRAPPING_KEEP
+                )
 
-                consumer.showCustomOption(RsCodeStyleSettings::class.java,
+                consumer.showCustomOption(
+                    RsCodeStyleSettings::class.java,
                     "ALIGN_RET_TYPE",
                     "Align return type to function parameters",
-                    CodeStyleSettingsCustomizableOptions.getInstance().WRAPPING_METHOD_PARAMETERS)
+                    CodeStyleSettingsCustomizableOptions.getInstance().WRAPPING_METHOD_PARAMETERS
+                )
 
-                consumer.showCustomOption(RsCodeStyleSettings::class.java,
+                consumer.showCustomOption(
+                    RsCodeStyleSettings::class.java,
                     "ALIGN_WHERE_CLAUSE",
                     "Align where clause to function parameters",
-                    CodeStyleSettingsCustomizableOptions.getInstance().WRAPPING_METHOD_PARAMETERS)
+                    CodeStyleSettingsCustomizableOptions.getInstance().WRAPPING_METHOD_PARAMETERS
+                )
 
-                consumer.showCustomOption(RsCodeStyleSettings::class.java,
+                consumer.showCustomOption(
+                    RsCodeStyleSettings::class.java,
                     "ALIGN_TYPE_PARAMS",
                     ApplicationBundle.message("wrapping.align.when.multiline"),
-                    "Type parameters")
+                    "Type parameters"
+                )
 
-                consumer.showCustomOption(RsCodeStyleSettings::class.java,
+                consumer.showCustomOption(
+                    RsCodeStyleSettings::class.java,
                     "INDENT_WHERE_CLAUSE",
                     "Indent where clause",
-                    "Type parameters")
+                    "Type parameters"
+                )
 
-                consumer.showCustomOption(RsCodeStyleSettings::class.java,
+                consumer.showCustomOption(
+                    RsCodeStyleSettings::class.java,
                     "ALIGN_WHERE_BOUNDS",
                     "Align where clause bounds",
-                    "Type parameters")
+                    "Type parameters"
+                )
             }
 
             LANGUAGE_SPECIFIC -> {
                 consumer.showStandardOptions()
-                consumer.showCustomOption(RsCodeStyleSettings::class.java,
+                consumer.showCustomOption(
+                    RsCodeStyleSettings::class.java,
                     "NORMALIZE_COMMAS",
                     "Normalize trailing commas",
-                    "Other")
+                    "Other"
+                )
 
             }
 
@@ -119,7 +141,8 @@ class RsLanguageCodeStyleSettingsProvider : LanguageCodeStyleSettingsProvider() 
                 consumer.showStandardOptions(
                     CommenterOption.LINE_COMMENT_AT_FIRST_COLUMN.name,
                     CommenterOption.LINE_COMMENT_ADD_SPACE.name,
-                    CommenterOption.BLOCK_COMMENT_AT_FIRST_COLUMN.name)
+                    CommenterOption.BLOCK_COMMENT_AT_FIRST_COLUMN.name
+                )
             }
         }
     }
@@ -143,7 +166,8 @@ class RsLanguageCodeStyleSettingsProvider : LanguageCodeStyleSettingsProvider() 
 
 private fun sample(@org.intellij.lang.annotations.Language("Rust") code: String) = code.trim()
 
-private val INDENT_SAMPLE = sample("""
+private val INDENT_SAMPLE = sample(
+    """
 struct Vector {
     x: f64,
     y: f64,
@@ -159,9 +183,11 @@ impl Vector {
         }
     }
 }
-""")
+"""
+)
 
-private val SPACING_SAMPLE = sample("""
+private val SPACING_SAMPLE = sample(
+    """
 trait Trait0<A, B, T: Trait1<A>> {
     type Output;
 }
@@ -169,10 +195,12 @@ trait Trait0<A, B, T: Trait1<A>> {
 trait Trait1<T> {}
 
 fn method<A, B, T, C>(value: T) where T: Trait0<A, B, T, Output=C> {}
-""")
+"""
+)
 
 
-private val WRAPPING_AND_BRACES_SAMPLE = sample("""
+private val WRAPPING_AND_BRACES_SAMPLE = sample(
+    """
 fn concat<X, Y, I>(xs: X,
                    ys: Y)
                    -> Box<Iterator<Item=I>>
@@ -200,15 +228,17 @@ fn main() {
     match is_even {
         true => {
             // comment
-        },
+        }
         _ => println("false"),
     }
-    return
+    return;
 }
-""")
+"""
+)
 
 
-private val BLANK_LINES_SAMPLE = sample("""
+private val BLANK_LINES_SAMPLE = sample(
+    """
 #![allow(dead_code)]
 
 
@@ -244,4 +274,5 @@ impl Rectangle {
         a * b
     }
 }
-""")
+"""
+)

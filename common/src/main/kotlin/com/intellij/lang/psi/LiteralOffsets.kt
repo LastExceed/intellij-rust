@@ -26,8 +26,8 @@ data class LiteralOffsets(
             val openDelim = makeRange(prefixEnd, openDelimEnd)
 
             val value = makeRange(openDelimEnd, valueEnd) ?:
-                // empty value is still a value provided we have open delimiter
-                if (openDelim != null) TextRange.create(openDelimEnd, openDelimEnd) else null
+            // empty value is still a value provided we have open delimiter
+            if (openDelim != null) TextRange.create(openDelimEnd, openDelimEnd) else null
 
             val closeDelim = makeRange(valueEnd, closeDelimEnd)
             val suffix = makeRange(closeDelimEnd, suffixEnd)

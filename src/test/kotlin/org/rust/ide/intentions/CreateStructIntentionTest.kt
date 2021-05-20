@@ -8,13 +8,16 @@ package org.rust.ide.intentions
 import org.rust.ide.intentions.createFromUsage.CreateStructIntention
 
 class CreateStructIntentionTest : RsIntentionTestBase(CreateStructIntention::class) {
-    fun `test struct availability range`() = checkAvailableInSelectionOnly("""
+    fun `test struct availability range`() = checkAvailableInSelectionOnly(
+        """
         fn main() {
             <selection>Foo</selection> { a: 0 };
         }
-    """)
+    """
+    )
 
-    fun `test simple`() = doAvailableTest("""
+    fun `test simple`() = doAvailableTest(
+        """
         fn main() {
             Foo/*caret*/ { a: 0 };
         }
@@ -26,9 +29,11 @@ class CreateStructIntentionTest : RsIntentionTestBase(CreateStructIntention::cla
         fn main() {
             Foo { a: 0 };
         }
-    """)
+    """
+    )
 
-    fun `test shorthand field`() = doAvailableTest("""
+    fun `test shorthand field`() = doAvailableTest(
+        """
         fn main() {
             let a = 1;
             Foo/*caret*/ { a };
@@ -42,9 +47,11 @@ class CreateStructIntentionTest : RsIntentionTestBase(CreateStructIntention::cla
             let a = 1;
             Foo { a };
         }
-    """)
+    """
+    )
 
-    fun `test no fields`() = doAvailableTest("""
+    fun `test no fields`() = doAvailableTest(
+        """
         fn main() {
             Foo/*caret*/ {};
         }
@@ -54,9 +61,11 @@ class CreateStructIntentionTest : RsIntentionTestBase(CreateStructIntention::cla
         fn main() {
             Foo {};
         }
-    """)
+    """
+    )
 
-    fun `test multiple fields`() = doAvailableTest("""
+    fun `test multiple fields`() = doAvailableTest(
+        """
         fn main() {
             Foo/*caret*/ { a: true, b: "foo" };
         }
@@ -69,9 +78,11 @@ class CreateStructIntentionTest : RsIntentionTestBase(CreateStructIntention::cla
         fn main() {
             Foo { a: true, b: "foo" };
         }
-    """)
+    """
+    )
 
-    fun `test unknown type`() = doAvailableTest("""
+    fun `test unknown type`() = doAvailableTest(
+        """
         fn main() {
             Foo/*caret*/ { a: Bar };
         }
@@ -83,9 +94,11 @@ class CreateStructIntentionTest : RsIntentionTestBase(CreateStructIntention::cla
         fn main() {
             Foo { a: Bar };
         }
-    """)
+    """
+    )
 
-    fun `test create in a module`() = doAvailableTest("""
+    fun `test create in a module`() = doAvailableTest(
+        """
         mod foo {}
 
         fn main() {
@@ -101,5 +114,6 @@ class CreateStructIntentionTest : RsIntentionTestBase(CreateStructIntention::cla
         fn main() {
             foo::Foo { a: 0 };
         }
-    """)
+    """
+    )
 }

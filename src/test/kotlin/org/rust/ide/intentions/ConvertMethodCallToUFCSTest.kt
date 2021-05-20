@@ -6,23 +6,28 @@
 package org.rust.ide.intentions
 
 class ConvertMethodCallToUFCSTest : RsIntentionTestBase(ConvertMethodCallToUFCSIntention::class) {
-    fun `test unavailable on function call`() = doUnavailableTest("""
+    fun `test unavailable on function call`() = doUnavailableTest(
+        """
         fn foo() {}
         fn bar() {
             /*caret*/foo();
         }
-    """)
+    """
+    )
 
-    fun `test unavailable on unresolved method`() = doUnavailableTest("""
+    fun `test unavailable on unresolved method`() = doUnavailableTest(
+        """
         struct S;
 
         fn bar() {
             let s = S;
             s./*caret*/foo();
         }
-    """)
+    """
+    )
 
-    fun `test unavailable on method args`() = doUnavailableTest("""
+    fun `test unavailable on method args`() = doUnavailableTest(
+        """
         struct S;
         impl S {
             fn foo(&self, _: u32) {}
@@ -32,9 +37,11 @@ class ConvertMethodCallToUFCSTest : RsIntentionTestBase(ConvertMethodCallToUFCSI
             let s = S;
             s.foo(/*caret*/1);
         }
-    """)
+    """
+    )
 
-    fun `test self move`() = doAvailableTest("""
+    fun `test self move`() = doAvailableTest(
+        """
         struct Foo;
         impl Foo {
             fn foo(self) {}
@@ -50,9 +57,11 @@ class ConvertMethodCallToUFCSTest : RsIntentionTestBase(ConvertMethodCallToUFCSI
         fn foo(foo: Foo) {
             Foo::foo(foo);
         }
-    """)
+    """
+    )
 
-    fun `test self ref receiver owned`() = doAvailableTest("""
+    fun `test self ref receiver owned`() = doAvailableTest(
+        """
         struct Foo;
         impl Foo {
             fn foo(&self) {}
@@ -68,9 +77,11 @@ class ConvertMethodCallToUFCSTest : RsIntentionTestBase(ConvertMethodCallToUFCSI
         fn foo(foo: Foo) {
             Foo::foo(&foo);
         }
-    """)
+    """
+    )
 
-    fun `test self ref receiver ref`() = doAvailableTest("""
+    fun `test self ref receiver ref`() = doAvailableTest(
+        """
         struct Foo;
         impl Foo {
             fn foo(&self) {}
@@ -86,9 +97,11 @@ class ConvertMethodCallToUFCSTest : RsIntentionTestBase(ConvertMethodCallToUFCSI
         fn foo(foo: &Foo) {
             Foo::foo(foo);
         }
-    """)
+    """
+    )
 
-    fun `test self mut ref receiver owned`() = doAvailableTest("""
+    fun `test self mut ref receiver owned`() = doAvailableTest(
+        """
         struct Foo;
         impl Foo {
             fn foo(&mut self) {}
@@ -104,9 +117,11 @@ class ConvertMethodCallToUFCSTest : RsIntentionTestBase(ConvertMethodCallToUFCSI
         fn foo(mut foo: Foo) {
             Foo::foo(&mut foo);
         }
-    """)
+    """
+    )
 
-    fun `test self mut ref receiver mut ref`() = doAvailableTest("""
+    fun `test self mut ref receiver mut ref`() = doAvailableTest(
+        """
         struct Foo;
         impl Foo {
             fn foo(&mut self) {}
@@ -122,9 +137,11 @@ class ConvertMethodCallToUFCSTest : RsIntentionTestBase(ConvertMethodCallToUFCSI
         fn foo(foo: &mut Foo) {
             Foo::foo(foo);
         }
-    """)
+    """
+    )
 
-    fun `test nested attribute method call`() = doAvailableTest("""
+    fun `test nested attribute method call`() = doAvailableTest(
+        """
         struct Bar;
         struct Foo {
             bar: Bar
@@ -146,9 +163,11 @@ class ConvertMethodCallToUFCSTest : RsIntentionTestBase(ConvertMethodCallToUFCSI
         fn foo(foo: &Foo) {
             Bar::bar(&foo.bar);
         }
-    """)
+    """
+    )
 
-    fun `test trait method call on struct`() = doAvailableTest("""
+    fun `test trait method call on struct`() = doAvailableTest(
+        """
         struct Foo;
         trait Trait {
             fn foo(&self);
@@ -172,9 +191,11 @@ class ConvertMethodCallToUFCSTest : RsIntentionTestBase(ConvertMethodCallToUFCSI
         fn foo(foo: &Foo) {
             Foo::foo(foo);
         }
-    """)
+    """
+    )
 
-    fun `test trait method call on generic trait bound`() = doAvailableTest("""
+    fun `test trait method call on generic trait bound`() = doAvailableTest(
+        """
         trait Trait {
             fn foo(&self);
         }
@@ -190,9 +211,11 @@ class ConvertMethodCallToUFCSTest : RsIntentionTestBase(ConvertMethodCallToUFCSI
         fn foo<T: Trait>(foo: &T) {
             T::foo(foo);
         }
-    """)
+    """
+    )
 
-    fun `test trait method call on generic trait where`() = doAvailableTest("""
+    fun `test trait method call on generic trait where`() = doAvailableTest(
+        """
         trait Trait {
             fn foo(&self);
         }
@@ -208,9 +231,11 @@ class ConvertMethodCallToUFCSTest : RsIntentionTestBase(ConvertMethodCallToUFCSI
         fn foo<T>(foo: T) where T: Trait {
             T::foo(&foo);
         }
-    """)
+    """
+    )
 
-    fun `test trait method call on impl trait`() = doAvailableTest("""
+    fun `test trait method call on impl trait`() = doAvailableTest(
+        """
         trait Trait {
             fn foo(&self);
         }
@@ -226,9 +251,11 @@ class ConvertMethodCallToUFCSTest : RsIntentionTestBase(ConvertMethodCallToUFCSI
         fn foo(foo: impl Trait) {
             Trait::foo(&foo);
         }
-    """)
+    """
+    )
 
-    fun `test trait method call on impl trait ref`() = doAvailableTest("""
+    fun `test trait method call on impl trait ref`() = doAvailableTest(
+        """
         trait Trait {
             fn foo(&self);
         }
@@ -244,9 +271,11 @@ class ConvertMethodCallToUFCSTest : RsIntentionTestBase(ConvertMethodCallToUFCSI
         fn foo(foo: &impl Trait) {
             Trait::foo(foo);
         }
-    """)
+    """
+    )
 
-    fun `test trait method call on dyn trait`() = doAvailableTest("""
+    fun `test trait method call on dyn trait`() = doAvailableTest(
+        """
         trait Trait {
             fn foo(&self);
         }
@@ -262,9 +291,11 @@ class ConvertMethodCallToUFCSTest : RsIntentionTestBase(ConvertMethodCallToUFCSI
         fn foo(foo: &dyn Trait) {
             Trait::foo(foo);
         }
-    """)
+    """
+    )
 
-    fun `test target in a different mod `() = doAvailableTest("""
+    fun `test target in a different mod `() = doAvailableTest(
+        """
         mod foo {
             pub struct Foo;
             impl Foo {
@@ -288,9 +319,11 @@ class ConvertMethodCallToUFCSTest : RsIntentionTestBase(ConvertMethodCallToUFCSI
         fn bar(a: foo::Foo) {
             Foo::bar(&a);
         }
-    """)
+    """
+    )
 
-    fun `test generic trait`() = doAvailableTest("""
+    fun `test generic trait`() = doAvailableTest(
+        """
         trait Trait<T> {
             fn foo(&self);
         }
@@ -306,9 +339,11 @@ class ConvertMethodCallToUFCSTest : RsIntentionTestBase(ConvertMethodCallToUFCSI
         fn foo<T, R: Trait<T>>(foo: R) {
             R::foo(&foo);
         }
-    """)
+    """
+    )
 
-    fun `test generic trait bound impl`() = doAvailableTest("""
+    fun `test generic trait bound impl`() = doAvailableTest(
+        """
         trait Trait<T> {
             fn foo(&self);
         }
@@ -324,9 +359,11 @@ class ConvertMethodCallToUFCSTest : RsIntentionTestBase(ConvertMethodCallToUFCSI
         fn foo<T, R: Trait<u32>>(foo: R) {
             R::foo(&foo);
         }
-    """)
+    """
+    )
 
-    fun `test generic struct`() = doAvailableTest("""
+    fun `test generic struct`() = doAvailableTest(
+        """
         struct S<T>(T);
         impl<T> S<T> {
             fn foo(&self) {}
@@ -344,9 +381,11 @@ class ConvertMethodCallToUFCSTest : RsIntentionTestBase(ConvertMethodCallToUFCSI
         fn foo<T>(foo: S<T>) {
             S::foo(&foo);
         }
-    """)
+    """
+    )
 
-    fun `test trait with an associated type`() = doAvailableTest("""
+    fun `test trait with an associated type`() = doAvailableTest(
+        """
         trait Trait {
             type Type;
             fn foo(&self) -> Self::Type;
@@ -364,9 +403,11 @@ class ConvertMethodCallToUFCSTest : RsIntentionTestBase(ConvertMethodCallToUFCSI
         fn foo(foo: &dyn Trait<Type=u32>) {
             Trait::foo(foo);
         }
-    """)
+    """
+    )
 
-    fun `test both inherent impl and trait impl`() = doAvailableTest("""
+    fun `test both inherent impl and trait impl`() = doAvailableTest(
+        """
         trait Trait {
             fn foo(&self);
         }
@@ -396,9 +437,11 @@ class ConvertMethodCallToUFCSTest : RsIntentionTestBase(ConvertMethodCallToUFCSI
         fn foo(foo: S) {
             S::foo(&foo);
         }
-    """)
+    """
+    )
 
-    fun `test array type`() = doAvailableTest("""
+    fun `test array type`() = doAvailableTest(
+        """
         trait Trait {
             fn foo(&self);
         }
@@ -420,5 +463,6 @@ class ConvertMethodCallToUFCSTest : RsIntentionTestBase(ConvertMethodCallToUFCSI
         fn foo(foo: &[u8]) {
             <[u8]>::foo(foo);
         }
-    """)
+    """
+    )
 }

@@ -9,7 +9,8 @@ import org.rust.UseNewResolve
 import org.rust.ignoreInNewResolve
 
 class RsStubOnlyResolveTest : RsResolveTestBase() {
-    fun `test child mod`() = stubOnlyResolve("""
+    fun `test child mod`() = stubOnlyResolve(
+        """
     //- main.rs
         mod child;
 
@@ -20,9 +21,11 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
 
     //- child.rs
         pub fn foo() {}
-    """)
+    """
+    )
 
-    fun `test nested child mod`() = stubOnlyResolve("""
+    fun `test nested child mod`() = stubOnlyResolve(
+        """
     //- main.rs
         mod inner {
             pub mod child;
@@ -35,9 +38,11 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
 
     //- inner/child.rs
         pub fn foo() {}
-    """)
+    """
+    )
 
-    fun `test mod decl`() = stubOnlyResolve("""
+    fun `test mod decl`() = stubOnlyResolve(
+        """
     //- main.rs
         mod foo;
            //^ foo.rs
@@ -46,9 +51,11 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
     //- foo.rs
 
         // Empty file
-    """)
+    """
+    )
 
-    fun `test mod decl 2`() = stubOnlyResolve("""
+    fun `test mod decl 2`() = stubOnlyResolve(
+        """
     //- foo/mod.rs
         use bar::Bar;
                 //^ bar.rs
@@ -61,9 +68,11 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
 
     //- bar.rs
         pub struct Bar {}
-    """)
+    """
+    )
 
-    fun `test mod decl path`() = stubOnlyResolve("""
+    fun `test mod decl path`() = stubOnlyResolve(
+        """
     //- main.rs
         #[path = "bar/baz/foo.rs"]
         mod foo;
@@ -72,9 +81,11 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
         fn main() {}
     //- bar/baz/foo.rs
         fn quux() {}
-    """)
+    """
+    )
 
-    fun `test module path in mod rs`() = stubOnlyResolve("""
+    fun `test module path in mod rs`() = stubOnlyResolve(
+        """
     //- main.rs
         mod foo;
     //- foo/mod.rs
@@ -87,9 +98,11 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
         }
     //- foo/baz.rs
         pub fn baz() {}
-    """, NameResolutionTestmarks.modDeclExplicitPathInNonInlineModule.ignoreInNewResolve(project))
+    """, NameResolutionTestmarks.modDeclExplicitPathInNonInlineModule.ignoreInNewResolve(project)
+    )
 
-    fun `test module path in non crate root`() = stubOnlyResolve("""
+    fun `test module path in non crate root`() = stubOnlyResolve(
+        """
     //- main.rs
         mod foo;
     //- foo.rs
@@ -102,9 +115,11 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
         }
     //- baz.rs
         pub fn baz() {}
-    """, NameResolutionTestmarks.modDeclExplicitPathInNonInlineModule.ignoreInNewResolve(project))
+    """, NameResolutionTestmarks.modDeclExplicitPathInNonInlineModule.ignoreInNewResolve(project)
+    )
 
-    fun `test module path to different directory 1`() = stubOnlyResolve("""
+    fun `test module path to different directory 1`() = stubOnlyResolve(
+        """
     //- main.rs
         #[path = "src2/foo.rs"]
         mod foo;
@@ -115,9 +130,11 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
         pub mod bar;
     //- src2/bar/mod.rs
         pub struct S;
-    """, NameResolutionTestmarks.modDeclExplicitPathInNonInlineModule.ignoreInNewResolve(project))
+    """, NameResolutionTestmarks.modDeclExplicitPathInNonInlineModule.ignoreInNewResolve(project)
+    )
 
-    fun `test module path to different directory 2`() = stubOnlyResolve("""
+    fun `test module path to different directory 2`() = stubOnlyResolve(
+        """
     //- main.rs
         fn main() {
             inner::foo::bar::func();
@@ -131,9 +148,11 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
         pub mod bar;
     //- inner/src2/bar.rs
         pub fn func() {}
-    """)
+    """
+    )
 
-    fun `test invalid path`() = stubOnlyResolve("""
+    fun `test invalid path`() = stubOnlyResolve(
+        """
     //- main.rs
         use foo::bar;
                 //^ unresolved
@@ -141,9 +160,11 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
         fn main() {}
     //- foo.rs
         #[path] mod bar;
-    """)
+    """
+    )
 
-    fun `test mod decl path super`() = stubOnlyResolve("""
+    fun `test mod decl path super`() = stubOnlyResolve(
+        """
     //- bar/baz/quux.rs
         fn quux() {
             super::main();
@@ -154,9 +175,11 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
         mod foo;
 
         fn main(){}
-    """)
+    """
+    )
 
-    fun `test mod relative`() = stubOnlyResolve("""
+    fun `test mod relative`() = stubOnlyResolve(
+        """
     //- main.rs
         mod sub;
 
@@ -170,9 +193,11 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
 
     //- foo.rs
         pub fn quux() {}
-    """)
+    """
+    )
 
-    fun `test mod relative 2`() = stubOnlyResolve("""
+    fun `test mod relative 2`() = stubOnlyResolve(
+        """
     //- main.rs
         mod sub;
 
@@ -186,9 +211,11 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
 
     //- foo.rs
         pub fn quux() {}
-    """)
+    """
+    )
 
-    fun `test resolve explicit mod path mod rs`() = stubOnlyResolve("""
+    fun `test resolve explicit mod path mod rs`() = stubOnlyResolve(
+        """
     //- main.rs
         #[path = "sub/mod.rs"]
         mod foo;
@@ -199,9 +226,11 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
             ::quux();
             //^ main.rs
        }
-    """)
+    """
+    )
 
-    fun `test resolve explicit mod path mod rs 2`() = stubOnlyResolve("""
+    fun `test resolve explicit mod path mod rs 2`() = stubOnlyResolve(
+        """
     //- main.rs
         #[path = "sub/bar/mod.rs"]
         mod foo;
@@ -212,9 +241,11 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
             ::quux();
             //^ main.rs
        }
-    """)
+    """
+    )
 
-    fun `test resolve explicit mod path mod rs windows path separator`() = stubOnlyResolve("""
+    fun `test resolve explicit mod path mod rs windows path separator`() = stubOnlyResolve(
+        """
     //- main.rs
         #[path = "sub\\bar\\mod.rs"]
         mod foo;
@@ -225,9 +256,11 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
             ::quux();
             //^ main.rs
        }
-    """)
+    """
+    )
 
-    fun `test module path`() = stubOnlyResolve("""
+    fun `test module path`() = stubOnlyResolve(
+        """
     //- main.rs
         #[path="aaa"]
         mod foo {
@@ -240,9 +273,11 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
             ::quux();
             //^ main.rs
         }
-    """)
+    """
+    )
 
-    fun `test module path 2`() = stubOnlyResolve("""
+    fun `test module path 2`() = stubOnlyResolve(
+        """
     //- main.rs
         #[path="aaa/bbb"]
         mod foo {
@@ -255,9 +290,11 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
             ::quux();
             //^ main.rs
         }
-    """)
+    """
+    )
 
-    fun `test module path 3`() = stubOnlyResolve("""
+    fun `test module path 3`() = stubOnlyResolve(
+        """
     //- main.rs
         #[path="aaa/bbb"]
         mod foo {
@@ -271,9 +308,11 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
             ::quux();
             //^ main.rs
         }
-    """)
+    """
+    )
 
-    fun `test empty module path`() = stubOnlyResolve("""
+    fun `test empty module path`() = stubOnlyResolve(
+        """
     //- main.rs
         #[path=""]
         mod foo {
@@ -287,9 +326,11 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
             ::quux();
             //^ main.rs
         }
-    """)
+    """
+    )
 
-    fun `test relative module path`() = stubOnlyResolve("""
+    fun `test relative module path`() = stubOnlyResolve(
+        """
     //- main.rs
         #[path="./aaa"]
         mod foo {
@@ -303,9 +344,11 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
             ::quux();
             //^ main.rs
         }
-    """)
+    """
+    )
 
-    fun `test path inside inline module in crate root`() = stubOnlyResolve("""
+    fun `test path inside inline module in crate root`() = stubOnlyResolve(
+        """
     //- main.rs
         mod foo {
             #[path="baz.rs"]
@@ -318,9 +361,11 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
         }
     //- foo/baz.rs
         pub fn foo() {}
-    """, NameResolutionTestmarks.modDeclExplicitPathInInlineModule.ignoreInNewResolve(project))
+    """, NameResolutionTestmarks.modDeclExplicitPathInInlineModule.ignoreInNewResolve(project)
+    )
 
-    fun `test path inside inline module in mod rs`() = stubOnlyResolve("""
+    fun `test path inside inline module in mod rs`() = stubOnlyResolve(
+        """
     //- main.rs
         mod foo;
     //- foo/mod.rs
@@ -335,9 +380,11 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
         }
     //- foo/bar/qwe.rs
         pub fn baz() {}
-    """, NameResolutionTestmarks.modDeclExplicitPathInInlineModule.ignoreInNewResolve(project))
+    """, NameResolutionTestmarks.modDeclExplicitPathInInlineModule.ignoreInNewResolve(project)
+    )
 
-    fun `test path inside inline module in non crate root`() = stubOnlyResolve("""
+    fun `test path inside inline module in non crate root`() = stubOnlyResolve(
+        """
     //- main.rs
         mod foo;
     //- foo.rs
@@ -352,9 +399,11 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
         }
     //- foo/bar/qwe.rs
         pub fn baz() {}
-    """, NameResolutionTestmarks.modDeclExplicitPathInInlineModule.ignoreInNewResolve(project))
+    """, NameResolutionTestmarks.modDeclExplicitPathInInlineModule.ignoreInNewResolve(project)
+    )
 
-    fun `test inline module path in non crate root`() = stubOnlyResolve("""
+    fun `test inline module path in non crate root`() = stubOnlyResolve(
+        """
     //- main.rs
         mod foo;
     //- foo.rs
@@ -369,9 +418,11 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
         }
     //- bar/baz.rs
         pub fn baz() {}
-    """)
+    """
+    )
 
-    fun `test inline module path in non crate root 2`() = stubOnlyResolve("""
+    fun `test inline module path in non crate root 2`() = stubOnlyResolve(
+        """
     //- main.rs
         mod foo;
     //- foo.rs
@@ -388,9 +439,11 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
         }
     //- foo/bar/baz2/quux.rs
         pub fn eggs() {}
-    """)
+    """
+    )
 
-    fun `test use from child`() = stubOnlyResolve("""
+    fun `test use from child`() = stubOnlyResolve(
+        """
     //- main.rs
         use child::{foo};
         mod child;
@@ -401,10 +454,12 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
 
     //- child.rs
         pub fn foo() {}
-    """)
+    """
+    )
 
     fun `test use global path`() {
-        stubOnlyResolve("""
+        stubOnlyResolve(
+            """
         //- foo.rs
             fn main() {
                 ::bar::hello();
@@ -416,19 +471,23 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
 
         //- bar.rs
             pub fn hello() {}
-        """)
+        """
+        )
     }
 
-    fun `test mod decl wrong path`() = stubOnlyResolve("""
+    fun `test mod decl wrong path`() = stubOnlyResolve(
+        """
     //- main.rs
         #[path = "foo/bar/baz/rs"]
         mod foo;
            //^ unresolved
 
         fn main() {}
-    """)
+    """
+    )
 
-    fun `test mod decl cycle`() = stubOnlyResolve("""
+    fun `test mod decl cycle`() = stubOnlyResolve(
+        """
     //- foo.rs
         use quux;
             //^ unresolved
@@ -443,9 +502,11 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
     //- bar.rs
         #[path="baz.rs"]
         mod baz;
-    """)
+    """
+    )
 
-    fun `test function type`() = stubOnlyResolve("""
+    fun `test function type`() = stubOnlyResolve(
+        """
     //- main.rs
         mod foo;
 
@@ -456,9 +517,11 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
     //- foo.rs
         use super::S;
         pub fn id(x: S) -> S { x }
-    """)
+    """
+    )
 
-    fun `test tuple struct`() = stubOnlyResolve("""
+    fun `test tuple struct`() = stubOnlyResolve(
+        """
     //- main.rs
         mod foo;
         use foo::S;
@@ -469,9 +532,11 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
         struct S(Bar);
         struct Bar;
         impl Bar { pub fn bar(self) {} }
-    """)
+    """
+    )
 
-    fun `test method call`() = stubOnlyResolve("""
+    fun `test method call`() = stubOnlyResolve(
+        """
     //- main.rs
         mod aux;
         use aux::S;
@@ -489,9 +554,11 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
         impl S {
             pub fn foo(&self) { }
         }
-    """)
+    """
+    )
 
-    fun `test method call on enum`() = stubOnlyResolve("""
+    fun `test method call on enum`() = stubOnlyResolve(
+        """
     //- main.rs
         mod aux;
         use aux::S;
@@ -509,9 +576,11 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
         impl S {
             pub fn foo(&self) { }
         }
-    """)
+    """
+    )
 
-    fun `test resolve macro`() = checkByCode("""
+    fun `test resolve macro`() = checkByCode(
+        """
         macro_rules! foo_bar { () => () }
         //X
         mod b {
@@ -520,9 +589,11 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
                 //^
             }
         }
-    """)
+    """
+    )
 
-    fun `test resolve macro multi file`() = stubOnlyResolve("""
+    fun `test resolve macro multi file`() = stubOnlyResolve(
+        """
     //- b.rs
         foo_bar!();
         //^ main.rs
@@ -530,9 +601,11 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
         macro_rules! foo_bar { () => () }
         mod b;
         fn main() {}
-    """)
+    """
+    )
 
-    fun `test resolve macro multi file 2`() = stubOnlyResolve("""
+    fun `test resolve macro multi file 2`() = stubOnlyResolve(
+        """
     //- b.rs
         macro_rules! foo_bar { () => () }
     //- main.rs
@@ -541,9 +614,11 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
         foo_bar!();
         //^ b.rs
         fn main() {}
-    """)
+    """
+    )
 
-    fun `test resolve macro multi file 3`() = stubOnlyResolve("""
+    fun `test resolve macro multi file 3`() = stubOnlyResolve(
+        """
     //- b.rs
         macro_rules! foo_bar { () => () }
         foo_bar!();
@@ -551,10 +626,12 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
     //- main.rs
         #[macro_use]
         mod b;
-    """)
+    """
+    )
 
     @UseNewResolve
-    fun `test resolve macro multi file 4`() = stubOnlyResolve("""
+    fun `test resolve macro multi file 4`() = stubOnlyResolve(
+        """
     //- b.rs
         #![macro_use]
         macro_rules! foo_bar { () => () }
@@ -564,9 +641,11 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
             foo_bar!();
             //^ b.rs
         }
-    """)
+    """
+    )
 
-    fun `test resolve crate keyword in path to crate root mod`() = stubOnlyResolve("""
+    fun `test resolve crate keyword in path to crate root mod`() = stubOnlyResolve(
+        """
     //- main.rs
         mod foo;
 
@@ -576,9 +655,11 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
     //- foo.rs
         use crate::bar::Foo;
             //^ main.rs
-    """)
+    """
+    )
 
-    fun `test raw identifier`() = stubOnlyResolve("""
+    fun `test raw identifier`() = stubOnlyResolve(
+        """
     //- main.rs
         mod r#match;
         use r#match::bar;
@@ -589,9 +670,11 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
         }
     //- match.rs
         pub fn bar() { println!("Bar"); }
-    """)
+    """
+    )
 
-    fun `test module structure without mod rs 1`() = stubOnlyResolve("""
+    fun `test module structure without mod rs 1`() = stubOnlyResolve(
+        """
     //- main.rs
         mod foo;
     //- foo.rs
@@ -600,9 +683,11 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
 
     //- foo/bar.rs
         pub struct Bar;
-    """)
+    """
+    )
 
-    fun `test module structure without mod rs 2`() = stubOnlyResolve("""
+    fun `test module structure without mod rs 2`() = stubOnlyResolve(
+        """
     //- main.rs
         mod foo;
     //- foo/mod.rs
@@ -613,9 +698,11 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
         pub struct Bar;
     //- foo/foo/bar.rs
         pub struct Baz;
-    """, NameResolutionTestmarks.modRsFile)
+    """, NameResolutionTestmarks.modRsFile
+    )
 
-    fun `test module structure without mod rs 3`() = stubOnlyResolve("""
+    fun `test module structure without mod rs 3`() = stubOnlyResolve(
+        """
     //- main.rs
         mod foo;
            //^ foo.rs
@@ -623,9 +710,11 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
         pub struct Foo;
     //- main/foo.rs
         pub struct Bar;
-    """, NameResolutionTestmarks.crateRootModule)
+    """, NameResolutionTestmarks.crateRootModule
+    )
 
-    fun `test scoped resolve inside stubbed function body`() = stubOnlyResolve("""
+    fun `test scoped resolve inside stubbed function body`() = stubOnlyResolve(
+        """
     //- main.rs
         mod foo;
         fn main() {
@@ -643,9 +732,11 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
                 struct S;
             }
         }
-    """)
+    """
+    )
 
-    fun `test trait impl for const generic 1`() = stubOnlyResolve("""
+    fun `test trait impl for const generic 1`() = stubOnlyResolve(
+        """
     //- main.rs
         #![feature(const_generics)]
         mod bar;
@@ -664,9 +755,11 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
         impl T for [i32; 1] {
             fn foo(&self) {}
         }
-    """)
+    """
+    )
 
-    fun `test trait impl for const generic 2`() = stubOnlyResolve("""
+    fun `test trait impl for const generic 2`() = stubOnlyResolve(
+        """
     //- main.rs
         #![feature(const_generics)]
         mod bar;
@@ -685,9 +778,11 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
         impl T for [i32; 1] {
             fn foo(&self) {}
         }
-    """)
+    """
+    )
 
-    fun `test trait impl for const generic 3`() = stubOnlyResolve("""
+    fun `test trait impl for const generic 3`() = stubOnlyResolve(
+        """
     //- main.rs
         #![feature(const_generics)]
         mod bar;
@@ -706,9 +801,11 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
         impl <const N: usize> T for [i32; N] {
             fn foo(&self) {}
         }
-    """)
+    """
+    )
 
-    fun `test trait impl const generic 4`() = stubOnlyResolve("""
+    fun `test trait impl const generic 4`() = stubOnlyResolve(
+        """
     //- main.rs
         #![feature(const_generics)]
         mod bar;
@@ -729,9 +826,11 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
         impl T for S<{ 0 }> {
             fn foo(&self) {}
         }
-    """)
+    """
+    )
 
-    fun `test trait impl const generic 5`() = stubOnlyResolve("""
+    fun `test trait impl const generic 5`() = stubOnlyResolve(
+        """
     //- main.rs
         #![feature(const_generics)]
         mod bar;
@@ -752,9 +851,11 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
         impl T for S<{ 0 }> {
             fn foo(&self) {}
         }
-    """)
+    """
+    )
 
-    fun `test trait impl const generic 6`() = stubOnlyResolve("""
+    fun `test trait impl const generic 6`() = stubOnlyResolve(
+        """
     //- main.rs
         #![feature(const_generics)]
         mod bar;
@@ -775,5 +876,6 @@ class RsStubOnlyResolveTest : RsResolveTestBase() {
         impl <const N: usize> T for S<{ N }> {
             fn foo(&self) {}
         }
-    """)
+    """
+    )
 }

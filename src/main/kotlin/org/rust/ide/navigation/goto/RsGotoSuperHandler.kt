@@ -50,7 +50,8 @@ fun gotoSuperTargets(source: PsiElement): List<NavigatablePsiElement> {
     if (item is RsMod) {
         return if (item is RsFile) {
             if (item.isCrateRoot) {
-                val manifestPath = item.containingCargoPackage?.rootDirectory?.resolve("Cargo.toml") ?: return emptyList()
+                val manifestPath = item.containingCargoPackage?.rootDirectory?.resolve("Cargo.toml")
+                    ?: return emptyList()
                 listOfNotNull(item.virtualFile?.fileSystem?.findFileByPath(manifestPath.toString())?.toPsiFile(item.project))
             } else {
                 item.declarations

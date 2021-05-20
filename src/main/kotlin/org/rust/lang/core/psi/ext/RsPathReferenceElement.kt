@@ -16,5 +16,6 @@ interface RsPathReferenceElement : RsReferenceElement, RsPathPsiOrStub {
     override val referenceNameElement: PsiElement?
 
     @JvmDefault
-    override val referenceName: String? get() = referenceNameElement?.unescapedText
+    override val referenceName: String?
+        get() = referenceNameElement?.unescapedText
 }

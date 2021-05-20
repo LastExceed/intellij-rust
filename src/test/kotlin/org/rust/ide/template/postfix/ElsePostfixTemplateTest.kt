@@ -6,14 +6,17 @@
 package org.rust.ide.template.postfix
 
 class ElsePostfixTemplateTest : RsPostfixTemplateTest(ElseExpressionPostfixTemplate()) {
-    fun `test not boolean expr 1`() = doTestNotApplicable("""
+    fun `test not boolean expr 1`() = doTestNotApplicable(
+        """
         fn main() {
             let a = 4;
             a.else/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test not boolean expr 2`() = doTestNotApplicable("""
+    fun `test not boolean expr 2`() = doTestNotApplicable(
+        """
         fn func() -> i32 {
             1234
         }
@@ -21,9 +24,11 @@ class ElsePostfixTemplateTest : RsPostfixTemplateTest(ElseExpressionPostfixTempl
         fn main() {
             func().else/*caret*/
         }
-    """)
+    """
+    )
 
-    fun `test boolean expr`() = doTest("""
+    fun `test boolean expr`() = doTest(
+        """
         fn main() {
             let a = 4 == 2;
             a.else/*caret*/
@@ -33,9 +38,11 @@ class ElsePostfixTemplateTest : RsPostfixTemplateTest(ElseExpressionPostfixTempl
             let a = 4 == 2;
             if !a {/*caret*/}
         }
-    """)
+    """
+    )
 
-    fun `test negated boolean expr`() = doTest("""
+    fun `test negated boolean expr`() = doTest(
+        """
         fn main() {
             let a = 4 == 2;
             !a.else/*caret*/
@@ -45,9 +52,11 @@ class ElsePostfixTemplateTest : RsPostfixTemplateTest(ElseExpressionPostfixTempl
             let a = 4 == 2;
             if a {/*caret*/}
         }
-    """)
+    """
+    )
 
-    fun `test fun arg`() = doTest("""
+    fun `test fun arg`() = doTest(
+        """
         fn foo(a: bool) {
             a.else/*caret*/
         }
@@ -55,9 +64,11 @@ class ElsePostfixTemplateTest : RsPostfixTemplateTest(ElseExpressionPostfixTempl
         fn foo(a: bool) {
             if !a {/*caret*/}
         }
-    """)
+    """
+    )
 
-    fun `test simple eq expr`() = doTest("""
+    fun `test simple eq expr`() = doTest(
+        """
         fn main() {
             true == true.else/*caret*/
         }
@@ -65,9 +76,11 @@ class ElsePostfixTemplateTest : RsPostfixTemplateTest(ElseExpressionPostfixTempl
         fn main() {
             if true != true {/*caret*/}
         }
-    """)
+    """
+    )
 
-    fun `test selector`() = doTest("""
+    fun `test selector`() = doTest(
+        """
         fn main() {
             let a = if (true) {
                 42 < 43.else/*caret*/
@@ -83,9 +96,11 @@ class ElsePostfixTemplateTest : RsPostfixTemplateTest(ElseExpressionPostfixTempl
                 false == true
             };
         }
-    """)
+    """
+    )
 
-    fun `test call`() = doTest("""
+    fun `test call`() = doTest(
+        """
         fn func() -> bool {
             false
         }
@@ -101,7 +116,8 @@ class ElsePostfixTemplateTest : RsPostfixTemplateTest(ElseExpressionPostfixTempl
         fn main() {
             if !func() {/*caret*/}
         }
-    """)
+    """
+    )
 
     fun `test bin operators bool`() {
         val cases = listOf(
@@ -116,7 +132,8 @@ class ElsePostfixTemplateTest : RsPostfixTemplateTest(ElseExpressionPostfixTempl
         )
 
         for (case in cases) {
-            doTest("""
+            doTest(
+                """
                 fn main() {
                     ${case.first}.else/*caret*/
                 }
@@ -124,7 +141,8 @@ class ElsePostfixTemplateTest : RsPostfixTemplateTest(ElseExpressionPostfixTempl
                 fn main() {
                     if ${case.second} {/*caret*/}
                 }
-            """)
+            """
+            )
         }
     }
 }

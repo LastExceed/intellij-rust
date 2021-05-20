@@ -6,7 +6,8 @@
 package org.rust.ide.typing
 
 class RsDotTypedHandlerTest : RsTypingTestBase() {
-    fun `test autoindent dot in chained call`() = doTestByText("""
+    fun `test autoindent dot in chained call`() = doTestByText(
+        """
         fn main() {
             frobnicate()
                 .foo()
@@ -18,9 +19,11 @@ class RsDotTypedHandlerTest : RsTypingTestBase() {
                 .foo()
                 ./*caret*/
         }
-    """, '.')
+    """, '.'
+    )
 
-    fun `test test autoindent dot with deep indent`() = doTestByText("""
+    fun `test test autoindent dot with deep indent`() = doTestByText(
+        """
         fn main() {
             let matches =
                 App::new("Unique Random File Generator")
@@ -34,5 +37,6 @@ class RsDotTypedHandlerTest : RsTypingTestBase() {
                     .version("1.0")
                     ./*caret*/
         }
-    """, '.')
+    """, '.'
+    )
 }

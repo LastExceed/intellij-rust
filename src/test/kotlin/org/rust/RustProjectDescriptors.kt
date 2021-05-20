@@ -87,8 +87,10 @@ open class RustProjectDescriptorBase : LightProjectDescriptor() {
 
     open fun testCargoProject(module: Module, contentRoot: String): CargoWorkspace {
         val packages = listOf(testCargoPackage(contentRoot))
-        return CargoWorkspace.deserialize(Paths.get("${Urls.newFromIdea(contentRoot).path}/workspace/Cargo.toml"),
-            CargoWorkspaceData(packages, emptyMap(), emptyMap()), CfgOptions.DEFAULT)
+        return CargoWorkspace.deserialize(
+            Paths.get("${Urls.newFromIdea(contentRoot).path}/workspace/Cargo.toml"),
+            CargoWorkspaceData(packages, emptyMap(), emptyMap()), CfgOptions.DEFAULT
+        )
     }
 
     protected fun testCargoPackage(contentRoot: String, name: String = "test-package") = Package(
@@ -319,15 +321,19 @@ object WithDependencyRustProjectDescriptor : RustProjectDescriptorBase() {
             "$contentRoot/dep-proc-macro", "lib.rs", "dep-proc-macro", libKind = LibKind.PROC_MACRO,
             procMacroArtifact = testProcMacroArtifact1
         )
-        val depProcMacro2 = externalPackage("$contentRoot/dep-proc-macro-2", "lib.rs", "dep-proc-macro-2", libKind = LibKind.PROC_MACRO,
-            procMacroArtifact = testProcMacroArtifact2)
+        val depProcMacro2 = externalPackage(
+            "$contentRoot/dep-proc-macro-2", "lib.rs", "dep-proc-macro-2", libKind = LibKind.PROC_MACRO,
+            procMacroArtifact = testProcMacroArtifact2
+        )
 
         val packages = listOf(
             testPackage, depLib, depLibNew, depLib2, depLibToBeRenamed,
             noSrcLib, noSourceLib, transLib, transLib2, depProcMacro, depProcMacro2
         )
 
-        return CargoWorkspace.deserialize(Paths.get("/my-crate/Cargo.toml"), CargoWorkspaceData(packages, mapOf(
+        return CargoWorkspace.deserialize(
+            Paths.get("/my-crate/Cargo.toml"), CargoWorkspaceData(
+            packages, mapOf(
             testPackage.id to setOf(
                 Dependency(depLib.id),
                 Dependency(depLib2.id),
@@ -344,7 +350,9 @@ object WithDependencyRustProjectDescriptor : RustProjectDescriptorBase() {
             transLib.id to setOf(
                 Dependency(transLib2.id),
             )
-        ), emptyMap()), CfgOptions.DEFAULT)
+        ), emptyMap()
+        ), CfgOptions.DEFAULT
+        )
     }
 }
 

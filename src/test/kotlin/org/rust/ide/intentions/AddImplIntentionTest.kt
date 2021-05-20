@@ -6,7 +6,8 @@
 package org.rust.ide.intentions
 
 class AddImplIntentionTest : RsIntentionTestBase(AddImplIntention::class) {
-    fun `test simple struct`() = doAvailableTest("""
+    fun `test simple struct`() = doAvailableTest(
+        """
         struct Hey/*caret*/ {
             var: i32
         }
@@ -16,21 +17,26 @@ class AddImplIntentionTest : RsIntentionTestBase(AddImplIntention::class) {
         }
 
         impl Hey {/*caret*/}
-    """)
+    """
+    )
 
-    fun `test simple enum`() = doAvailableTest("""
+    fun `test simple enum`() = doAvailableTest(
+        """
         enum E/*caret*/ { }
     """, """
         enum E { }
 
         impl E {/*caret*/}
-    """)
+    """
+    )
 
-    fun `test generic struct`() = doAvailableTest("""
+    fun `test generic struct`() = doAvailableTest(
+        """
         struct S<'a, 'b: 'a, U: Clone, V>/*caret*/ where V: Copy { }
     """, """
         struct S<'a, 'b: 'a, U: Clone, V> where V: Copy { }
 
         impl<'a, 'b: 'a, U: Clone, V> S<'a, 'b, U, V> where V: Copy {/*caret*/}
-    """)
+    """
+    )
 }

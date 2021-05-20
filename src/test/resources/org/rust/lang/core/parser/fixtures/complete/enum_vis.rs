@@ -3,5 +3,5 @@
 enum E {
     pub V1,
     pub(crate) V2,
-    pub(in a) V3
+    pub(in a) V3,
 }

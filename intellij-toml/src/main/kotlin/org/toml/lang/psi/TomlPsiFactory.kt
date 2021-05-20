@@ -32,7 +32,7 @@ class TomlPsiFactory(private val project: Project, private val markGenerated: Bo
         PsiTreeUtil.findChildOfType(this, T::class.java, /* strict */ true)
 
     fun createLiteral(value: String): TomlLiteral =
-        // If you're creating a string value, like `serde = "1.0.90"` make sure that the `value` parameter actually
+    // If you're creating a string value, like `serde = "1.0.90"` make sure that the `value` parameter actually
         // contains the quote in the beginning and the end. E.g.: `createValue("\"1.0.90\"")`
         createFromText("dummy = $value") ?: error("Failed to create TomlLiteral")
 

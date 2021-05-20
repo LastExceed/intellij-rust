@@ -20,24 +20,29 @@ class RsHighlightingAnnotatorTest : RsAnnotatorTestBase(RsHighlightingAnnotator:
         annotationFixture.registerSeverities(RsColor.values().map(RsColor::testSeverity))
     }
 
-    fun `test attributes`() = checkHighlighting("""
+    fun `test attributes`() = checkHighlighting(
+        """
         <ATTRIBUTE>#[foo(foo)]</ATTRIBUTE>
         <ATTRIBUTE>#[foo(<STRING>"bar"</STRING>)]</ATTRIBUTE>
         fn <FUNCTION>main</FUNCTION>() {
             <ATTRIBUTE>#![crate_type = <STRING>"lib"</STRING>]</ATTRIBUTE>
         }
-    """)
+    """
+    )
 
-    fun `test fields`() = checkHighlightingWithMacro("""
+    fun `test fields`() = checkHighlightingWithMacro(
+        """
         struct <STRUCT>T</STRUCT>(<PRIMITIVE_TYPE>i32</PRIMITIVE_TYPE>);
         struct <STRUCT>S</STRUCT>{ <FIELD>field</FIELD>: <STRUCT>T</STRUCT>}
         fn <FUNCTION>main</FUNCTION>() {
             let s = <STRUCT>S</STRUCT>{ <FIELD>field</FIELD>: <STRUCT>T</STRUCT>(92) };
             s.<FIELD>field</FIELD>.0;
         }
-    """)
+    """
+    )
 
-    fun `test functions`() = checkHighlightingWithMacro("""
+    fun `test functions`() = checkHighlightingWithMacro(
+        """
         fn <FUNCTION>main</FUNCTION>() {}
         struct <STRUCT>S</STRUCT>;
         impl <STRUCT>S</STRUCT> {
@@ -52,9 +57,11 @@ class RsHighlightingAnnotatorTest : RsAnnotatorTestBase(RsHighlightingAnnotator:
             fn <METHOD>foo</METHOD>(&self) {}
             fn <ASSOC_FUNCTION>bar</ASSOC_FUNCTION>() {}
         }
-    """)
+    """
+    )
 
-    fun `test function and method calls`() = checkHighlightingWithMacro("""
+    fun `test function and method calls`() = checkHighlightingWithMacro(
+        """
         fn <FUNCTION>function</FUNCTION>() {}
         struct Foo;
         impl Foo {
@@ -69,9 +76,11 @@ class RsHighlightingAnnotatorTest : RsAnnotatorTestBase(RsHighlightingAnnotator:
             <STRUCT>Foo</STRUCT>::<ASSOC_FUNCTION_CALL>assoc_function</ASSOC_FUNCTION_CALL>();
             <PARAMETER>f</PARAMETER>(123);
         }
-    """)
+    """
+    )
 
-    fun `test macro`() = checkByText("""
+    fun `test macro`() = checkByText(
+        """
         fn <FUNCTION>main</FUNCTION>() {
             <MACRO>println</MACRO><MACRO>!</MACRO>["Hello, World!"];
             <MACRO>unreachable</MACRO><MACRO>!</MACRO>();
@@ -83,9 +92,11 @@ class RsHighlightingAnnotatorTest : RsAnnotatorTestBase(RsHighlightingAnnotator:
         impl T {
             <MACRO>foo</MACRO><MACRO>!</MACRO>();
         }
-    """)
+    """
+    )
 
-    fun `test type parameters`() = checkHighlightingWithMacro("""
+    fun `test type parameters`() = checkHighlightingWithMacro(
+        """
         trait <TRAIT>MyTrait</TRAIT> {
             type <TYPE_ALIAS>AssocType</TYPE_ALIAS>;
             fn <METHOD>some_fn</METHOD>(&<SELF_PARAMETER>self</SELF_PARAMETER>);
@@ -93,9 +104,11 @@ class RsHighlightingAnnotatorTest : RsAnnotatorTestBase(RsHighlightingAnnotator:
         struct <STRUCT>MyStruct</STRUCT><<TYPE_PARAMETER>N</TYPE_PARAMETER>: ?<TRAIT>Sized</TRAIT>+<TRAIT>Debug</TRAIT>+<TRAIT>MyTrait</TRAIT>> {
             <FIELD>N</FIELD>: my_field
         }
-    """)
+    """
+    )
 
-    fun `test const parameters`() = checkHighlightingWithMacro("""
+    fun `test const parameters`() = checkHighlightingWithMacro(
+        """
         struct MyStruct<const <CONST_PARAMETER>N</CONST_PARAMETER>: usize>;
         trait MyTrait<const <CONST_PARAMETER>N</CONST_PARAMETER>: usize> {
             fn foo<const <CONST_PARAMETER>M</CONST_PARAMETER>: usize>(a: [i32; <CONST_PARAMETER>M</CONST_PARAMETER>]);
@@ -105,17 +118,21 @@ class RsHighlightingAnnotatorTest : RsAnnotatorTestBase(RsHighlightingAnnotator:
                 let x = <CONST_PARAMETER>M</CONST_PARAMETER>;
             }
         }
-    """)
+    """
+    )
 
-    fun `test function arguments`() = checkHighlightingWithMacro("""
+    fun `test function arguments`() = checkHighlightingWithMacro(
+        """
         struct <STRUCT>Foo</STRUCT> {}
         impl <STRUCT>Foo</STRUCT> {
             fn <METHOD>bar</METHOD>(&<SELF_PARAMETER>self</SELF_PARAMETER>, (<PARAMETER>i</PARAMETER>, <PARAMETER>j</PARAMETER>): (<PRIMITIVE_TYPE>i32</PRIMITIVE_TYPE>, <PRIMITIVE_TYPE>i32</PRIMITIVE_TYPE>)) {}
         }
         fn <FUNCTION>baz</FUNCTION>(<PARAMETER>u</PARAMETER>: <PRIMITIVE_TYPE>u32</PRIMITIVE_TYPE>) {}
-    """)
+    """
+    )
 
-    fun `test contextual keywords`() = checkHighlightingWithMacro("""
+    fun `test contextual keywords`() = checkHighlightingWithMacro(
+        """
         trait <TRAIT>T</TRAIT> {
             fn <ASSOC_FUNCTION>foo</ASSOC_FUNCTION>();
         }
@@ -123,22 +140,28 @@ class RsHighlightingAnnotatorTest : RsAnnotatorTestBase(RsHighlightingAnnotator:
         impl <TRAIT>T</TRAIT> for <UNION>U</UNION> {
             <KEYWORD>default</KEYWORD> fn <ASSOC_FUNCTION>foo</ASSOC_FUNCTION>() {}
         }
-    """)
+    """
+    )
 
-    fun `test ? operator`() = checkHighlightingWithMacro("""
+    fun `test ? operator`() = checkHighlightingWithMacro(
+        """
         fn <FUNCTION>foo</FUNCTION>() -> Result<<PRIMITIVE_TYPE>i32</PRIMITIVE_TYPE>, ()>{
             Ok(Ok(1)<Q_OPERATOR>?</Q_OPERATOR> * 2)
         }
-    """)
+    """
+    )
 
-    fun `test type alias`() = checkHighlightingWithMacro("""
+    fun `test type alias`() = checkHighlightingWithMacro(
+        """
         type <TYPE_ALIAS>Bar</TYPE_ALIAS> = <PRIMITIVE_TYPE>u32</PRIMITIVE_TYPE>;
         fn <FUNCTION>main</FUNCTION>() {
             let a: <TYPE_ALIAS>Bar</TYPE_ALIAS> = 10;
         }
-    """)
+    """
+    )
 
-    fun `test keyword paths are not over annotated`() = checkByText("""
+    fun `test keyword paths are not over annotated`() = checkByText(
+        """
         pub use self::<MODULE>foo</MODULE>;
         pub use crate::foobar;
 
@@ -149,9 +172,11 @@ class RsHighlightingAnnotatorTest : RsAnnotatorTestBase(RsHighlightingAnnotator:
         }
 
         trait <TRAIT>Foo</TRAIT> { fn <ASSOC_FUNCTION>foo</ASSOC_FUNCTION>(_: Self) -> Self; }
-    """, checkWarn = false, ignoreExtraHighlighting = false)
+    """, checkWarn = false, ignoreExtraHighlighting = false
+    )
 
-    fun `test primitive`() = checkByText("""
+    fun `test primitive`() = checkByText(
+        """
         fn <FUNCTION>main</FUNCTION>() -> <PRIMITIVE_TYPE>bool</PRIMITIVE_TYPE> {
             let a: <PRIMITIVE_TYPE>u8</PRIMITIVE_TYPE> = 42;
             let b: <PRIMITIVE_TYPE>f32</PRIMITIVE_TYPE> = <NUMBER>10.0</NUMBER>;
@@ -161,16 +186,20 @@ class RsHighlightingAnnotatorTest : RsAnnotatorTestBase(RsHighlightingAnnotator:
             i32 = 2;
             true
         }
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibAndDependencyRustProjectDescriptor::class)
-    fun `test crate`() = checkHighlightingWithMacro("""
+    fun `test crate`() = checkHighlightingWithMacro(
+        """
         extern crate <CRATE>dep_lib_target</CRATE>;
 
         use <CRATE>std</CRATE>::<MODULE>io</MODULE>::<TRAIT>Read</TRAIT>;
-    """)
+    """
+    )
 
-    fun `test dont touch ast in other files`() = checkDontTouchAstInOtherFiles("""
+    fun `test dont touch ast in other files`() = checkDontTouchAstInOtherFiles(
+        """
         //- main.rs
             mod <MODULE>aux</MODULE>;
 
@@ -183,40 +212,49 @@ class RsHighlightingAnnotatorTest : RsAnnotatorTestBase(RsHighlightingAnnotator:
         """
     )
 
-    fun `test const and static`() = checkHighlightingWithMacro("""
+    fun `test const and static`() = checkHighlightingWithMacro(
+        """
         const <CONST>FOO</CONST>: i32 = 0;
         static <CONST>BAR</CONST>: i32 = 0;
         fn main() {
             <CONST>FOO</CONST>;
             <CONST>BAR</CONST>;
         }
-    """)
+    """
+    )
 
     @MockEdition(Edition.EDITION_2015)
-    fun `test postfix await 2015`() = checkHighlightingWithMacro("""
+    fun `test postfix await 2015`() = checkHighlightingWithMacro(
+        """
         fn main() {
             dummy.await;
         }
-    """)
+    """
+    )
 
     @MockEdition(Edition.EDITION_2018)
-    fun `test postfix await 2018`() = checkHighlightingWithMacro("""
+    fun `test postfix await 2018`() = checkHighlightingWithMacro(
+        """
         fn main() {
             dummy.<KEYWORD>await</KEYWORD>;
         }
-    """)
+    """
+    )
 
     fun `test highlight todo macro when todo highlighting disabled`() = withoutTodoHighlighting {
-        checkHighlighting("""
+        checkHighlighting(
+            """
             fn main() {
                 <MACRO>todo</MACRO><MACRO>!</MACRO>("");
             }
-        """)
+        """
+        )
     }
 
     @MockEdition(Edition.EDITION_2018)
     @ProjectDescriptor(WithDependencyRustProjectDescriptor::class)
-    fun `test highlight macro in use item`() = checkByFileTree("""
+    fun `test highlight macro in use item`() = checkByFileTree(
+        """
     //- lib.rs
         use <CRATE>dep_lib_target</CRATE>::<MACRO>foo</MACRO>; /*caret*/
     //- dep-lib/lib.rs
@@ -224,11 +262,13 @@ class RsHighlightingAnnotatorTest : RsAnnotatorTestBase(RsHighlightingAnnotator:
         macro_rules! foo {
             () => {};
         }
-    """)
+    """
+    )
 
     @BatchMode
     @ProjectDescriptor(WithStdlibAndDependencyRustProjectDescriptor::class)
-    fun `test no highlighting in batch mode`() = checkHighlighting("""
+    fun `test no highlighting in batch mode`() = checkHighlighting(
+        """
         extern crate dep_lib_target;
 
         use std::io::Read;
@@ -258,13 +298,16 @@ class RsHighlightingAnnotatorTest : RsAnnotatorTestBase(RsHighlightingAnnotator:
             let c: &str = "example";
             char::is_lowercase('a')
         }
-    """, ignoreExtraHighlighting = false)
+    """, ignoreExtraHighlighting = false
+    )
 
-    fun `test float literal`() = checkHighlighting("""
+    fun `test float literal`() = checkHighlighting(
+        """
         fn <FUNCTION>main</FUNCTION>() {
             let a = <NUMBER>0.0</NUMBER>;
         }
-    """)
+    """
+    )
 
     private fun checkHighlightingWithMacro(@Language("Rust") text: String) {
         checkHighlighting(text)
@@ -272,14 +315,16 @@ class RsHighlightingAnnotatorTest : RsAnnotatorTestBase(RsHighlightingAnnotator:
     }
 
     private fun checkHighlightingInsideMacroCall(@Language("Rust") text: String) {
-        checkHighlighting("""
+        checkHighlighting(
+            """
             macro_rules! as_is {
                 ($($ t:tt)*) => {$($ t)*};
             }
             as_is! {
                 $text
             }
-        """)
+        """
+        )
     }
 
     private fun withoutTodoHighlighting(action: () -> Unit) {

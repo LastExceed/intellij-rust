@@ -21,12 +21,14 @@ class CargoStdlibPackagesTest : RsWithToolchainTestBase() {
     fun `test stdlib dependency`() {
         runWithEnabledFeatures(RsExperiments.FETCH_ACTUAL_STDLIB_METADATA) {
             buildProject {
-                toml("Cargo.toml", """
+                toml(
+                    "Cargo.toml", """
                     [package]
                     name = "sandbox"
                     version = "0.1.0"
                     authors = []
-                """)
+                """
+                )
 
                 dir("src") {
                     rust("lib.rs", "")

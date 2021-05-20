@@ -175,11 +175,13 @@ class CargoCommandCompletionProviderTest : RsTestBase() {
         )
 
         val pkgs = listOf(
-            pkg("foo", true, listOf(
+            pkg(
+                "foo", true, listOf(
                 target("foo", TargetKind.Lib(LibKind.LIB)),
                 target("bar", TargetKind.Bin),
                 target("baz", TargetKind.Bin)
-            )),
+            )
+            ),
             pkg("quux", false, listOf(target("quux", TargetKind.Lib(LibKind.LIB))))
         )
         CargoWorkspace.deserialize(

@@ -12,17 +12,21 @@ import org.rust.fileTree
 class RsRustStructureModificationTrackerToolchainTest : RsWithToolchainTestBase() {
     fun `test mod count incremented on project refresh`() {
         fileTree {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "hello"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
 
             dir("src") {
-                rust("main.rs", """
+                rust(
+                    "main.rs", """
                     fn main() { }
-                """)
+                """
+                )
             }
         }.create()
 

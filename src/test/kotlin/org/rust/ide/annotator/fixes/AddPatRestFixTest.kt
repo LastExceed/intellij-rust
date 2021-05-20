@@ -9,7 +9,8 @@ import org.rust.ide.annotator.RsAnnotatorTestBase
 import org.rust.ide.annotator.RsErrorAnnotator
 
 class AddPatRestFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
-    fun `test struct with fields and trailing comma`() = checkFixByText("Add '..'", """
+    fun `test struct with fields and trailing comma`() = checkFixByText(
+        "Add '..'", """
         struct S {
             a: u32,
             b: f64,
@@ -32,7 +33,8 @@ class AddPatRestFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
         """
     )
 
-    fun `test struct with fields and no training comma`() = checkFixByText("Add '..'", """
+    fun `test struct with fields and no training comma`() = checkFixByText(
+        "Add '..'", """
         struct S {
             a: u32,
             b: f64,
@@ -55,7 +57,8 @@ class AddPatRestFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
         """
     )
 
-    fun `test struct with no fields`() = checkFixByText("Add '..'", """
+    fun `test struct with no fields`() = checkFixByText(
+        "Add '..'", """
         struct S {
             a: u32,
             b: f64,
@@ -78,7 +81,8 @@ class AddPatRestFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
         """
     )
 
-    fun `test tuple with fields and trailing comma`() = checkFixByText("Add '..'", """
+    fun `test tuple with fields and trailing comma`() = checkFixByText(
+        "Add '..'", """
         enum Foo {
             Bar(i32, i32, i32)
         }
@@ -97,7 +101,8 @@ class AddPatRestFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
         """
     )
 
-    fun `test tuple with fields and no training comma`() = checkFixByText("Add '..'", """
+    fun `test tuple with fields and no training comma`() = checkFixByText(
+        "Add '..'", """
         enum Foo {
             Bar(i32, i32, i32)
         }
@@ -116,7 +121,8 @@ class AddPatRestFixTest : RsAnnotatorTestBase(RsErrorAnnotator::class) {
         """
     )
 
-    fun `test test tuple with no fields`() = checkFixByText("Add '..'", """
+    fun `test test tuple with no fields`() = checkFixByText(
+        "Add '..'", """
         enum Foo {
             Bar(i32, i32, i32)
         }

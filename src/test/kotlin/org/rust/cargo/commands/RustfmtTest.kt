@@ -23,37 +23,47 @@ import org.rust.openapiext.saveAllDocuments
 
 class RustfmtTest : RsWithToolchainTestBase() {
 
-    fun `test rustfmt is used for whole file formatting`() = doTest({
-        toml("Cargo.toml", """
+    fun `test rustfmt is used for whole file formatting`() = doTest(
+        {
+            toml(
+                "Cargo.toml", """
             [package]
             name = "hello"
             version = "0.1.0"
             authors = []
-        """)
+        """
+            )
 
-        dir("src") {
-            rust("main.rs", """
+            dir("src") {
+                rust(
+                    "main.rs", """
                 fn main() {/*caret*/
                 println!("Hello, ΣΠ∫!");
                 }
-            """)
-        }
-    }, """
+            """
+                )
+            }
+        }, """
         fn main() {
             println!("Hello, ΣΠ∫!");
         }
-    """)
+    """
+    )
 
-    fun `test rustfmt is not used for part of file formatting`() = doTest({
-        toml("Cargo.toml", """
+    fun `test rustfmt is not used for part of file formatting`() = doTest(
+        {
+            toml(
+                "Cargo.toml", """
             [package]
             name = "hello"
             version = "0.1.0"
             authors = []
-        """)
+        """
+            )
 
-        dir("src") {
-            rust("main.rs", """
+            dir("src") {
+                rust(
+                    "main.rs", """
                 fn foo() {
                 println!("Hello, ΣΠ∫!");
                 }
@@ -61,9 +71,10 @@ class RustfmtTest : RsWithToolchainTestBase() {
                 fn main() {/*caret*/
                 println!("Hello, ΣΠ∫!");
                 }
-            """)
-        }
-    }, """
+            """
+                )
+            }
+        }, """
         fn foo() {
             println!("Hello, ΣΠ∫!");
         }
@@ -71,90 +82,113 @@ class RustfmtTest : RsWithToolchainTestBase() {
         fn main() {
         println!("Hello, ΣΠ∫!");
         }
-    """) {
+    """
+    ) {
         val endOffset = file.text.indexOf("fn main")
         val textRange = TextRange(file.textRange.startOffset, endOffset)
         reformatRange(file, textRange, shouldHitTestmark = false)
     }
 
-    fun `test rustfmt file action`() = doTest({
-        toml("Cargo.toml", """
+    fun `test rustfmt file action`() = doTest(
+        {
+            toml(
+                "Cargo.toml", """
             [package]
             name = "hello"
             version = "0.1.0"
             authors = []
-        """)
+        """
+            )
 
-        dir("src") {
-            rust("main.rs", """
+            dir("src") {
+                rust(
+                    "main.rs", """
                 fn main() {/*caret*/
                 println!("Hello, ΣΠ∫!");
                 }
-            """)
-        }
-    }, """
+            """
+                )
+            }
+        }, """
         fn main() {
             println!("Hello, ΣΠ∫!");
         }
-    """) { reformatFile(myFixture.editor) }
+    """
+    ) { reformatFile(myFixture.editor) }
 
-    fun `test rustfmt file action edition 2018`() = doTest({
-        toml("Cargo.toml", """
+    fun `test rustfmt file action edition 2018`() = doTest(
+        {
+            toml(
+                "Cargo.toml", """
             [package]
             name = "hello"
             version = "0.1.0"
             authors = []
             edition = "2018"
-        """)
+        """
+            )
 
-        dir("src") {
-            rust("main.rs", """
+            dir("src") {
+                rust(
+                    "main.rs", """
                 async fn foo() {/*caret*/
                 println!("Hello, ΣΠ∫!");
                 }
-            """)
-        }
-    }, """
+            """
+                )
+            }
+        }, """
         async fn foo() {
             println!("Hello, ΣΠ∫!");
         }
-    """) { reformatFile(myFixture.editor) }
+    """
+    ) { reformatFile(myFixture.editor) }
 
-    fun `test rustfmt cargo project action`() = doTest({
-        toml("Cargo.toml", """
+    fun `test rustfmt cargo project action`() = doTest(
+        {
+            toml(
+                "Cargo.toml", """
             [package]
             name = "hello"
             version = "0.1.0"
             authors = []
-        """)
+        """
+            )
 
-        dir("src") {
-            rust("main.rs", """
+            dir("src") {
+                rust(
+                    "main.rs", """
                 fn main() {/*caret*/
                     println!("Hello, ΣΠ∫!");
                 }
-            """)
-        }
-    }, """
+            """
+                )
+            }
+        }, """
         fn main() {
             println!("Hello, ΣΠ∫!");
         }
-    """) { reformatCargoProject() }
+    """
+    ) { reformatCargoProject() }
 
     fun `test rustfmt on save`() = doTest({
-        toml("Cargo.toml", """
+        toml(
+            "Cargo.toml", """
             [package]
             name = "hello"
             version = "0.1.0"
             authors = []
-        """)
+        """
+        )
 
         dir("src") {
-            rust("main.rs", """
+            rust(
+                "main.rs", """
                 fn main() {/*caret*/
                     println!("Hello, ΣΠ∫!");
                 }
-            """)
+            """
+            )
         }
     }) {
         myFixture.type("\n\n\n")
@@ -163,146 +197,186 @@ class RustfmtTest : RsWithToolchainTestBase() {
     }
 
     fun `test use config from project root`() = doTest({
-        toml("Cargo.toml", """
+        toml(
+            "Cargo.toml", """
             [package]
             name = "hello"
             version = "0.1.0"
             authors = []
-        """)
+        """
+        )
 
-        toml("rustfmt.toml", """
+        toml(
+            "rustfmt.toml", """
             remove_nested_parens = false # default: true
-        """)
+        """
+        )
 
         dir("src") {
-            rust("main.rs", """
+            rust(
+                "main.rs", """
                 fn main() {/*caret*/
                     ((((foo()))));
                 }
-            """)
+            """
+            )
         }
     })
 
     fun `test use config from workspace root (rustfmt dot toml)`() = doTest({
-        toml("Cargo.toml", """
+        toml(
+            "Cargo.toml", """
             [workspace]
             members = [
                 "hello"
             ]
-        """)
+        """
+        )
 
         dir("hello") {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "hello"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
 
-            toml("rustfmt.toml", """
+            toml(
+                "rustfmt.toml", """
                 remove_nested_parens = false
-            """)
+            """
+            )
 
             dir("src") {
-                rust("main.rs", """
+                rust(
+                    "main.rs", """
                     fn main() {/*caret*/
                         ((((foo()))));
                     }
-                """)
+                """
+                )
             }
         }
     })
 
     fun `test use config from workspace root (dot rustfmt dot toml)`() = doTest({
-        toml("Cargo.toml", """
+        toml(
+            "Cargo.toml", """
             [workspace]
             members = [
                 "hello"
             ]
-        """)
+        """
+        )
 
         dir("hello") {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "hello"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
 
-            toml(".rustfmt.toml", """
+            toml(
+                ".rustfmt.toml", """
                 remove_nested_parens = false
-            """)
+            """
+            )
 
             dir("src") {
-                rust("main.rs", """
+                rust(
+                    "main.rs", """
                     fn main() {/*caret*/
                         ((((foo()))));
                     }
-                """)
+                """
+                )
             }
         }
     })
 
     fun `test use config from workspace root overrides config from project root`() = doTest({
-        toml("Cargo.toml", """
+        toml(
+            "Cargo.toml", """
             [workspace]
             members = [
                 "hello"
             ]
-        """)
+        """
+        )
 
-        toml("rustfmt.toml", """
+        toml(
+            "rustfmt.toml", """
             control_brace_style = true
-        """)
+        """
+        )
 
         dir("hello") {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "hello"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
 
-            toml("rustfmt.toml", """
+            toml(
+                "rustfmt.toml", """
                 remove_nested_parens = false
-            """)
+            """
+            )
 
             dir("src") {
-                rust("main.rs", """
+                rust(
+                    "main.rs", """
                     fn main() {/*caret*/
                         ((((foo()))));
                     }
-                """)
+                """
+                )
             }
         }
     })
 
     fun `test use config from project root if config from workspace root is not presented`() = doTest({
-        toml("Cargo.toml", """
+        toml(
+            "Cargo.toml", """
             [workspace]
             members = [
                 "hello"
             ]
-        """)
+        """
+        )
 
-        toml("rustfmt.toml", """
+        toml(
+            "rustfmt.toml", """
             remove_nested_parens = false
-        """)
+        """
+        )
 
         dir("hello") {
-            toml("Cargo.toml", """
+            toml(
+                "Cargo.toml", """
                 [package]
                 name = "hello"
                 version = "0.1.0"
                 authors = []
-            """)
+            """
+            )
 
             dir("src") {
-                rust("main.rs", """
+                rust(
+                    "main.rs", """
                     fn main() {/*caret*/
                         ((((foo()))));
                     }
-                """)
+                """
+                )
             }
         }
     })

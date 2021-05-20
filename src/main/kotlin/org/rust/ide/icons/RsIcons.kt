@@ -59,6 +59,7 @@ object RsIcons {
 
     private val GLOBAL_BINDING = load("/icons/nodes/constant.svg")
     val CONSTANT = GLOBAL_BINDING.addFinalMark()
+
     // TODO: look like we need separate icons for statics and constants
     val MUT_STATIC = GLOBAL_BINDING
     val STATIC = MUT_STATIC.addFinalMark()

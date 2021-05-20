@@ -18,13 +18,15 @@ import org.rust.lang.core.resolve2.defMapService
 @UseNewResolve
 class RsDefMapSoftReferenceTest : RsResolveTestBase() {
 
-    fun test() = doTest("""
+    fun test() = doTest(
+        """
         fn foo() {}
          //X
         fn main() {
             foo();
         } //^
-    """)
+    """
+    )
 
     fun doTest(@Language("Rust") code: String) {
         InlineFile(code)

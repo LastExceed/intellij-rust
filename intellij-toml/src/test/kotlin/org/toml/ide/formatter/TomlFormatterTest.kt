@@ -6,7 +6,8 @@
 package org.toml.ide.formatter
 
 class TomlFormatterTest : TomlFormatterTestBase() {
-    fun `test spacing`() = doTest("""
+    fun `test spacing`() = doTest(
+        """
         [  config . subconfig ]
             list  =   [  1,2,     3   ]
         key1 . key2='value'
@@ -16,9 +17,11 @@ class TomlFormatterTest : TomlFormatterTestBase() {
         list = [1, 2, 3]
         key1.key2 = 'value'
         object = { a = 1, b = 2 }
-    """)
+    """
+    )
 
-    fun `test indent array`() = doTest("""
+    fun `test indent array`() = doTest(
+        """
         [workspace]
         members = [
         "a.rs",
@@ -32,5 +35,6 @@ class TomlFormatterTest : TomlFormatterTestBase() {
             "b.rs",
             "c.rs"
         ]
-    """)
+    """
+    )
 }

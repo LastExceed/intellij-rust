@@ -555,7 +555,8 @@ class SourceFile(
 
     private fun freshExtractMacros(prefetchedCalls: List<RsPossibleMacroCall>?) {
         val psi = loadPsi() ?: return
-        val calls = prefetchedCalls ?: psi.stubDescendantsOfTypeStrict<RsPossibleMacroCall>().filter { it.isTopLevelExpansion }
+        val calls = prefetchedCalls
+            ?: psi.stubDescendantsOfTypeStrict<RsPossibleMacroCall>().filter { it.isTopLevelExpansion }
         val newInfos = calls.map { call ->
             ExpandedMacroInfoImpl.newStubLinked(this, call)
         }

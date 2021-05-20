@@ -1,38 +1,38 @@
-<fold text='/* ... */'>/*
+<fold text='/ *...* / '>/*
 hello
-*/</fold>
+*/ < / fold>
 
-<fold text='/* ... */'>///
+< fold text='/ *...* / '>///
 /// Outer eol doc
 ///</fold>
-fn foo() <fold text='{...}'>{}</fold>
+fn foo() < fold text='{...}'>{} < / fold>
 
-mod m <fold text='{...}'>{
-<fold text='/* ... */'>//!
+mod m < fold text='{...}'>{
+< fold text = '/ *...* / '>//!
 //! Inner eol doc
     //!</fold>
-}</fold>
+} < / fold>
 
-<fold text='/* ... */'>/**
+< fold text='/ *...* / '>/**
     Outer block doc
-*/</fold>
-fn foo() <fold text='{...}'>{}</fold>
+*/ < / fold>
+fn foo() < fold text='{...}'>{} < / fold>
 
-mod m <fold text='{...}'>{
-<fold text='/* ... */'>/*!
+mod m < fold text='{...}'>{
+< fold text = '/ *...* / '>/*!
     Inner block doc
-*/</fold>
-}</fold>
+*/ < / fold >
+} < / fold>
 
-<fold text='/* ... */'>/*
+< fold text='/ *...* / '>/*
 hello
-*/</fold>
+*/ < / fold>
 
-<fold text='/* ... */'>/*
+< fold text='/ *...* / '>/*
 fn foo() {}
-*/</fold>
+*/ < / fold>
 
-mod m <fold text='{...}'>{
-<fold text='/* ... */'>/*
-    */</fold>
-}</fold>
+mod m < fold text='{...}'>{
+< fold text = '/ *...* / '>/*
+    */ < / fold >
+} < / fold>

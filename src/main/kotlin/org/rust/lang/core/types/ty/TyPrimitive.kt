@@ -93,19 +93,19 @@ sealed class TyInteger(override val name: String, val ordinal: Int) : TyNumeric(
         }
     }
 
-    object U8: TyInteger("u8", 0)
-    object U16: TyInteger("u16", 1)
-    object U32: TyInteger("u32", 2)
-    object U64: TyInteger("u64", 3)
-    object U128: TyInteger("u128", 4)
+    object U8 : TyInteger("u8", 0)
+    object U16 : TyInteger("u16", 1)
+    object U32 : TyInteger("u32", 2)
+    object U64 : TyInteger("u64", 3)
+    object U128 : TyInteger("u128", 4)
     object USize : TyInteger("usize", 5)
 
-    object I8: TyInteger("i8", 6)
-    object I16: TyInteger("i16", 7)
-    object I32: TyInteger("i32", 8)
-    object I64: TyInteger("i64", 9)
-    object I128: TyInteger("i128", 10)
-    object ISize: TyInteger("isize", 11)
+    object I8 : TyInteger("i8", 6)
+    object I16 : TyInteger("i16", 7)
+    object I32 : TyInteger("i32", 8)
+    object I64 : TyInteger("i64", 9)
+    object I128 : TyInteger("i128", 10)
+    object ISize : TyInteger("isize", 11)
 }
 
 sealed class TyFloat(override val name: String, val ordinal: Int) : TyNumeric() {
@@ -132,6 +132,6 @@ sealed class TyFloat(override val name: String, val ordinal: Int) : TyNumeric() 
         }
     }
 
-    object F32: TyFloat("f32", 0)
-    object F64: TyFloat("f64", 1)
+    object F32 : TyFloat("f32", 0)
+    object F64 : TyFloat("f64", 1)
 }

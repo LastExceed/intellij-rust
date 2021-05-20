@@ -9,22 +9,29 @@ import org.rust.ide.inspections.RsInspectionsTestBase
 import org.rust.ide.inspections.lints.RsTraitNamingInspection
 
 class RsTraitNamingInspectionTest : RsInspectionsTestBase(RsTraitNamingInspection::class) {
-    fun `test traits`() = checkByText("""
+    fun `test traits`() = checkByText(
+        """
         trait TraitOk {}
         trait <warning descr="Trait `trait_foo` should have a camel case name such as `TraitFoo`">trait_foo</warning> {}
-    """)
+    """
+    )
 
-    fun `test traits suppression`() = checkByText("""
+    fun `test traits suppression`() = checkByText(
+        """
         #[allow(non_camel_case_types)]
         trait trait_foo {}
-    """)
+    """
+    )
 
-    fun `test traits suppression nonstandard style`() = checkByText("""
+    fun `test traits suppression nonstandard style`() = checkByText(
+        """
         #[allow(nonstandard_style)]
         trait trait_foo {}
-    """)
+    """
+    )
 
-    fun `test traits fix`() = checkFixByText("Rename to `HotFix`", """
+    fun `test traits fix`() = checkFixByText(
+        "Rename to `HotFix`", """
         trait <warning descr="Trait `hot_fix` should have a camel case name such as `HotFix`">ho<caret>t_fix</warning> {}
         struct Patch {}
         impl hot_fix for Patch {}
@@ -32,11 +39,14 @@ class RsTraitNamingInspectionTest : RsInspectionsTestBase(RsTraitNamingInspectio
         trait HotFix {}
         struct Patch {}
         impl HotFix for Patch {}
-    """)
+    """
+    )
 
-    fun `test trait not support case`() = checkByText("""
+    fun `test trait not support case`() = checkByText(
+        """
        trait 特质 {}
        struct 结构体 {}
        impl 特质 for 结构体 {}
-    """)
+    """
+    )
 }

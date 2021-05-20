@@ -12,7 +12,8 @@ import org.toml.lang.psi.TomlKeySegment
 
 @ProjectDescriptor(WithDependencyRustProjectDescriptor::class)
 class CargoTomlKeyResolveTest : CargoTomlResolveTestBase() {
-    fun `test in dependencies block`() = checkResolve("""
+    fun `test in dependencies block`() = checkResolve(
+        """
         [package]
         name = "intellij-rust-test"
         version = "0.1.0"
@@ -21,9 +22,11 @@ class CargoTomlKeyResolveTest : CargoTomlResolveTestBase() {
         [dependencies]
         dep-lib = "0.1.0"
         #^ /dep-lib/lib.rs
-    """)
+    """
+    )
 
-    fun `test in dev dependencies block`() = checkResolve("""
+    fun `test in dev dependencies block`() = checkResolve(
+        """
         [package]
         name = "intellij-rust-test"
         version = "0.1.0"
@@ -32,9 +35,11 @@ class CargoTomlKeyResolveTest : CargoTomlResolveTestBase() {
         [dev-dependencies]
         dep-lib = "0.1.0"
         #^ /dep-lib/lib.rs
-    """)
+    """
+    )
 
-    fun `test specific dependency`() = checkResolve("""
+    fun `test specific dependency`() = checkResolve(
+        """
         [package]
         name = "intellij-rust-test"
         version = "0.1.0"
@@ -44,7 +49,8 @@ class CargoTomlKeyResolveTest : CargoTomlResolveTestBase() {
                        #^ /dep-lib/lib.rs
         version = "0.1.0"
 
-    """)
+    """
+    )
 
     private fun checkResolve(@Language("TOML") code: String) = doResolveTest<TomlKeySegment> {
         toml("Cargo.toml", code)

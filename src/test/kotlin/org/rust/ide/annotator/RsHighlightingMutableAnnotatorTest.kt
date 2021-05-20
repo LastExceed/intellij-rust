@@ -18,33 +18,40 @@ class RsHighlightingMutableAnnotatorTest : RsAnnotatorTestBase(RsHighlightingMut
         annotationFixture.registerSeverities(listOf(MUT_BINDING.testSeverity, MUT_PARAMETER.testSeverity))
     }
 
-    fun `test mut self highlight`() = checkHighlighting("""
+    fun `test mut self highlight`() = checkHighlighting(
+        """
         struct Foo {}
         impl Foo {
             fn bar(&mut <MUT_PARAMETER>self</MUT_PARAMETER>) {
                 <MUT_PARAMETER>self</MUT_PARAMETER>.bar();
             }
         }
-    """)
+    """
+    )
 
     @ProjectDescriptor(WithStdlibRustProjectDescriptor::class)
-    fun `test mut binding`() = checkHighlighting("""
+    fun `test mut binding`() = checkHighlighting(
+        """
         fn main() {
             let mut <MUT_BINDING>a</MUT_BINDING> = 1;
             let b = <MUT_BINDING>a</MUT_BINDING>;
             let Some(ref mut <MUT_BINDING>c</MUT_BINDING>) = Some(10);
             let <MUT_BINDING>d</MUT_BINDING> = <MUT_BINDING>c</MUT_BINDING>;
         }
-    """)
+    """
+    )
 
-    fun `test mut parameter`() = checkHighlighting("""
+    fun `test mut parameter`() = checkHighlighting(
+        """
         fn test(mut <MUT_PARAMETER>para</MUT_PARAMETER>: i32) {
             let b = <MUT_PARAMETER>para</MUT_PARAMETER>;
         }
-    """)
+    """
+    )
 
     @BatchMode
-    fun `test no highlighting in batch mode`() = checkHighlighting("""
+    fun `test no highlighting in batch mode`() = checkHighlighting(
+        """
         struct Foo {}
         impl Foo {
             fn bar(&mut self, mut par: i32) {
@@ -52,5 +59,6 @@ class RsHighlightingMutableAnnotatorTest : RsAnnotatorTestBase(RsHighlightingMut
                 self.bar();
             }
         }
-    """, ignoreExtraHighlighting = false)
+    """, ignoreExtraHighlighting = false
+    )
 }

@@ -23,8 +23,7 @@ class RestartAction(private val consoleRunner: RsConsoleRunner) : AnAction() {
     override fun actionPerformed(e: AnActionEvent) = consoleRunner.rerun()
 }
 
-class StopAction(private val processHandler: RsConsoleProcessHandler)
-    : DumbAwareAction("Stop Console", "Stop Rust console", AllIcons.Actions.Suspend) {
+class StopAction(private val processHandler: RsConsoleProcessHandler) : DumbAwareAction("Stop Console", "Stop Rust console", AllIcons.Actions.Suspend) {
 
     init {
         val eofAction = ActionManager.getInstance().getAction(EOFAction.ACTION_ID)
@@ -102,8 +101,7 @@ class PrintAction(private val consoleView: RsConsoleView) : DumbAwareAction() {
     }
 }
 
-class ShowVariablesAction(private val consoleView: RsConsoleView)
-    : ToggleAction("Show Variables", "Shows active console variables", AllIcons.Debugger.Watch), DumbAware {
+class ShowVariablesAction(private val consoleView: RsConsoleView) : ToggleAction("Show Variables", "Shows active console variables", AllIcons.Debugger.Watch), DumbAware {
 
     override fun isSelected(e: AnActionEvent): Boolean = consoleView.isShowVariables
 

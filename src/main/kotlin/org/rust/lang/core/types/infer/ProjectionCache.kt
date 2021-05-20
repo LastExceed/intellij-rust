@@ -57,8 +57,8 @@ class ProjectionCache {
 }
 
 sealed class ProjectionCacheEntry {
-    object InProgress: ProjectionCacheEntry()
-    object Ambiguous: ProjectionCacheEntry()
-    object Error: ProjectionCacheEntry()
-    class NormalizedTy(val ty: TyWithObligations<Ty>): ProjectionCacheEntry()
+    object InProgress : ProjectionCacheEntry()
+    object Ambiguous : ProjectionCacheEntry()
+    object Error : ProjectionCacheEntry()
+    class NormalizedTy(val ty: TyWithObligations<Ty>) : ProjectionCacheEntry()
 }

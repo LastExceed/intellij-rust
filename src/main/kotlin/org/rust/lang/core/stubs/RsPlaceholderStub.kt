@@ -9,8 +9,7 @@ import com.intellij.lang.ASTNode
 import com.intellij.psi.stubs.*
 import org.rust.lang.core.psi.ext.RsElement
 
-open class RsPlaceholderStub(parent: StubElement<*>?, elementType: IStubElementType<*, *>)
-    : StubBase<RsElement>(parent, elementType) {
+open class RsPlaceholderStub(parent: StubElement<*>?, elementType: IStubElementType<*, *>) : StubBase<RsElement>(parent, elementType) {
 
     open class Type<PsiT : RsElement>(
         debugName: String,
@@ -19,8 +18,7 @@ open class RsPlaceholderStub(parent: StubElement<*>?, elementType: IStubElementT
 
         override fun shouldCreateStub(node: ASTNode): Boolean = createStubIfParentIsStub(node)
 
-        override fun deserialize(dataStream: StubInputStream, parentStub: StubElement<*>?)
-            = RsPlaceholderStub(parentStub, this)
+        override fun deserialize(dataStream: StubInputStream, parentStub: StubElement<*>?) = RsPlaceholderStub(parentStub, this)
 
         override fun serialize(stub: RsPlaceholderStub, dataStream: StubOutputStream) {
         }

@@ -44,11 +44,15 @@ class RustProjectSettingsPanel(
 
     private val versionUpdateDebouncer = UiDebouncer(this)
 
-    private val pathToToolchainField = pathToDirectoryTextField(this,
-        "Select directory with cargo binary") { update() }
+    private val pathToToolchainField = pathToDirectoryTextField(
+        this,
+        "Select directory with cargo binary"
+    ) { update() }
 
-    private val pathToStdlibField = pathToDirectoryTextField(this,
-        "Select directory with standard library source code")
+    private val pathToStdlibField = pathToDirectoryTextField(
+        this,
+        "Select directory with standard library source code"
+    )
 
     private var fetchedSysroot: String? = null
 
